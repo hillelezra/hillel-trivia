@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>השתתפות בחידון | אלופי הטריוויה</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="quiz-bg-layer" class="quiz-bg-layer"></div>
+  <div class="quiz-bg-overlay"></div>
+
+  <div class="app-shell app-shell--player">
+    <!-- Top Brand & Personal / Team Score Bar -->
+    <header class="brand-bar">
+      <div class="brand-identity">
+        <img id="brand-header-img" class="brand-header-img" alt="כותרת החידון" hidden />
+        <div class="brand-titles">
+          <h1 id="brand-title" class="brand-title">אלופי הטריוויה</h1>
+          <p id="brand-subtitle" class="brand-subtitle">ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!</p>
+        </div>
+      </div>
+
+      <div id="player-score-hud" class="brand-actions" hidden>
+        <span id="player-code-pill" class="pill pill--gold">🔢 קוד: 1000</span>
+        <span id="player-name-pill" class="pill pill--sky">👤 שחקן</span>
+        <span id="player-team-pill" class="pill pill--emerald" hidden>👨‍👩‍👧‍👦 קבוצה: 0</span>
+        <span id="player-score-pill" class="pill pill--gold">⭐ אישי: 0</span>
+        <button type="button" id="btn-player-home" class="btn btn--sm" title="חזרה למסך הראשי">
+          🏠 מסך ראשי
+        </button>
+      </div>
+    </header>
+
+    <!-- SCREEN 1: Game Code + Name Entry -->
+    <main id="screen-join" class="glass-card" style="margin-block:auto; display:flex; flex-direction:column; gap:1.15rem;">
+      <div style="text-align:center; display:flex; flex-direction:column; gap:0.45rem;">
+        <h2 style="font-size:clamp(1.45rem, 1.15rem + 1vw, 1.95rem);">הצטרפות לחידון</h2>
+        <p id="join-subtitle-text" style="color:var(--text-secondary);">הזינו את קוד המשחק (4 ספרות) ואת שמכם</p>
+        <div id="qr-attached-badge" class="pill pill--emerald" hidden style="align-self:center; font-size:0.95rem;"></div>
+      </div>
+
+      <form id="join-form" style="display:flex; flex-direction:column; gap:0.9rem;" novalidate>
+        <div id="join-code-field-wrap" class="field">
+          <label for="player-code-input">🔢 קוד משחק (4 ספרות)</label>
+          <input
+            id="player-code-input"
+            name="gameCode"
+            type="text"
+            class="input input--code"
+            inputmode="numeric"
+            pattern="\d{4}"
+            maxlength="4"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            enterkeyhint="next"
+            placeholder="1000"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="player-name-input">👤 השם שלך</label>
+          <input
+            id="player-name-input"
+            name="playerName"
+            type="text"
+            class="input"
+            maxlength="24"
+            autocomplete="nickname"
+            enterkeyhint="done"
+            placeholder="לדוגמה: דניאל"
+            required
+            style="font-size:1.15rem; padding:0.85rem 1rem;"
+          />
+        </div>
+
+        <p id="join-error" style="color:#fda4af; font-weight:700; font-size:0.92rem;" role="alert" hidden></p>
+
+        <button type="submit" id="btn-join" class="btn btn--primary btn--lg" style="width:100%;">
+          🚀 כניסה למשחק
+        </button>
+      </form>
+    </main>
+
+    <!-- SCREEN 1B: Team Selection / Create Own Team (Shown when teamsEnabled = true) -->
+    <main id="screen-team-select" class="glass-card" hidden style="margin-block:auto; display:flex; flex-direction:column; gap:1rem;">
+      <div style="text-align:center; display:flex; flex-direction:column; gap:0.35rem;">
+        <span class="pill pill--sky" style="align-self:center;">👨‍👩‍👧‍👦 משחק קבוצות / משפחות</span>
+        <h2 id="team-select-greeting" style="font-size:clamp(1.35rem, 1.1rem + 0.9vw, 1.85rem);">
+          בחרו את הקבוצה / המשפחה שלכם
+        </h2>
+        <p style="color:var(--text-secondary); font-size:0.95rem;">
+          הצטרפו לקבוצה קיימת מהרשימה, או פתחו קבוצה חדשה משלכם בסוף הרשימה
+        </p>
+      </div>
+
+      <!-- Existing Teams List + "Open New Team" Option at the Bottom -->
+      <div id="player-teams-list" class="team-pick-list"></div>
+
+      <!-- Expandable Create New Team Form -->
+      <form id="player-create-team-form" hidden style="display:flex; flex-direction:column; gap:0.7rem; padding:0.9rem; border-radius:14px; background:rgba(15,23,42,0.65); border:1px solid rgba(52,211,153,0.45);">
+        <div class="field">
+          <label for="new-team-name-input">שם הקבוצה / המשפחה החדשה</label>
+          <input
+            id="new-team-name-input"
+            type="text"
+            class="input"
+            maxlength="36"
+            placeholder="לדוגמה: משפחת כהן"
+            required
+          />
+        </div>
+        <div style="display:flex; gap:0.5rem; justify-content:flex-end; flex-wrap:wrap;">
+          <button type="button" id="btn-cancel-create-team" class="btn btn--sm">ביטול</button>
+          <button type="submit" id="btn-submit-create-team" class="btn btn--success">
+            ✨ פתח קבוצה והצטרף
+          </button>
+        </div>
+      </form>
+
+      <p id="team-select-error" style="color:#fda4af; font-weight:700; font-size:0.9rem; text-align:center;" role="alert" hidden></p>
+    </main>
+
+    <!-- SCREEN 2: Waiting Lobby -->
+    <main id="screen-waiting" class="glass-card" hidden style="margin-block:auto; text-align:center; display:flex; flex-direction:column; align-items:center; gap:1rem;">
+      <span class="pill pill--emerald" style="font-size:1rem;">✓ את/ה בפנים!</span>
+      <h2 id="waiting-greeting" style="font-size:clamp(1.4rem, 1.1rem + 1vw, 1.9rem);">שלום!</h2>
+
+      <div id="waiting-game-badge" class="pill pill--gold" style="font-size:0.98rem; padding:0.45rem 0.95rem;"></div>
+      <div id="waiting-team-badge" class="pill pill--sky" hidden style="font-size:1.02rem; padding:0.5rem 1rem;"></div>
+
+      <p style="color:var(--text-secondary); max-width:42ch;">
+        ממתינים שהמנחה יתחיל את החידון על המסך המרכזי.
+        כל נקודה שתצברו תתווסף למאזן שלכם!
+      </p>
+
+      <div style="display:flex; gap:0.65rem; flex-wrap:wrap; justify-content:center; padding-top:0.4rem;">
+        <button type="button" id="btn-change-team" class="btn btn--sm" hidden>
+          🔄 החלף קבוצה
+        </button>
+        <button type="button" id="btn-leave-lobby" class="btn btn--sm">
+          🏠 החלף קוד / מסך ראשי
+        </button>
+      </div>
+    </main>
+
+    <!-- SCREEN 3: Active Question & Answer Reveal (Single-Screen: Question + Score Pillar + Timer, Below = 4 Options) -->
+    <main id="screen-question" class="question-stage" hidden style="flex:1;">
+      <div class="player-stage-top">
+        <section id="p-question-hero" class="question-hero">
+          <div id="p-q-media" class="question-media-wrap" hidden></div>
+          <h2 id="p-question-text" class="question-heading question-heading--player"></h2>
+        </section>
+
+        <!-- Score Status + Growing Score Pillar next to Question -->
+        <div class="player-score-widget" aria-label="מצב ניקוד">
+          <div class="player-score-widget__stats">
+            <span id="p-current-q-points" class="player-score-widget__added is-neutral">+0</span>
+            <span id="p-total-score-val" class="player-score-widget__total">סה"כ: 0</span>
+          </div>
+          <div class="score-pillar-track" aria-hidden="true">
+            <div id="p-score-pillar-fill" class="score-pillar-fill" style="height: 6%;"></div>
+          </div>
+        </div>
+
+        <!-- Timer next to Question -->
+        <div id="p-timer-stat-box" class="stage-timer-box">
+          <span id="p-timer-pill" class="player-timer-digits">15</span>
+          <progress id="p-timer-bar" class="quiz-timer-progress" max="100" value="100" aria-label="זמן נותר לשאלה"></progress>
+        </div>
+      </div>
+
+      <div id="p-choices-grid" class="answers-grid">
+        <button type="button" class="choice-btn" data-opt="0">
+          <span class="opt-letter">א</span>
+          <span class="opt-text"></span>
+          <span class="opt-meta"></span>
+        </button>
+        <button type="button" class="choice-btn" data-opt="1">
+          <span class="opt-letter">ב</span>
+          <span class="opt-text"></span>
+          <span class="opt-meta"></span>
+        </button>
+        <button type="button" class="choice-btn" data-opt="2">
+          <span class="opt-letter">ג</span>
+          <span class="opt-text"></span>
+          <span class="opt-meta"></span>
+        </button>
+        <button type="button" class="choice-btn" data-opt="3">
+          <span class="opt-letter">ד</span>
+          <span class="opt-text"></span>
+          <span class="opt-meta"></span>
+        </button>
+      </div>
+    </main>
+
+    <!-- SCREEN 4: Finished Summary -->
+    <main id="screen-finished" class="glass-card" hidden style="display:flex; flex-direction:column; gap:1.15rem; text-align:center;">
+      <div>
+        <span class="pill pill--gold" style="margin-bottom:0.5rem;">🏁 החידון הסתיים!</span>
+        <h2 id="p-final-headline" style="font-size:clamp(1.45rem, 1.15rem + 1vw, 2rem);">כל הכבוד!</h2>
+        <p id="p-final-stats" style="color:var(--text-secondary); margin-top:0.35rem;"></p>
+      </div>
+
+      <div id="p-final-leaderboard" class="leaderboard-table-wrap"></div>
+
+      <div style="display:flex; justify-content:center; padding-top:0.25rem;">
+        <button type="button" id="btn-finished-player-home" class="btn btn--sm">
+          🏠 חזרה למסך הראשי
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <!-- Player Return to Main Screen Confirmation Dialog -->
+  <dialog id="player-exit-dialog" closedby="any" aria-labelledby="player-exit-title">
+    <div class="dialog-header">
+      <h2 id="player-exit-title" style="font-size:1.15rem;">חזרה למסך הראשי</h2>
+      <form method="dialog">
+        <button type="submit" class="btn btn--sm" autofocus>ביטול</button>
+      </form>
+    </div>
+    <div class="dialog-body">
+      <p>לצאת מהמשחק הנוכחי ולחזור למסך הכניסה הראשי?</p>
+      <p style="font-size:0.86rem; color:var(--text-secondary);">
+        💡 כל הנקודות שצברת עד כה נשמרות לך — תוכל/י לחזור למשחק בכל שלב ולהמשיך מאותה נקודה!
+      </p>
+    </div>
+    <div class="dialog-footer">
+      <button type="button" id="btn-confirm-player-exit" class="btn btn--danger">כן, חזור למסך הראשי</button>
+    </div>
+  </dialog>
+
+  <!-- Image Zoom Lightbox -->
+  <dialog id="zoom-dialog" closedby="any" aria-labelledby="zoom-dialog-title">
+    <div class="dialog-header">
+      <h2 id="zoom-dialog-title" style="font-size:1.1rem;">תמונת השאלה</h2>
+      <form method="dialog">
+        <button type="submit" class="btn btn--sm" autofocus>✕ סגור</button>
+      </form>
+    </div>
+    <div class="dialog-body" style="align-items:center;">
+      <img id="zoom-dialog-img" alt="תמונת שאלה" style="max-width:100%; max-height:76dvh; object-fit:contain; border-radius:12px;" />
+    </div>
+  </dialog>
+
+  <div id="app-toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/shared-ui.js"></script>
+  <script>
+    (function () {
+      const {
+        formatScore,
+        escapeHtml,
+        applyQuizBranding,
+        syncHasImageFallback,
+        initDialogs,
+        showToast,
+        openImageZoom
+      } = window.TriviaUI;
+
+      initDialogs();
+
+      const STORAGE_ID_KEY = 'trivia_player_id_v1';
+      const STORAGE_NAME_KEY = 'trivia_player_name_v1';
+      const STORAGE_CODE_KEY = 'trivia_game_code_v1';
+
+      const socket = io();
+      let playerState = null;
+      let submittingAnswer = false;
+      let renderedQuestionIndex = -1;
+      let renderedImageSrc = '';
+      let createTeamDrawerOpen = false;
+
+      const playerScoreHud = document.getElementById('player-score-hud');
+      const playerCodePill = document.getElementById('player-code-pill');
+      const playerNamePill = document.getElementById('player-name-pill');
+      const playerTeamPill = document.getElementById('player-team-pill');
+      const playerScorePill = document.getElementById('player-score-pill');
+      const playerExitDialog = document.getElementById('player-exit-dialog');
+
+      const screenJoin = document.getElementById('screen-join');
+      const screenTeamSelect = document.getElementById('screen-team-select');
+      const screenWaiting = document.getElementById('screen-waiting');
+      const screenQuestion = document.getElementById('screen-question');
+      const screenFinished = document.getElementById('screen-finished');
+
+      const joinForm = document.getElementById('join-form');
+      const codeInput = document.getElementById('player-code-input');
+      const nameInput = document.getElementById('player-name-input');
+      const joinError = document.getElementById('join-error');
+      const btnJoin = document.getElementById('btn-join');
+
+      const teamSelectGreeting = document.getElementById('team-select-greeting');
+      const playerTeamsList = document.getElementById('player-teams-list');
+      const playerCreateTeamForm = document.getElementById('player-create-team-form');
+      const newTeamNameInput = document.getElementById('new-team-name-input');
+      const teamSelectError = document.getElementById('team-select-error');
+
+      const waitingGreeting = document.getElementById('waiting-greeting');
+      const waitingGameBadge = document.getElementById('waiting-game-badge');
+      const waitingTeamBadge = document.getElementById('waiting-team-badge');
+      const btnChangeTeam = document.getElementById('btn-change-team');
+
+      const pTimerStatBox = document.getElementById('p-timer-stat-box');
+      const pTimerPill = document.getElementById('p-timer-pill');
+      const pTimerBar = document.getElementById('p-timer-bar');
+      const pCurrentQPoints = document.getElementById('p-current-q-points');
+      const pTotalScoreVal = document.getElementById('p-total-score-val');
+      const pScorePillarFill = document.getElementById('p-score-pillar-fill');
+      const pQuestionHero = document.getElementById('p-question-hero');
+      const pQMedia = document.getElementById('p-q-media');
+      const pQuestionText = document.getElementById('p-question-text');
+
+      const choiceButtons = Array.from(document.querySelectorAll('#p-choices-grid .choice-btn'));
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlCode = (urlParams.get('code') || '').trim();
+      const joinCodeFieldWrap = document.getElementById('join-code-field-wrap');
+      const joinSubtitleText = document.getElementById('join-subtitle-text');
+      const qrAttachedBadge = document.getElementById('qr-attached-badge');
+
+      if (/^\d{4}$/.test(urlCode)) {
+        codeInput.value = urlCode;
+        if (joinCodeFieldWrap) joinCodeFieldWrap.hidden = true;
+        if (joinSubtitleText) joinSubtitleText.textContent = 'הזינו את שמכם להצטרפות ישירה לטריוויה';
+        if (qrAttachedBadge) {
+          qrAttachedBadge.hidden = false;
+          qrAttachedBadge.textContent = `📱 שויכתם ישירות דרך ה-QR (משחק ${urlCode})`;
+        }
+      } else {
+        codeInput.value = '';
+        if (joinCodeFieldWrap) joinCodeFieldWrap.hidden = false;
+      }
+
+      const savedName =
+        sessionStorage.getItem(STORAGE_NAME_KEY) || localStorage.getItem(STORAGE_NAME_KEY) || '';
+      if (savedName) {
+        nameInput.value = savedName;
+      }
+
+      codeInput.addEventListener('input', () => {
+        const cleaned = codeInput.value.replace(/\D/g, '').slice(0, 4);
+        if (codeInput.value !== cleaned) {
+          codeInput.value = cleaned;
+        }
+        codeInput.setCustomValidity('');
+        joinError.hidden = true;
+      });
+
+      nameInput.addEventListener('input', () => {
+        nameInput.setCustomValidity('');
+        joinError.hidden = true;
+      });
+
+      function showOnlyScreen(activeEl) {
+        document.body.classList.toggle('is-playing', activeEl === screenQuestion);
+        [screenJoin, screenTeamSelect, screenWaiting, screenQuestion, screenFinished].forEach(
+          (el) => {
+            const isTarget = el === activeEl;
+            el.hidden = !isTarget;
+            el.style.display = isTarget ? 'flex' : 'none';
+          }
+        );
+      }
+
+      showOnlyScreen(screenJoin);
+
+      socket.on('connect', () => {
+        const savedId = sessionStorage.getItem(STORAGE_ID_KEY);
+        const prevName =
+          sessionStorage.getItem(STORAGE_NAME_KEY) || localStorage.getItem(STORAGE_NAME_KEY) || '';
+        const prevCode =
+          sessionStorage.getItem(STORAGE_CODE_KEY) || localStorage.getItem(STORAGE_CODE_KEY) || '';
+        if (savedId) {
+          socket.emit(
+            'player:join',
+            { playerId: savedId, name: prevName, code: prevCode },
+            (res) => {
+              if (!res || !res.ok) {
+                sessionStorage.removeItem(STORAGE_ID_KEY);
+                playerScoreHud.hidden = true;
+                showOnlyScreen(screenJoin);
+              }
+            }
+          );
+        }
+      });
+
+      socket.on('settings:updated', (settings) => {
+        if (!playerState) {
+          applyQuizBranding(settings);
+        }
+      });
+
+      socket.on('player:kicked', (payload) => {
+        sessionStorage.removeItem(STORAGE_ID_KEY);
+        playerState = null;
+        playerScoreHud.hidden = true;
+        showOnlyScreen(screenJoin);
+        showToast(payload?.reason || 'החיבור למשחק הופסק.');
+      });
+
+      socket.on('player:state', (state) => {
+        playerState = state;
+        submittingAnswer = false;
+        applyQuizBranding(state.settings);
+        renderPlayerState(state);
+      });
+
+      socket.on('timer:tick', (tick) => {
+        if (!playerState || playerState.phase !== 'question') return;
+        playerState.timer.remainingMs = tick.remainingMs;
+        playerState.timer.remainingSeconds = tick.remainingSeconds;
+        playerState.timer.durationSeconds = tick.durationSeconds;
+        renderPlayerTimer(playerState.timer);
+      });
+
+      // Step 1: Enter 4-Digit Game Code + Player Name
+      joinForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        joinError.hidden = true;
+        const code = codeInput.value.replace(/\D/g, '').trim();
+        const name = nameInput.value.trim();
+
+        if (!/^\d{4}$/.test(code)) {
+          joinError.textContent = 'אנא הזינו קוד משחק בן 4 ספרות מהמסך הראשי (לדוגמה: 1000).';
+          joinError.hidden = false;
+          codeInput.focus();
+          return;
+        }
+
+        if (name.length < 2) {
+          joinError.textContent = 'אנא הזינו שם בעל 2 תווים לפחות.';
+          joinError.hidden = false;
+          nameInput.focus();
+          return;
+        }
+
+        btnJoin.disabled = true;
+        socket.emit('player:join', { code, name }, (res) => {
+          btnJoin.disabled = false;
+          if (!res || !res.ok) {
+            joinError.textContent = res?.error || 'לא ניתן להצטרף כעת.';
+            joinError.hidden = false;
+            return;
+          }
+          sessionStorage.setItem(STORAGE_ID_KEY, res.playerId);
+          sessionStorage.setItem(STORAGE_NAME_KEY, res.name);
+          localStorage.setItem(STORAGE_NAME_KEY, res.name);
+          if (res.gameCode) {
+            sessionStorage.setItem(STORAGE_CODE_KEY, res.gameCode);
+            localStorage.setItem(STORAGE_CODE_KEY, res.gameCode);
+          }
+          if (res.resumed && res.state?.player?.score > 0) {
+            showToast(`ברוך שובך ${res.name}! חזרת למשחק עם ${formatScore(res.state.player.score)} נקודות.`);
+          }
+          if (res.state) {
+            playerState = res.state;
+            applyQuizBranding(res.state.settings);
+            renderPlayerState(res.state);
+          }
+        });
+      });
+
+      // Step 2: Select Existing Team or Open New Team at Bottom of List
+      function setCreateTeamDrawer(open) {
+        createTeamDrawerOpen = open;
+        playerCreateTeamForm.hidden = !open;
+        playerCreateTeamForm.style.display = open ? 'flex' : 'none';
+        if (open) {
+          newTeamNameInput.value = '';
+          newTeamNameInput.focus();
+        }
+      }
+
+      playerTeamsList.addEventListener('click', (e) => {
+        const chooseBtn = e.target.closest('[data-choose-team-id]');
+        if (chooseBtn) {
+          teamSelectError.hidden = true;
+          const teamId = chooseBtn.getAttribute('data-choose-team-id');
+          socket.emit('player:chooseTeam', { teamId }, (res) => {
+            if (!res || !res.ok) {
+              teamSelectError.textContent = res?.error || 'לא ניתן להצטרף לקבוצה.';
+              teamSelectError.hidden = false;
+              return;
+            }
+            setCreateTeamDrawer(false);
+            showToast(`הצטרפת לקבוצת "${res.team.name}"!`);
+          });
+          return;
+        }
+
+        const openCreateBtn = e.target.closest('[data-open-create-team]');
+        if (openCreateBtn) {
+          teamSelectError.hidden = true;
+          setCreateTeamDrawer(true);
+        }
+      });
+
+      document.getElementById('btn-cancel-create-team').addEventListener('click', () => {
+        setCreateTeamDrawer(false);
+      });
+
+      playerCreateTeamForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        teamSelectError.hidden = true;
+        const teamName = newTeamNameInput.value.trim();
+        if (teamName.length < 2) {
+          teamSelectError.textContent = 'אנא הזינו שם קבוצה בעל 2 תווים לפחות.';
+          teamSelectError.hidden = false;
+          newTeamNameInput.focus();
+          return;
+        }
+
+        const submitBtn = document.getElementById('btn-submit-create-team');
+        submitBtn.disabled = true;
+        socket.emit('player:createTeam', { name: teamName }, (res) => {
+          submitBtn.disabled = false;
+          if (!res || !res.ok) {
+            teamSelectError.textContent = res?.error || 'לא ניתן לפתוח קבוצה כעת.';
+            teamSelectError.hidden = false;
+            return;
+          }
+          setCreateTeamDrawer(false);
+          showToast(`הקבוצה "${res.team.name}" נפתחה ושויכת אליה!`);
+        });
+      });
+
+      btnChangeTeam.addEventListener('click', () => {
+        socket.emit('player:changeTeam', (res) => {
+          if (res && !res.ok && res.error) {
+            showToast(res.error);
+          }
+        });
+      });
+
+      function renderTeamSelectionScreen(state) {
+        const gCode = state.player.gameCode || state.gameCode || '1000';
+        teamSelectGreeting.textContent = `שלום ${state.player.name}! (משחק ${gCode}) • לאיזו קבוצה להצטרף?`;
+        const teams = state.availableTeams || [];
+
+        const existingItemsHtml =
+          teams.length > 0
+            ? teams
+                .map(
+                  (t) => `
+              <button type="button" class="team-pick-btn" data-choose-team-id="${escapeHtml(t.id)}">
+                <span>👨‍👩‍👧‍👦 ${escapeHtml(t.name)}</span>
+                <span class="pill pill--sky" style="font-size:0.82rem;">
+                  ${t.memberCount} משתתפים • הצטרף ◀
+                </span>
+              </button>
+            `
+                )
+                .join('')
+            : `<p style="text-align:center; color:var(--text-muted); padding:0.5rem 0;">
+                 עדיין לא נפתחו קבוצות — לחצו למטה כדי לפתוח את הקבוצה הראשונה!
+               </p>`;
+
+        // Option at the very end of the list to open a new team!
+        playerTeamsList.innerHTML =
+          existingItemsHtml +
+          `
+          <button type="button" class="team-pick-btn team-pick-btn--create" data-open-create-team="1">
+            ➕ פתח קבוצה חדשה משלך
+          </button>
+        `;
+
+        playerCreateTeamForm.hidden = !createTeamDrawerOpen;
+        playerCreateTeamForm.style.display = createTeamDrawerOpen ? 'flex' : 'none';
+      }
+
+      // Leave / Return to Main Screen
+      function doLeaveToMainScreen() {
+        if (playerExitDialog.open) playerExitDialog.close();
+        createTeamDrawerOpen = false;
+        socket.emit('player:leave', () => {
+          sessionStorage.removeItem(STORAGE_ID_KEY);
+          playerState = null;
+          playerScoreHud.hidden = true;
+          showOnlyScreen(screenJoin);
+        });
+      }
+
+      document.getElementById('btn-leave-lobby').addEventListener('click', doLeaveToMainScreen);
+      document
+        .getElementById('btn-finished-player-home')
+        .addEventListener('click', doLeaveToMainScreen);
+
+      document.getElementById('btn-player-home').addEventListener('click', () => {
+        if (
+          playerState &&
+          (playerState.phase === 'question' || playerState.phase === 'revealed')
+        ) {
+          if (!playerExitDialog.open) playerExitDialog.showModal();
+        } else {
+          doLeaveToMainScreen();
+        }
+      });
+
+      document
+        .getElementById('btn-confirm-player-exit')
+        .addEventListener('click', doLeaveToMainScreen);
+
+      // Choice Selection (Immediate Answer Lock)
+      choiceButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (!playerState || playerState.phase !== 'question') return;
+          if (playerState.lockedAnswerIndex !== null || submittingAnswer) return;
+          if (playerState.timer?.timeExpiredAwaitingReveal) return;
+
+          const answerIndex = Number(btn.getAttribute('data-opt'));
+          submittingAnswer = true;
+
+          choiceButtons.forEach((b, idx) => {
+            b.disabled = true;
+            b.classList.toggle('is-selected', idx === answerIndex);
+            b.classList.toggle('is-dimmed', idx !== answerIndex);
+          });
+
+          socket.emit('player:answer', { answerIndex }, (res) => {
+            submittingAnswer = false;
+            if (!res || !res.ok) {
+              if (typeof res?.lockedAnswerIndex === 'number') {
+                playerState.lockedAnswerIndex = res.lockedAnswerIndex;
+                renderPlayerState(playerState);
+              } else {
+                showToast(res?.error || 'לא ניתן לשלוח תשובה.');
+                renderPlayerState(playerState);
+              }
+              return;
+            }
+            playerState.lockedAnswerIndex = res.lockedAnswerIndex;
+            renderPlayerState(playerState);
+          });
+        });
+      });
+
+      function renderPlayerTimer(timer) {
+        if (!timer) return;
+        if (playerState?.phase === 'revealed' || timer.timeExpiredAwaitingReveal) {
+          pTimerPill.textContent = '0';
+          pTimerPill.classList.remove('is-warning', 'is-danger');
+          if (pTimerStatBox) pTimerStatBox.classList.remove('is-warning', 'is-danger');
+          pTimerBar.value = 0;
+          pTimerBar.classList.remove('is-warning', 'is-danger');
+          return;
+        }
+
+        const secs = Math.max(0, timer.remainingSeconds || 0);
+        const isDanger = secs <= 5;
+        const isWarning = secs > 5 && secs <= 8;
+
+        pTimerPill.textContent = `${secs}`;
+        pTimerPill.classList.toggle('is-danger', isDanger);
+        pTimerPill.classList.toggle('is-warning', isWarning);
+        if (pTimerStatBox) {
+          pTimerStatBox.classList.toggle('is-danger', isDanger);
+          pTimerStatBox.classList.toggle('is-warning', isWarning);
+        }
+
+        const pct = timer.durationSeconds > 0
+          ? Math.max(0, Math.min(100, (timer.remainingMs / (timer.durationSeconds * 1000)) * 100))
+          : 0;
+        pTimerBar.value = pct;
+        pTimerBar.classList.toggle('is-danger', isDanger);
+        pTimerBar.classList.toggle('is-warning', isWarning);
+      }
+
+      function renderPlayerScoreWidget(state) {
+        const totalScore = Number(state?.player?.score || 0);
+        const isRevealed = state?.phase === 'revealed';
+        const earnedNow = isRevealed ? Number(state?.lastQuestionOutcome?.pointsEarned || 0) : 0;
+
+        if (pCurrentQPoints) {
+          pCurrentQPoints.textContent = `+${formatScore(earnedNow)}`;
+          pCurrentQPoints.classList.toggle('is-neutral', !isRevealed || earnedNow <= 0);
+        }
+        if (pTotalScoreVal) {
+          pTotalScoreVal.textContent = `סה"כ: ${formatScore(totalScore)}`;
+        }
+        if (pScorePillarFill) {
+          const heightPct =
+            totalScore > 0
+              ? Math.min(96, Math.max(16, Math.round(100 * (totalScore / (totalScore + 120)))))
+              : 6;
+          pScorePillarFill.style.height = `${heightPct}%`;
+        }
+      }
+
+      function renderPlayerState(state) {
+        if (!state || !state.player) return;
+
+        const gCode = state.player.gameCode || state.gameCode || '1000';
+        const gTitle = state.player.gameTitle || state.settings?.title || 'אלופי הטריוויה';
+
+        // Top HUD
+        playerScoreHud.hidden = false;
+        playerCodePill.textContent = `🔢 קוד: ${gCode}`;
+        playerNamePill.textContent = `👤 ${state.player.name}`;
+        if (state.teamsEnabled && state.player.teamId) {
+          playerTeamPill.hidden = false;
+          playerTeamPill.textContent = `👨‍👩‍👧‍👦 ${state.player.teamName}: ${formatScore(state.player.teamScore)} נק'`;
+          playerScorePill.textContent = `⭐ אישי: ${formatScore(state.player.score)}`;
+        } else {
+          playerTeamPill.hidden = true;
+          playerScorePill.textContent = `⭐ ניקוד אישי: ${formatScore(state.player.score)}`;
+        }
+
+        // If Teams Mode is enabled and player has not picked/created a team yet -> show Team Selection Screen!
+        if (state.teamsEnabled && !state.player.teamId && state.phase !== 'finished') {
+          showOnlyScreen(screenTeamSelect);
+          renderTeamSelectionScreen(state);
+          return;
+        }
+
+        if (state.phase === 'lobby') {
+          showOnlyScreen(screenWaiting);
+          waitingGreeting.textContent = `שלום, ${state.player.name}! 👋`;
+          waitingGameBadge.textContent = `🔢 משויך למשחק ${gCode} • "${gTitle}"`;
+          if (state.teamsEnabled && state.player.teamName) {
+            waitingTeamBadge.hidden = false;
+            waitingTeamBadge.textContent = `👨‍👩‍👧‍👦 משויך לקבוצה: ${state.player.teamName}`;
+            btnChangeTeam.hidden = false;
+          } else {
+            waitingTeamBadge.hidden = true;
+            btnChangeTeam.hidden = true;
+          }
+          return;
+        }
+
+        if (state.phase === 'question' || state.phase === 'revealed') {
+          showOnlyScreen(screenQuestion);
+          const q = state.currentQuestion;
+          if (!q) return;
+
+          pQuestionText.textContent = q.question;
+          renderPlayerTimer(state.timer);
+          renderPlayerScoreWidget(state);
+
+          if (q.image) {
+            if (renderedQuestionIndex !== q.index || renderedImageSrc !== q.image) {
+              renderedQuestionIndex = q.index;
+              renderedImageSrc = q.image;
+              pQMedia.hidden = false;
+              pQMedia.innerHTML = `<img src="${escapeHtml(q.image)}" alt="תמונה לשאלה ${q.index + 1}" class="question-img question-img--player" id="player-q-img" />`;
+              const imgEl = document.getElementById('player-q-img');
+              if (imgEl) {
+                imgEl.addEventListener('click', () => openImageZoom(q.image, q.question));
+              }
+            }
+          } else {
+            renderedQuestionIndex = q.index;
+            renderedImageSrc = '';
+            pQMedia.hidden = true;
+            pQMedia.innerHTML = '';
+          }
+          syncHasImageFallback(pQuestionHero);
+
+          const lockedIdx = state.lockedAnswerIndex;
+          const isRevealed = state.phase === 'revealed';
+          const isTimeUp = Boolean(state.timer?.timeExpiredAwaitingReveal);
+
+          choiceButtons.forEach((btn, idx) => {
+            const textSpan = btn.querySelector('.opt-text');
+            const metaSpan = btn.querySelector('.opt-meta');
+            textSpan.textContent = q.answers[idx] || '';
+
+            btn.classList.remove('is-selected', 'is-dimmed', 'is-correct', 'is-wrong', 'is-selected-wrong');
+            metaSpan.innerHTML = '';
+
+            if (isRevealed) {
+              btn.disabled = true;
+              const isCorrect = idx === q.correctIndex;
+              const isMyPick = idx === lockedIdx;
+
+              if (isCorrect) {
+                btn.classList.add('is-correct');
+                metaSpan.innerHTML = `<span class="pill pill--emerald">✓</span>`;
+              } else if (isMyPick) {
+                btn.classList.add('is-selected-wrong');
+                metaSpan.innerHTML = `<span class="pill">✗</span>`;
+              } else {
+                btn.classList.add('is-wrong');
+              }
+            } else if (lockedIdx !== null) {
+              btn.disabled = true;
+              if (idx === lockedIdx) {
+                btn.classList.add('is-selected');
+              } else {
+                btn.classList.add('is-dimmed');
+              }
+            } else if (isTimeUp) {
+              btn.disabled = true;
+              btn.classList.add('is-dimmed');
+            } else {
+              btn.disabled = false;
+            }
+          });
+
+          return;
+        }
+
+        if (state.phase === 'finished') {
+          showOnlyScreen(screenFinished);
+          if (state.teamsEnabled && state.player.teamId) {
+            document.getElementById('p-final-headline').textContent =
+              `👨‍👩‍👧‍👦 "${state.player.teamName}" במקום #${state.player.teamRank} מתוך ${state.player.totalTeams}!`;
+            document.getElementById('p-final-stats').textContent =
+              `ניקוד משפחתי מצטבר: ${formatScore(state.player.teamScore)} נק' • התרומה האישית שלך: ${formatScore(state.player.score)} נק'`;
+
+            const teamRows = (state.topTeamLeaderboard || [])
+              .map(
+                (t) => `
+                <tr class="${t.id === state.player.teamId ? 'is-me' : ''}">
+                  <td style="font-weight:800;">#${t.rank}</td>
+                  <td style="font-weight:700;">👨‍👩‍👧‍👦 ${escapeHtml(t.name)} ${t.id === state.player.teamId ? '(הקבוצה שלך)' : ''}</td>
+                  <td style="font-weight:900; color:#fde68a;">${formatScore(t.score)} נק'</td>
+                </tr>
+              `
+              )
+              .join('');
+
+            document.getElementById('p-final-leaderboard').innerHTML = `
+              <table class="leaderboard-table">
+                <thead>
+                  <tr>
+                    <th>מקום</th>
+                    <th>קבוצה / משפחה</th>
+                    <th>ניקוד מצטבר</th>
+                  </tr>
+                </thead>
+                <tbody>${teamRows}</tbody>
+              </table>
+            `;
+          } else {
+            document.getElementById('p-final-headline').textContent =
+              `סיימת במקום #${state.player.rank} מתוך ${state.player.totalPlayers}!`;
+            document.getElementById('p-final-stats').textContent =
+              `ניקוד אישי סופי: ${formatScore(state.player.score)} נקודות • ${state.player.correctCount} תשובות נכונות`;
+
+            const rows = (state.topLeaderboard || [])
+              .map(
+                (p) => `
+                <tr class="${p.id === state.player.id ? 'is-me' : ''}">
+                  <td style="font-weight:800;">#${p.rank}</td>
+                  <td style="font-weight:700;">${escapeHtml(p.name)} ${p.id === state.player.id ? '(את/ה)' : ''}</td>
+                  <td style="font-weight:900; color:#fde68a;">${formatScore(p.score)} נק'</td>
+                </tr>
+              `
+              )
+              .join('');
+
+            document.getElementById('p-final-leaderboard').innerHTML = `
+              <table class="leaderboard-table">
+                <thead>
+                  <tr>
+                    <th>מקום</th>
+                    <th>שם</th>
+                    <th>ניקוד</th>
+                  </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+              </table>
+            `;
+          }
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,3224 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>מסך מנחה | אלופי הטריוויה</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="quiz-bg-layer" class="quiz-bg-layer"></div>
+  <div class="quiz-bg-overlay"></div>
+
+  <!-- Side Navigation Drawer (popover="manual") -->
+  <div class="Drawer" id="side-drawer" popover="manual">
+    <div class="Drawer-scroller" dir="ltr">
+      <nav class="Drawer-sheet" tabindex="-1" dir="rtl" aria-label="תפריט ראשי והגדרות">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; padding-bottom:0.75rem; border-bottom:1px solid var(--border-subtle);">
+          <strong style="font-size:1.25rem; color:#ffffff;">☰ תפריט ראשי והגדרות</strong>
+          <button type="button" id="drawer-close" class="btn btn--sm">✕ סגור</button>
+        </div>
+
+        <!-- Drawer Section 1: Active Game, 4-Digit Code & Launch Controls -->
+        <section class="drawer-section">
+          <div class="drawer-section-title">
+            <span>🎮 המשחק הפעיל והצטרפות</span>
+            <button type="button" id="btn-open-new-game" class="btn btn--primary btn--sm">
+              ➕ משחק חדש
+            </button>
+          </div>
+
+          <div class="field" style="gap:0.35rem;">
+            <label for="quick-game-menu-select" style="font-size:0.85rem; color:var(--text-secondary);">
+              בחירת משחק פעיל:
+            </label>
+            <select id="quick-game-menu-select" class="menu-select" aria-label="תפריט משחקים קיימים"></select>
+          </div>
+
+          <div class="game-code-hero" style="padding:0.75rem 0.9rem;">
+            <div style="display:flex; flex-direction:column; gap:0.2rem;">
+              <span class="pill pill--emerald" style="align-self:flex-start; font-size:0.75rem;">
+                🔓 קוד הצטרפות למתחרים (4 ספרות)
+              </span>
+              <span id="lobby-active-game-subtitle" style="font-size:0.82rem; color:var(--text-secondary);">
+                המתחרים מזינים את הקוד במסך השחקן
+              </span>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <div id="lobby-game-code-digits" class="game-code-digits" style="font-size:1.65rem; padding:0.3rem 0.75rem;" aria-label="קוד המשחק">1000</div>
+              <button type="button" id="btn-copy-code" class="btn btn--gold btn--sm">
+                📋 העתק קוד
+              </button>
+            </div>
+          </div>
+
+          <div class="join-box" style="padding:0.75rem 0.85rem;">
+            <span style="font-size:0.84rem; font-weight:700; color:var(--text-secondary);">
+              קישור כניסה למתחרים (קוד <strong id="join-box-code-inline" style="color:#fde68a;">1000</strong>):
+            </span>
+            <div id="join-url-display" class="join-url" style="font-size:0.95rem;">http://localhost:3000</div>
+            <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
+              <button type="button" id="btn-copy-url" class="btn btn--sm">📋 העתק קישור</button>
+              <a href="/index.html" target="_blank" rel="noopener" class="btn btn--sm">📱 פתח מסך שחקן</a>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:0.5rem; padding-top:0.25rem;">
+            <span id="lobby-ready-hint" style="color:var(--text-secondary); font-size:0.82rem;">
+              הפעלה או סגירה של המשחק הפעיל:
+            </span>
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <button type="button" id="btn-resume-quiz" class="btn btn--success" style="flex:1;" hidden>
+                ▶️ המשך משחק פעיל
+              </button>
+              <button type="button" id="btn-start-quiz" class="btn btn--primary" style="flex:1;">
+                🚀 התחל חידון
+              </button>
+            </div>
+            <button type="button" id="btn-drawer-finish-quiz" class="btn btn--gold btn--sm" style="width:100%;">
+              🏁 סגור וסיים משחק קיים (שמור נתונים)
+            </button>
+          </div>
+        </section>
+
+        <!-- Drawer Section 2: Questions, Branding & Leaderboard Tools -->
+        <section class="drawer-section">
+          <div class="drawer-section-title">
+            <span>🛠️ הגדרות, שאלות ולוח תוצאות</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.5rem;">
+            <button type="button" id="btn-open-settings" class="btn btn--primary btn--sm" style="justify-content:flex-start;">
+              🎨 עיצוב וניהול שאלות מלא
+            </button>
+            <button type="button" id="btn-shortcut-branding" class="btn btn--sm" style="justify-content:flex-start;">
+              🖼️ העלאת רקע וכותרת ראשית מהמחשב
+            </button>
+            <button type="button" id="btn-shortcut-questions" class="btn btn--sm" style="justify-content:flex-start;">
+              📝 עריכת שאלות, ניקוד וזמנים (<span id="lobby-q-count">0</span>)
+            </button>
+            <button type="button" id="btn-open-leaderboard" class="btn btn--gold btn--sm" style="justify-content:flex-start;">
+              🏆 צפייה בלוח התוצאות
+            </button>
+            <button type="button" id="btn-drawer-reset" class="btn btn--danger btn--sm" style="justify-content:flex-start;">
+              🔄 איפוס ניקוד / שחקנים
+            </button>
+          </div>
+        </section>
+
+        <!-- Drawer Section 3: Teams / Families Mode + Connected Players -->
+        <section class="drawer-section">
+          <div class="drawer-section-title">
+            <span>👨‍👩‍👧‍👦 קבוצות / משפחות ושחקנים</span>
+          </div>
+
+          <div class="teams-setup-box" style="padding:0.75rem 0.85rem;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:0.6rem; flex-wrap:wrap;">
+              <span style="font-size:0.88rem; font-weight:700;">חלוקה לקבוצות:</span>
+              <div class="mode-switch" role="group" aria-label="בחירת מצב קבוצות">
+                <button type="button" id="btn-teams-off" class="mode-switch-btn is-active">
+                  לא (אישי)
+                </button>
+                <button type="button" id="btn-teams-on" class="mode-switch-btn">
+                  כן (קבוצות)
+                </button>
+              </div>
+            </div>
+
+            <div id="host-teams-config" hidden style="display:flex; flex-direction:column; gap:0.55rem; padding-top:0.4rem; border-top:1px solid rgba(255,255,255,0.08);">
+              <form id="host-add-team-form" style="display:flex; gap:0.45rem; flex-wrap:wrap;">
+                <input
+                  id="host-team-name-input"
+                  type="text"
+                  class="input"
+                  maxlength="36"
+                  placeholder="שם קבוצה / משפחה..."
+                  style="flex:1; min-width:140px; padding:0.45rem 0.7rem;"
+                />
+                <button type="submit" class="btn btn--primary btn--sm">+ הוסף</button>
+              </form>
+              <p style="font-size:0.78rem; color:var(--text-muted);">
+                💡 שחקנים יכולים להצטרף לקבוצה קיימת או לפתוח קבוצה משלהם!
+              </p>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem;">
+            <strong id="roster-heading" style="font-size:0.95rem;">משתתפים במשחק (<span id="roster-count">0</span>/30)</strong>
+            <button type="button" id="btn-clear-players" class="btn btn--danger btn--sm" hidden>
+              נקה שחקנים
+            </button>
+          </div>
+
+          <div id="lobby-roster" class="players-roster" style="min-height:80px; max-height:220px;">
+            <p style="color:var(--text-muted); margin:auto; font-size:0.85rem;">ממתינים להצטרפות השחקנים...</p>
+          </div>
+
+          <div id="lobby-teams-board" hidden style="display:flex; flex-direction:column; gap:0.65rem;">
+            <div id="teams-cards-container" class="teams-lobby-board" style="grid-template-columns:1fr; max-height:260px;"></div>
+            <div id="unassigned-players-box" hidden style="padding-top:0.45rem; border-top:1px dashed var(--border-subtle);">
+              <span style="font-size:0.8rem; color:var(--text-secondary); display:block; margin-bottom:0.35rem;">
+                שחקנים שבוחרים קבוצה:
+              </span>
+              <div id="unassigned-players-list" style="display:flex; flex-wrap:wrap; gap:0.4rem;"></div>
+            </div>
+          </div>
+        </section>
+      </nav>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <!-- Top Main Header (Only Menu with Settings & Statistics) -->
+    <header class="brand-bar">
+      <div style="display:flex; align-items:center; gap:0.75rem; min-width:0;">
+        <button
+          type="button"
+          id="drawer-open"
+          class="btn btn--primary btn--sm"
+          aria-label="תפריט הגדרות וסטטיסטיקות"
+          aria-expanded="false"
+          aria-controls="side-drawer"
+        >
+          <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <span>תפריט הגדרות וסטטיסטיקות</span>
+        </button>
+      </div>
+
+      <div class="brand-actions">
+        <button type="button" id="btn-top-home" class="btn btn--primary btn--sm" hidden>
+          🏠 יציאה וחזרה למסך הראשי
+        </button>
+      </div>
+
+      <!-- Hidden branding elements kept for shared-ui compatibility -->
+      <div hidden aria-hidden="true">
+        <img id="brand-header-img" alt="" />
+        <h1 id="brand-title"></h1>
+        <p id="brand-subtitle"></p>
+        <span id="admin-game-code-pill"></span>
+        <span id="players-count-pill"></span>
+      </div>
+    </header>
+
+    <!-- VIEW 1: CLEAN MAIN SCREEN (Games Hub — No Active Game Running in Background) -->
+    <main id="view-lobby" class="hub-main">
+      <div id="games-library-grid" class="games-hub-grid"></div>
+      <div hidden aria-hidden="true">
+        <h2 id="hub-main-title"></h2>
+        <p id="hub-main-subtitle"></p>
+      </div>
+    </main>
+
+    <!-- VIEW 1B: SPECIFIC GAME ENTRY / WAITING PAGE (QR + Link + Code + Waiting Roster + Start Button) -->
+    <main id="view-game-entry" class="game-entry-stage" hidden>
+      <section class="glass-card game-entry-card">
+        <div class="game-entry-header">
+          <div>
+            <span class="pill pill--emerald" style="margin-bottom:0.3rem;">🔓 דף כניסה והמתנה למשחק</span>
+            <h2 id="entry-game-title" style="font-size:clamp(1.4rem, 1.1rem + 1.2vw, 2.1rem); color:#ffffff;">שם המשחק</h2>
+          </div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button type="button" id="btn-entry-open-lb" class="btn btn--gold btn--sm">
+              📊 היסטוריית משתתפים וניקוד שמור
+            </button>
+            <button type="button" id="btn-entry-back-hub" class="btn btn--danger btn--sm">
+              🏠 סגור משחק וחזור למסך הראשי
+            </button>
+          </div>
+        </div>
+
+        <div class="game-entry-join-grid">
+          <!-- QR Code Card (Direct Join to this Specific Trivia) -->
+          <div class="game-entry-qr-box">
+            <div class="game-entry-qr-frame">
+              <img id="entry-qr-img" class="game-entry-qr-img" alt="קוד QR להצטרפות ישירה לטריוויה" />
+            </div>
+            <strong style="font-size:1rem; color:#ffffff;">📱 סריקת QR — הצטרפות ישירה</strong>
+            <span style="font-size:0.84rem; color:var(--text-secondary); text-align:center;">
+              מי שסורק את הקיואר משויך אוטומטית לטריוויה זו (ללא צורך בהקלדת קוד משחק)
+            </span>
+          </div>
+
+          <!-- Link + 4-Digit Game Code Card -->
+          <div class="game-entry-link-box">
+            <div style="display:flex; flex-direction:column; gap:0.4rem;">
+              <span style="font-size:0.9rem; font-weight:700; color:var(--text-secondary);">
+                🌐 כניסה דרך קישור לטריוויה:
+              </span>
+              <div id="entry-join-url" class="join-url" style="font-size:clamp(1.05rem, 0.95rem + 0.5vw, 1.35rem);">
+                http://localhost:3000
+              </div>
+              <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                <button type="button" id="btn-entry-copy-url" class="btn btn--sm">📋 העתק קישור</button>
+                <a id="entry-open-player-link" href="/index.html" target="_blank" rel="noopener" class="btn btn--sm">
+                  📱 פתח מסך שחקן
+                </a>
+              </div>
+            </div>
+
+            <div class="game-entry-code-banner">
+              <div>
+                <span style="font-size:0.86rem; color:var(--text-secondary); display:block;">
+                  🔢 קוד משחק (לנכנסים דרך הקישור):
+                </span>
+                <strong id="entry-game-code" class="game-code-digits" style="font-size:2.1rem; padding:0.2rem 0.85rem; margin-top:0.25rem; display:inline-block;">
+                  1000
+                </strong>
+              </div>
+              <button type="button" id="btn-entry-copy-code" class="btn btn--gold btn--sm">
+                📋 העתק קוד
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Waiting Participants List -->
+        <div class="game-entry-waiting-box">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+            <div style="display:flex; flex-direction:column; gap:0.15rem;">
+              <strong style="font-size:1.05rem; color:#ffffff;">
+                👥 משתתפים בהמתנה לתחילת המשחק (<span id="entry-waiting-count">0</span>)
+              </strong>
+              <span style="font-size:0.78rem; color:var(--text-secondary);">
+                ⚖️ ניתן להעניק משקל מוגדל לכל משתתף (×2, ×3 או יותר) ישירות מתוך הרשימה (למשל הורה עם ילדים קטנים)
+              </span>
+            </div>
+            <span id="entry-saved-info" class="pill" hidden></span>
+          </div>
+          <div id="entry-waiting-roster" class="players-roster" style="min-height:76px; max-height:180px;">
+            <p style="color:var(--text-muted); margin:auto;">ממתינים להצטרפות המשתתפים...</p>
+          </div>
+        </div>
+
+        <!-- Start Game Button -->
+        <div style="display:flex; justify-content:center; gap:0.75rem; flex-wrap:wrap; padding-top:0.25rem;">
+          <button type="button" id="btn-entry-start-quiz" class="btn btn--primary btn--lg" style="min-width:260px; font-size:1.25rem;">
+            🚀 התחל משחק
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- VIEW 2: QUESTION & REVEAL (Single-Screen: Top = Question # + Question + Timer + Sticks, Middle = 4 Options / Correct + Top 5, Bottom = Controls) -->
+    <main id="view-question" class="question-stage" hidden>
+      <div class="host-stage-top">
+        <div id="admin-question-hero" class="question-hero">
+          <span id="hud-question-num" class="pill pill--sky" style="font-size:0.88rem; padding:0.22rem 0.75rem;">שאלה 1 מתוך 10</span>
+          <div id="admin-q-media" class="question-media-wrap" hidden></div>
+          <h2 id="admin-question-text" class="question-heading">נוסח השאלה יופיע כאן</h2>
+        </div>
+
+        <div id="admin-timer-box" class="stage-timer-box">
+          <div id="hud-timer" class="stage-timer-digits">15</div>
+          <progress
+            id="admin-timer-bar"
+            class="quiz-timer-progress"
+            max="100"
+            value="100"
+            aria-label="זמן נותר לשאלה"
+          ></progress>
+        </div>
+
+        <div id="admin-live-barchart" class="stage-sticks-box" aria-label="דיאגרמת מקלות">
+          <div class="live-bar-col">
+            <span id="admin-bar-correct-val" class="live-bar-value live-bar-value--correct">0</span>
+            <div class="live-bar-track" aria-hidden="true">
+              <div id="admin-bar-correct-fill" class="live-bar-fill live-bar-fill--correct" style="height: 0%;"></div>
+            </div>
+            <span class="live-bar-label live-bar-label--correct">✓</span>
+          </div>
+          <div class="live-bar-col">
+            <span id="admin-bar-wrong-val" class="live-bar-value live-bar-value--wrong">0</span>
+            <div class="live-bar-track" aria-hidden="true">
+              <div id="admin-bar-wrong-fill" class="live-bar-fill live-bar-fill--wrong" style="height: 0%;"></div>
+            </div>
+            <span class="live-bar-label live-bar-label--wrong">✗</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="admin-stage-middle" class="host-stage-middle">
+        <div id="admin-answers-grid" class="answers-grid"></div>
+
+        <!-- Shown 1 second after answer reveal: Top 5 Leaders in the Competition -->
+        <section id="admin-top5-panel" class="host-top5-panel" hidden aria-label="חמשת המובילים בתחרות">
+          <div class="host-top5-title">🏆 חמשת המובילים בתחרות</div>
+          <div id="admin-top5-list" class="host-top5-list"></div>
+        </section>
+      </div>
+
+      <footer id="admin-next-bar" class="host-bottom-bar">
+        <button type="button" id="btn-dock-home" class="btn btn--sm">🏠 חזרה לתפריט הראשי</button>
+        <button type="button" id="btn-reset-timer" class="btn btn--sm">🔄 איפוס הטיימר</button>
+        <button type="button" id="btn-reveal-answer" class="btn btn--success btn--sm">✨ חשיפת תשובה</button>
+        <button type="button" id="btn-next-q" class="btn btn--primary btn--sm" hidden>המשך לשאלה הבאה ⬅</button>
+      </footer>
+
+      <!-- Hidden internal controls kept for drawer/modal compatibility -->
+      <div hidden aria-hidden="true">
+        <span id="hud-budget-pill"></span>
+        <span id="hud-timer-badge"></span>
+        <span id="hud-answers-count"></span>
+        <span id="hud-answers-pct"></span>
+        <span id="admin-barchart-summary"></span>
+        <div id="admin-reveal-banner">
+          <strong id="reveal-headline"></strong>
+          <span id="reveal-winners-list"></span>
+          <span id="reveal-split-pill"></span>
+        </div>
+        <button type="button" id="btn-prev-q"></button>
+        <button type="button" id="btn-pause-timer"></button>
+        <input type="file" id="quick-q-image-input" accept="image/*" />
+        <button type="button" id="btn-quick-q-image"></button>
+        <button type="button" id="btn-remove-quick-q-image"></button>
+        <button type="button" id="btn-dock-leaderboard"></button>
+        <button type="button" id="btn-dock-finish-quiz"></button>
+        <button type="button" id="btn-open-reset"></button>
+      </div>
+    </main>
+
+    <!-- VIEW 3: FINISHED FINAL LEADERBOARD -->
+    <main id="view-finished" class="glass-card" hidden style="display:flex; flex-direction:column; gap:1.35rem;">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <span class="pill pill--gold" style="margin-bottom:0.45rem;">🏁 סיום החידון</span>
+          <h2 style="font-size:clamp(1.6rem, 1.2rem + 1.5vw, 2.4rem);">לוח התוצאות הסופי</h2>
+        </div>
+        <div style="display:flex; gap:0.65rem; flex-wrap:wrap;">
+          <button type="button" id="btn-finished-home" class="btn">
+            🏠 חזרה למסך הראשי
+          </button>
+          <button type="button" id="btn-play-again-keep" class="btn btn--primary">
+            🔄 משחק חדש (שמור שחקנים)
+          </button>
+          <button type="button" id="btn-play-again-clear" class="btn btn--danger">
+            🧹 איפוס מלא (נקה שחקנים)
+          </button>
+        </div>
+      </div>
+
+      <div id="final-lb-mode-wrap" hidden>
+        <div class="mode-switch">
+          <button type="button" class="mode-switch-btn is-active" data-lb-view="teams">
+            👨‍👩‍👧‍👦 דירוג קבוצות / משפחות
+          </button>
+          <button type="button" class="mode-switch-btn" data-lb-view="players">
+            👤 דירוג שחקנים אישי
+          </button>
+        </div>
+      </div>
+
+      <div id="final-podium" class="podium-grid"></div>
+      <div id="final-leaderboard-wrap" class="leaderboard-table-wrap"></div>
+    </main>
+  </div>
+
+  <!-- MODAL 1: Live Leaderboard Dialog -->
+  <dialog id="leaderboard-dialog" closedby="any" aria-labelledby="leaderboard-dialog-title">
+    <div class="dialog-header">
+      <h2 id="leaderboard-dialog-title" style="font-size:1.35rem;">🏆 לוח תוצאות בזמן אמת</h2>
+      <div style="display:flex; gap:0.5rem;">
+        <button type="button" class="btn btn--sm" data-modal-return-home>🏠 מסך ראשי</button>
+        <form method="dialog">
+          <button type="submit" class="btn btn--sm" autofocus>✕ סגור</button>
+        </form>
+      </div>
+    </div>
+    <div class="dialog-body">
+      <div id="modal-lb-mode-wrap" hidden>
+        <div class="mode-switch">
+          <button type="button" class="mode-switch-btn is-active" data-lb-view="teams">
+            👨‍👩‍👧‍👦 דירוג קבוצות / משפחות
+          </button>
+          <button type="button" class="mode-switch-btn" data-lb-view="players">
+            👤 דירוג שחקנים אישי
+          </button>
+        </div>
+      </div>
+      <div id="modal-podium" class="podium-grid"></div>
+      <div id="modal-leaderboard-wrap" class="leaderboard-table-wrap"></div>
+    </div>
+  </dialog>
+
+  <!-- MODAL 2: Branding, Background & Questions Manager Dialog -->
+  <dialog id="settings-dialog" aria-labelledby="settings-dialog-title">
+    <div class="dialog-header">
+      <h2 id="settings-dialog-title" style="font-size:1.35rem;">🎨 עיצוב המשחק וניהול שאלות</h2>
+      <div style="display:flex; gap:0.5rem;">
+        <button type="button" class="btn btn--sm" data-modal-return-home>🏠 מסך ראשי</button>
+        <form method="dialog">
+          <button type="submit" class="btn btn--sm" autofocus>✕ סגור</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="dialog-body">
+      <nav class="tabs-nav" aria-label="לשוניות ניהול">
+        <button type="button" class="tab-btn is-active" data-tab="branding">
+          🖼️ כותרת ראשית, רקע והגדרות
+        </button>
+        <button type="button" class="tab-btn" data-tab="questions">
+          📝 שאלות, ניקוד, זמנים ותמונות (<span id="tab-q-count">0</span>)
+        </button>
+      </nav>
+
+      <!-- TAB A: Branding & Global Background -->
+      <section id="tab-panel-branding" style="display:flex; flex-direction:column; gap:1.25rem;">
+        <div class="form-grid">
+          <div class="upload-zone">
+            <label style="font-weight:800; font-size:1rem;">1. כותרת ראשית / לוגו (העלאה מהמחשב)</label>
+            <p style="font-size:0.86rem; color:var(--text-secondary);">
+              העלו תמונת באנר או לוגו שיופיעו בראש החידון במסך המרכזי ובמסכי השחקנים.
+            </p>
+            <img id="preview-header-img" class="upload-preview" alt="תצוגה מקדימה לכותרת" hidden />
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <input type="file" id="input-header-file" accept="image/*" hidden />
+              <button type="button" id="btn-upload-header" class="btn btn--primary btn--sm">
+                📤 בחר תמונת כותרת מהמחשב
+              </button>
+              <button type="button" id="btn-clear-header" class="btn btn--danger btn--sm" hidden>
+                הסר תמונה
+              </button>
+            </div>
+          </div>
+
+          <div class="upload-zone">
+            <label style="font-weight:800; font-size:1rem;">2. רקע שילווה את כל החידון (העלאה מהמחשב)</label>
+            <p style="font-size:0.86rem; color:var(--text-secondary);">
+              תמונת הרקע תוצג לאורך כל שלבי החידון גם אצל המנחה וגם במכשירי המשתתפים.
+            </p>
+            <img id="preview-bg-img" class="upload-preview" alt="תצוגה מקדימה לרקע" hidden />
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <input type="file" id="input-bg-file" accept="image/*" hidden />
+              <button type="button" id="btn-upload-bg" class="btn btn--primary btn--sm">
+                📤 בחר תמונת רקע מהמחשב
+              </button>
+              <button type="button" id="btn-clear-bg" class="btn btn--danger btn--sm" hidden>
+                הסר רקע
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="input-quiz-title">שם המשחק / טקסט כותרת ראשית</label>
+            <input id="input-quiz-title" type="text" class="input" maxlength="120" placeholder="לדוגמה: חידון יום העצמאות" />
+          </div>
+
+          <div class="field">
+            <label for="input-quiz-subtitle">תת-כותרת / שורת הסבר</label>
+            <input id="input-quiz-subtitle" type="text" class="input" maxlength="200" placeholder="לדוגמה: קופת הנקודות מתחלקת בין העונים נכון!" />
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label for="input-bg-opacity">
+              כהות שכבת מעטפת על הרקע לקריאות טקסט: <span id="bg-opacity-val">68%</span>
+            </label>
+            <input id="input-bg-opacity" type="range" min="15" max="90" step="1" value="68" />
+          </div>
+
+          <div class="field">
+            <label for="input-timer-seconds">ברירת מחדל של זמן לשאלה חדשה (שניות)</label>
+            <input id="input-timer-seconds" type="number" class="input" min="5" max="300" value="15" />
+          </div>
+        </div>
+
+        <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:700; cursor:pointer;">
+          <input id="input-auto-reveal" type="checkbox" checked />
+          חשוף תשובה וחלק את קופת הנקודות אוטומטית כשהטיימר מגיע ל-0
+        </label>
+
+        <div style="display:flex; justify-content:flex-end;">
+          <button type="button" id="btn-save-settings" class="btn btn--success">
+            💾 שמור הגדרות עיצוב וטיימר
+          </button>
+        </div>
+      </section>
+
+      <!-- TAB B: Questions, Per-Question Points, Timer & Image Editor -->
+      <section id="tab-panel-questions" hidden style="display:flex; flex-direction:column; gap:1rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem;">
+          <p style="font-size:0.92rem; color:var(--text-secondary);">
+            לכל שאלה ברירת מחדל של <strong>100 נקודות</strong> ו-<strong>15 שניות</strong>, עם אפשרות לשנות ניקוד וזמן לכל שאלה בנפרד לפי אופייה.
+          </p>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <input
+              type="file"
+              id="input-import-doc"
+              accept=".docx,.doc,.pdf,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,text/plain"
+              hidden
+            />
+            <button type="button" id="btn-import-doc" class="btn btn--gold btn--sm">
+              📄 ייבוא מקובץ Word / PDF חופשי
+            </button>
+            <input type="file" id="input-import-json" accept=".json,application/json" hidden />
+            <button type="button" id="btn-import-json" class="btn btn--sm">📂 ייבוא JSON</button>
+            <button type="button" id="btn-export-json" class="btn btn--sm">⬇️ ייצוא JSON</button>
+            <button type="button" id="btn-add-question" class="btn btn--primary btn--sm">+ הוסף שאלה חדשה</button>
+          </div>
+        </div>
+
+        <div id="questions-editor-list" style="display:flex; flex-direction:column; gap:0.9rem;"></div>
+
+        <div style="display:flex; justify-content:flex-end; gap:0.6rem; position:sticky; bottom:0; background:rgba(15,23,42,0.95); padding-top:0.75rem; border-top:1px solid var(--border-subtle);">
+          <button type="button" id="btn-save-questions" class="btn btn--success">
+            💾 שמור את כל השאלות
+          </button>
+        </div>
+      </section>
+    </div>
+  </dialog>
+
+  <!-- MODAL 3: Create New Game Dialog (Manual Build OR Automatic On-Demand Build / Document Import) -->
+  <dialog id="new-game-dialog" class="dialog--wide" closedby="any" aria-labelledby="new-game-dialog-title">
+    <div class="dialog-header">
+      <h2 id="new-game-dialog-title" style="font-size:1.3rem;">➕ פתיחת משחק טריוויה חדש</h2>
+      <div style="display:flex; gap:0.5rem; align-items:center;">
+        <span id="new-game-code-preview" class="pill pill--gold">🔢 קוד המשחק שיוקצה: 1001</span>
+        <form method="dialog">
+          <button type="submit" class="btn btn--sm">✕ ביטול</button>
+        </form>
+      </div>
+    </div>
+    <form id="new-game-form" class="dialog-body" style="gap:1.1rem;">
+      <!-- Build Mode Selector: Manual vs Automatic On-Demand -->
+      <div style="display:flex; flex-direction:column; gap:0.5rem;">
+        <span style="font-weight:800; font-size:0.95rem; color:#e2e8f0;">בחרו אופן יצירת המשחק החדש:</span>
+        <div class="mode-switch" role="group" aria-label="בחירת אופן בניית משחק" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0.5rem; padding:0.4rem;">
+          <button type="button" id="btn-new-mode-manual" class="mode-switch-btn is-active" style="padding:0.7rem 0.9rem; font-size:0.95rem;">
+            ✏️ משחק בבנייה אישית (רגיל)
+          </button>
+          <button type="button" id="btn-new-mode-auto" class="mode-switch-btn" style="padding:0.7rem 0.9rem; font-size:0.95rem;">
+            ✨ משחק אוטומטי (ג׳מני / רנדומלי / מקובץ Word או PDF)
+          </button>
+        </div>
+      </div>
+
+      <!-- Common Game Settings -->
+      <div class="editor-grid-2">
+        <div class="field">
+          <label for="new-game-title" id="new-game-title-label">שם המשחק החדש / כותרת ראשית</label>
+          <input
+            id="new-game-title"
+            type="text"
+            class="input"
+            maxlength="120"
+            placeholder="לדוגמה: חידון משפחתי / חנוכה"
+            autofocus
+          />
+        </div>
+
+        <div class="field">
+          <label for="new-game-subtitle">תת-כותרת (אופציונלי)</label>
+          <input
+            id="new-game-subtitle"
+            type="text"
+            class="input"
+            maxlength="200"
+            value="ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!"
+          />
+        </div>
+      </div>
+
+      <div class="editor-grid-2">
+        <div class="field">
+          <label for="new-game-timer">ברירת מחדל לזמן שאלה במשחק זה (שניות)</label>
+          <input id="new-game-timer" type="number" class="input" min="5" max="300" value="15" />
+        </div>
+
+        <div class="field">
+          <label for="new-game-points">ניקוד ברירת מחדל לכל שאלה</label>
+          <input id="new-game-points" type="number" class="input" min="1" max="100000" value="100" />
+        </div>
+      </div>
+
+      <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:700; cursor:pointer;">
+        <input id="new-game-teams-enabled" type="checkbox" />
+        חלק את המשחק לקבוצות / משפחות (ניתן לשנות ולהגדיר קבוצות גם בתפריט הצד)
+      </label>
+
+      <!-- AUTOMATIC ON-DEMAND BUILD PANEL -->
+      <section
+        id="new-game-auto-panel"
+        hidden
+        style="display:none; flex-direction:column; gap:1rem; padding:1rem; border-radius:16px; background:rgba(15, 23, 42, 0.72); border:1px solid rgba(56, 189, 248, 0.35);"
+      >
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; flex-wrap:wrap;">
+          <div>
+            <strong style="font-size:1.05rem; color:#bae6fd;">✨ הגדרת שאלות אוטומטיות למשחק</strong>
+            <p style="font-size:0.84rem; color:var(--text-secondary);">
+              בחרו בין הגדרת נושאים, שאלות רנדומליות מהירות, או העלאת קובץ Word / PDF שכתבתם באופן חופשי
+            </p>
+          </div>
+          <div class="mode-switch" role="group" aria-label="סוג יצירה אוטומטית">
+            <button type="button" id="btn-auto-sub-topics" class="mode-switch-btn is-active">
+              🎯 לפי נושאים ורמת קושי
+            </button>
+            <button type="button" id="btn-auto-sub-random" class="mode-switch-btn">
+              🎲 שאלות רנדומליות מהירות
+            </button>
+            <button type="button" id="btn-auto-sub-document" class="mode-switch-btn">
+              📄 העלאת קובץ Word / PDF חופשי
+            </button>
+          </div>
+        </div>
+
+        <datalist id="trivia-topics-datalist">
+          <option value="ידע כללי"></option>
+          <option value="היסטוריה של ישראל"></option>
+          <option value="גיאוגרפיה ועולם"></option>
+          <option value="מדע וטבע"></option>
+          <option value="ספורט"></option>
+          <option value="מוזיקה ותרבות"></option>
+          <option value="חגי ישראל ומסורת"></option>
+          <option value="אוכל וקולינריה"></option>
+          <option value="טכנולוגיה והמצאות"></option>
+        </datalist>
+
+        <!-- Sub-Mode 1: Custom Topics + Count per Topic + Difficulty per Topic -->
+        <div id="auto-topics-section" style="display:flex; flex-direction:column; gap:0.75rem;">
+          <div id="auto-topics-rows" style="display:flex; flex-direction:column; gap:0.6rem;"></div>
+
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.6rem; flex-wrap:wrap;">
+            <button type="button" id="btn-add-topic-row" class="btn btn--sm">
+              ➕ הוסף נושא נוסף
+            </button>
+            <span id="auto-topics-total-badge" class="pill pill--emerald">סה"כ ייווצרו: 5 שאלות</span>
+          </div>
+        </div>
+
+        <!-- Sub-Mode 2: Pure Random Questions -->
+        <div
+          id="auto-random-section"
+          hidden
+          style="display:none; flex-direction:column; gap:0.75rem; padding:0.85rem; border-radius:12px; background:rgba(2, 6, 23, 0.45); border:1px solid var(--border-subtle);"
+        >
+          <div class="field">
+            <label for="auto-random-count">מספר שאלות במשחק:</label>
+            <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+              <input
+                id="auto-random-count"
+                type="number"
+                class="input"
+                min="1"
+                max="50"
+                value="10"
+                style="max-width:130px; font-weight:800; text-align:center;"
+              />
+              <button type="button" class="btn btn--sm" data-random-preset="5">5 שאלות</button>
+              <button type="button" class="btn btn--sm" data-random-preset="10">10 שאלות</button>
+              <button type="button" class="btn btn--sm" data-random-preset="15">15 שאלות</button>
+              <button type="button" class="btn btn--sm" data-random-preset="20">20 שאלות</button>
+            </div>
+          </div>
+          <p style="font-size:0.84rem; color:var(--text-secondary);">
+            🎲 המערכת תבחר ותערבב עבורך שאלות טריוויה מגוונות (ניתן גם לכתוב הוראות מפורטות לג׳מני בתיבה למטה!).
+          </p>
+        </div>
+
+        <!-- Sub-Mode 3: Free-Form Word / PDF / Text Upload -->
+        <div
+          id="auto-document-section"
+          hidden
+          style="display:none; flex-direction:column; gap:0.75rem; padding:0.95rem; border-radius:12px; background:rgba(2, 6, 23, 0.55); border:1px dashed rgba(251, 191, 36, 0.55);"
+        >
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; flex-wrap:wrap;">
+            <div style="display:flex; flex-direction:column; gap:0.2rem;">
+              <strong style="font-size:0.98rem; color:#fde68a;">📄 העלאת קובץ Word (.docx) או PDF (.pdf) עם שאלות ותשובות חופשיות</strong>
+              <span style="font-size:0.82rem; color:var(--text-secondary);">
+                אין צורך בשום מבנה מוגדר! גם אם כתבתם רק שאלה ותשובה אחת נכונה — המערכת תשלים אוטומטית 3 תשובות מסיחות ותיצור 4 אמריקאיות לכל שאלה.
+              </span>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <input
+                type="file"
+                id="input-new-game-doc"
+                accept=".docx,.doc,.pdf,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,text/plain"
+                hidden
+              />
+              <button type="button" id="btn-pick-new-game-doc" class="btn btn--gold btn--sm">
+                📂 בחר קובץ Word / PDF מהמחשב
+              </button>
+              <span id="doc-upload-status-pill" class="pill" hidden></span>
+            </div>
+          </div>
+
+          <div class="field" style="gap:0.3rem;">
+            <label for="auto-doc-raw-text" style="font-size:0.83rem; color:var(--text-secondary);">
+              תוכן הקובץ שחולץ (או הדביקו כאן ישירות שאלות ותשובות שכתבתם באופן חופשי):
+            </label>
+            <textarea
+              id="auto-doc-raw-text"
+              class="textarea"
+              rows="4"
+              placeholder="לדוגמה:&#10;מהי בירת ישראל? ירושלים&#10;באיזו שנה הוקמה המדינה? 1948&#10;או כל ניסוח חופשי אחר מתוך קובץ ה-Word / PDF..."
+              style="min-height:90px; font-size:0.86rem;"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Detailed Free-Text Instructions for Gemini -->
+        <div
+          style="display:flex; flex-direction:column; gap:0.45rem; padding:0.85rem 0.95rem; border-radius:12px; background:rgba(14, 165, 233, 0.1); border:1px solid rgba(56, 189, 248, 0.4);"
+        >
+          <label for="auto-custom-instructions" style="font-weight:800; font-size:0.92rem; color:#bae6fd;">
+            📝 הוראות מפורטות וחופשיות לג׳מני ליצירת החידון (אופציונלי):
+          </label>
+          <textarea
+            id="auto-custom-instructions"
+            class="textarea"
+            rows="2"
+            placeholder="כתבו כאן בשפה חופשית כל הנחיה שתרצו! לדוגמה: &quot;צור שאלות קלילות ומצחיקות ליום הולדת 40, שלב שאלות על שנות ה-80, קולנוע ישראלי וטיולים בעולם...&quot;"
+            style="min-height:62px; font-size:0.88rem;"
+          ></textarea>
+          <span style="font-size:0.79rem; color:var(--text-secondary);">
+            💡 ההוראות ישולבו אוטומטית גם ביצירה ישירה עם מפתח Gemini API וגם בכפתור <strong>"📋 העתק בקשה מוכנה לצ׳אט ג׳מני"</strong> למטה.
+          </span>
+        </div>
+
+        <!-- Question Ordering (Random vs Grouped by Topic) + Automatic Matching Images -->
+        <div
+          style="display:flex; flex-direction:column; gap:0.65rem; padding:0.85rem 0.95rem; border-radius:12px; background:rgba(2, 6, 23, 0.5); border:1px solid var(--border-subtle);"
+        >
+          <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:700; font-size:0.9rem; cursor:pointer;">
+            <input id="auto-shuffle-order" type="checkbox" checked />
+            🔀 הצג את השאלות בסדר רנדומלי במשחק (מעורבב בין הנושאים ולא מקובץ לנושאים)
+          </label>
+
+          <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:700; font-size:0.9rem; cursor:pointer;">
+            <input id="auto-include-images" type="checkbox" checked />
+            🖼️ הוסף תמונה מתאימה אוטומטית לכל שאלה (לפי נושא ותוכן השאלה)
+          </label>
+        </div>
+
+        <!-- Optional Gemini AI Connection (API Key OR Copy/Paste with Gemini Subscription) -->
+        <details open style="padding:0.75rem 0.9rem; border-radius:12px; background:rgba(2, 6, 23, 0.45); border:1px solid var(--border-subtle);">
+          <summary style="cursor:pointer; font-weight:700; font-size:0.88rem; color:#fde68a;">
+            🤖 חיבור לג׳מני (מפתח Gemini API ליצירה ישירה או העתקה/הדבקה מצ׳אט ג׳מני שלך)
+          </summary>
+          <div style="display:flex; flex-direction:column; gap:0.75rem; padding-top:0.75rem; margin-top:0.55rem; border-top:1px solid rgba(255,255,255,0.08);">
+            <div class="field">
+              <label for="input-gemini-api-key" style="font-size:0.84rem;">
+                מפתח Gemini API ליצירה ישירה (אופציונלי — נשמר במחשב שלך):
+              </label>
+              <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
+                <input
+                  id="input-gemini-api-key"
+                  type="password"
+                  class="input"
+                  placeholder="הדביקו מפתח מ-Google AI Studio (אופציונלי)..."
+                  style="flex:1; min-width:200px;"
+                />
+                <span id="gemini-key-status-pill" class="pill" style="font-size:0.78rem;">מאגר מובנה פעיל</span>
+              </div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:0.45rem;">
+              <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+                <span style="font-size:0.84rem; font-weight:700; color:var(--text-secondary);">
+                  או צרו דרך מנוי הצ׳אט של ג׳מני שלכם (ללא מפתח API):
+                </span>
+                <button type="button" id="btn-copy-gemini-prompt" class="btn btn--gold btn--sm">
+                  📋 1. העתק בקשה מוכנה (כולל ההוראות המפורטות שלך) לצ׳אט ג׳מני
+                </button>
+              </div>
+              <textarea
+                id="input-pasted-gemini-json"
+                class="textarea"
+                rows="3"
+                placeholder="2. אם העתקתם בקשה לצ׳אט ג׳מני, הדביקו כאן את תשובת ג׳מני (או השאירו ריק ליצירה אוטומטית מיידית!)."
+                style="min-height:70px; font-size:0.82rem;"
+              ></textarea>
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <div style="display:flex; justify-content:flex-end; gap:0.6rem; padding-top:0.3rem;">
+        <button type="submit" id="btn-submit-new-game" class="btn btn--primary">
+          🚀 צור משחק חדש והוסף שאלות
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- MODAL 4: Reset Confirmation Dialog -->
+  <dialog id="reset-dialog" closedby="any" aria-labelledby="reset-dialog-title">
+    <div class="dialog-header">
+      <h2 id="reset-dialog-title" style="font-size:1.25rem;">איפוס החידון</h2>
+      <form method="dialog">
+        <button type="submit" class="btn btn--sm" autofocus>ביטול</button>
+      </form>
+    </div>
+    <div class="dialog-body">
+      <p>כיצד תרצו לאפס את החידון הנוכחי? פעולה זו תאפס את הניקוד ותחזיר למסך הראשי.</p>
+    </div>
+    <div class="dialog-footer">
+      <button type="button" id="btn-confirm-reset-keep" class="btn btn--primary">
+        🔄 אפס ניקוד והשאר שחקנים מחוברים
+      </button>
+      <button type="button" id="btn-confirm-reset-clear" class="btn btn--danger">
+        🧹 אפס הכל ונתק את כל השחקנים
+      </button>
+    </div>
+  </dialog>
+
+  <!-- MODAL 5: Image Zoom Lightbox -->
+  <dialog id="zoom-dialog" closedby="any" aria-labelledby="zoom-dialog-title">
+    <div class="dialog-header">
+      <h2 id="zoom-dialog-title" style="font-size:1.1rem;">תצוגת תמונה</h2>
+      <form method="dialog">
+        <button type="submit" class="btn btn--sm" autofocus>✕ סגור</button>
+      </form>
+    </div>
+    <div class="dialog-body" style="align-items:center;">
+      <img id="zoom-dialog-img" alt="תמונת שאלה" style="max-width:100%; max-height:76dvh; object-fit:contain; border-radius:12px;" />
+    </div>
+  </dialog>
+
+  <div id="app-toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/shared-ui.js"></script>
+  <script>
+    (function () {
+      const {
+        LETTERS,
+        formatScore,
+        escapeHtml,
+        applyQuizBranding,
+        syncHasImageFallback,
+        initDialogs,
+        uploadImageFile,
+        showToast,
+        openImageZoom
+      } = window.TriviaUI;
+
+      initDialogs();
+
+      const socket = io();
+      let adminState = null;
+      let editableQuestions = [];
+      let leaderboardViewMode = 'teams'; // 'teams' | 'players' (when teamsEnabled is true)
+
+      let draftSettings = {
+        title: '',
+        subtitle: '',
+        headerImage: '',
+        backgroundImage: '',
+        bgOverlayOpacity: 0.68,
+        timerSeconds: 15,
+        autoRevealOnTimeout: true
+      };
+
+      let revealCollapseTimer = null;
+      let revealCollapsedForKey = null;
+
+      // Elements
+      const btnTopHome = document.getElementById('btn-top-home');
+      const adminGameCodePill = document.getElementById('admin-game-code-pill');
+      const lobbyGameCodeDigits = document.getElementById('lobby-game-code-digits');
+      const joinBoxCodeInline = document.getElementById('join-box-code-inline');
+      const lobbyActiveGameSubtitle = document.getElementById('lobby-active-game-subtitle');
+      const quickGameMenuSelect = document.getElementById('quick-game-menu-select');
+      const newGameCodePreview = document.getElementById('new-game-code-preview');
+
+      const viewLobby = document.getElementById('view-lobby');
+      const viewGameEntry = document.getElementById('view-game-entry');
+      const viewQuestion = document.getElementById('view-question');
+      const viewFinished = document.getElementById('view-finished');
+
+      const entryGameTitle = document.getElementById('entry-game-title');
+      const entryQrImg = document.getElementById('entry-qr-img');
+      const entryJoinUrl = document.getElementById('entry-join-url');
+      const entryOpenPlayerLink = document.getElementById('entry-open-player-link');
+      const entryGameCode = document.getElementById('entry-game-code');
+      const entryWaitingCount = document.getElementById('entry-waiting-count');
+      const entrySavedInfo = document.getElementById('entry-saved-info');
+      const entryWaitingRoster = document.getElementById('entry-waiting-roster');
+      const btnEntryOpenLb = document.getElementById('btn-entry-open-lb');
+      const btnEntryBackHub = document.getElementById('btn-entry-back-hub');
+      const btnEntryCopyUrl = document.getElementById('btn-entry-copy-url');
+      const btnEntryCopyCode = document.getElementById('btn-entry-copy-code');
+      const btnEntryStartQuiz = document.getElementById('btn-entry-start-quiz');
+
+      const playersCountPill = document.getElementById('players-count-pill');
+      const joinUrlDisplay = document.getElementById('join-url-display');
+      const lobbyRoster = document.getElementById('lobby-roster');
+      const lobbyTeamsBoard = document.getElementById('lobby-teams-board');
+      const teamsCardsContainer = document.getElementById('teams-cards-container');
+      const unassignedPlayersBox = document.getElementById('unassigned-players-box');
+      const unassignedPlayersList = document.getElementById('unassigned-players-list');
+
+      const btnTeamsOff = document.getElementById('btn-teams-off');
+      const btnTeamsOn = document.getElementById('btn-teams-on');
+      const hostTeamsConfig = document.getElementById('host-teams-config');
+      const hostAddTeamForm = document.getElementById('host-add-team-form');
+      const hostTeamNameInput = document.getElementById('host-team-name-input');
+
+      const rosterCount = document.getElementById('roster-count');
+      const lobbyQCount = document.getElementById('lobby-q-count');
+      const btnClearPlayers = document.getElementById('btn-clear-players');
+      const gamesLibraryGrid = document.getElementById('games-library-grid');
+      const btnResumeQuiz = document.getElementById('btn-resume-quiz');
+      const btnStartQuiz = document.getElementById('btn-start-quiz');
+
+      const hudQuestionNum = document.getElementById('hud-question-num');
+      const hudBudgetPill = document.getElementById('hud-budget-pill');
+      const hudTimer = document.getElementById('hud-timer');
+      const hudTimerBadge = document.getElementById('hud-timer-badge');
+      const hudAnswersCount = document.getElementById('hud-answers-count');
+      const hudAnswersPct = document.getElementById('hud-answers-pct');
+      const adminTimerBar = document.getElementById('admin-timer-bar');
+      const adminBarchartSummary = document.getElementById('admin-barchart-summary');
+      const adminBarCorrectVal = document.getElementById('admin-bar-correct-val');
+      const adminBarCorrectFill = document.getElementById('admin-bar-correct-fill');
+      const adminBarWrongVal = document.getElementById('admin-bar-wrong-val');
+      const adminBarWrongFill = document.getElementById('admin-bar-wrong-fill');
+
+      const adminQuestionHero = document.getElementById('admin-question-hero');
+      const adminQMedia = document.getElementById('admin-q-media');
+      const adminQuestionText = document.getElementById('admin-question-text');
+      const adminAnswersGrid = document.getElementById('admin-answers-grid');
+      const adminTop5Panel = document.getElementById('admin-top5-panel');
+      const adminTop5List = document.getElementById('admin-top5-list');
+      const adminRevealBanner = document.getElementById('admin-reveal-banner');
+      const revealHeadline = document.getElementById('reveal-headline');
+      const revealWinnersList = document.getElementById('reveal-winners-list');
+      const revealSplitPill = document.getElementById('reveal-split-pill');
+
+      const btnPrevQ = document.getElementById('btn-prev-q');
+      const btnPauseTimer = document.getElementById('btn-pause-timer');
+      const btnResetTimer = document.getElementById('btn-reset-timer');
+      const btnRevealAnswer = document.getElementById('btn-reveal-answer');
+      const btnNextQ = document.getElementById('btn-next-q');
+      const btnRemoveQuickQImage = document.getElementById('btn-remove-quick-q-image');
+
+      const leaderboardDialog = document.getElementById('leaderboard-dialog');
+      const settingsDialog = document.getElementById('settings-dialog');
+      const newGameDialog = document.getElementById('new-game-dialog');
+      const resetDialog = document.getElementById('reset-dialog');
+
+      const finalLbModeWrap = document.getElementById('final-lb-mode-wrap');
+      const modalLbModeWrap = document.getElementById('modal-lb-mode-wrap');
+      const hubMainSubtitle = document.getElementById('hub-main-subtitle');
+
+      // -------------------- Side Navigation Drawer (popover="manual") --------------------
+      const drawer = document.getElementById('side-drawer');
+      const drawerScroller = drawer.querySelector('.Drawer-scroller');
+      const drawerSheet = drawer.querySelector('.Drawer-sheet');
+      const openDrawerBtn = document.getElementById('drawer-open');
+      const closeDrawerBtn = document.getElementById('drawer-close');
+      const appShell = document.querySelector('.app-shell');
+
+      function openDrawer() {
+        drawer.showPopover();
+        if (!CSS.supports('scroll-initial-target', 'nearest')) {
+          drawerScroller.scrollLeft = 0;
+        }
+        drawerScroller.scrollTo({ left: 0, behavior: 'smooth' });
+      }
+
+      function closeDrawer() {
+        if (!drawer.matches(':popover-open')) return;
+        const maxScroll = drawerScroller.scrollWidth - drawerScroller.clientWidth;
+        if (maxScroll > 0) {
+          drawerScroller.scrollTo({ left: maxScroll, behavior: 'smooth' });
+        } else {
+          dismissDrawerImmediately();
+        }
+      }
+
+      function dismissDrawerImmediately() {
+        if (drawer.matches(':popover-open')) {
+          drawer.hidePopover();
+        }
+        onDrawerClosed();
+      }
+
+      function onDrawerOpened() {
+        if (appShell) appShell.inert = true;
+        openDrawerBtn.setAttribute('aria-expanded', 'true');
+        drawerSheet.focus();
+      }
+
+      function onDrawerClosed() {
+        if (appShell) appShell.inert = false;
+        openDrawerBtn.setAttribute('aria-expanded', 'false');
+      }
+
+      const visibleThreshold = 50 / Math.max(drawerSheet.offsetWidth || 380, 1);
+      const drawerObserver = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.intersectionRatio === 1) {
+              onDrawerOpened();
+            } else if (entry.intersectionRatio < visibleThreshold && drawer.matches(':popover-open')) {
+              drawer.hidePopover();
+              onDrawerClosed();
+            }
+          }
+        },
+        { root: drawer, threshold: [visibleThreshold, 1] }
+      );
+      drawerObserver.observe(drawerSheet);
+
+      openDrawerBtn.addEventListener('click', openDrawer);
+      closeDrawerBtn.addEventListener('click', closeDrawer);
+
+      drawerScroller.addEventListener('click', (e) => {
+        if (!drawerSheet.contains(e.target)) closeDrawer();
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer.matches(':popover-open')) {
+          closeDrawer();
+        }
+      });
+
+      if (!CSS.supports('animation-timeline: scroll()')) {
+        drawerScroller.addEventListener(
+          'scroll',
+          () => {
+            const maxScroll = drawerScroller.scrollWidth - drawerScroller.clientWidth;
+            const progress = maxScroll > 0 ? 1 - drawerScroller.scrollLeft / maxScroll : 1;
+            drawer.style.setProperty(
+              '--drawer-backdrop',
+              `rgba(2, 6, 23, ${(0.62 * Math.max(0, Math.min(1, progress))).toFixed(3)})`
+            );
+          },
+          { passive: true }
+        );
+      }
+
+      // Connect & Join Admin Room
+      socket.on('connect', () => {
+        socket.emit('admin:join');
+      });
+
+      socket.on('settings:updated', (settings) => {
+        applyQuizBranding(settings);
+      });
+
+      socket.on('admin:state', (state) => {
+        adminState = state;
+        applyQuizBranding(state.settings);
+        renderAdminState(state);
+      });
+
+      socket.on('timer:tick', (tick) => {
+        if (!adminState || adminState.phase !== 'question') return;
+        adminState.timer.remainingMs = tick.remainingMs;
+        adminState.timer.remainingSeconds = tick.remainingSeconds;
+        adminState.timer.durationSeconds = tick.durationSeconds;
+        renderTimerDisplay(adminState.timer);
+      });
+
+      // Return to Main Screen from ANY stage or modal (Full Exit)
+      function returnToMainScreen() {
+        for (const dlg of document.querySelectorAll('dialog[open]')) {
+          dlg.close();
+        }
+        if (revealCollapseTimer) {
+          clearTimeout(revealCollapseTimer);
+          revealCollapseTimer = null;
+        }
+        revealCollapsedForKey = null;
+        if (adminState && (adminState.isSessionOpen || adminState.phase !== 'hub')) {
+          socket.emit('admin:returnToMain', () => {
+            showToast('המשחק נסגר וחזרת למסך הראשי. נתוני המשתתפים והניקוד נשמרו!');
+          });
+        }
+      }
+
+      btnTopHome.addEventListener('click', returnToMainScreen);
+      if (btnEntryBackHub) btnEntryBackHub.addEventListener('click', returnToMainScreen);
+      document.getElementById('btn-dock-home').addEventListener('click', returnToMainScreen);
+      document.getElementById('btn-finished-home').addEventListener('click', returnToMainScreen);
+      document.querySelectorAll('[data-modal-return-home]').forEach((btn) => {
+        btn.addEventListener('click', returnToMainScreen);
+      });
+
+      // -------------------- Teams / Families Controls --------------------
+
+      btnTeamsOff.addEventListener('click', () => {
+        socket.emit('admin:setTeamsEnabled', { enabled: false }, () => {
+          showToast('מצב משחק אישי (ללא קבוצות).');
+        });
+      });
+
+      btnTeamsOn.addEventListener('click', () => {
+        leaderboardViewMode = 'teams';
+        socket.emit('admin:setTeamsEnabled', { enabled: true }, () => {
+          showToast('מצב קבוצות / משפחות הופעל!');
+          hostTeamNameInput.focus();
+        });
+      });
+
+      hostAddTeamForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = hostTeamNameInput.value.trim();
+        if (!name) return;
+        socket.emit('admin:addTeam', { name }, (res) => {
+          if (!res || !res.ok) {
+            showToast(res?.error || 'לא ניתן להוסיף קבוצה.');
+            return;
+          }
+          hostTeamNameInput.value = '';
+          hostTeamNameInput.focus();
+          showToast(`הקבוצה "${res.team.name}" נוספה!`);
+        });
+      });
+
+      teamsCardsContainer.addEventListener('click', (e) => {
+        const rmTeamBtn = e.target.closest('[data-remove-team-id]');
+        if (rmTeamBtn) {
+          const teamId = rmTeamBtn.getAttribute('data-remove-team-id');
+          socket.emit('admin:removeTeam', { teamId });
+          return;
+        }
+        const kickBtn = e.target.closest('[data-kick-id]');
+        if (kickBtn) {
+          socket.emit('admin:kickPlayer', { playerId: kickBtn.getAttribute('data-kick-id') });
+        }
+      });
+
+      unassignedPlayersList.addEventListener('click', (e) => {
+        const kickBtn = e.target.closest('[data-kick-id]');
+        if (kickBtn) {
+          socket.emit('admin:kickPlayer', { playerId: kickBtn.getAttribute('data-kick-id') });
+        }
+      });
+
+      function buildPlayerWeightSelectHtml(player) {
+        const currentWeight = Math.max(1, Math.min(20, Math.round(Number(player?.weight) || 1)));
+        const weightChoices = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        if (!weightChoices.includes(currentWeight)) {
+          weightChoices.push(currentWeight);
+          weightChoices.sort((a, b) => a - b);
+        }
+        const optionsHtml = weightChoices
+          .map((w) => {
+            const label = w === 1 ? '👤 ×1' : `👨‍👧‍👦 ×${w} שחקנים`;
+            return `<option value="${w}" ${w === currentWeight ? 'selected' : ''}>${label}</option>`;
+          })
+          .join('');
+        return `<select class="chip-weight-select ${currentWeight > 1 ? 'is-weighted' : ''}" data-weight-player-id="${escapeHtml(player.id)}" title="משקל שחקן (כמה משתתפים הוא מייצג)">${optionsHtml}</select>`;
+      }
+
+      document.addEventListener('change', (e) => {
+        const weightSelect = e.target.closest('[data-weight-player-id]');
+        if (!weightSelect) return;
+        const playerId = weightSelect.getAttribute('data-weight-player-id');
+        const weight = Math.max(1, Math.min(20, Math.round(Number(weightSelect.value) || 1)));
+        socket.emit('admin:setPlayerWeight', { playerId, weight }, (res) => {
+          if (res?.ok) {
+            showToast(
+              res.weight > 1
+                ? `⚖️ המשקל של "${res.name}" עודכן ל-×${res.weight} שחקנים!`
+                : `⚖️ המשקל של "${res.name}" הוחזר ל-×1 (שחקן רגיל).`
+            );
+          } else {
+            showToast(res?.error || 'שגיאה בעדכון משקל השחקן.');
+          }
+        });
+      });
+
+      // Leaderboard Teams vs Players Switcher
+      document.querySelectorAll('[data-lb-view]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          leaderboardViewMode = btn.getAttribute('data-lb-view');
+          document.querySelectorAll('[data-lb-view]').forEach((b) => {
+            b.classList.toggle('is-active', b.getAttribute('data-lb-view') === leaderboardViewMode);
+          });
+          if (adminState) {
+            renderActiveLeaderboards(adminState);
+          }
+        });
+      });
+
+      const adminTimerBox = document.getElementById('admin-timer-box');
+      const adminNextBar = document.getElementById('admin-next-bar');
+
+      function renderTimerDisplay(timer) {
+        if (!timer) return;
+        if (adminState?.phase === 'revealed' || timer.timeExpiredAwaitingReveal) {
+          hudTimer.textContent = '0';
+          adminTimerBar.value = 0;
+          adminTimerBar.classList.remove('is-danger', 'is-warning');
+          if (adminTimerBox) adminTimerBox.classList.remove('is-danger', 'is-warning');
+          return;
+        }
+
+        const secs = Math.max(0, timer.remainingSeconds || 0);
+        const isDanger = secs <= 5;
+        const isWarning = secs > 5 && secs <= 8;
+        hudTimer.textContent = `${secs}`;
+
+        const pct = timer.durationSeconds > 0
+          ? Math.max(0, Math.min(100, (timer.remainingMs / (timer.durationSeconds * 1000)) * 100))
+          : 0;
+        adminTimerBar.value = pct;
+        adminTimerBar.classList.toggle('is-danger', isDanger);
+        adminTimerBar.classList.toggle('is-warning', isWarning);
+        if (adminTimerBox) {
+          adminTimerBox.classList.toggle('is-danger', isDanger);
+          adminTimerBox.classList.toggle('is-warning', isWarning);
+        }
+      }
+
+      function renderAdminLiveBarChart(state) {
+        const ans = state?.answers || {};
+        const correctCount = Number(ans.correctCount) || 0;
+        const wrongCount = Number(ans.wrongCount) || 0;
+        const totalVotes = correctCount + wrongCount;
+        const correctPct = totalVotes > 0 ? Math.round((correctCount / totalVotes) * 100) : 0;
+        const wrongPct = totalVotes > 0 ? Math.round((wrongCount / totalVotes) * 100) : 0;
+
+        if (adminBarCorrectVal) {
+          adminBarCorrectVal.textContent = `${correctCount}`;
+        }
+        if (adminBarCorrectFill) {
+          adminBarCorrectFill.style.height = `${correctCount > 0 ? Math.max(12, correctPct) : 0}%`;
+        }
+        if (adminBarWrongVal) {
+          adminBarWrongVal.textContent = `${wrongCount}`;
+        }
+        if (adminBarWrongFill) {
+          adminBarWrongFill.style.height = `${wrongCount > 0 ? Math.max(12, wrongPct) : 0}%`;
+        }
+      }
+
+      function renderGamesLibrary(games, nextNewGameCode = '1001') {
+        if (!Array.isArray(games)) return;
+        const canDelete = games.length > 1;
+
+        // Populate quick menu <select> inside side drawer
+        if (quickGameMenuSelect) {
+          quickGameMenuSelect.innerHTML =
+            games
+              .map(
+                (g) =>
+                  `<option value="${escapeHtml(g.id)}" ${g.isSelected ? 'selected' : ''}>🔢 קוד ${escapeHtml(g.code || '1000')} — ${escapeHtml(g.title)} (${g.questionsCount} שאלות • ${g.playersCount || 0} משתתפים)</option>`
+              )
+              .join('') +
+            `<option value="__CREATE_NEW__">➕ הוסף משחק חדש (קוד ${escapeHtml(nextNewGameCode)})...</option>`;
+        }
+
+        const cardsHtml = games
+          .map(
+            (g) => `
+          <article class="game-hub-card ${g.isActive ? 'is-active' : ''}" data-game-action="enter-lobby" data-game-id="${escapeHtml(g.id)}" style="cursor:pointer;">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <span class="game-hub-card-code">
+                🔢 קוד משחק: ${escapeHtml(g.code || '1000')}
+              </span>
+              ${
+                g.playersCount > 0
+                  ? `<span class="pill pill--gold" style="font-size:0.78rem; padding:0.2rem 0.6rem;">💾 ${g.playersCount} משתתפים שמורים</span>`
+                  : ''
+              }
+            </div>
+            <div style="display:flex; flex-direction:column; gap:0.25rem;">
+              <strong style="font-size:1.3rem; color:#ffffff; word-break:break-word;">${escapeHtml(g.title)}</strong>
+              <span style="font-size:0.88rem; color:var(--text-secondary);">
+                ${escapeHtml(g.subtitle || 'לחצו על המלבן לפתיחת דף הכניסה (QR + קישור + קוד משחק)')}
+              </span>
+            </div>
+            <div style="display:flex; gap:0.45rem; flex-wrap:wrap; font-size:0.82rem; color:#cbd5e1;">
+              <span class="pill" style="font-size:0.78rem;">❓ ${g.questionsCount} שאלות</span>
+              <span class="pill" style="font-size:0.78rem;">${g.teamsEnabled ? `👨‍👩‍👧‍👦 קבוצות (${g.teamsCount})` : '👤 משחק אישי'}</span>
+              <span class="pill pill--sky" style="font-size:0.78rem;">👥 ${g.playersCount || 0} משתתפים</span>
+            </div>
+            <div style="display:flex; gap:0.45rem; flex-wrap:wrap; margin-top:auto; padding-top:0.35rem; border-top:1px solid rgba(255,255,255,0.08);">
+              <button type="button" class="btn btn--primary btn--sm" data-game-action="enter-lobby" data-game-id="${escapeHtml(g.id)}">
+                🚀 כניסה להפעלת המשחק
+              </button>
+              <button type="button" class="btn btn--gold btn--sm" data-game-action="view-stats" data-game-id="${escapeHtml(g.id)}">
+                📊 משתתפים וניקוד
+              </button>
+              <button type="button" class="btn btn--sm" data-game-action="edit" data-game-id="${escapeHtml(g.id)}">
+                ✏️ שאלות
+              </button>
+              <button type="button" class="btn btn--sm" data-game-action="open-drawer" data-game-id="${escapeHtml(g.id)}">
+                ⚙️ הגדרות
+              </button>
+              <button type="button" class="btn btn--sm" data-game-action="duplicate" data-game-id="${escapeHtml(g.id)}" title="שכפל משחק זה (כל השאלות וההגדרות)">
+                📋 שכפל משחק
+              </button>
+              ${
+                canDelete
+                  ? `<button type="button" class="btn btn--danger btn--sm" data-game-action="delete" data-game-id="${escapeHtml(g.id)}" title="מחק משחק">🗑️</button>`
+                  : ''
+              }
+            </div>
+          </article>
+        `
+          )
+          .join('');
+
+        gamesLibraryGrid.innerHTML =
+          cardsHtml +
+          `
+          <article class="game-hub-card game-hub-card--new" data-game-action="create-new">
+            <span class="game-hub-card--new-icon" aria-hidden="true">➕</span>
+            <strong style="font-size:1.25rem; color:#ffffff;">הוספת משחק חדש</strong>
+            <span style="font-size:0.88rem; color:var(--text-secondary);">
+              בנייה אישית, יצירה אוטומטית עם ג׳מני, או העלאת קובץ Word / PDF חופשי
+            </span>
+            <span class="pill pill--gold" style="font-size:0.8rem; padding:0.2rem 0.65rem;">🔢 קוד הבא: ${escapeHtml(nextNewGameCode)}</span>
+            <div style="display:flex; gap:0.45rem; flex-wrap:wrap; justify-content:center; width:100%; padding-top:0.35rem;">
+              <button type="button" class="btn btn--sm" data-game-action="create-manual" style="flex:1; min-width:115px;">
+                ✏️ בנייה אישית
+              </button>
+              <button type="button" class="btn btn--primary btn--sm" data-game-action="create-auto" style="flex:1; min-width:125px;">
+                ✨ אוטומטי / ג׳מני
+              </button>
+              <button type="button" class="btn btn--gold btn--sm" data-game-action="create-doc" style="flex:1; min-width:135px;">
+                📄 מקובץ Word / PDF
+              </button>
+            </div>
+          </article>
+        `;
+      }
+
+      function resolvePublicJoinUrl(state) {
+        const host = window.location.hostname;
+        const isLocalhost = host === 'localhost' || host === '127.0.0.1' || host === '::1';
+        if (isLocalhost && state?.lanUrls && state.lanUrls.length > 0) {
+          return state.lanUrls[0];
+        }
+        return window.location.origin;
+      }
+
+      function renderGameEntryPage(state) {
+        if (!viewGameEntry) return;
+        const activeCode = String(state.gameCode || state.settings?.code || '1000');
+        const activeTitle = state.settings?.title || 'הטריוויה של הלל';
+        const primaryUrl = resolvePublicJoinUrl(state);
+        const cleanBaseUrl = primaryUrl.replace(/\/$/, '');
+        const directQrUrl = `${cleanBaseUrl}/?code=${encodeURIComponent(activeCode)}`;
+
+        if (entryGameTitle) entryGameTitle.textContent = activeTitle;
+        if (entryGameCode) entryGameCode.textContent = activeCode;
+        if (entryJoinUrl) entryJoinUrl.textContent = cleanBaseUrl;
+        if (entryOpenPlayerLink) {
+          entryOpenPlayerLink.href = `/index.html?code=${encodeURIComponent(activeCode)}`;
+        }
+        if (entryQrImg) {
+          const expectedSrc = `/api/qr?text=${encodeURIComponent(directQrUrl)}`;
+          if (entryQrImg.getAttribute('data-qr-url') !== directQrUrl) {
+            entryQrImg.setAttribute('data-qr-url', directQrUrl);
+            entryQrImg.src = expectedSrc;
+          }
+        }
+
+        const allPlayers = state.leaderboard || [];
+        if (entryWaitingCount) {
+          entryWaitingCount.textContent = String(allPlayers.length);
+        }
+
+        if (entrySavedInfo) {
+          if (state.hasSavedScores) {
+            entrySavedInfo.hidden = false;
+            entrySavedInfo.className = 'pill pill--gold';
+            entrySavedInfo.textContent = '💾 נתוני הניקוד של משתתפי המשחק שמורים במערכת';
+          } else {
+            entrySavedInfo.hidden = true;
+          }
+        }
+
+        if (entryWaitingRoster) {
+          if (allPlayers.length === 0) {
+            entryWaitingRoster.innerHTML =
+              '<p style="color:var(--text-muted); margin:auto;">ממתינים להצטרפות המשתתפים...</p>';
+          } else {
+            entryWaitingRoster.innerHTML = allPlayers
+              .map(
+                (p) => `
+              <span class="player-chip ${p.connected ? '' : 'is-offline'}">
+                <span class="status-dot ${p.connected ? '' : 'is-offline'}"></span>
+                <span>${escapeHtml(p.name)}</span>
+                ${p.teamName ? `<span style="font-size:0.76rem; color:#7dd3fc;">(${escapeHtml(p.teamName)})</span>` : ''}
+                ${buildPlayerWeightSelectHtml(p)}
+                ${
+                  Number(p.score) > 0
+                    ? `<span class="pill pill--gold" style="font-size:0.74rem; padding:0.08rem 0.45rem;">${formatScore(p.score)} נק'</span>`
+                    : ''
+                }
+                <button type="button" class="chip-kick" data-kick-id="${escapeHtml(p.id)}" title="הסר שחקן" aria-label="הסר את ${escapeHtml(p.name)}">✕</button>
+              </span>
+            `
+              )
+              .join('');
+          }
+        }
+      }
+
+      function renderTop5Leaders(state) {
+        if (!adminTop5List) return;
+        const medals = ['🥇', '🥈', '🥉', '4️⃣', '5️⃣'];
+        const useTeams = Boolean(
+          state.teamsEnabled && Array.isArray(state.teamLeaderboard) && state.teamLeaderboard.length > 0
+        );
+        const list = useTeams
+          ? state.teamLeaderboard.slice(0, 5)
+          : (state.leaderboard || []).slice(0, 5);
+
+        if (list.length === 0) {
+          adminTop5List.innerHTML =
+            '<div style="text-align:center; color:var(--text-muted); padding:0.5rem;">עדיין אין משתתפים בדירוג</div>';
+          return;
+        }
+
+        adminTop5List.innerHTML = list
+          .map(
+            (item, idx) => `
+          <div class="host-top5-item" data-rank="${idx + 1}">
+            <span class="host-top5-rank">${medals[idx] || `#${idx + 1}`}</span>
+            <span class="host-top5-name">
+              ${escapeHtml(item.name)}
+              ${!useTeams && Number(item.weight) > 1 ? `<span class="pill pill--gold" style="font-size:0.72rem; padding:0.05rem 0.4rem; margin-inline-start:0.25rem;">×${Number(item.weight)}</span>` : ''}
+            </span>
+            <span class="host-top5-score">${formatScore(item.score)} נק'</span>
+          </div>
+        `
+          )
+          .join('');
+      }
+
+      function renderTeamLeaderboardInto(podiumEl, tableWrapEl, teamLeaderboard) {
+        if (!teamLeaderboard || teamLeaderboard.length === 0) {
+          podiumEl.innerHTML = '';
+          tableWrapEl.innerHTML =
+            '<div style="padding:1.5rem; text-align:center; color:var(--text-muted);">עדיין לא הוגדרו או נפתחו קבוצות.</div>';
+          return;
+        }
+
+        const medals = ['🥇', '🥈', '🥉'];
+        const top3 = teamLeaderboard.slice(0, 3);
+        podiumEl.innerHTML = top3
+          .map(
+            (t, idx) => `
+          <div class="podium-card" data-rank="${idx + 1}">
+            <div style="font-size:2rem;">${medals[idx]}</div>
+            <div style="font-weight:900; font-size:1.2rem;">👨‍👩‍👧‍👦 ${escapeHtml(t.name)}</div>
+            <div class="pill pill--gold">${formatScore(t.score)} נקודות משותפות</div>
+            <div style="font-size:0.84rem; color:var(--text-secondary);">
+              ${t.memberCount} משתתפים • ${t.correctCount} תשובות נכונות
+            </div>
+          </div>
+        `
+          )
+          .join('');
+
+        const rowsHtml = teamLeaderboard
+          .map((t) => {
+            const memberNames =
+              t.members && t.members.length > 0
+                ? t.members.map((m) => `${escapeHtml(m.name)}${Number(m.weight) > 1 ? ` ×${Number(m.weight)}` : ''} (${formatScore(m.score)})`).join(', ')
+                : 'ללא משתתפים עדיין';
+            return `
+              <tr>
+                <td style="font-weight:800;">#${t.rank}</td>
+                <td>
+                  <div style="font-weight:900; font-size:1.05rem;">👨‍👩‍👧‍👦 ${escapeHtml(t.name)}</div>
+                  <div style="font-size:0.82rem; color:var(--text-secondary);">${memberNames}</div>
+                </td>
+                <td>${t.correctCount}</td>
+                <td style="font-weight:900; color:#fde68a; font-size:1.08rem;">${formatScore(t.score)} נק'</td>
+              </tr>
+            `;
+          })
+          .join('');
+
+        tableWrapEl.innerHTML = `
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>מקום</th>
+                <th>קבוצה / משפחה ומשתתפים</th>
+                <th>תשובות נכונות</th>
+                <th>ניקוד משפחתי מצטבר</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        `;
+      }
+
+      function renderPlayerLeaderboardInto(podiumEl, tableWrapEl, leaderboard, showTeamCol) {
+        if (!leaderboard || leaderboard.length === 0) {
+          podiumEl.innerHTML = '';
+          tableWrapEl.innerHTML =
+            '<div style="padding:1.5rem; text-align:center; color:var(--text-muted);">עדיין אין שחקנים בדירוג.</div>';
+          return;
+        }
+
+        const medals = ['🥇', '🥈', '🥉'];
+        const top3 = leaderboard.slice(0, 3);
+        podiumEl.innerHTML = top3
+          .map(
+            (p, idx) => `
+          <div class="podium-card" data-rank="${idx + 1}">
+            <div style="font-size:2rem;">${medals[idx]}</div>
+            <div style="font-weight:900; font-size:1.15rem;">
+              ${escapeHtml(p.name)}
+              ${Number(p.weight) > 1 ? `<span class="pill pill--gold" style="font-size:0.75rem; padding:0.08rem 0.45rem;">×${Number(p.weight)}</span>` : ''}
+            </div>
+            ${p.teamName ? `<div style="font-size:0.82rem; color:#7dd3fc;">${escapeHtml(p.teamName)}</div>` : ''}
+            <div class="pill pill--gold">${formatScore(p.score)} נקודות</div>
+            <div style="font-size:0.84rem; color:var(--text-secondary);">${p.correctCount} תשובות נכונות</div>
+          </div>
+        `
+          )
+          .join('');
+
+        const rowsHtml = leaderboard
+          .map(
+            (p) => `
+          <tr>
+            <td style="font-weight:800;">#${p.rank}</td>
+            <td>
+              <span style="display:inline-flex; align-items:center; gap:0.45rem; font-weight:700;">
+                <span class="status-dot ${p.connected ? '' : 'is-offline'}"></span>
+                ${escapeHtml(p.name)}
+              </span>
+            </td>
+            ${showTeamCol ? `<td style="color:#bae6fd;">${escapeHtml(p.teamName || '—')}</td>` : ''}
+            <td>${buildPlayerWeightSelectHtml(p)}</td>
+            <td>${p.correctCount}</td>
+            <td style="font-weight:900; color:#fde68a;">${formatScore(p.score)} נק'</td>
+          </tr>
+        `
+          )
+          .join('');
+
+        tableWrapEl.innerHTML = `
+          <table class="leaderboard-table">
+            <thead>
+              <tr>
+                <th>מקום</th>
+                <th>שם שחקן</th>
+                ${showTeamCol ? '<th>קבוצה</th>' : ''}
+                <th>משקל שחקן</th>
+                <th>תשובות נכונות</th>
+                <th>ניקוד אישי</th>
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        `;
+      }
+
+      function renderActiveLeaderboards(state) {
+        const showSwitch = Boolean(state.teamsEnabled);
+        finalLbModeWrap.hidden = !showSwitch;
+        modalLbModeWrap.hidden = !showSwitch;
+
+        const useTeams = state.teamsEnabled && leaderboardViewMode === 'teams';
+        if (useTeams) {
+          renderTeamLeaderboardInto(
+            document.getElementById('final-podium'),
+            document.getElementById('final-leaderboard-wrap'),
+            state.teamLeaderboard
+          );
+          renderTeamLeaderboardInto(
+            document.getElementById('modal-podium'),
+            document.getElementById('modal-leaderboard-wrap'),
+            state.teamLeaderboard
+          );
+        } else {
+          renderPlayerLeaderboardInto(
+            document.getElementById('final-podium'),
+            document.getElementById('final-leaderboard-wrap'),
+            state.leaderboard,
+            state.teamsEnabled
+          );
+          renderPlayerLeaderboardInto(
+            document.getElementById('modal-podium'),
+            document.getElementById('modal-leaderboard-wrap'),
+            state.leaderboard,
+            state.teamsEnabled
+          );
+        }
+      }
+
+      function renderLobbyTeamsAndPlayers(state) {
+        const totalPlayers = state.leaderboard.length;
+        rosterCount.textContent = String(totalPlayers);
+        btnClearPlayers.hidden = totalPlayers === 0;
+
+        // Sync Yes/No mode buttons
+        btnTeamsOff.classList.toggle('is-active', !state.teamsEnabled);
+        btnTeamsOn.classList.toggle('is-active', Boolean(state.teamsEnabled));
+        hostTeamsConfig.hidden = !state.teamsEnabled;
+        hostTeamsConfig.style.display = state.teamsEnabled ? 'flex' : 'none';
+
+        if (!state.teamsEnabled) {
+          lobbyRoster.hidden = false;
+          lobbyRoster.style.display = 'flex';
+          lobbyTeamsBoard.hidden = true;
+          lobbyTeamsBoard.style.display = 'none';
+
+          if (totalPlayers === 0) {
+            lobbyRoster.innerHTML =
+              '<p style="color:var(--text-muted); margin:auto;">ממתינים להצטרפות השחקנים...</p>';
+          } else {
+            lobbyRoster.innerHTML = state.leaderboard
+              .map(
+                (p) => `
+              <span class="player-chip ${p.connected ? '' : 'is-offline'}">
+                <span class="status-dot ${p.connected ? '' : 'is-offline'}"></span>
+                <span>${escapeHtml(p.name)}</span>
+                ${buildPlayerWeightSelectHtml(p)}
+                <button type="button" class="chip-kick" data-kick-id="${escapeHtml(p.id)}" title="הסר שחקן" aria-label="הסר את ${escapeHtml(p.name)}">✕</button>
+              </span>
+            `
+              )
+              .join('');
+          }
+          return;
+        }
+
+        // Teams Mode = YES
+        lobbyRoster.hidden = true;
+        lobbyRoster.style.display = 'none';
+        lobbyTeamsBoard.hidden = false;
+        lobbyTeamsBoard.style.display = 'flex';
+
+        const teams = state.availableTeams || [];
+        if (teams.length === 0) {
+          teamsCardsContainer.innerHTML = `
+            <div style="grid-column:1 / -1; padding:1.1rem; text-align:center; color:var(--text-muted); border:1px dashed var(--border-subtle); border-radius:12px;">
+              עדיין אין קבוצות ברשימה — הוסיפו קבוצות למעלה או תנו לשחקנים לפתוח קבוצות בעצמם ממסך הכניסה!
+            </div>
+          `;
+        } else {
+          teamsCardsContainer.innerHTML = teams
+            .map((t) => {
+              const membersHtml =
+                t.members && t.members.length > 0
+                  ? t.members
+                      .map(
+                        (m) => `
+                    <span class="player-chip ${m.connected ? '' : 'is-offline'}" style="font-size:0.84rem; padding:0.3rem 0.65rem;">
+                      <span class="status-dot ${m.connected ? '' : 'is-offline'}"></span>
+                      <span>${escapeHtml(m.name)}</span>
+                      ${buildPlayerWeightSelectHtml(m)}
+                      <button type="button" class="chip-kick" data-kick-id="${escapeHtml(m.id)}" title="הסר שחקן">✕</button>
+                    </span>
+                  `
+                      )
+                      .join('')
+                  : '<span style="font-size:0.82rem; color:var(--text-muted);">ממתינים לבני המשפחה...</span>';
+
+              return `
+                <article class="team-lobby-card">
+                  <div class="team-lobby-header">
+                    <strong style="color:#bae6fd;">👨‍👩‍👧‍👦 ${escapeHtml(t.name)} (${t.memberCount})</strong>
+                    <button
+                      type="button"
+                      class="chip-kick"
+                      data-remove-team-id="${escapeHtml(t.id)}"
+                      title="מחק קבוצה זו"
+                      aria-label="מחק את ${escapeHtml(t.name)}"
+                    >🗑️</button>
+                  </div>
+                  <div class="team-members-wrap">${membersHtml}</div>
+                </article>
+              `;
+            })
+            .join('');
+        }
+
+        const unassigned = state.leaderboard.filter((p) => !p.teamId);
+        if (unassigned.length > 0) {
+          unassignedPlayersBox.hidden = false;
+          unassignedPlayersList.innerHTML = unassigned
+            .map(
+              (p) => `
+            <span class="player-chip ${p.connected ? '' : 'is-offline'}" style="font-size:0.85rem;">
+              <span class="status-dot ${p.connected ? '' : 'is-offline'}"></span>
+              <span>${escapeHtml(p.name)}</span>
+              ${buildPlayerWeightSelectHtml(p)}
+              <button type="button" class="chip-kick" data-kick-id="${escapeHtml(p.id)}" title="הסר שחקן">✕</button>
+            </span>
+          `
+            )
+            .join('');
+        } else {
+          unassignedPlayersBox.hidden = true;
+          unassignedPlayersList.innerHTML = '';
+        }
+      }
+
+      function renderAdminState(state) {
+        const totalPlayers = state.leaderboard.length;
+        const activeCode = String(state.gameCode || state.settings?.code || '1000');
+        const activeTitle = state.settings?.title || 'הטריוויה של הלל';
+
+        if (adminGameCodePill) {
+          adminGameCodePill.textContent = `🔢 קוד משחק: ${activeCode}`;
+        }
+        if (lobbyGameCodeDigits) {
+          lobbyGameCodeDigits.textContent = activeCode;
+        }
+        if (joinBoxCodeInline) {
+          joinBoxCodeInline.textContent = activeCode;
+        }
+        if (lobbyActiveGameSubtitle) {
+          lobbyActiveGameSubtitle.textContent = `משחק: "${activeTitle}" (קוד: ${activeCode})`;
+        }
+
+        playersCountPill.textContent = `👥 ${totalPlayers} / ${state.maxPlayers} שחקנים`;
+        lobbyQCount.textContent = String(state.totalQuestions);
+
+        const primaryUrl = resolvePublicJoinUrl(state);
+        joinUrlDisplay.textContent = primaryUrl;
+
+        const isSessionOpen = Boolean(state.isSessionOpen);
+        const inHub = !isSessionOpen || state.phase === 'hub';
+        const inEntryLobby = isSessionOpen && state.phase === 'lobby';
+        const inQuestion = isSessionOpen && (state.phase === 'question' || state.phase === 'revealed');
+        const inFinished = isSessionOpen && state.phase === 'finished';
+
+        document.body.classList.toggle('is-playing', inQuestion);
+        btnTopHome.hidden = inHub;
+
+        viewLobby.hidden = !inHub;
+        viewLobby.style.display = inHub ? '' : 'none';
+
+        if (viewGameEntry) {
+          viewGameEntry.hidden = !inEntryLobby;
+          viewGameEntry.style.display = inEntryLobby ? 'flex' : 'none';
+        }
+
+        viewQuestion.hidden = !inQuestion;
+        viewQuestion.style.display = inQuestion ? '' : 'none';
+
+        viewFinished.hidden = !inFinished;
+        viewFinished.style.display = inFinished ? 'flex' : 'none';
+
+        // Always keep side drawer synced with games, teams, and players regardless of current view
+        renderGamesLibrary(state.games || [], state.nextNewGameCode || '1001');
+        renderLobbyTeamsAndPlayers(state);
+        renderGameEntryPage(state);
+
+        if (
+          typeof state.resumableQuestionIndex === 'number' &&
+          state.resumableQuestionIndex >= 0 &&
+          state.resumableQuestionIndex < state.totalQuestions
+        ) {
+          btnResumeQuiz.hidden = false;
+          btnResumeQuiz.textContent = `▶️ המשך משחק (שאלה ${state.resumableQuestionIndex + 1})`;
+          btnStartQuiz.textContent = '🚀 התחל מהתחלה';
+        } else {
+          btnResumeQuiz.hidden = true;
+          btnStartQuiz.textContent = '🚀 התחל חידון';
+        }
+
+        if (inQuestion && state.currentQuestion) {
+          const q = state.currentQuestion;
+          renderTimerDisplay(state.timer);
+          renderAdminLiveBarChart(state);
+
+          if (hudQuestionNum) {
+            hudQuestionNum.textContent = `שאלה ${q.index + 1} מתוך ${q.total}`;
+          }
+
+          adminQuestionText.textContent = q.question;
+          if (q.image) {
+            adminQMedia.hidden = false;
+            adminQMedia.innerHTML = `<img src="${escapeHtml(q.image)}" alt="תמונה לשאלה ${q.index + 1}" class="question-img" id="active-q-img" />`;
+            const imgNode = document.getElementById('active-q-img');
+            if (imgNode) {
+              imgNode.addEventListener('click', () => openImageZoom(q.image, q.question));
+            }
+            btnRemoveQuickQImage.hidden = false;
+          } else {
+            adminQMedia.hidden = true;
+            adminQMedia.innerHTML = '';
+            btnRemoveQuickQImage.hidden = true;
+          }
+          syncHasImageFallback(adminQuestionHero);
+
+          const isRevealed = state.phase === 'revealed';
+          const rev = state.lastReveal;
+          if (adminRevealBanner) adminRevealBanner.hidden = true;
+
+          adminAnswersGrid.innerHTML = q.answers
+            .map((ans, idx) => {
+              let stateCls = '';
+              let metaHtml = '';
+              if (isRevealed && rev) {
+                const isCorrect = idx === q.correctIndex;
+                stateCls = isCorrect ? 'is-correct' : 'is-wrong';
+                if (isCorrect) {
+                  metaHtml = `
+                    <div class="opt-meta">
+                      <span class="pill pill--emerald">✓ תשובה נכונה</span>
+                    </div>
+                  `;
+                }
+              }
+              return `
+                <div class="answer-card ${stateCls}" data-opt="${idx}">
+                  <span class="opt-letter">${LETTERS[idx]}</span>
+                  <span class="opt-text">${escapeHtml(ans)}</span>
+                  ${metaHtml}
+                </div>
+              `;
+            })
+            .join('');
+
+          renderTop5Leaders(state);
+
+          const currentQuestionKey = `${state.activeGameId}:${q.index}`;
+          if (!isRevealed) {
+            if (revealCollapseTimer) {
+              clearTimeout(revealCollapseTimer);
+              revealCollapseTimer = null;
+            }
+            revealCollapsedForKey = null;
+            adminAnswersGrid.classList.remove('is-collapsed-to-correct');
+            if (adminTop5Panel) adminTop5Panel.hidden = true;
+          } else {
+            if (revealCollapsedForKey === currentQuestionKey) {
+              adminAnswersGrid.classList.add('is-collapsed-to-correct');
+              if (adminTop5Panel) adminTop5Panel.hidden = false;
+            } else {
+              adminAnswersGrid.classList.remove('is-collapsed-to-correct');
+              if (adminTop5Panel) adminTop5Panel.hidden = true;
+              if (!revealCollapseTimer) {
+                revealCollapseTimer = setTimeout(() => {
+                  revealCollapseTimer = null;
+                  revealCollapsedForKey = currentQuestionKey;
+                  adminAnswersGrid.classList.add('is-collapsed-to-correct');
+                  if (adminTop5Panel) adminTop5Panel.hidden = false;
+                }, 1000);
+              }
+            }
+          }
+
+          if (adminNextBar) {
+            adminNextBar.hidden = false;
+            adminNextBar.style.display = 'flex';
+          }
+          if (btnRevealAnswer) {
+            btnRevealAnswer.hidden = isRevealed;
+          }
+          if (btnNextQ) {
+            btnNextQ.hidden = !isRevealed;
+            btnNextQ.textContent =
+              q.index + 1 < q.total ? 'המשך לשאלה הבאה ⬅' : '🏁 סיום ולוח תוצאות';
+          }
+        }
+
+        renderActiveLeaderboards(state);
+      }
+
+      // -------------------- Games Menu & New Game Actions --------------------
+
+      async function selectGameFromMenu(gameId, { openSession = false, silent = false } = {}) {
+        if (!gameId) return;
+        try {
+          const res = await fetch(`/api/admin/games/${encodeURIComponent(gameId)}/select`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ openSession })
+          });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error);
+          if (!silent) {
+            if (openSession) {
+              showToast(
+                `נכנסת לדף הכניסה של "${data.settings.title}"! קוד משחק: ${data.settings.code || data.gameCode}`
+              );
+            } else {
+              showToast(`נבחר המשחק "${data.settings.title}" לעריכה / צפייה בנתונים.`);
+            }
+          }
+        } catch (err) {
+          showToast(err.message || 'שגיאה במעבר משחק.');
+        }
+      }
+
+      // -------------------- New Game Modal (Manual Build & Automatic On-Demand Build) --------------------
+      let newGameBuildMode = 'manual'; // 'manual' | 'auto'
+      let autoSubMode = 'topics'; // 'topics' | 'random'
+      let autoTopicRows = [
+        { topic: 'ידע כללי', count: 3, difficulty: 'mixed' },
+        { topic: 'היסטוריה של ישראל', count: 3, difficulty: 'easy' }
+      ];
+
+      const btnNewModeManual = document.getElementById('btn-new-mode-manual');
+      const btnNewModeAuto = document.getElementById('btn-new-mode-auto');
+      const newGameAutoPanel = document.getElementById('new-game-auto-panel');
+      const btnSubmitNewGame = document.getElementById('btn-submit-new-game');
+      const newGameTitleInput = document.getElementById('new-game-title');
+
+      const btnAutoSubTopics = document.getElementById('btn-auto-sub-topics');
+      const btnAutoSubRandom = document.getElementById('btn-auto-sub-random');
+      const btnAutoSubDocument = document.getElementById('btn-auto-sub-document');
+      const autoTopicsSection = document.getElementById('auto-topics-section');
+      const autoRandomSection = document.getElementById('auto-random-section');
+      const autoDocumentSection = document.getElementById('auto-document-section');
+      const autoTopicsRowsEl = document.getElementById('auto-topics-rows');
+      const autoTopicsTotalBadge = document.getElementById('auto-topics-total-badge');
+      const autoRandomCountInput = document.getElementById('auto-random-count');
+      const autoCustomInstructions = document.getElementById('auto-custom-instructions');
+      const inputNewGameDoc = document.getElementById('input-new-game-doc');
+      const btnPickNewGameDoc = document.getElementById('btn-pick-new-game-doc');
+      const docUploadStatusPill = document.getElementById('doc-upload-status-pill');
+      const autoDocRawText = document.getElementById('auto-doc-raw-text');
+      const geminiKeyStatusPill = document.getElementById('gemini-key-status-pill');
+
+      let uploadedDocQuestions = [];
+
+      function readFileAsDataUrl(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result || ''));
+          reader.onerror = () => reject(new Error('שגיאה בקריאת הקובץ מהמחשב.'));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function parseUploadedDocumentFile(file, { timerSeconds = 15, points = 100, customInstructions = '', apiKey = '' } = {}) {
+        const fileData = await readFileAsDataUrl(file);
+        const res = await fetch('/api/admin/parse-document', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fileName: file.name,
+            mimeType: file.type,
+            fileData,
+            customInstructions,
+            timerSeconds,
+            points,
+            apiKey
+          })
+        });
+        const data = await res.json();
+        return data;
+      }
+
+      function setNewGameBuildMode(mode) {
+        newGameBuildMode = mode === 'auto' ? 'auto' : 'manual';
+        const isAuto = newGameBuildMode === 'auto';
+        btnNewModeManual.classList.toggle('is-active', !isAuto);
+        btnNewModeAuto.classList.toggle('is-active', isAuto);
+        newGameAutoPanel.hidden = !isAuto;
+        newGameAutoPanel.style.display = isAuto ? 'flex' : 'none';
+        newGameTitleInput.placeholder = isAuto
+          ? 'אופציונלי — אם יישאר ריק ייבחר שם אוטומטי'
+          : 'לדוגמה: חידון משפחתי / חנוכה';
+        btnSubmitNewGame.textContent = isAuto
+          ? '✨ צור משחק ושאלות אוטומטית עכשיו'
+          : '🚀 צור משחק חדש והוסף שאלות';
+      }
+
+      function setAutoSubMode(subMode) {
+        autoSubMode = subMode === 'random' ? 'random' : subMode === 'document' ? 'document' : 'topics';
+        const isTopics = autoSubMode === 'topics';
+        const isRandom = autoSubMode === 'random';
+        const isDoc = autoSubMode === 'document';
+        btnAutoSubTopics.classList.toggle('is-active', isTopics);
+        btnAutoSubRandom.classList.toggle('is-active', isRandom);
+        if (btnAutoSubDocument) btnAutoSubDocument.classList.toggle('is-active', isDoc);
+
+        autoTopicsSection.hidden = !isTopics;
+        autoTopicsSection.style.display = isTopics ? 'flex' : 'none';
+        autoRandomSection.hidden = !isRandom;
+        autoRandomSection.style.display = isRandom ? 'flex' : 'none';
+        if (autoDocumentSection) {
+          autoDocumentSection.hidden = !isDoc;
+          autoDocumentSection.style.display = isDoc ? 'flex' : 'none';
+        }
+      }
+
+      function syncAutoTopicsFromDom() {
+        const rowEls = autoTopicsRowsEl.querySelectorAll('[data-topic-row-idx]');
+        if (rowEls.length === 0) return;
+        const updated = [];
+        rowEls.forEach((rowEl) => {
+          const topic = rowEl.querySelector('[data-topic-name]')?.value.trim() || '';
+          const count = Math.max(1, Math.min(30, Number(rowEl.querySelector('[data-topic-count]')?.value) || 3));
+          const difficulty = rowEl.querySelector('[data-topic-diff]')?.value || 'mixed';
+          updated.push({ topic, count, difficulty });
+        });
+        autoTopicRows = updated;
+        updateAutoTopicsTotalBadge();
+      }
+
+      function updateAutoTopicsTotalBadge() {
+        const total = autoTopicRows.reduce((sum, r) => sum + (Number(r.count) || 0), 0);
+        if (autoTopicsTotalBadge) {
+          autoTopicsTotalBadge.textContent = `סה"כ ייווצרו: ${total} שאלות מ-${autoTopicRows.length} נושאים`;
+        }
+      }
+
+      function renderAutoTopicsRows() {
+        const canRemove = autoTopicRows.length > 1;
+        autoTopicsRowsEl.innerHTML = autoTopicRows
+          .map(
+            (row, idx) => `
+          <div
+            data-topic-row-idx="${idx}"
+            style="display:grid; grid-template-columns:minmax(160px, 1.6fr) 110px 140px auto; gap:0.5rem; align-items:end; padding:0.65rem; border-radius:12px; background:rgba(2, 6, 23, 0.45); border:1px solid var(--border-subtle);"
+          >
+            <div class="field" style="gap:0.25rem;">
+              <label style="font-size:0.78rem; color:var(--text-secondary);">נושא השאלות #${idx + 1}</label>
+              <input
+                type="text"
+                class="input"
+                list="trivia-topics-datalist"
+                data-topic-name
+                value="${escapeHtml(row.topic)}"
+                placeholder="הזינו או בחרו נושא (למשל: ספורט, מדע...)"
+                style="padding:0.45rem 0.65rem;"
+              />
+            </div>
+
+            <div class="field" style="gap:0.25rem;">
+              <label style="font-size:0.78rem; color:var(--text-secondary);">מספר שאלות</label>
+              <input
+                type="number"
+                class="input"
+                min="1"
+                max="30"
+                data-topic-count
+                value="${Number(row.count) || 3}"
+                style="padding:0.45rem 0.55rem; text-align:center; font-weight:800;"
+              />
+            </div>
+
+            <div class="field" style="gap:0.25rem;">
+              <label style="font-size:0.78rem; color:var(--text-secondary);">רמת קושי</label>
+              <select class="select" data-topic-diff style="padding:0.45rem 0.55rem;">
+                <option value="easy" ${row.difficulty === 'easy' ? 'selected' : ''}>🟢 קל</option>
+                <option value="medium" ${row.difficulty === 'medium' ? 'selected' : ''}>🟡 בינוני</option>
+                <option value="hard" ${row.difficulty === 'hard' ? 'selected' : ''}>🔴 קשה</option>
+                <option value="mixed" ${row.difficulty === 'mixed' || !row.difficulty ? 'selected' : ''}>🌈 מעורב</option>
+              </select>
+            </div>
+
+            <button
+              type="button"
+              class="btn btn--danger btn--sm"
+              data-remove-topic-idx="${idx}"
+              ${canRemove ? '' : 'disabled'}
+              title="הסר נושא"
+              style="height:38px;"
+            >🗑️</button>
+          </div>
+        `
+          )
+          .join('');
+        updateAutoTopicsTotalBadge();
+      }
+
+      btnNewModeManual.addEventListener('click', () => setNewGameBuildMode('manual'));
+      btnNewModeAuto.addEventListener('click', () => setNewGameBuildMode('auto'));
+      btnAutoSubTopics.addEventListener('click', () => setAutoSubMode('topics'));
+      btnAutoSubRandom.addEventListener('click', () => setAutoSubMode('random'));
+      if (btnAutoSubDocument) {
+        btnAutoSubDocument.addEventListener('click', () => setAutoSubMode('document'));
+      }
+
+      if (btnPickNewGameDoc && inputNewGameDoc) {
+        btnPickNewGameDoc.addEventListener('click', () => {
+          inputNewGameDoc.value = '';
+          inputNewGameDoc.click();
+        });
+
+        inputNewGameDoc.addEventListener('change', async () => {
+          const file = inputNewGameDoc.files?.[0];
+          if (!file) return;
+          const timerSeconds = Number(document.getElementById('new-game-timer').value) || 15;
+          const points = Number(document.getElementById('new-game-points').value) || 100;
+          const customInstructions = autoCustomInstructions ? autoCustomInstructions.value.trim() : '';
+          const apiKey = document.getElementById('input-gemini-api-key').value.trim();
+
+          if (docUploadStatusPill) {
+            docUploadStatusPill.hidden = false;
+            docUploadStatusPill.className = 'pill pill--sky';
+            docUploadStatusPill.textContent = `⏳ קורא את "${file.name}"...`;
+          }
+
+          try {
+            const data = await parseUploadedDocumentFile(file, {
+              timerSeconds,
+              points,
+              customInstructions,
+              apiKey
+            });
+            if (data.extractedText && autoDocRawText) {
+              autoDocRawText.value = data.extractedText;
+            }
+            if (!data.ok) {
+              throw new Error(data.error || 'לא הצלחנו לחלץ שאלות מהקובץ.');
+            }
+            uploadedDocQuestions = Array.isArray(data.questions) ? data.questions : [];
+            if (!newGameTitleInput.value.trim()) {
+              const baseName = file.name.replace(/\.[^.]+$/, '');
+              newGameTitleInput.value = `טריוויה: ${baseName}`;
+            }
+            if (docUploadStatusPill) {
+              docUploadStatusPill.hidden = false;
+              docUploadStatusPill.className = 'pill pill--emerald';
+              docUploadStatusPill.textContent = `✅ זוהו ${uploadedDocQuestions.length} שאלות מתוך "${file.name}"!`;
+            }
+            showToast(`חולצו ${uploadedDocQuestions.length} שאלות מהקובץ "${file.name}"!`);
+          } catch (err) {
+            uploadedDocQuestions = [];
+            if (docUploadStatusPill) {
+              docUploadStatusPill.hidden = false;
+              docUploadStatusPill.className = 'pill pill--rose';
+              docUploadStatusPill.textContent = '⚠️ נדרשת בדיקת הטקסט בתיבה';
+            }
+            showToast(err.message || 'שגיאה בקריאת הקובץ.');
+          }
+        });
+      }
+
+      document.getElementById('btn-add-topic-row').addEventListener('click', () => {
+        syncAutoTopicsFromDom();
+        autoTopicRows.push({ topic: '', count: 3, difficulty: 'mixed' });
+        renderAutoTopicsRows();
+      });
+
+      autoTopicsRowsEl.addEventListener('input', () => {
+        syncAutoTopicsFromDom();
+      });
+
+      autoTopicsRowsEl.addEventListener('click', (e) => {
+        const rmBtn = e.target.closest('[data-remove-topic-idx]');
+        if (!rmBtn) return;
+        syncAutoTopicsFromDom();
+        const idx = Number(rmBtn.getAttribute('data-remove-topic-idx'));
+        if (autoTopicRows.length > 1 && idx >= 0 && idx < autoTopicRows.length) {
+          autoTopicRows.splice(idx, 1);
+          renderAutoTopicsRows();
+        }
+      });
+
+      document.querySelectorAll('[data-random-preset]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          autoRandomCountInput.value = btn.getAttribute('data-random-preset');
+        });
+      });
+
+      document.getElementById('btn-copy-gemini-prompt').addEventListener('click', async () => {
+        syncAutoTopicsFromDom();
+        const diffLabels = { easy: 'קלה', medium: 'בינונית', hard: 'קשה', mixed: 'מעורבת' };
+        const customInstructions = autoCustomInstructions ? autoCustomInstructions.value.trim() : '';
+        const docText = autoDocRawText ? autoDocRawText.value.trim() : '';
+
+        let reqText = '';
+        if (autoSubMode === 'document' && docText) {
+          reqText = `הפוך את השאלות והתשובות מהטקסט החופשי הבא לשאלות טריוויה אמריקאיות בעברית (אם לשאלה יש רק תשובה אחת נכונה, השלם עבורה 3 תשובות מסיחות הגיוניות כך שלכל שאלה יהיו 4 אפשרויות):\n"""\n${docText}\n"""`;
+        } else if (autoSubMode === 'topics') {
+          const validRows = autoTopicRows.filter((r) => r.topic.trim());
+          const rowsToUse = validRows.length > 0 ? validRows : [{ topic: 'ידע כללי', count: 5, difficulty: 'mixed' }];
+          reqText = rowsToUse
+            .map(
+              (r, i) =>
+                `${i + 1}. נושא: "${r.topic}" — ${r.count} שאלות, רמת קושי: ${diffLabels[r.difficulty] || 'מעורבת'}`
+            )
+            .join('\n');
+        } else {
+          const count = Number(autoRandomCountInput.value) || 10;
+          reqText = `צור ${count} שאלות טריוויה רנדומליות ומגוונות במגוון נושאים וברמת קושי מעורבת.`;
+        }
+
+        const customBlock = customInstructions
+          ? `\n\nהוראות מפורטות נוספות מהמנחה:\n${customInstructions}`
+          : '';
+
+        const promptToCopy = `צור עבורי שאלות טריוויה אמריקאיות בעברית לפי הדרישה הבאה:\n${reqText}${customBlock}\n\nהחזר אך ורק קוד JSON תקין (ללא טקסט נוסף) במבנה של מערך אובייקטים, כאשר לכל שאלה יש:\n[\n  {\n    "question": "נוסח השאלה?",\n    "answers": ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],\n    "correctIndex": 0\n  }\n]`;
+
+        try {
+          await navigator.clipboard.writeText(promptToCopy);
+          showToast('הבקשה המפורטת הועתקה! הדביקו אותה בצ׳אט ג׳מני שלכם והדביקו כאן את התוצאה.');
+        } catch {
+          showToast('לא ניתן להעתיק אוטומטית בדפדפן זה.');
+        }
+      });
+
+      function openNewGameModal(initialBuildMode = 'manual', initialSubMode = 'topics') {
+        dismissDrawerImmediately();
+        document.getElementById('new-game-title').value = '';
+        document.getElementById('new-game-timer').value = '15';
+        document.getElementById('new-game-points').value = '100';
+        document.getElementById('new-game-teams-enabled').checked = false;
+        document.getElementById('input-pasted-gemini-json').value = '';
+        if (autoCustomInstructions) autoCustomInstructions.value = '';
+        if (autoDocRawText) autoDocRawText.value = '';
+        if (docUploadStatusPill) docUploadStatusPill.hidden = true;
+        uploadedDocQuestions = [];
+
+        const nextCode = adminState?.nextNewGameCode || String(1000 + (adminState?.games?.length || 1));
+        if (newGameCodePreview) {
+          newGameCodePreview.textContent = `🔢 קוד המשחק שיוקצה: ${nextCode}`;
+        }
+        if (geminiKeyStatusPill) {
+          geminiKeyStatusPill.textContent = adminState?.hasGeminiApiKey
+            ? '🟢 מפתח Gemini AI מוגדר ופעיל'
+            : '📚 מאגר טריוויה חכם מובנה פעיל';
+          geminiKeyStatusPill.className = adminState?.hasGeminiApiKey ? 'pill pill--emerald' : 'pill pill--sky';
+        }
+
+        renderAutoTopicsRows();
+        setNewGameBuildMode(initialBuildMode === 'auto' ? 'auto' : 'manual');
+        setAutoSubMode(initialSubMode);
+        if (!newGameDialog.open) newGameDialog.showModal();
+      }
+
+      document.getElementById('btn-open-new-game').addEventListener('click', () => openNewGameModal('manual', 'topics'));
+
+      if (quickGameMenuSelect) {
+        quickGameMenuSelect.addEventListener('change', async () => {
+          const val = quickGameMenuSelect.value;
+          if (val === '__CREATE_NEW__') {
+            if (adminState?.activeGameId) {
+              quickGameMenuSelect.value = adminState.activeGameId;
+            }
+            openNewGameModal('manual', 'topics');
+            return;
+          }
+          if (val && val !== adminState?.activeGameId) {
+            await selectGameFromMenu(val, { openSession: Boolean(adminState?.isSessionOpen) });
+          }
+        });
+      }
+
+      gamesLibraryGrid.addEventListener('click', async (e) => {
+        const btn = e.target.closest('[data-game-action]');
+        if (!btn) return;
+        const action = btn.getAttribute('data-game-action');
+        const gameId = btn.getAttribute('data-game-id');
+
+        if (action === 'create-manual') {
+          e.stopPropagation();
+          openNewGameModal('manual', 'topics');
+          return;
+        }
+
+        if (action === 'create-auto') {
+          e.stopPropagation();
+          openNewGameModal('auto', 'topics');
+          return;
+        }
+
+        if (action === 'create-doc') {
+          e.stopPropagation();
+          openNewGameModal('auto', 'document');
+          return;
+        }
+
+        if (action === 'create-new') {
+          openNewGameModal('manual', 'topics');
+          return;
+        }
+
+        if ((action === 'enter-lobby' || action === 'select' || action === 'start') && gameId) {
+          e.stopPropagation();
+          await selectGameFromMenu(gameId, { openSession: true });
+          return;
+        }
+
+        if (action === 'view-stats' && gameId) {
+          e.stopPropagation();
+          if (gameId !== adminState?.activeGameId) {
+            await selectGameFromMenu(gameId, { openSession: false, silent: true });
+          }
+          openLeaderboardModal();
+          return;
+        }
+
+        if (action === 'open-drawer') {
+          e.stopPropagation();
+          if (gameId && gameId !== adminState?.activeGameId) {
+            await selectGameFromMenu(gameId, { openSession: false, silent: true });
+          }
+          openDrawer();
+          return;
+        }
+
+        if (action === 'edit') {
+          e.stopPropagation();
+          if (gameId && gameId !== adminState?.activeGameId) {
+            await selectGameFromMenu(gameId, { openSession: false, silent: true });
+          }
+          openSettingsModal('questions');
+          return;
+        }
+
+        if (action === 'duplicate' && gameId) {
+          e.stopPropagation();
+          btn.disabled = true;
+          try {
+            const res = await fetch(`/api/admin/games/${encodeURIComponent(gameId)}/duplicate`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            showToast(
+              `📋 המשחק שוכפל בהצלחה: "${data.game.title}" (קוד: ${data.game.code || data.activeGameCode})!`
+            );
+          } catch (err) {
+            showToast(err.message || 'שגיאה בשכפול המשחק.');
+          } finally {
+            btn.disabled = false;
+          }
+          return;
+        }
+
+        if (action === 'delete' && gameId) {
+          e.stopPropagation();
+          const targetGame = adminState?.games?.find((g) => g.id === gameId);
+          const ok = window.confirm(`למחוק את המשחק "${targetGame?.title || ''}"?`);
+          if (!ok) return;
+          try {
+            const res = await fetch(`/api/admin/games/${encodeURIComponent(gameId)}`, {
+              method: 'DELETE'
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            showToast('המשחק נמחק.');
+          } catch (err) {
+            showToast(err.message || 'שגיאה במחיקת המשחק.');
+          }
+        }
+      });
+
+      document.getElementById('new-game-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const title = document.getElementById('new-game-title').value.trim();
+        const subtitle = document.getElementById('new-game-subtitle').value.trim();
+        const timerSeconds = Number(document.getElementById('new-game-timer').value) || 15;
+        const points = Number(document.getElementById('new-game-points').value) || 100;
+        const teamsEnabled = document.getElementById('new-game-teams-enabled').checked;
+
+        if (newGameBuildMode === 'manual') {
+          if (!title) {
+            showToast('אנא הזינו שם למשחק החדש.');
+            newGameTitleInput.focus();
+            return;
+          }
+
+          try {
+            const res = await fetch('/api/admin/games', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ title, subtitle, timerSeconds, teamsEnabled })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            newGameDialog.close();
+            showToast(`המשחק "${title}" נוצר עם קוד ${data.game.code}! כעת הוסיפו שאלות.`);
+            openSettingsModal('questions');
+          } catch (err) {
+            showToast(err.message || 'שגיאה ביצירת המשחק.');
+          }
+          return;
+        }
+
+        // Automatic On-Demand Build Mode (Topics / Random / Document Upload)
+        syncAutoTopicsFromDom();
+        const cleanedTopics = autoTopicRows
+          .map((r) => ({
+            topic: String(r.topic || '').trim() || 'ידע כללי',
+            count: Math.max(1, Math.min(30, Number(r.count) || 3)),
+            difficulty: r.difficulty || 'mixed'
+          }));
+
+        const randomCount = Math.max(1, Math.min(50, Number(autoRandomCountInput.value) || 10));
+        const customInstructions = autoCustomInstructions ? autoCustomInstructions.value.trim() : '';
+        const docRawText = autoDocRawText ? autoDocRawText.value.trim() : '';
+        const shuffleQuestionsOrder = document.getElementById('auto-shuffle-order').checked;
+        const includeImages = document.getElementById('auto-include-images').checked;
+        const apiKey = document.getElementById('input-gemini-api-key').value.trim();
+        const pastedJson = document.getElementById('input-pasted-gemini-json').value.trim();
+
+        btnSubmitNewGame.disabled = true;
+        const prevBtnText = btnSubmitNewGame.textContent;
+        btnSubmitNewGame.textContent = '⏳ מייצר משחק ושאלות...';
+
+        try {
+          let finalUploadedQuestions = uploadedDocQuestions;
+          if (autoSubMode === 'document' && finalUploadedQuestions.length === 0 && docRawText) {
+            const parseRes = await fetch('/api/admin/parse-document', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                rawText: docRawText,
+                customInstructions,
+                timerSeconds,
+                points,
+                apiKey
+              })
+            });
+            const parseData = await parseRes.json();
+            if (!parseData.ok) {
+              throw new Error(parseData.error || 'לא הצלחנו לחלץ שאלות מהטקסט.');
+            }
+            finalUploadedQuestions = parseData.questions || [];
+          }
+
+          if (autoSubMode === 'document' && finalUploadedQuestions.length === 0 && !pastedJson) {
+            throw new Error('אנא בחרו קובץ Word / PDF או הדביקו שאלות ותשובות בתיבת הטקסט.');
+          }
+
+          const res = await fetch('/api/admin/games/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              title,
+              subtitle,
+              timerSeconds,
+              points,
+              teamsEnabled,
+              mode: autoSubMode,
+              topics: cleanedTopics,
+              randomCount,
+              customInstructions,
+              uploadedQuestions: finalUploadedQuestions,
+              shuffleQuestionsOrder,
+              includeImages,
+              apiKey,
+              pastedJson
+            })
+          });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error || 'שגיאה ביצירת המשחק האוטומטי.');
+          newGameDialog.close();
+          showToast(
+            `המשחק "${data.game.title}" נוצר אוטומטית עם ${data.generatedCount} שאלות! (קוד כניסה: ${data.game.code})`
+          );
+        } catch (err) {
+          showToast(err.message || 'שגיאה ביצירת המשחק האוטומטי.');
+        } finally {
+          btnSubmitNewGame.disabled = false;
+          btnSubmitNewGame.textContent = prevBtnText;
+        }
+      });
+
+      // -------------------- Host Actions --------------------
+
+      document.getElementById('btn-copy-code').addEventListener('click', async () => {
+        const codeText = lobbyGameCodeDigits.textContent.trim();
+        try {
+          await navigator.clipboard.writeText(codeText);
+          showToast(`קוד המשחק (${codeText}) הועתק!`);
+        } catch {
+          showToast(`קוד המשחק: ${codeText}`);
+        }
+      });
+
+      document.getElementById('btn-copy-url').addEventListener('click', async () => {
+        const text = joinUrlDisplay.textContent.trim();
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast('הקישור הועתק ללוח!');
+        } catch {
+          showToast(text);
+        }
+      });
+
+      if (btnEntryCopyUrl) {
+        btnEntryCopyUrl.addEventListener('click', async () => {
+          const text = entryJoinUrl ? entryJoinUrl.textContent.trim() : joinUrlDisplay.textContent.trim();
+          try {
+            await navigator.clipboard.writeText(text);
+            showToast('קישור הטריוויה הועתק ללוח!');
+          } catch {
+            showToast(text);
+          }
+        });
+      }
+
+      if (btnEntryCopyCode) {
+        btnEntryCopyCode.addEventListener('click', async () => {
+          const codeText = entryGameCode ? entryGameCode.textContent.trim() : lobbyGameCodeDigits.textContent.trim();
+          try {
+            await navigator.clipboard.writeText(codeText);
+            showToast(`קוד המשחק (${codeText}) הועתק!`);
+          } catch {
+            showToast(`קוד המשחק: ${codeText}`);
+          }
+        });
+      }
+
+      if (entryWaitingRoster) {
+        entryWaitingRoster.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-kick-id]');
+          if (!btn) return;
+          const pid = btn.getAttribute('data-kick-id');
+          socket.emit('admin:kickPlayer', { playerId: pid });
+        });
+      }
+
+      if (btnEntryStartQuiz) {
+        btnEntryStartQuiz.addEventListener('click', () => {
+          dismissDrawerImmediately();
+          socket.emit('admin:startQuiz', (res) => {
+            if (res && !res.ok) showToast(res.error || 'לא ניתן להתחיל.');
+          });
+        });
+      }
+
+      lobbyRoster.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-kick-id]');
+        if (!btn) return;
+        const pid = btn.getAttribute('data-kick-id');
+        socket.emit('admin:kickPlayer', { playerId: pid });
+      });
+
+      btnClearPlayers.addEventListener('click', () => {
+        socket.emit('admin:resetQuiz', { keepPlayers: false });
+      });
+
+      btnStartQuiz.addEventListener('click', () => {
+        dismissDrawerImmediately();
+        socket.emit('admin:startQuiz', (res) => {
+          if (res && !res.ok) showToast(res.error || 'לא ניתן להתחיל.');
+        });
+      });
+
+      btnResumeQuiz.addEventListener('click', () => {
+        dismissDrawerImmediately();
+        socket.emit('admin:resumeQuiz', (res) => {
+          if (res && !res.ok) showToast(res.error || 'לא ניתן להמשיך.');
+        });
+      });
+
+      function finishAndSaveCurrentQuiz() {
+        dismissDrawerImmediately();
+        socket.emit('admin:finishQuiz', (res) => {
+          if (res && !res.ok) {
+            showToast(res.error || 'לא ניתן לסיים משחק.');
+            return;
+          }
+          showToast('המשחק נסגר והנתונים נשמרו בהצלחה!');
+        });
+      }
+
+      document.getElementById('btn-dock-finish-quiz').addEventListener('click', finishAndSaveCurrentQuiz);
+      document.getElementById('btn-drawer-finish-quiz').addEventListener('click', finishAndSaveCurrentQuiz);
+
+      btnPrevQ.addEventListener('click', () => {
+        socket.emit('admin:prevQuestion');
+      });
+
+      btnPauseTimer.addEventListener('click', () => {
+        socket.emit('admin:togglePause');
+      });
+
+      if (btnResetTimer) {
+        btnResetTimer.addEventListener('click', () => {
+          socket.emit('admin:resetTimer', (res) => {
+            if (res && res.ok) {
+              showToast('הטיימר אופס והופעל מחדש!');
+            }
+          });
+        });
+      }
+
+      btnRevealAnswer.addEventListener('click', () => {
+        socket.emit('admin:revealAnswer');
+      });
+
+      btnNextQ.addEventListener('click', () => {
+        socket.emit('admin:nextQuestion');
+      });
+
+      function openLeaderboardModal() {
+        dismissDrawerImmediately();
+        if (adminState) {
+          renderActiveLeaderboards(adminState);
+        }
+        if (!leaderboardDialog.open) leaderboardDialog.showModal();
+      }
+
+      document.getElementById('btn-open-leaderboard').addEventListener('click', openLeaderboardModal);
+      document.getElementById('btn-dock-leaderboard').addEventListener('click', openLeaderboardModal);
+      if (btnEntryOpenLb) {
+        btnEntryOpenLb.addEventListener('click', openLeaderboardModal);
+      }
+
+      function openResetModal() {
+        dismissDrawerImmediately();
+        if (!resetDialog.open) resetDialog.showModal();
+      }
+
+      document.getElementById('btn-open-reset').addEventListener('click', openResetModal);
+      document.getElementById('btn-drawer-reset').addEventListener('click', openResetModal);
+
+      document.getElementById('btn-confirm-reset-keep').addEventListener('click', () => {
+        socket.emit('admin:resetQuiz', { keepPlayers: true });
+        resetDialog.close();
+        showToast('החידון אופס והשחקנים נשמרו בחדר.');
+      });
+
+      document.getElementById('btn-confirm-reset-clear').addEventListener('click', () => {
+        socket.emit('admin:resetQuiz', { keepPlayers: false });
+        resetDialog.close();
+        showToast('החידון ורשימת השחקנים אופסו.');
+      });
+
+      document.getElementById('btn-play-again-keep').addEventListener('click', () => {
+        socket.emit('admin:resetQuiz', { keepPlayers: true });
+      });
+
+      document.getElementById('btn-play-again-clear').addEventListener('click', () => {
+        socket.emit('admin:resetQuiz', { keepPlayers: false });
+      });
+
+      // Quick Upload Image on Current Question
+      const quickQInput = document.getElementById('quick-q-image-input');
+      document.getElementById('btn-quick-q-image').addEventListener('click', () => {
+        quickQInput.value = '';
+        quickQInput.click();
+      });
+
+      quickQInput.addEventListener('change', async () => {
+        const file = quickQInput.files?.[0];
+        if (!file || !adminState || adminState.currentQuestionIndex < 0) return;
+        try {
+          showToast('מעלה תמונה לשאלה...');
+          const url = await uploadImageFile(file, 'question');
+          const res = await fetch(`/api/admin/questions/${adminState.currentQuestionIndex}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: url })
+          });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error);
+          showToast('תמונת השאלה עודכנה בהצלחה!');
+        } catch (err) {
+          showToast(err.message || 'שגיאה בהעלאת התמונה.');
+        }
+      });
+
+      btnRemoveQuickQImage.addEventListener('click', async () => {
+        if (!adminState || adminState.currentQuestionIndex < 0) return;
+        try {
+          const res = await fetch(`/api/admin/questions/${adminState.currentQuestionIndex}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: '' })
+          });
+          const data = await res.json();
+          if (data.ok) showToast('תמונת השאלה הוסרה.');
+        } catch {
+          showToast('שגיאה בהסרת התמונה.');
+        }
+      });
+
+      // -------------------- Settings & Questions Manager Modal --------------------
+
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const panelBranding = document.getElementById('tab-panel-branding');
+      const panelQuestions = document.getElementById('tab-panel-questions');
+
+      function switchSettingsTab(tabName) {
+        tabBtns.forEach((b) => b.classList.toggle('is-active', b.dataset.tab === tabName));
+        panelBranding.hidden = tabName !== 'branding';
+        panelBranding.style.display = tabName === 'branding' ? 'flex' : 'none';
+        panelQuestions.hidden = tabName !== 'questions';
+        panelQuestions.style.display = tabName === 'questions' ? 'flex' : 'none';
+      }
+
+      tabBtns.forEach((btn) => {
+        btn.addEventListener('click', () => switchSettingsTab(btn.dataset.tab));
+      });
+
+      function createDefaultQuestionObject() {
+        return {
+          question: '',
+          answers: ['', '', '', ''],
+          correctIndex: 0,
+          image: '',
+          points: 100,
+          timerSeconds: Number(draftSettings.timerSeconds) || 15
+        };
+      }
+
+      async function openSettingsModal(initialTab = 'branding') {
+        dismissDrawerImmediately();
+        if (adminState?.settings) {
+          draftSettings = { ...adminState.settings };
+        }
+        populateSettingsForm();
+
+        try {
+          const res = await fetch('/api/admin/questions');
+          const data = await res.json();
+          if (data.ok) {
+            editableQuestions = data.questions.map((q) => ({
+              question: q.question,
+              answers: [...q.answers],
+              correctIndex: q.correctIndex,
+              image: q.image || '',
+              points: Number(q.points) >= 1 ? Number(q.points) : 100,
+              timerSeconds:
+                Number(q.timerSeconds) >= 5
+                  ? Number(q.timerSeconds)
+                  : Number(draftSettings.timerSeconds) || 15
+            }));
+            if (editableQuestions.length === 0) {
+              editableQuestions.push(createDefaultQuestionObject());
+            }
+            renderQuestionsEditor();
+          }
+        } catch {
+          showToast('שגיאה בטעינת השאלות.');
+        }
+
+        switchSettingsTab(initialTab);
+        if (!settingsDialog.open) settingsDialog.showModal();
+      }
+
+      document.getElementById('btn-open-settings').addEventListener('click', () => openSettingsModal('branding'));
+      document.getElementById('btn-shortcut-branding').addEventListener('click', () => openSettingsModal('branding'));
+      document.getElementById('btn-shortcut-questions').addEventListener('click', () => openSettingsModal('questions'));
+
+      // Branding Form Controls
+      const previewHeaderImg = document.getElementById('preview-header-img');
+      const btnClearHeader = document.getElementById('btn-clear-header');
+      const previewBgImg = document.getElementById('preview-bg-img');
+      const btnClearBg = document.getElementById('btn-clear-bg');
+      const inputTitle = document.getElementById('input-quiz-title');
+      const inputSubtitle = document.getElementById('input-quiz-subtitle');
+      const inputBgOpacity = document.getElementById('input-bg-opacity');
+      const bgOpacityVal = document.getElementById('bg-opacity-val');
+      const inputTimerSeconds = document.getElementById('input-timer-seconds');
+      const inputAutoReveal = document.getElementById('input-auto-reveal');
+
+      function populateSettingsForm() {
+        inputTitle.value = draftSettings.title || '';
+        inputSubtitle.value = draftSettings.subtitle || '';
+        const opPct = Math.round((draftSettings.bgOverlayOpacity ?? 0.68) * 100);
+        inputBgOpacity.value = String(opPct);
+        bgOpacityVal.textContent = `${opPct}%`;
+        inputTimerSeconds.value = String(draftSettings.timerSeconds || 15);
+        inputAutoReveal.checked = Boolean(draftSettings.autoRevealOnTimeout);
+
+        if (draftSettings.headerImage) {
+          previewHeaderImg.src = draftSettings.headerImage;
+          previewHeaderImg.hidden = false;
+          btnClearHeader.hidden = false;
+        } else {
+          previewHeaderImg.hidden = true;
+          btnClearHeader.hidden = true;
+        }
+
+        if (draftSettings.backgroundImage) {
+          previewBgImg.src = draftSettings.backgroundImage;
+          previewBgImg.hidden = false;
+          btnClearBg.hidden = false;
+        } else {
+          previewBgImg.hidden = true;
+          btnClearBg.hidden = true;
+        }
+      }
+
+      inputBgOpacity.addEventListener('input', () => {
+        const val = Number(inputBgOpacity.value);
+        bgOpacityVal.textContent = `${val}%`;
+        document.documentElement.style.setProperty('--bg-overlay-opacity', String(val / 100));
+      });
+
+      const inputHeaderFile = document.getElementById('input-header-file');
+      document.getElementById('btn-upload-header').addEventListener('click', () => {
+        inputHeaderFile.value = '';
+        inputHeaderFile.click();
+      });
+
+      inputHeaderFile.addEventListener('change', async () => {
+        const file = inputHeaderFile.files?.[0];
+        if (!file) return;
+        try {
+          showToast('מעלה תמונת כותרת...');
+          const url = await uploadImageFile(file, 'header');
+          draftSettings.headerImage = url;
+          populateSettingsForm();
+          await persistDraftSettings('תמונת הכותרת הראשית הועלתה ונשמרה!');
+        } catch (err) {
+          showToast(err.message || 'שגיאה בהעלאת הכותרת.');
+        }
+      });
+
+      btnClearHeader.addEventListener('click', async () => {
+        draftSettings.headerImage = '';
+        populateSettingsForm();
+        await persistDraftSettings('תמונת הכותרת הוסרה.');
+      });
+
+      const inputBgFile = document.getElementById('input-bg-file');
+      document.getElementById('btn-upload-bg').addEventListener('click', () => {
+        inputBgFile.value = '';
+        inputBgFile.click();
+      });
+
+      inputBgFile.addEventListener('change', async () => {
+        const file = inputBgFile.files?.[0];
+        if (!file) return;
+        try {
+          showToast('מעלה תמונת רקע לחידון...');
+          const url = await uploadImageFile(file, 'bg');
+          draftSettings.backgroundImage = url;
+          populateSettingsForm();
+          await persistDraftSettings('תמונת הרקע לחידון עודכנה בהצלחה!');
+        } catch (err) {
+          showToast(err.message || 'שגיאה בהעלאת הרקע.');
+        }
+      });
+
+      btnClearBg.addEventListener('click', async () => {
+        draftSettings.backgroundImage = '';
+        populateSettingsForm();
+        await persistDraftSettings('תמונת הרקע הוסרה.');
+      });
+
+      async function persistDraftSettings(successMsg) {
+        const payload = {
+          title: inputTitle.value,
+          subtitle: inputSubtitle.value,
+          headerImage: draftSettings.headerImage,
+          backgroundImage: draftSettings.backgroundImage,
+          bgOverlayOpacity: Number(inputBgOpacity.value) / 100,
+          timerSeconds: Number(inputTimerSeconds.value) || 15,
+          autoRevealOnTimeout: inputAutoReveal.checked
+        };
+
+        const res = await fetch('/api/admin/settings', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'שגיאה בשמירת הגדרות.');
+        draftSettings = { ...data.settings };
+        applyQuizBranding(draftSettings);
+        showToast(successMsg || 'ההגדרות נשמרו בהצלחה!');
+      }
+
+      document.getElementById('btn-save-settings').addEventListener('click', async () => {
+        try {
+          await persistDraftSettings('עיצוב המשחק וההגדרות נשמרו!');
+        } catch (err) {
+          showToast(err.message);
+        }
+      });
+
+      // -------------------- Questions, Points, Timer & Image Editor --------------------
+
+      const questionsEditorList = document.getElementById('questions-editor-list');
+      const tabQCount = document.getElementById('tab-q-count');
+
+      function syncEditorDomToArray() {
+        const cards = questionsEditorList.querySelectorAll('.q-editor-card');
+        cards.forEach((card, i) => {
+          if (!editableQuestions[i]) return;
+          const qText = card.querySelector('[data-field="question"]');
+          if (qText) editableQuestions[i].question = qText.value;
+
+          const qPoints = card.querySelector('[data-field="points"]');
+          if (qPoints) {
+            const pts = Math.round(Number(qPoints.value));
+            editableQuestions[i].points = Number.isFinite(pts) && pts >= 1 ? pts : 100;
+          }
+
+          const qTimer = card.querySelector('[data-field="timerSeconds"]');
+          if (qTimer) {
+            const secs = Math.round(Number(qTimer.value));
+            editableQuestions[i].timerSeconds =
+              Number.isFinite(secs) && secs >= 5 && secs <= 300 ? secs : 15;
+          }
+
+          card.querySelectorAll('[data-ans-idx]').forEach((inp) => {
+            const aIdx = Number(inp.getAttribute('data-ans-idx'));
+            editableQuestions[i].answers[aIdx] = inp.value;
+          });
+          const checkedRadio = card.querySelector(`input[name="correct-${i}"]:checked`);
+          if (checkedRadio) {
+            editableQuestions[i].correctIndex = Number(checkedRadio.value);
+          }
+        });
+      }
+
+      function renderQuestionsEditor() {
+        tabQCount.textContent = String(editableQuestions.length);
+        questionsEditorList.innerHTML = editableQuestions
+          .map(
+            (q, i) => `
+          <article class="q-editor-card" data-q-idx="${i}">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <strong style="color:#7dd3fc; font-size:1.05rem;">שאלה ${i + 1}</strong>
+              <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <button type="button" class="btn btn--sm" data-action="upload-q-img" data-idx="${i}">
+                  📷 ${q.image ? 'החלף תמונה' : 'הוסף תמונה מהמחשב'}
+                </button>
+                ${
+                  q.image
+                    ? `<button type="button" class="btn btn--danger btn--sm" data-action="clear-q-img" data-idx="${i}">הסר תמונה</button>`
+                    : ''
+                }
+                <button type="button" class="btn btn--danger btn--sm" data-action="delete-q" data-idx="${i}" ${editableQuestions.length <= 1 ? 'disabled' : ''}>
+                  🗑️ מחק
+                </button>
+              </div>
+            </div>
+
+            <div class="q-meta-row">
+              <label class="q-meta-field">
+                <span>💰 קופת ניקוד לשאלה:</span>
+                <input
+                  type="number"
+                  class="input input--compact"
+                  data-field="points"
+                  min="1"
+                  max="100000"
+                  step="10"
+                  value="${Number(q.points) >= 1 ? Number(q.points) : 100}"
+                />
+              </label>
+
+              <label class="q-meta-field">
+                <span>⏱️ זמן לשאלה (שניות):</span>
+                <input
+                  type="number"
+                  class="input input--compact"
+                  data-field="timerSeconds"
+                  min="5"
+                  max="300"
+                  step="1"
+                  value="${Number(q.timerSeconds) >= 5 ? Number(q.timerSeconds) : 15}"
+                />
+              </label>
+            </div>
+
+            ${
+              q.image
+                ? `<img src="${escapeHtml(q.image)}" alt="תמונה לשאלה ${i + 1}" class="upload-preview" />`
+                : ''
+            }
+
+            <input
+              type="text"
+              class="input"
+              data-field="question"
+              value="${escapeHtml(q.question)}"
+              placeholder="הקלידו את נוסח השאלה..."
+            />
+
+            <div class="q-editor-answers">
+              ${[0, 1, 2, 3]
+                .map(
+                  (aIdx) => `
+                <div class="q-ans-row">
+                  <input
+                    type="radio"
+                    name="correct-${i}"
+                    value="${aIdx}"
+                    title="סמן כתשובה נכונה"
+                    aria-label="סמן תשובה ${LETTERS[aIdx]} כנכונה"
+                    ${q.correctIndex === aIdx ? 'checked' : ''}
+                  />
+                  <span style="font-weight:800; min-width:1.2rem;">${LETTERS[aIdx]}.</span>
+                  <input
+                    type="text"
+                    class="input"
+                    data-ans-idx="${aIdx}"
+                    value="${escapeHtml(q.answers[aIdx] || '')}"
+                    placeholder="תשובה ${LETTERS[aIdx]}"
+                  />
+                </div>
+              `
+                )
+                .join('')}
+            </div>
+          </article>
+        `
+          )
+          .join('');
+      }
+
+      const editorQFileInput = document.createElement('input');
+      editorQFileInput.type = 'file';
+      editorQFileInput.accept = 'image/*';
+      editorQFileInput.hidden = true;
+      document.body.appendChild(editorQFileInput);
+      let pendingEditorImageQIndex = -1;
+
+      questionsEditorList.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+        syncEditorDomToArray();
+        const action = btn.getAttribute('data-action');
+        const idx = Number(btn.getAttribute('data-idx'));
+
+        if (action === 'upload-q-img') {
+          pendingEditorImageQIndex = idx;
+          editorQFileInput.value = '';
+          editorQFileInput.click();
+        } else if (action === 'clear-q-img') {
+          editableQuestions[idx].image = '';
+          renderQuestionsEditor();
+        } else if (action === 'delete-q') {
+          if (editableQuestions.length <= 1) return;
+          editableQuestions.splice(idx, 1);
+          renderQuestionsEditor();
+        }
+      });
+
+      editorQFileInput.addEventListener('change', async () => {
+        const file = editorQFileInput.files?.[0];
+        if (!file || pendingEditorImageQIndex < 0 || !editableQuestions[pendingEditorImageQIndex]) return;
+        try {
+          showToast('מעלה תמונה לשאלה...');
+          const url = await uploadImageFile(file, 'question');
+          editableQuestions[pendingEditorImageQIndex].image = url;
+          renderQuestionsEditor();
+          showToast('התמונה צורפה! לחצו "שמור את כל השאלות" לשמירה סופית.');
+        } catch (err) {
+          showToast(err.message || 'שגיאה בהעלאת התמונה.');
+        }
+      });
+
+      document.getElementById('btn-add-question').addEventListener('click', () => {
+        syncEditorDomToArray();
+        editableQuestions.push(createDefaultQuestionObject());
+        renderQuestionsEditor();
+        const lastCard = questionsEditorList.lastElementChild;
+        if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+
+      document.getElementById('btn-save-questions').addEventListener('click', async () => {
+        syncEditorDomToArray();
+        try {
+          const res = await fetch('/api/admin/questions', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ questions: editableQuestions })
+          });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error || 'שגיאה בשמירת השאלות.');
+          editableQuestions = data.questions;
+          renderQuestionsEditor();
+          showToast('כל השאלות, הניקוד והזמנים נשמרו בהצלחה!');
+        } catch (err) {
+          showToast(err.message);
+        }
+      });
+
+      const inputImportDoc = document.getElementById('input-import-doc');
+      const btnImportDoc = document.getElementById('btn-import-doc');
+      if (btnImportDoc && inputImportDoc) {
+        btnImportDoc.addEventListener('click', () => {
+          inputImportDoc.value = '';
+          inputImportDoc.click();
+        });
+
+        inputImportDoc.addEventListener('change', async () => {
+          const file = inputImportDoc.files?.[0];
+          if (!file) return;
+          syncEditorDomToArray();
+          const prevLabel = btnImportDoc.textContent;
+          btnImportDoc.disabled = true;
+          btnImportDoc.textContent = '⏳ מחלץ שאלות מהקובץ...';
+          try {
+            const data = await parseUploadedDocumentFile(file, {
+              timerSeconds: Number(draftSettings.timerSeconds) || 15,
+              points: 100
+            });
+            if (!data.ok || !Array.isArray(data.questions) || data.questions.length === 0) {
+              throw new Error(data.error || 'לא הצלחנו לחלץ שאלות מהקובץ.');
+            }
+            const imported = data.questions.map((q) => ({
+              question: String(q.question || ''),
+              answers: Array.isArray(q.answers) ? q.answers.slice(0, 4).map(String) : ['', '', '', ''],
+              correctIndex: Number(q.correctIndex) || 0,
+              image: typeof q.image === 'string' ? q.image : '',
+              points: Number(q.points) >= 1 ? Number(q.points) : 100,
+              timerSeconds: Number(q.timerSeconds) >= 5 ? Number(q.timerSeconds) : Number(draftSettings.timerSeconds) || 15
+            }));
+
+            // Replace single empty placeholder question if present, otherwise append
+            if (
+              editableQuestions.length === 1 &&
+              !editableQuestions[0].question.trim() &&
+              editableQuestions[0].answers.every((a) => !a.trim())
+            ) {
+              editableQuestions = imported;
+            } else {
+              editableQuestions = [...editableQuestions, ...imported];
+            }
+
+            renderQuestionsEditor();
+            showToast(`חולצו ונוספו ${imported.length} שאלות מתוך "${file.name}"! לחצו "שמור את כל השאלות" לעדכון המשחק.`);
+          } catch (err) {
+            showToast(err.message || 'שגיאה בייבוא הקובץ.');
+          } finally {
+            btnImportDoc.disabled = false;
+            btnImportDoc.textContent = prevLabel;
+          }
+        });
+      }
+
+      const inputImportJson = document.getElementById('input-import-json');
+      document.getElementById('btn-import-json').addEventListener('click', () => {
+        inputImportJson.value = '';
+        inputImportJson.click();
+      });
+
+      inputImportJson.addEventListener('change', async () => {
+        const file = inputImportJson.files?.[0];
+        if (!file) return;
+        try {
+          const text = await file.text();
+          const parsed = JSON.parse(text);
+          const arr = Array.isArray(parsed) ? parsed : parsed?.questions;
+          if (!Array.isArray(arr) || arr.length === 0) {
+            throw new Error('הקובץ אינו מכיל מערך שאלות תקין.');
+          }
+          editableQuestions = arr.map((q) => ({
+            question: String(q.question || ''),
+            answers: Array.isArray(q.answers) ? q.answers.slice(0, 4).map(String) : ['', '', '', ''],
+            correctIndex: Number(q.correctIndex) || 0,
+            image: typeof q.image === 'string' ? q.image : '',
+            points: Number(q.points) >= 1 ? Number(q.points) : 100,
+            timerSeconds: Number(q.timerSeconds) >= 5 ? Number(q.timerSeconds) : 15
+          }));
+          renderQuestionsEditor();
+          showToast(`נטענו ${editableQuestions.length} שאלות! לחצו שמור לעדכון המשחק.`);
+        } catch (err) {
+          showToast(err.message || 'קובץ JSON לא תקין.');
+        }
+      });
+
+      document.getElementById('btn-export-json').addEventListener('click', () => {
+        syncEditorDomToArray();
+        const blob = new Blob([JSON.stringify(editableQuestions, null, 2)], {
+          type: 'application/json;charset=utf-8'
+        });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'questions.json';
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+    })();
+  </script>
+</body>
+</html>

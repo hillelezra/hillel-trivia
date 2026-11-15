@@ -1,0 +1,67 @@
+[
+  {
+    "question": "מי היה ראש הממשלה הראשון של מדינת ישראל?",
+    "answers": [
+      "משה שרת",
+      "חיים ויצמן",
+      "לוי אשכול",
+      "דוד בן-גוריון"
+    ],
+    "correctIndex": 3,
+    "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=1",
+    "points": 100,
+    "timerSeconds": 15
+  },
+  {
+    "question": "באיזו שנה הושק האייפון הראשון על ידי סטיב ג׳ובס?",
+    "answers": [
+      "2010",
+      "2005",
+      "2007",
+      "2009"
+    ],
+    "correctIndex": 2,
+    "image": "/api/question-illustration?theme=tech&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=2",
+    "points": 100,
+    "timerSeconds": 15
+  },
+  {
+    "question": "איזה סרט ישראלי זכה בפרס אופיר וייצג את ישראל באוסקר בקטגוריית הסרט הזר עם הבמאי יוסף סידר (\"בופור\" / \"הערת שוליים\")?",
+    "answers": [
+      "שניהם (בופור והערת שוליים)",
+      "רק הערת שוליים",
+      "אף אחד מהם",
+      "רק בופור"
+    ],
+    "correctIndex": 0,
+    "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=3",
+    "points": 100,
+    "timerSeconds": 15
+  },
+  {
+    "question": "מי נחשב לממציא נורת הליבון החשמלית המסחרית?",
+    "answers": [
+      "תומאס אדיסון",
+      "אלכסנדר גרהם בל",
+      "ניקולה טסלה",
+      "אלברט איינשטיין"
+    ],
+    "correctIndex": 0,
+    "image": "/api/question-illustration?theme=science&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=4",
+    "points": 100,
+    "timerSeconds": 15
+  },
+  {
+    "question": "איזו להקה ישראלית שרה את השיר \"נתתי לה חיי\"?",
+    "answers": [
+      "משינה",
+      "תיסלם",
+      "אתניקס",
+      "כוורת"
+    ],
+    "correctIndex": 3,
+    "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=5",
+    "points": 100,
+    "timerSeconds": 15
+  }
+]

@@ -1,0 +1,1606 @@
+{
+  "id": "game-1794763730854-684e4a",
+  "code": "1009",
+  "title": "ג'מניי ניסוי",
+  "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+  "headerImage": "",
+  "backgroundImage": "",
+  "bgOverlayOpacity": 0.68,
+  "timerSeconds": 15,
+  "autoRevealOnTimeout": true,
+  "teamsEnabled": false,
+  "teams": [],
+  "activeGameId": "game-1794763730854-684e4a",
+  "games": [
+    {
+      "id": "game-default",
+      "title": "אלופי הטריוויה",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה ב-100 נקודות לכל שאלה!",
+      "headerImage": "/uploads/header-1794079156027-c2f1e96a.jpg",
+      "backgroundImage": "/uploads/bg-1794079173397-958946cc.jpg",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 15,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": true,
+      "teams": [],
+      "questions": [
+        {
+          "question": "איזה כוכב לכת במערכת השמש מכונה 'כוכב הלכת האדום'?",
+          "answers": [
+            "נוגה",
+            "מאדים",
+            "צדק",
+            "שבתאי"
+          ],
+          "correctIndex": 1,
+          "image": "/uploads/question-1794077951836-7e599c54.jpg",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "באיזו שנה הוכרזה עצמאותה של מדינת ישראל?",
+          "answers": [
+            "1945",
+            "1947",
+            "1948",
+            "1950"
+          ],
+          "correctIndex": 2,
+          "image": "/uploads/question-1794079218034-c75bf27c.jpg",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהו היסוד הכימי הנפוץ ביותר ביקום?",
+          "answers": [
+            "חמצן",
+            "פחמן",
+            "חנקן",
+            "מימן"
+          ],
+          "correctIndex": 3,
+          "image": "/uploads/question-1794079226203-8c3587ac.jpg",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה ים הוא המקום הנמוך ביותר על פני כדור הארץ?",
+          "answers": [
+            "ים המלח",
+            "הים התיכון",
+            "ים סוף",
+            "הים הכספי"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מי צייר את היצירה המפורסמת 'המונה ליזה'?",
+          "answers": [
+            "מיכלאנג'לו",
+            "וינסנט ואן גוך",
+            "לאונרדו דה וינצ'י",
+            "פבלו פיקאסו"
+          ],
+          "correctIndex": 2,
+          "image": "/uploads/question-1794079232100-cee335c8.jpg",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה שחקנים נמצאים על המגרש בקבוצת כדורסל אחת בזמן משחק?",
+          "answers": [
+            "5",
+            "6",
+            "7",
+            "11"
+          ],
+          "correctIndex": 0,
+          "image": "/uploads/question-1794079239460-f24e36ac.jpg",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהי בירת יפן?",
+          "answers": [
+            "קיוטו",
+            "אוסקה",
+            "סיאול",
+            "טוקיו"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזו חיה יבשתית היא המהירה ביותר בעולם?",
+          "answers": [
+            "אריה",
+            "ברדלס (צ'יטה)",
+            "אנטילופה",
+            "סוס מרוץ"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה קלידים יש בפסנתר כנף סטנדרטי?",
+          "answers": [
+            "76",
+            "84",
+            "88",
+            "92"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה מדען פיתח את תורת היחסות?",
+          "answers": [
+            "אייזק ניוטון",
+            "ניקולה טסלה",
+            "גלילאו גליליי",
+            "אלברט איינשטיין"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "'קרענק/'ענ/",
+          "answers": [
+            "/קכ/",
+            "/קכע",
+            "/כ",
+            "/ה/'ג"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        }
+      ],
+      "savedPlayers": [],
+      "lastFinishedAt": null,
+      "code": "1000"
+    },
+    {
+      "id": "game-1794080546987-51d203",
+      "title": "משפחת ענף",
+      "subtitle": "חנוכה תשפו",
+      "headerImage": "",
+      "backgroundImage": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 15,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": true,
+      "teams": [
+        {
+          "id": "team-822cce4a",
+          "name": "סייג"
+        },
+        {
+          "id": "team-28a89f2b",
+          "name": "אבי ענף"
+        },
+        {
+          "id": "team-6302155a",
+          "name": "עגיב"
+        },
+        {
+          "id": "team-6484c55a",
+          "name": "קימחי"
+        },
+        {
+          "id": "team-a5a4eebd",
+          "name": "קליין"
+        },
+        {
+          "id": "team-370698db",
+          "name": "בוכריס"
+        },
+        {
+          "id": "team-23e350b4",
+          "name": "עזרא"
+        },
+        {
+          "id": "team-c08c939f",
+          "name": "יצחק ענף"
+        }
+      ],
+      "questions": [
+        {
+          "question": "איך קוראים לאמא של סבתא שושנה?",
+          "answers": [
+            "סמירה",
+            "טוקאן",
+            "ג'ינה",
+            "לולובריג'ידה"
+          ],
+          "correctIndex": 0,
+          "image": "/uploads/question-1794080629482-a81a1cc8.jpg",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהו הים הנמוך בעולם?",
+          "answers": [
+            "ים המלח",
+            "ים סוף",
+            "שקע מריאנה",
+            "הים האדום"
+          ],
+          "correctIndex": 0,
+          "image": "/uploads/question-1794080674590-c803d92e.jpg",
+          "points": 100,
+          "timerSeconds": 15
+        }
+      ],
+      "savedPlayers": [
+        {
+          "id": "a6c976b7-3814-4bd0-b267-9441d4287639",
+          "name": "מלכה",
+          "teamId": "team-23e350b4",
+          "weight": 1,
+          "score": 200,
+          "correctCount": 2,
+          "joinedAt": 1794685042756
+        }
+      ],
+      "lastFinishedAt": "2026-11-14T19:37:48.136Z",
+      "code": "1001"
+    },
+    {
+      "id": "game-1794089406588-9bfa29",
+      "title": "משפחת ענף חנוכה",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 15,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": true,
+      "teams": [],
+      "questions": [
+        {
+          "question": "יך",
+          "answers": [
+            "עהחל",
+            "הצ",
+            "עךו",
+            "כלוי"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        }
+      ],
+      "savedPlayers": [],
+      "lastFinishedAt": null,
+      "code": "1002"
+    },
+    {
+      "id": "game-1794431713579-5d6ad6",
+      "title": "פריסטייל א",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 15,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "איזו מתכת היא נוזלית בטמפרטורת החדר?",
+          "answers": [
+            "אבץ",
+            "כספית",
+            "עופרת",
+            "נחושת"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהי בירת אוסטרליה?",
+          "answers": [
+            "פרת׳",
+            "קנברה",
+            "מלבורן",
+            "סידני"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה ימים יש בשנה לועזית רגילה (שאינה מעוברת)?",
+          "answers": [
+            "365",
+            "354",
+            "360",
+            "366"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "באיזו עיר הוכרזה הקמת מדינת ישראל בה׳ באייר תש\"ח?",
+          "answers": [
+            "חיפה",
+            "ירושלים",
+            "תל אביב",
+            "ראשון לציון"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "באיזו שנה נחתם הסכם השלום בין ישראל למצרים?",
+          "answers": [
+            "1979",
+            "1973",
+            "1982",
+            "1994"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מי כתב את מילות ההמנון הלאומי \"התקווה\"?",
+          "answers": [
+            "נפתלי הרץ אימבר",
+            "שאול טשרניחובסקי",
+            "חיים נחמן ביאליק",
+            "נתן אלתרמן"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזו מגילה קוראים בבית הכנסת בחג הפורים?",
+          "answers": [
+            "מגילת קהלת",
+            "מגילת רות",
+            "מגילת שיר השירים",
+            "מגילת אסתר"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה חומשים יש בתורה?",
+          "answers": [
+            "5",
+            "6",
+            "4",
+            "7"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה נרות בסך הכל מדליקים בחנוכייה בכל שמונת ימי חג החנוכה (כולל השמש)?",
+          "answers": [
+            "44",
+            "48",
+            "36",
+            "40"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מאיזה צמח או קטנייה מכינים ממרח חומוס מסורתי?",
+          "answers": [
+            "גרגירי חומוס וטחינה",
+            "שעועית לבנה",
+            "פולי סויה",
+            "עדשים כתומות"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהו התבלין היקר ביותר בעולם לפי משקל?",
+          "answers": [
+            "קינמון",
+            "וניל",
+            "הל",
+            "זעפרן"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזו עיר באיטליה נחשבת למולדת רוטב הבולונז (ראגו)?",
+          "answers": [
+            "נאפולי",
+            "בולוניה",
+            "מילאנו",
+            "רומא"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהי בירת יפן?",
+          "answers": [
+            "טוקיו",
+            "אוסקה",
+            "קיוטו",
+            "סיאול"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהי המדינה הקטנה ביותר בעולם בשטחה?",
+          "answers": [
+            "מונקו",
+            "קריית הוותיקן",
+            "ליכטנשטיין",
+            "סן מרינו"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "באיזו מדינה נמצאת העיר העתיקה מאצ׳ו פיצ׳ו?",
+          "answers": [
+            "בוליביה",
+            "מקסיקו",
+            "פרו",
+            "צ׳ילה"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהו הנהר הארוך ביותר בישראל?",
+          "answers": [
+            "נחל הקישון",
+            "נחל הירקון",
+            "נחל הבשור",
+            "נהר הירדן"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה הר הוא הגבוה ביותר בעולם?",
+          "answers": [
+            "הר קילימנג׳רו",
+            "הר האוורסט",
+            "הר פוג׳י",
+            "הר מון בלאן"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        }
+      ],
+      "savedPlayers": [
+        {
+          "id": "3d016c11-f310-4e96-89a9-b09a2c458969",
+          "name": "בדיחי",
+          "teamId": null,
+          "weight": 1,
+          "score": 500,
+          "correctCount": 5,
+          "joinedAt": 1794680956094
+        }
+      ],
+      "lastFinishedAt": "2026-11-14T18:30:01.099Z",
+      "code": "1003"
+    },
+    {
+      "id": "game-1794432422488-afeb99",
+      "title": "פריסטייל ב",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 25,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "איזה הר הוא הגבוה ביותר בעולם?",
+          "answers": [
+            "הר פוג׳י",
+            "הר קילימנג׳רו",
+            "הר האוורסט",
+            "הר מון בלאן"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=1",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה משבצות יש בלוח שחמט תקני?",
+          "answers": [
+            "49",
+            "64",
+            "100",
+            "81"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=chess&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=2",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה ויטמין מיוצר בגוף האדם בעקבות חשיפה לאור השמש?",
+          "answers": [
+            "ויטמין B12",
+            "ויטמין C",
+            "ויטמין D",
+            "ויטמין A"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=space&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=3",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מי הלחין את היצירה המפורסמת \"ארבע העונות\"?",
+          "answers": [
+            "אנטוניו ויוואלדי",
+            "וולפגנג אמדאוס מוצרט",
+            "יוהאן סבסטיאן באך",
+            "לודוויג ואן בטהובן"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=4",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה מינים נוטלים בחג הסוכות?",
+          "answers": [
+            "ארבעה מינים",
+            "חמישה מינים",
+            "שבעה מינים",
+            "שלושה מינים"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=5",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה כוכב לכת מכונה \"כוכב הלכת האדום\"?",
+          "answers": [
+            "שבתאי",
+            "צדק",
+            "מאדים",
+            "נוגה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=space&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=6",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה גז בני אדם נושמים פנימה לצורך קיום חיים?",
+          "answers": [
+            "מימן",
+            "חמצן",
+            "הליום",
+            "פחמן דו-חמצני"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=7",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כל כמה שנים מתקיימים המשחקים האולימפיים (אולימפיאדת הקיץ)?",
+          "answers": [
+            "3 שנים",
+            "שנתיים",
+            "4 שנים",
+            "5 שנים"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=8",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "באיזו עיר באנגליה הוקמה להקת הביטלס?",
+          "answers": [
+            "מנצ׳סטר",
+            "ליברפול",
+            "לונדון",
+            "ברמינגהאם"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=9",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזו מגילה קוראים בבית הכנסת בחג הפורים?",
+          "answers": [
+            "מגילת שיר השירים",
+            "מגילת קהלת",
+            "מגילת אסתר",
+            "מגילת רות"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=10",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "באיזו שנה נחתם הסכם השלום בין ישראל למצרים?",
+          "answers": [
+            "1982",
+            "1979",
+            "1994",
+            "1973"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=11",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה יסוד כימי מסומן באותיות Au בטבלה המחזורית?",
+          "answers": [
+            "כסף",
+            "אלומיניום",
+            "זהב",
+            "נחושת"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=science&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=12",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהו אורכו המדויק (בקילומטרים) של מרוץ מרתון אולימפי?",
+          "answers": [
+            "40.000 ק\"מ",
+            "45.500 ק\"מ",
+            "38.250 ק\"מ",
+            "42.195 ק\"מ"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=olympics&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=13",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה נרות בסך הכל מדליקים בחנוכייה בכל שמונת ימי חג החנוכה (כולל השמש)?",
+          "answers": [
+            "48",
+            "36",
+            "40",
+            "44"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=space&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=14",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "באיזו מדינה נמצא מגדל אייפל?",
+          "answers": [
+            "אנגליה",
+            "איטליה",
+            "צרפת",
+            "ספרד"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=15",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה לבבות יש לתמנון?",
+          "answers": [
+            "4",
+            "1",
+            "3",
+            "2"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=nature&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=16",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזו עיר באיטליה נחשבת למולדת רוטב הבולונז (ראגו)?",
+          "answers": [
+            "רומא",
+            "בולוניה",
+            "נאפולי",
+            "מילאנו"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=food&badge=%D7%90%D7%95%D7%9B%D7%9C%20%D7%95%D7%A7%D7%95%D7%9C%D7%99%D7%A0%D7%A8%D7%99%D7%94&s=17",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה שיר של נטע ברזילי זכה באירוויזיון 2018?",
+          "answers": [
+            "Hallelujah",
+            "Unicorn",
+            "Toy",
+            "Diva"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=18",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה נקודות שווה קליעה מחוץ לקשת בכדורסל?",
+          "answers": [
+            "2 נקודות",
+            "נקודה אחת",
+            "3 נקודות",
+            "4 נקודות"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=sports&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=19",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהי השפה הרשמית במדינת ברזיל?",
+          "answers": [
+            "פורטוגזית",
+            "צרפתית",
+            "ספרדית",
+            "אנגלית"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=general&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=20",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה שניות יש ביממה",
+          "answers": [
+            "60",
+            "3600",
+            "14400",
+            "15400"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 15
+        }
+      ],
+      "savedPlayers": [],
+      "lastFinishedAt": "2026-11-14T19:49:29.230Z",
+      "code": "1004"
+    },
+    {
+      "id": "game-1794685205616-c7e5bf",
+      "title": "טריוויה: ידע כללי והיסטוריה של ישראל",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 15,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "איזה מבצע צבאי נודע גם בשם \"מבצע יונתן\" בשנת 1976?",
+          "answers": [
+            "מבצע קדש",
+            "מבצע משה",
+            "מבצע אנטבה",
+            "מבצע שלמה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=1",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה יסוד כימי מסומן באותיות Au בטבלה המחזורית?",
+          "answers": [
+            "נחושת",
+            "אלומיניום",
+            "זהב",
+            "כסף"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=science&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=2",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהי השפה הרשמית במדינת ברזיל?",
+          "answers": [
+            "ספרדית",
+            "אנגלית",
+            "צרפתית",
+            "פורטוגזית"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=general&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=3",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "באיזו שנה נערך הקונגרס הציוני הראשון בבאזל?",
+          "answers": [
+            "1901",
+            "1882",
+            "1917",
+            "1897"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=4",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזו מושבה כונתה \"אם המושבות\"?",
+          "answers": [
+            "ראש פינה",
+            "זכרון יעקב",
+            "פתח תקווה",
+            "נס ציונה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=5",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה ימים יש בשנה לועזית רגילה (שאינה מעוברת)?",
+          "answers": [
+            "360",
+            "354",
+            "365",
+            "366"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=6",
+          "points": 100,
+          "timerSeconds": 15
+        }
+      ],
+      "savedPlayers": [],
+      "lastFinishedAt": "2026-11-15T05:20:52.369Z",
+      "code": "1005"
+    },
+    {
+      "id": "game-1794720141688-4f9004",
+      "title": "פריסטייל ג",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 20,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "מי זכה בפרס נובל לספרות בשנת 1966 כנציג ישראל?",
+          "answers": [
+            "דוד גרוסמן",
+            "ש\"י עגנון",
+            "עמוס עוז",
+            "א.ב. יהושע"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=1",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזו מגילה קוראים בבית הכנסת בחג הפורים?",
+          "answers": [
+            "מגילת שיר השירים",
+            "מגילת קהלת",
+            "מגילת אסתר",
+            "מגילת רות"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=2",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "כל כמה שנים מתקיימים המשחקים האולימפיים (אולימפיאדת הקיץ)?",
+          "answers": [
+            "5 שנים",
+            "שנתיים",
+            "3 שנים",
+            "4 שנים"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=3",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "כמה טבעות משולבות בסמל המשחקים האולימפיים?",
+          "answers": [
+            "5",
+            "4",
+            "7",
+            "6"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=4",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה שיר של נטע ברזילי זכה באירוויזיון 2018?",
+          "answers": [
+            "Diva",
+            "Toy",
+            "Unicorn",
+            "Hallelujah"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=5",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהו כוכב הלכת הגדול ביותר במערכת השמש?",
+          "answers": [
+            "רהב (נפטון)",
+            "צדק (יופיטר)",
+            "כדור הארץ",
+            "שבתאי"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=space&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=6",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "כמה נקודות שווה קליעה מחוץ לקשת בכדורסל?",
+          "answers": [
+            "4 נקודות",
+            "3 נקודות",
+            "2 נקודות",
+            "נקודה אחת"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=sports&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=7",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "כמה ימים יש בשנה לועזית רגילה (שאינה מעוברת)?",
+          "answers": [
+            "360",
+            "365",
+            "354",
+            "366"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=8",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזו מתכת היא נוזלית בטמפרטורת החדר?",
+          "answers": [
+            "אבץ",
+            "כספית",
+            "נחושת",
+            "עופרת"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=science&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=9",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מדען גילה את הפניצילין בשנת 1928?",
+          "answers": [
+            "אדוארד ג׳נר",
+            "לואי פסטר",
+            "רוברט קוך",
+            "אלכסנדר פלמינג"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=science&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=10",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו שנה זכתה מכבי תל אביב לראשונה בגביע אירופה בכדורסל?",
+          "answers": [
+            "1977",
+            "1972",
+            "1981",
+            "2001"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=sports&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=11",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מצר ים מפריד בין יבשת אירופה ליבשת אפריקה?",
+          "answers": [
+            "מצר ברינג",
+            "מצר הורמוז",
+            "מצר בוספורוס",
+            "מצר גיברלטר"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=12",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו שנה הושק האייפון הראשון על ידי סטיב ג׳ובס?",
+          "answers": [
+            "2010",
+            "2005",
+            "2009",
+            "2007"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=tech&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=13",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה כוכב לכת מכונה \"כוכב הלכת האדום\"?",
+          "answers": [
+            "נוגה",
+            "שבתאי",
+            "צדק",
+            "מאדים"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=space&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=14",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזו חברה פיתחה את מכשיר האייפון (iPhone)?",
+          "answers": [
+            "סמסונג (Samsung)",
+            "מיקרוסופט (Microsoft)",
+            "גוגל (Google)",
+            "אפל (Apple)"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=music&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=15",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר באנגליה הוקמה להקת הביטלס?",
+          "answers": [
+            "ליברפול",
+            "לונדון",
+            "מנצ׳סטר",
+            "ברמינגהאם"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=16",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי המדינה הקטנה ביותר בעולם בשטחה?",
+          "answers": [
+            "קריית הוותיקן",
+            "סן מרינו",
+            "מונקו",
+            "ליכטנשטיין"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=17",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי היה הישראלי הראשון שזכה במדליית זהב אולימפית?",
+          "answers": [
+            "אריק זאבי",
+            "ירדן ג׳רבי",
+            "ארטיום דולגופיאט",
+            "גל פרידמן"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=olympics&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=18",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "כמה לבבות יש לתמנון?",
+          "answers": [
+            "4",
+            "3",
+            "2",
+            "1"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=nature&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=19",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי בירת אוסטרליה?",
+          "answers": [
+            "סידני",
+            "פרת׳",
+            "קנברה",
+            "מלבורן"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=20",
+          "points": 100,
+          "timerSeconds": 20
+        }
+      ],
+      "savedPlayers": [],
+      "lastFinishedAt": null,
+      "code": "1006"
+    },
+    {
+      "id": "game-1794747990249-e024a3",
+      "title": "ניסוי ענף 15/11",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "/uploads/bg-1794748231330-0d705cf5.jpg",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 15,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "כל כמה שנים מתקיימים המשחקים האולימפיים (אולימפיאדת הקיץ)?",
+          "answers": [
+            "3 שנים",
+            "שנתיים",
+            "5 שנים",
+            "4 שנים"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=1",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה טבעות משולבות בסמל המשחקים האולימפיים?",
+          "answers": [
+            "4",
+            "7",
+            "6",
+            "5"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=2",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה ימים נמשכת ספירת העומר מפסח ועד שבועות?",
+          "answers": [
+            "33 ימים",
+            "50 ימים",
+            "40 ימים",
+            "49 ימים"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=3",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה יבשות יש בכדור הארץ (לפי החלוקה המקובלת ל-7)?",
+          "answers": [
+            "8",
+            "7",
+            "6",
+            "5"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=4",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהי בירת יפן?",
+          "answers": [
+            "סיאול",
+            "אוסקה",
+            "קיוטו",
+            "טוקיו"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=5",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה מצר ים מפריד בין יבשת אירופה ליבשת אפריקה?",
+          "answers": [
+            "מצר ברינג",
+            "מצר גיברלטר",
+            "מצר הורמוז",
+            "מצר בוספורוס"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=6",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מי נחשב לממציא נורת הליבון החשמלית המסחרית?",
+          "answers": [
+            "אלכסנדר גרהם בל",
+            "ניקולה טסלה",
+            "אלברט איינשטיין",
+            "תומאס אדיסון"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=science&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=7",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהו בעל החיים היבשתי המהיר ביותר בעולם?",
+          "answers": [
+            "אריה",
+            "אנטילופה",
+            "סוס מרוץ",
+            "ברדלס (צ׳יטה)"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=8",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מי הלחין את היצירה המפורסמת \"ארבע העונות\"?",
+          "answers": [
+            "וולפגנג אמדאוס מוצרט",
+            "אנטוניו ויוואלדי",
+            "יוהאן סבסטיאן באך",
+            "לודוויג ואן בטהובן"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=9",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "באיזה ענף ספורט זכתה לינוי אשרם במדליית זהב אולימפית?",
+          "answers": [
+            "התעמלות אמנותית",
+            "התעמלות מכשירים",
+            "ג׳ודו",
+            "שיט"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=olympics&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=10",
+          "points": 100,
+          "timerSeconds": 15
+        }
+      ],
+      "savedPlayers": [],
+      "lastFinishedAt": null,
+      "code": "1007"
+    },
+    {
+      "id": "game-1794753244559-d94655",
+      "title": "ניסוי ענף 15/11 (עותק)",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "/uploads/bg-1794748231330-0d705cf5.jpg",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 15,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "כל כמה שנים מתקיימים המשחקים האולימפיים (אולימפיאדת הקיץ)?",
+          "answers": [
+            "3 שנים",
+            "שנתיים",
+            "5 שנים",
+            "4 שנים"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=1",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה טבעות משולבות בסמל המשחקים האולימפיים?",
+          "answers": [
+            "4",
+            "7",
+            "6",
+            "5"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=2",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה ימים נמשכת ספירת העומר מפסח ועד שבועות?",
+          "answers": [
+            "33 ימים",
+            "50 ימים",
+            "40 ימים",
+            "49 ימים"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=3",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "כמה יבשות יש בכדור הארץ (לפי החלוקה המקובלת ל-7)?",
+          "answers": [
+            "8",
+            "7",
+            "6",
+            "5"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=4",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהי בירת יפן?",
+          "answers": [
+            "סיאול",
+            "אוסקה",
+            "קיוטו",
+            "טוקיו"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=5",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה מצר ים מפריד בין יבשת אירופה ליבשת אפריקה?",
+          "answers": [
+            "מצר ברינג",
+            "מצר גיברלטר",
+            "מצר הורמוז",
+            "מצר בוספורוס"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=6",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מי נחשב לממציא נורת הליבון החשמלית המסחרית?",
+          "answers": [
+            "אלכסנדר גרהם בל",
+            "ניקולה טסלה",
+            "אלברט איינשטיין",
+            "תומאס אדיסון"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=science&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=7",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מהו בעל החיים היבשתי המהיר ביותר בעולם?",
+          "answers": [
+            "אריה",
+            "אנטילופה",
+            "סוס מרוץ",
+            "ברדלס (צ׳יטה)"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=8",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מי הלחין את היצירה המפורסמת \"ארבע העונות\"?",
+          "answers": [
+            "וולפגנג אמדאוס מוצרט",
+            "אנטוניו ויוואלדי",
+            "יוהאן סבסטיאן באך",
+            "לודוויג ואן בטהובן"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=9",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "באיזה ענף ספורט זכתה לינוי אשרם במדליית זהב אולימפית?",
+          "answers": [
+            "התעמלות אמנותית",
+            "התעמלות מכשירים",
+            "ג׳ודו",
+            "שיט"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=olympics&badge=%D7%A1%D7%A4%D7%95%D7%A8%D7%98&s=10",
+          "points": 100,
+          "timerSeconds": 15
+        }
+      ],
+      "savedPlayers": [
+        {
+          "id": "d9a1bcfd-0c64-4c35-8698-88a6f965d41b",
+          "name": "מלכה",
+          "teamId": null,
+          "weight": 1,
+          "score": 73.08,
+          "correctCount": 2,
+          "joinedAt": 1794753276917
+        },
+        {
+          "id": "eed0f98d-4258-4f20-bc30-261a11a8360f",
+          "name": "יצחק",
+          "teamId": null,
+          "weight": 4,
+          "score": 61.54,
+          "correctCount": 1,
+          "joinedAt": 1794753310153
+        },
+        {
+          "id": "eebc2797-bf7b-4231-a73c-96d54752899f",
+          "name": "תהילה",
+          "teamId": null,
+          "weight": 2,
+          "score": 65.38,
+          "correctCount": 2,
+          "joinedAt": 1794753326835
+        }
+      ],
+      "lastFinishedAt": "2026-11-15T17:27:42.063Z",
+      "code": "1008"
+    },
+    {
+      "id": "game-1794763730854-684e4a",
+      "title": "ג'מניי ניסוי",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 15,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "מי היה ראש הממשלה הראשון של מדינת ישראל?",
+          "answers": [
+            "משה שרת",
+            "חיים ויצמן",
+            "לוי אשכול",
+            "דוד בן-גוריון"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=1",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "באיזו שנה הושק האייפון הראשון על ידי סטיב ג׳ובס?",
+          "answers": [
+            "2010",
+            "2005",
+            "2007",
+            "2009"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=tech&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=2",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזה סרט ישראלי זכה בפרס אופיר וייצג את ישראל באוסקר בקטגוריית הסרט הזר עם הבמאי יוסף סידר (\"בופור\" / \"הערת שוליים\")?",
+          "answers": [
+            "שניהם (בופור והערת שוליים)",
+            "רק הערת שוליים",
+            "אף אחד מהם",
+            "רק בופור"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=3",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "מי נחשב לממציא נורת הליבון החשמלית המסחרית?",
+          "answers": [
+            "תומאס אדיסון",
+            "אלכסנדר גרהם בל",
+            "ניקולה טסלה",
+            "אלברט איינשטיין"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=science&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=4",
+          "points": 100,
+          "timerSeconds": 15
+        },
+        {
+          "question": "איזו להקה ישראלית שרה את השיר \"נתתי לה חיי\"?",
+          "answers": [
+            "משינה",
+            "תיסלם",
+            "אתניקס",
+            "כוורת"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=5",
+          "points": 100,
+          "timerSeconds": 15
+        }
+      ],
+      "savedPlayers": [],
+      "lastFinishedAt": null,
+      "code": "1009"
+    }
+  ]
+}
