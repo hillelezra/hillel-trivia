@@ -1,22 +1,25 @@
 const express = require('express');
 const http = require('http');
+const https = require('https');
 const { Server } = require('socket.io');
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 const zlib = require('zlib');
+const { generateFullQuestionBank } = require('./question-bank-generator');
 
 const PORT = process.env.PORT || 3000;
 const MAX_PLAYERS = 30;
 const DEFAULT_POINTS = 100;
-const DEFAULT_TIMER_SECONDS = 15;
+const DEFAULT_TIMER_SECONDS = 20;
 
 const ROOT_DIR = __dirname;
 const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
 const UPLOADS_DIR = path.join(PUBLIC_DIR, 'uploads');
 const QUESTIONS_FILE = path.join(ROOT_DIR, 'questions.json');
 const SETTINGS_FILE = path.join(ROOT_DIR, 'quiz-settings.json');
+const QUESTION_BANK_FILE = path.join(ROOT_DIR, 'question-bank.json');
 
 fs.mkdirSync(PUBLIC_DIR, { recursive: true });
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
@@ -34,6 +37,7 @@ const DEFAULT_GAME_SETTINGS = {
   subtitle: 'ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!',
   headerImage: '',
   backgroundImage: '',
+  backgroundMusic: '',
   bgOverlayOpacity: 0.68,
   timerSeconds: DEFAULT_TIMER_SECONDS,
   autoRevealOnTimeout: true,
@@ -63,7 +67,22 @@ function normalizeQuestion(raw, fallbackTimer = DEFAULT_TIMER_SECONDS) {
       ? rawTimer
       : fallbackTimer;
 
-  return { question, answers, correctIndex, image, points, timerSeconds };
+  const questionEn = typeof raw?.questionEn === 'string' ? raw.questionEn.trim() : '';
+  const answersEn =
+    Array.isArray(raw?.answersEn) && raw.answersEn.length === 4
+      ? raw.answersEn.map((a) => String(a ?? '').trim())
+      : [];
+
+  return {
+    question,
+    answers,
+    correctIndex,
+    image,
+    points,
+    timerSeconds,
+    ...(questionEn ? { questionEn } : {}),
+    ...(answersEn.length === 4 && answersEn.every(Boolean) ? { answersEn } : {})
+  };
 }
 
 function normalizeTeamsList(rawTeams) {
@@ -97,6 +116,8 @@ function sanitizeSettings(input) {
   const headerImage = typeof input?.headerImage === 'string' ? input.headerImage.trim() : '';
   const backgroundImage =
     typeof input?.backgroundImage === 'string' ? input.backgroundImage.trim() : '';
+  const backgroundMusic =
+    typeof input?.backgroundMusic === 'string' ? input.backgroundMusic.trim() : '';
 
   let bgOverlayOpacity = Number(input?.bgOverlayOpacity);
   if (Number.isNaN(bgOverlayOpacity)) bgOverlayOpacity = DEFAULT_GAME_SETTINGS.bgOverlayOpacity;
@@ -117,6 +138,7 @@ function sanitizeSettings(input) {
     subtitle,
     headerImage,
     backgroundImage,
+    backgroundMusic,
     bgOverlayOpacity,
     timerSeconds,
     autoRevealOnTimeout,
@@ -156,6 +178,37 @@ function normalizePlayerWeight(rawWeight) {
   return Math.min(20, num);
 }
 
+function normalizePlayHistoryEntry(rawEntry, fallbackQuestionsCount = 0) {
+  if (!rawEntry || typeof rawEntry !== 'object') return null;
+  const playersArr = Array.isArray(rawEntry.players)
+    ? rawEntry.players
+        .filter((p) => p && typeof p.name === 'string' && p.name.trim())
+        .map((p, idx) => ({
+          id: typeof p.id === 'string' && p.id.trim() ? p.id.trim() : `p-${idx + 1}`,
+          name: p.name.trim().slice(0, 24),
+          teamName: typeof p.teamName === 'string' ? p.teamName.trim() : '',
+          weight: normalizePlayerWeight(p.weight),
+          correctCount: Math.max(0, Math.round(Number(p.correctCount) || 0)),
+          score: Math.round((Number(p.score) || 0) * 100) / 100,
+          rank: Number(p.rank) || idx + 1
+        }))
+    : [];
+  if (playersArr.length === 0) return null;
+  return {
+    id:
+      typeof rawEntry.id === 'string' && rawEntry.id.trim()
+        ? rawEntry.id.trim()
+        : `run-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
+    playedAt:
+      typeof rawEntry.playedAt === 'string' && rawEntry.playedAt
+        ? rawEntry.playedAt
+        : new Date().toISOString(),
+    questionsCount:
+      Math.max(0, Math.round(Number(rawEntry.questionsCount) || fallbackQuestionsCount)),
+    players: playersArr
+  };
+}
+
 function normalizeGameRecord(rawGame) {
   const cleanSettings = sanitizeSettings(rawGame);
   const id =
@@ -186,11 +239,46 @@ function normalizeGameRecord(rawGame) {
       ? rawGame.lastFinishedAt
       : null;
 
+  let playHistory = Array.isArray(rawGame?.playHistory)
+    ? rawGame.playHistory
+        .map((entry) => normalizePlayHistoryEntry(entry, cleanQuestions.length))
+        .filter(Boolean)
+    : [];
+
+  // Migrate any existing savedPlayers with scores into playHistory if playHistory is empty
+  if (playHistory.length === 0 && savedPlayers.length > 0) {
+    const hasScoredPlayers = savedPlayers.some((p) => p.score > 0 || p.correctCount > 0);
+    if (hasScoredPlayers) {
+      const sorted = [...savedPlayers].sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return b.correctCount - a.correctCount;
+      });
+      const teamMap = new Map((cleanSettings.teams || []).map((t) => [t.id, t.name]));
+      playHistory = [
+        {
+          id: `run-migrated-${id}`,
+          playedAt: lastFinishedAt || new Date().toISOString(),
+          questionsCount: cleanQuestions.length,
+          players: sorted.map((p, idx) => ({
+            id: p.id,
+            name: p.name,
+            teamName: p.teamId ? teamMap.get(p.teamId) || '' : '',
+            weight: normalizePlayerWeight(p.weight),
+            correctCount: p.correctCount,
+            score: p.score,
+            rank: idx + 1
+          }))
+        }
+      ];
+    }
+  }
+
   return {
     id,
     ...cleanSettings,
     questions: cleanQuestions,
     savedPlayers,
+    playHistory,
     lastFinishedAt
   };
 }
@@ -212,6 +300,7 @@ function extractSettingsFromGame(gameRecord) {
     subtitle: gameRecord.subtitle,
     headerImage: gameRecord.headerImage,
     backgroundImage: gameRecord.backgroundImage,
+    backgroundMusic: gameRecord.backgroundMusic || '',
     bgOverlayOpacity: gameRecord.bgOverlayOpacity,
     timerSeconds: gameRecord.timerSeconds,
     autoRevealOnTimeout: gameRecord.autoRevealOnTimeout,
@@ -414,6 +503,7 @@ function getGamesSummaryList() {
   return store.games.map((g, idx) => {
     const gPlayers = getPlayersForGame(g.id);
     const totalSavedScore = gPlayers.reduce((sum, p) => sum + (p.score || 0), 0);
+    const playHistory = Array.isArray(g.playHistory) ? g.playHistory : [];
     return {
       id: g.id,
       code: String(g.code || BASE_GAME_CODE + idx),
@@ -421,13 +511,16 @@ function getGamesSummaryList() {
       subtitle: g.subtitle,
       headerImage: g.headerImage,
       backgroundImage: g.backgroundImage,
+      backgroundMusic: g.backgroundMusic || '',
       timerSeconds: g.timerSeconds,
       teamsEnabled: Boolean(g.teamsEnabled),
       teamsCount: Array.isArray(g.teams) ? g.teams.length : 0,
       questionsCount: g.questions.length,
       playersCount: gPlayers.length,
       connectedPlayersCount: gPlayers.filter((p) => p.connected).length,
-      hasSavedScores: totalSavedScore > 0,
+      hasSavedScores: totalSavedScore > 0 || playHistory.length > 0,
+      playHistoryCount: playHistory.length,
+      playHistory,
       lastFinishedAt: g.lastFinishedAt || null,
       isActive: Boolean(game.isSessionOpen && g.id === store.activeGameId),
       isSelected: g.id === store.activeGameId
@@ -442,6 +535,7 @@ const game = {
   resumableQuestionIndex: -1,
   resumableWasRevealed: false,
   questionScored: false,
+  currentRunArchived: false,
   timerDuration: getActiveSettings().timerSeconds,
   questionEndsAt: 0,
   timerPaused: false,
@@ -507,25 +601,41 @@ function getSortedTeamLeaderboard(gameId = store.activeGameId) {
 }
 
 function getSortedLeaderboard(gameId = store.activeGameId) {
+  const isRevealedActive =
+    gameId === store.activeGameId &&
+    (game.phase === 'revealed' || game.phase === 'finished') &&
+    game.lastReveal &&
+    game.lastReveal.playerAwards;
+
   return getPlayersForGame(gameId)
     .sort((a, b) => {
       if (b.score !== a.score) return b.score - a.score;
       if (b.correctCount !== a.correctCount) return b.correctCount - a.correctCount;
       return a.joinedAt - b.joinedAt;
     })
-    .map((p, idx) => ({
-      id: p.id,
-      name: p.name,
-      gameId: p.gameId,
-      gameCode: p.gameCode,
-      teamId: p.teamId || null,
-      teamName: getTeamNameById(p.teamId, gameId),
-      weight: normalizePlayerWeight(p.weight),
-      score: p.score,
-      correctCount: p.correctCount,
-      connected: p.connected,
-      rank: idx + 1
-    }));
+    .map((p, idx) => {
+      const award = isRevealedActive ? game.lastReveal.playerAwards[p.id] || null : null;
+      return {
+        id: p.id,
+        name: p.name,
+        gameId: p.gameId,
+        gameCode: p.gameCode,
+        teamId: p.teamId || null,
+        teamName: getTeamNameById(p.teamId, gameId),
+        weight: normalizePlayerWeight(p.weight),
+        score: p.score,
+        correctCount: p.correctCount,
+        connected: p.connected,
+        rank: idx + 1,
+        lastQuestionOutcome: award
+          ? {
+              answered: Boolean(award.answered),
+              isCorrect: Boolean(award.isCorrect),
+              pointsEarned: roundScore(Number(award.pointsEarned) || 0)
+            }
+          : null
+      };
+    });
 }
 
 function buildCurrentQuestionPublic(includeCorrect = false) {
@@ -544,6 +654,8 @@ function buildCurrentQuestionPublic(includeCorrect = false) {
     total: questions.length,
     question: q.question,
     answers: q.answers,
+    ...(q.questionEn ? { questionEn: q.questionEn } : {}),
+    ...(Array.isArray(q.answersEn) && q.answersEn.length === 4 ? { answersEn: q.answersEn } : {}),
     image: q.image || '',
     points,
     budget: points,
@@ -562,8 +674,10 @@ function buildLiveAnswerStats() {
   const activeGamePlayers = getPlayersForGame(activeGame.id);
   const activeGamePlayerMap = new Map(activeGamePlayers.map((p) => [p.id, p]));
   const connectedPlayers = activeGamePlayers.filter((p) => p.connected).length;
+  const isRevealed = game.phase === 'revealed' || game.phase === 'finished';
 
   const answeredIdsInGame = [];
+  const optionCounts = [0, 0, 0, 0];
   let correctCount = 0;
   let wrongCount = 0;
 
@@ -572,6 +686,9 @@ function buildLiveAnswerStats() {
     if (!p) continue;
     const w = normalizePlayerWeight(p.weight);
     answeredIdsInGame.push(pid);
+    if (submission.answerIndex >= 0 && submission.answerIndex <= 3) {
+      optionCounts[submission.answerIndex] += w;
+    }
     if (q && submission.answerIndex === q.correctIndex) {
       correctCount += w;
     } else {
@@ -580,16 +697,24 @@ function buildLiveAnswerStats() {
   }
 
   const answeredCount = answeredIdsInGame.length;
+  const denomPlayers = connectedPlayers > 0 ? connectedPlayers : Math.max(1, activeGamePlayers.length);
+  const answeredPct =
+    answeredCount > 0 ? Math.min(100, Math.round((answeredCount / denomPlayers) * 100)) : 0;
   const weightedTotal = correctCount + wrongCount;
   const correctPct = weightedTotal > 0 ? Math.round((correctCount / weightedTotal) * 100) : 0;
   const wrongPct = weightedTotal > 0 ? Math.round((wrongCount / weightedTotal) * 100) : 0;
 
+  // CRITICAL: While the question timer is running (before reveal), hide how many answered right/wrong
+  // and hide per-option distribution so players cannot exploit it to change their answer!
   return {
+    isDistributionVisible: isRevealed,
     answeredCount,
-    correctCount,
-    wrongCount,
-    correctPct,
-    wrongPct,
+    answeredPct,
+    correctCount: isRevealed ? correctCount : 0,
+    wrongCount: isRevealed ? wrongCount : 0,
+    correctPct: isRevealed ? correctPct : 0,
+    wrongPct: isRevealed ? wrongPct : 0,
+    optionCounts: isRevealed ? optionCounts : [0, 0, 0, 0],
     totalPlayers: activeGamePlayers.length,
     connectedPlayers,
     waitingPlayers: Math.max(0, connectedPlayers - answeredCount),
@@ -616,8 +741,11 @@ function buildAdminState() {
     gameCode: settings.code,
     nextNewGameCode: String(BASE_GAME_CODE + store.games.length),
     hasGeminiApiKey: Boolean(store.geminiApiKey || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY),
+    questionBankCount: typeof getQuestionBankCount === 'function' ? getQuestionBankCount() : 1000,
+    questionBankTopics: typeof getQuestionBankTopicsSummary === 'function' ? getQuestionBankTopicsSummary() : [],
     games: getGamesSummaryList(),
     settings,
+    playHistory: Array.isArray(activeGame.playHistory) ? activeGame.playHistory : [],
     teamsEnabled: Boolean(settings.teamsEnabled),
     availableTeams,
     teamLeaderboard,
@@ -642,7 +770,7 @@ function buildAdminState() {
   };
 }
 
-function buildPlayerState(playerId) {
+function buildPlayerState(playerId, overridePhase = null) {
   const player = players.get(playerId);
   if (!player) return null;
 
@@ -651,7 +779,8 @@ function buildPlayerState(playerId) {
   player.gameCode = playerGame.code;
 
   const isPlayerInActiveGame = Boolean(game.isSessionOpen && playerGame.id === store.activeGameId);
-  const effectivePhase = isPlayerInActiveGame && game.phase !== 'hub' ? game.phase : 'lobby';
+  const effectivePhase =
+    overridePhase || (isPlayerInActiveGame && game.phase !== 'hub' ? game.phase : 'lobby');
 
   const settings = extractSettingsFromGame(playerGame);
   const leaderboard = getSortedLeaderboard(playerGame.id);
@@ -665,6 +794,14 @@ function buildPlayerState(playerId) {
 
   const includeCorrect = effectivePhase === 'revealed' || effectivePhase === 'finished';
   const myAnswer = isPlayerInActiveGame ? currentAnswers.get(playerId) || null : null;
+  const answerChangeCount = myAnswer ? Number(myAnswer.changeCount || 0) : 0;
+  const canChangeAnswer = Boolean(
+    myAnswer &&
+      answerChangeCount < 1 &&
+      effectivePhase === 'question' &&
+      !game.timeExpiredAwaitingReveal &&
+      getRemainingMs() > 0
+  );
   const remainingMs = isPlayerInActiveGame ? getRemainingMs() : 0;
   const currentQPublic = isPlayerInActiveGame ? buildCurrentQuestionPublic(includeCorrect) : null;
   const liveAnswers = isPlayerInActiveGame
@@ -691,11 +828,13 @@ function buildPlayerState(playerId) {
     const isCorrect = lockedIdx !== null && lockedIdx === game.lastReveal.correctIndex;
     const award = game.lastReveal.playerAwards ? game.lastReveal.playerAwards[playerId] : null;
     lastQuestionOutcome = {
+      answered: lockedIdx !== null,
       lockedAnswerIndex: lockedIdx,
       correctIndex: game.lastReveal.correctIndex,
       isCorrect,
       everyoneSplit: Boolean(game.lastReveal.everyoneSplit),
       pointsEarned: award ? award.pointsEarned : 0,
+      totalScore: player.score,
       speedRank: award ? award.speedRank : null,
       parts: award ? award.parts : 0,
       totalParts: award ? award.totalParts : 0,
@@ -738,6 +877,8 @@ function buildPlayerState(playerId) {
     },
     currentQuestion: currentQPublic,
     lockedAnswerIndex: myAnswer ? myAnswer.answerIndex : null,
+    answerChangeCount,
+    canChangeAnswer,
     answers: {
       answeredCount: liveAnswers.answeredCount,
       correctCount: liveAnswers.correctCount,
@@ -771,12 +912,68 @@ function broadcastAllStates() {
   }
 }
 
-// -------------------- Game Transitions --------------------
+// -------------------- Game History Archiving & Transitions --------------------
+
+function archiveCurrentGameRunIfNeeded(gameId = store.activeGameId) {
+  if (game.currentRunArchived) return false;
+  const targetGame = getGameById(gameId);
+  if (!targetGame) return false;
+
+  const gamePlayers = getPlayersForGame(targetGame.id);
+  const hasAnyActivity = gamePlayers.some((p) => (p.score || 0) > 0 || (p.correctCount || 0) > 0);
+  if (gamePlayers.length === 0 || !hasAnyActivity) return false;
+
+  const sortedLb = getSortedLeaderboard(targetGame.id);
+  const runEntry = {
+    id: `run-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
+    playedAt: new Date().toISOString(),
+    questionsCount: Array.isArray(targetGame.questions) ? targetGame.questions.length : 0,
+    players: sortedLb.map((p, idx) => ({
+      id: p.id,
+      name: p.name,
+      teamName: p.teamName || '',
+      weight: normalizePlayerWeight(p.weight),
+      correctCount: p.correctCount || 0,
+      score: roundScore(p.score || 0),
+      rank: idx + 1
+    }))
+  };
+
+  if (!Array.isArray(targetGame.playHistory)) {
+    targetGame.playHistory = [];
+  }
+  targetGame.playHistory.unshift(runEntry);
+  if (targetGame.playHistory.length > 50) {
+    targetGame.playHistory = targetGame.playHistory.slice(0, 50);
+  }
+  targetGame.lastFinishedAt = runEntry.playedAt;
+  game.currentRunArchived = true;
+  persistStore(store);
+  return true;
+}
+
+function resetPlayersForNewRun(gameId = store.activeGameId, { removeOfflinePlayers = false } = {}) {
+  for (const [pid, p] of players.entries()) {
+    if (p.gameId !== gameId) continue;
+    if (removeOfflinePlayers && !p.connected) {
+      players.delete(pid);
+      currentAnswers.delete(pid);
+    } else {
+      p.score = 0;
+      p.correctCount = 0;
+    }
+  }
+  syncGamePlayersToStore(gameId);
+}
 
 function startQuestion(index) {
   const questions = getActiveQuestions();
   const settings = getActiveSettings();
   if (index < 0 || index >= questions.length) return false;
+
+  if (index === 0) {
+    game.currentRunArchived = false;
+  }
 
   const q = questions[index];
   const qTimer = Math.round(Number(q.timerSeconds));
@@ -895,7 +1092,10 @@ function revealCurrentQuestion() {
         : `${p.name}${weightSuffix}`;
 
       playerAwards[p.id] = {
+        answered: true,
+        isCorrect: true,
         pointsEarned,
+        totalScore: p.score,
         speedRank,
         totalWinners: winnersCount,
         weight,
@@ -943,9 +1143,13 @@ function revealCurrentQuestion() {
       for (const p of targetRecipients) {
         const w = normalizePlayerWeight(p.weight);
         const earned = roundScore(w * rawPartValue);
+        const sub = currentAnswers.get(p.id);
         p.score = roundScore(p.score + earned);
         playerAwards[p.id] = {
+          answered: Boolean(sub),
+          isCorrect: false,
           pointsEarned: earned,
+          totalScore: p.score,
           speedRank: null,
           totalWinners: 0,
           weight: w,
@@ -955,6 +1159,26 @@ function revealCurrentQuestion() {
           everyoneSplit: true
         };
       }
+    }
+  }
+
+  // Ensure every player in the active game has an award summary entry (for wrong/unanswered players when winnersCount > 0)
+  for (const p of getPlayersForGame(store.activeGameId)) {
+    if (!playerAwards[p.id]) {
+      const sub = currentAnswers.get(p.id);
+      playerAwards[p.id] = {
+        answered: Boolean(sub),
+        isCorrect: false,
+        pointsEarned: 0,
+        totalScore: p.score,
+        speedRank: null,
+        totalWinners: winnersCount,
+        weight: normalizePlayerWeight(p.weight),
+        parts: 0,
+        totalParts,
+        singlePartValue,
+        everyoneSplit: false
+      };
     }
   }
 
@@ -997,14 +1221,24 @@ function revealCurrentQuestion() {
 
 function returnToMainScreen() {
   const prevGameId = store.activeGameId;
+  const wasPlayedOrFinished =
+    game.phase === 'question' || game.phase === 'revealed' || game.phase === 'finished';
+
+  archiveCurrentGameRunIfNeeded(prevGameId);
   syncGamePlayersToStore(prevGameId);
 
-  // Disconnect live sockets from the closed session while preserving all player records & scores
+  // If the game had started or finished, show connected players the "Game Finished!" screen
+  // with their final score & leaderboard rather than kicking them to the join form.
   for (const p of players.values()) {
     if (p.gameId === prevGameId && p.socketId) {
-      io.to(p.socketId).emit('player:kicked', {
-        reason: 'המשחק נסגר על ידי המנחה. הניקוד שלך נשמר במערכת!'
-      });
+      if (wasPlayedOrFinished) {
+        const finishedState = buildPlayerState(p.id, 'finished');
+        io.to(p.socketId).emit('player:state', finishedState);
+      } else {
+        io.to(p.socketId).emit('player:kicked', {
+          reason: 'המשחק נסגר על ידי המנחה.'
+        });
+      }
       socketToPlayerId.delete(p.socketId);
       p.socketId = null;
       p.connected = false;
@@ -1040,20 +1274,21 @@ function finishQuiz() {
   game.leaderboardModalOpen = false;
   game.timerPaused = false;
   game.questionEndsAt = 0;
+  archiveCurrentGameRunIfNeeded(store.activeGameId);
   syncGamePlayersToStore(store.activeGameId);
   broadcastAllStates();
 }
 
 function switchActiveGame(targetGame, { openSession = true } = {}) {
   const prevGameId = store.activeGameId;
+  archiveCurrentGameRunIfNeeded(prevGameId);
   syncGamePlayersToStore(prevGameId);
 
   if (prevGameId && prevGameId !== targetGame.id) {
     for (const p of players.values()) {
       if (p.gameId === prevGameId && p.socketId) {
-        io.to(p.socketId).emit('player:kicked', {
-          reason: 'המשחק נסגר על ידי המנחה.'
-        });
+        const finishedState = buildPlayerState(p.id, 'finished');
+        io.to(p.socketId).emit('player:state', finishedState);
         socketToPlayerId.delete(p.socketId);
         p.socketId = null;
         p.connected = false;
@@ -1069,12 +1304,25 @@ function switchActiveGame(targetGame, { openSession = true } = {}) {
   game.resumableQuestionIndex = -1;
   game.resumableWasRevealed = false;
   game.questionScored = false;
+  game.currentRunArchived = false;
   game.timerPaused = false;
   game.pausedRemainingMs = 0;
   game.questionEndsAt = 0;
   game.timeExpiredAwaitingReveal = false;
   game.leaderboardModalOpen = false;
   game.lastReveal = null;
+
+  // When opening a game session to play again, archive any prior unarchived scores into playHistory
+  // and reset all players for the new run to start from 0!
+  if (openSession) {
+    const existingPlayers = getPlayersForGame(targetGame.id);
+    const hadOldScores = existingPlayers.some((p) => (p.score || 0) > 0 || (p.correctCount || 0) > 0);
+    if (hadOldScores) {
+      archiveCurrentGameRunIfNeeded(targetGame.id);
+      game.currentRunArchived = false;
+    }
+    resetPlayersForNewRun(targetGame.id, { removeOfflinePlayers: true });
+  }
 
   const validTeamIds = new Set((targetGame.teams || []).map((t) => t.id));
   for (const p of players.values()) {
@@ -1412,24 +1660,50 @@ const ALLOWED_MIME_TO_EXT = {
   'image/webp': 'webp',
   'image/gif': 'gif',
   'image/svg+xml': 'svg',
-  'image/avif': 'avif'
+  'image/avif': 'avif',
+  'audio/mpeg': 'mp3',
+  'audio/mp3': 'mp3',
+  'audio/wav': 'wav',
+  'audio/x-wav': 'wav',
+  'audio/wave': 'wav',
+  'audio/ogg': 'ogg',
+  'audio/mp4': 'm4a',
+  'audio/x-m4a': 'm4a',
+  'audio/aac': 'aac',
+  'audio/webm': 'webm'
 };
-const ALLOWED_EXTS = new Set(['png', 'jpg', 'jpeg', 'webp', 'gif', 'svg', 'avif']);
+const ALLOWED_EXTS = new Set([
+  'png',
+  'jpg',
+  'jpeg',
+  'webp',
+  'gif',
+  'svg',
+  'avif',
+  'mp3',
+  'wav',
+  'ogg',
+  'm4a',
+  'aac',
+  'webm'
+]);
 
 app.post(
   '/api/upload',
   express.raw({
-    type: ['image/*', 'application/octet-stream'],
-    limit: '25mb'
+    type: ['image/*', 'audio/*', 'application/octet-stream'],
+    limit: '35mb'
   }),
   (req, res) => {
     try {
       if (!Buffer.isBuffer(req.body) || req.body.length === 0) {
-        return res.status(400).json({ ok: false, error: 'לא התקבל קובץ תמונה תקין.' });
+        return res.status(400).json({ ok: false, error: 'לא התקבל קובץ תקין להעלאה.' });
       }
 
       const rawCategory = String(req.query.category || 'image').replace(/[^a-z0-9_-]/gi, '');
-      const category = ['header', 'bg', 'question'].includes(rawCategory) ? rawCategory : 'asset';
+      const category = ['header', 'bg', 'question', 'music'].includes(rawCategory)
+        ? rawCategory
+        : 'asset';
 
       const contentType = String(req.headers['content-type'] || '')
         .split(';')[0]
@@ -1444,7 +1718,10 @@ app.post(
       if (!ext) {
         return res.status(400).json({
           ok: false,
-          error: 'סוג הקובץ אינו נתמך. אנא העלו תמונה בפורמט PNG, JPG, WEBP, GIF או SVG.'
+          error:
+            category === 'music'
+              ? 'סוג קובץ המוזיקה אינו נתמך. אנא העלו קובץ MP3, WAV, OGG או M4A.'
+              : 'סוג הקובץ אינו נתמך. אנא העלו תמונה בפורמט PNG, JPG, WEBP, GIF או SVG.'
         });
       }
 
@@ -1458,7 +1735,7 @@ app.post(
       });
     } catch (err) {
       console.error('Upload error:', err);
-      return res.status(500).json({ ok: false, error: 'שגיאה בשמירת התמונה בשרת.' });
+      return res.status(500).json({ ok: false, error: 'שגיאה בשמירת הקובץ בשרת.' });
     }
   }
 );
@@ -1829,6 +2106,153 @@ const BUILTIN_TRIVIA_BANK = [
   { topic: 'טכנולוגיה והמצאות', difficulty: 'hard', question: 'באיזו שנה הושק האייפון הראשון על ידי סטיב ג׳ובס?', answers: ['2007', '2005', '2009', '2010'], correctIndex: 0 }
 ];
 
+function normalizeBankQuestionEntry(rawItem, indexFallback = 1) {
+  const question = String(rawItem?.question || '').trim();
+  if (!question) return null;
+  let answers = Array.isArray(rawItem?.answers)
+    ? rawItem.answers.map((a) => String(a ?? '').trim())
+    : [];
+  if (answers.length < 4) {
+    while (answers.length < 4) answers.push(`תשובה ${answers.length + 1}`);
+  } else if (answers.length > 4) {
+    answers = answers.slice(0, 4);
+  }
+  const idx = Number(rawItem?.correctIndex);
+  const correctIndex = Number.isInteger(idx) && idx >= 0 && idx <= 3 ? idx : 0;
+  const topic = String(rawItem?.topic || 'ידע כללי').trim() || 'ידע כללי';
+  const rawDiff = String(rawItem?.difficulty || 'medium').toLowerCase();
+  const difficulty = ['easy', 'medium', 'hard'].includes(rawDiff) ? rawDiff : 'medium';
+  const id =
+    typeof rawItem?.id === 'string' && rawItem.id.trim()
+      ? rawItem.id.trim()
+      : `qbank-${indexFallback}`;
+  const isCustom = Boolean(rawItem?.isCustom);
+  const questionEn = typeof rawItem?.questionEn === 'string' ? rawItem.questionEn.trim() : '';
+  const answersEn =
+    Array.isArray(rawItem?.answersEn) && rawItem.answersEn.length === 4
+      ? rawItem.answersEn.map((a) => String(a ?? '').trim())
+      : [];
+
+  return {
+    id,
+    topic,
+    difficulty,
+    question,
+    answers,
+    correctIndex,
+    ...(questionEn ? { questionEn } : {}),
+    ...(answersEn.length === 4 && answersEn.every(Boolean) ? { answersEn } : {}),
+    ...(isCustom ? { isCustom: true } : {})
+  };
+}
+
+let persistentQuestionBank = [];
+
+function savePersistentQuestionBank() {
+  try {
+    fs.writeFileSync(QUESTION_BANK_FILE, JSON.stringify(persistentQuestionBank, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Failed to save question-bank.json:', err.message);
+  }
+}
+
+function loadOrInitializeQuestionBank() {
+  const seenQuestions = new Set();
+  const merged = [];
+
+  function pushUnique(rawItem) {
+    const clean = normalizeBankQuestionEntry(rawItem, merged.length + 1);
+    if (!clean) return false;
+    const key = clean.question.replace(/\s+/g, ' ').toLowerCase();
+    if (seenQuestions.has(key)) return false;
+    seenQuestions.add(key);
+    merged.push(clean);
+    return true;
+  }
+
+  // 1. Load any existing custom or disk questions first so user-added questions take precedence
+  try {
+    if (fs.existsSync(QUESTION_BANK_FILE)) {
+      const rawText = fs.readFileSync(QUESTION_BANK_FILE, 'utf8').replace(/^\uFEFF/, '');
+      const parsed = JSON.parse(rawText);
+      const arr = Array.isArray(parsed)
+        ? parsed
+        : Array.isArray(parsed?.questions)
+          ? parsed.questions
+          : [];
+      for (const item of arr) {
+        pushUnique(item);
+      }
+    }
+  } catch (err) {
+    console.warn('Could not read existing question-bank.json, rebuilding:', err.message);
+  }
+
+  const initialCount = merged.length;
+
+  // 2. Ensure all 1,000+ generated questions and built-in questions are present
+  const generated1000 = generateFullQuestionBank();
+  for (const item of generated1000) {
+    pushUnique(item);
+  }
+  for (const item of BUILTIN_TRIVIA_BANK) {
+    pushUnique(item);
+  }
+
+  persistentQuestionBank = merged;
+  if (!fs.existsSync(QUESTION_BANK_FILE) || merged.length !== initialCount) {
+    savePersistentQuestionBank();
+  }
+  return persistentQuestionBank;
+}
+
+loadOrInitializeQuestionBank();
+
+function getQuestionBankCount() {
+  return persistentQuestionBank.length;
+}
+
+function getQuestionBankTopicsSummary() {
+  const counts = new Map();
+  for (const q of persistentQuestionBank) {
+    const t = q.topic || 'ידע כללי';
+    counts.set(t, (counts.get(t) || 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([topic, count]) => ({ topic, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
+function addQuestionsToPersistentBank(rawItems) {
+  const list = Array.isArray(rawItems) ? rawItems : [rawItems];
+  const seenQuestions = new Set(
+    persistentQuestionBank.map((q) => q.question.replace(/\s+/g, ' ').toLowerCase())
+  );
+  const added = [];
+
+  for (const raw of list) {
+    const clean = normalizeBankQuestionEntry(
+      {
+        ...raw,
+        id: `qbank-custom-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
+        isCustom: true
+      },
+      persistentQuestionBank.length + 1
+    );
+    if (!clean) continue;
+    const key = clean.question.replace(/\s+/g, ' ').toLowerCase();
+    if (seenQuestions.has(key)) continue;
+    seenQuestions.add(key);
+    persistentQuestionBank.unshift(clean);
+    added.push(clean);
+  }
+
+  if (added.length > 0) {
+    savePersistentQuestionBank();
+  }
+  return added;
+}
+
 function shuffleArray(arr) {
   const copy = [...arr];
   for (let i = copy.length - 1; i > 0; i--) {
@@ -1841,6 +2265,10 @@ function shuffleArray(arr) {
 function shuffleQuestionAnswers(qObj, defaultTimer, defaultPoints) {
   const answers = Array.isArray(qObj.answers) ? qObj.answers.slice(0, 4).map(String) : [];
   while (answers.length < 4) answers.push(`תשובה ${answers.length + 1}`);
+  const hasAnswersEn =
+    Array.isArray(qObj.answersEn) && qObj.answersEn.length === 4 && qObj.answersEn.every(Boolean);
+  const answersEn = hasAnswersEn ? qObj.answersEn.slice(0, 4).map(String) : null;
+
   const origCorrectIdx =
     Number.isInteger(Number(qObj.correctIndex)) &&
     Number(qObj.correctIndex) >= 0 &&
@@ -1848,7 +2276,11 @@ function shuffleQuestionAnswers(qObj, defaultTimer, defaultPoints) {
       ? Number(qObj.correctIndex)
       : 0;
 
-  const indexed = answers.map((text, idx) => ({ text, isCorrect: idx === origCorrectIdx }));
+  const indexed = answers.map((text, idx) => ({
+    text,
+    textEn: answersEn ? answersEn[idx] : '',
+    isCorrect: idx === origCorrectIdx
+  }));
   const shuffled = shuffleArray(indexed);
   const newCorrectIdx = Math.max(
     0,
@@ -1860,6 +2292,8 @@ function shuffleQuestionAnswers(qObj, defaultTimer, defaultPoints) {
       question: qObj.question,
       answers: shuffled.map((item) => item.text),
       correctIndex: newCorrectIdx,
+      ...(qObj.questionEn ? { questionEn: qObj.questionEn } : {}),
+      ...(answersEn ? { answersEn: shuffled.map((item) => item.textEn) } : {}),
       image: qObj.image || '',
       points: Number(qObj.points) >= 1 ? Number(qObj.points) : defaultPoints,
       timerSeconds: Number(qObj.timerSeconds) >= 5 ? Number(qObj.timerSeconds) : defaultTimer
@@ -1871,12 +2305,21 @@ function shuffleQuestionAnswers(qObj, defaultTimer, defaultPoints) {
 function matchBuiltInTopic(rawTopic) {
   const t = String(rawTopic || '').trim().toLowerCase();
   if (!t) return null;
+  // Exact match against any topic in persistentQuestionBank first
+  for (const q of persistentQuestionBank) {
+    if (String(q.topic || '').toLowerCase() === t) {
+      return q.topic;
+    }
+  }
+  if (t.includes('תנ"ך') || t.includes('מקרא') || t.includes('מורשת')) return 'תנ"ך ומורשת';
+  if (t.includes('עברית') || t.includes('לשון') || t.includes('שפה') || t.includes('ניב')) return 'השפה העברית';
+  if (t.includes('חלל') || t.includes('אסטרונומ') || t.includes('כוכב')) return 'חלל ואסטרונומיה';
   if (t.includes('היסטור') || t.includes('ישראל') || t.includes('ציונ')) return 'היסטוריה של ישראל';
   if (t.includes('גיאוגרפ') || t.includes('עולם') || t.includes('מדינ') || t.includes('בירות')) return 'גיאוגרפיה ועולם';
-  if (t.includes('מדע') || t.includes('טבע') || t.includes('חלל') || t.includes('חיות')) return 'מדע וטבע';
-  if (t.includes('ספורט') || t.includes('כדורגל') || t.includes('כדורסל') || t.includes('אולימפ')) return 'ספורט';
-  if (t.includes('מוזיק') || t.includes('תרבות') || t.includes('קולנוע') || t.includes('סרט') || t.includes('שיר')) return 'מוזיקה ותרבות';
-  if (t.includes('חג') || t.includes('מסורת') || t.includes('יהדות') || t.includes('תנ"ך') || t.includes('חנוכ')) return 'חגי ישראל ומסורת';
+  if (t.includes('מדע') || t.includes('טבע') || t.includes('חיות') || t.includes('בעלי חיים')) return 'מדע וטבע';
+  if (t.includes('ספורט') || t.includes('כדורגל') || t.includes('כדורסל') || t.includes('אולימפ')) return 'ספורט וכדורגל';
+  if (t.includes('מוזיק') || t.includes('תרבות') || t.includes('קולנוע') || t.includes('סרט') || t.includes('שיר') || t.includes('ספרות')) return 'תרבות, קולנוע ומוזיקה';
+  if (t.includes('חג') || t.includes('מסורת') || t.includes('יהדות') || t.includes('חנוכ') || t.includes('פסח') || t.includes('פורים')) return 'חגי ישראל ומסורת';
   if (t.includes('אוכל') || t.includes('קולינר') || t.includes('מטבח') || t.includes('בישול')) return 'אוכל וקולינריה';
   if (t.includes('טכנולוג') || t.includes('מחשב') || t.includes('המצא') || t.includes('הייטק')) return 'טכנולוגיה והמצאות';
   if (t.includes('כללי')) return 'ידע כללי';
@@ -1886,14 +2329,20 @@ function matchBuiltInTopic(rawTopic) {
 function generateQuestionsFromBuiltInBank({
   mode = 'random',
   topics = [],
+  selectedTopics = [],
   randomCount = 10,
+  difficulty = 'mixed',
   defaultTimer = DEFAULT_TIMER_SECONDS,
   defaultPoints = DEFAULT_POINTS
 }) {
+  const bankPool =
+    Array.isArray(persistentQuestionBank) && persistentQuestionBank.length > 0
+      ? persistentQuestionBank
+      : BUILTIN_TRIVIA_BANK;
   const usedQuestions = new Set();
   const result = [];
 
-  function pickFromPool(pool, count, fallbackTopicLabel = '') {
+  function pickFromPool(pool, count, fallbackTopicLabel = '', strictPoolFallback = null) {
     const picked = [];
     const shuffledPool = shuffleArray(pool);
     for (const item of shuffledPool) {
@@ -1905,17 +2354,25 @@ function generateQuestionsFromBuiltInBank({
       picked.push(qNorm);
     }
 
-    // If requested count exceeds unique pool items, pull from remaining unused bank items
+    if (picked.length < count && Array.isArray(strictPoolFallback) && strictPoolFallback.length > 0) {
+      const remainingTopicPool = shuffleArray(strictPoolFallback);
+      for (const item of remainingTopicPool) {
+        if (picked.length >= count) break;
+        if (usedQuestions.has(item.question)) continue;
+        usedQuestions.add(item.question);
+        const qNorm = shuffleQuestionAnswers(item, defaultTimer, defaultPoints);
+        qNorm._topic = fallbackTopicLabel || item.topic || 'ידע כללי';
+        picked.push(qNorm);
+      }
+    }
+
     if (picked.length < count) {
-      const remainingAll = shuffleArray(BUILTIN_TRIVIA_BANK);
+      const remainingAll = shuffleArray(bankPool);
       for (const item of remainingAll) {
         if (picked.length >= count) break;
         if (usedQuestions.has(item.question)) continue;
         usedQuestions.add(item.question);
-        const qCopy = fallbackTopicLabel
-          ? { ...item, question: `[${fallbackTopicLabel}] ${item.question}` }
-          : item;
-        const qNorm = shuffleQuestionAnswers(qCopy, defaultTimer, defaultPoints);
+        const qNorm = shuffleQuestionAnswers(item, defaultTimer, defaultPoints);
         qNorm._topic = fallbackTopicLabel || item.topic || 'ידע כללי';
         picked.push(qNorm);
       }
@@ -1923,28 +2380,59 @@ function generateQuestionsFromBuiltInBank({
     return picked;
   }
 
+  // Filter by multiple selected existing topics from the bank (Option ד)
+  const cleanSelectedTopics = Array.isArray(selectedTopics)
+    ? selectedTopics.map((t) => String(t || '').trim()).filter((t) => t && t !== 'all')
+    : [];
+  if (cleanSelectedTopics.length > 0) {
+    const topicSet = new Set(cleanSelectedTopics);
+    let topicFilteredPool = bankPool.filter((q) => topicSet.has(q.topic));
+    if (topicFilteredPool.length === 0) topicFilteredPool = bankPool;
+    const diff = String(difficulty || 'mixed').toLowerCase();
+    let prioritizedPool = topicFilteredPool;
+    if (diff === 'easy' || diff === 'medium' || diff === 'hard') {
+      const diffMatches = topicFilteredPool.filter((q) => q.difficulty === diff);
+      if (diffMatches.length > 0) {
+        prioritizedPool = diffMatches;
+      }
+    }
+    const totalWanted = Math.max(1, Math.min(1500, Math.round(Number(randomCount) || 10)));
+    return pickFromPool(prioritizedPool, totalWanted, '', topicFilteredPool);
+  }
+
   if (mode === 'topics' && Array.isArray(topics) && topics.length > 0) {
     for (const reqRow of topics) {
       const rawTopic = String(reqRow?.topic || 'ידע כללי').trim();
-      const count = Math.max(1, Math.min(30, Math.round(Number(reqRow?.count) || 3)));
-      const diff = String(reqRow?.difficulty || 'mixed').toLowerCase();
+      const count = Math.max(1, Math.min(1500, Math.round(Number(reqRow?.count) || 3)));
+      const diff = String(reqRow?.difficulty || difficulty || 'mixed').toLowerCase();
       const matchedCategory = matchBuiltInTopic(rawTopic);
 
-      let pool = matchedCategory
-        ? BUILTIN_TRIVIA_BANK.filter((q) => q.topic === matchedCategory)
-        : BUILTIN_TRIVIA_BANK;
+      let topicPool = bankPool.filter((q) => q.topic === rawTopic);
+      if (topicPool.length === 0) {
+        topicPool = matchedCategory
+          ? bankPool.filter(
+              (q) =>
+                q.topic === matchedCategory ||
+                (matchedCategory === 'ספורט וכדורגל' && q.topic === 'ספורט') ||
+                (matchedCategory === 'תרבות, קולנוע ומוזיקה' && q.topic === 'מוזיקה ותרבות')
+            )
+          : bankPool.filter(
+              (q) =>
+                q.question.includes(rawTopic) ||
+                (q.topic && q.topic.includes(rawTopic))
+            );
+      }
+      if (topicPool.length === 0) topicPool = bankPool;
 
+      let pool = topicPool;
       if (diff === 'easy' || diff === 'medium' || diff === 'hard') {
-        const diffFiltered = pool.filter((q) => q.difficulty === diff);
+        const diffFiltered = topicPool.filter((q) => q.difficulty === diff);
         if (diffFiltered.length > 0) {
-          pool = [
-            ...diffFiltered,
-            ...pool.filter((q) => q.difficulty !== diff)
-          ];
+          pool = diffFiltered;
         }
       }
 
-      const rowQuestions = pickFromPool(pool, count, matchedCategory ? '' : rawTopic);
+      const rowQuestions = pickFromPool(pool, count, matchedCategory ? '' : rawTopic, topicPool);
       rowQuestions.forEach((rq) => {
         rq._topic = rawTopic;
       });
@@ -1953,8 +2441,16 @@ function generateQuestionsFromBuiltInBank({
     return result;
   }
 
-  const totalRandom = Math.max(1, Math.min(50, Math.round(Number(randomCount) || 10)));
-  return pickFromPool(BUILTIN_TRIVIA_BANK, totalRandom);
+  const totalRandom = Math.max(1, Math.min(1500, Math.round(Number(randomCount) || 10)));
+  const cleanDiff = String(difficulty || 'mixed').toLowerCase();
+  let randomPool = bankPool;
+  if (cleanDiff === 'easy' || cleanDiff === 'medium' || cleanDiff === 'hard') {
+    const diffFiltered = bankPool.filter((q) => q.difficulty === cleanDiff);
+    if (diffFiltered.length > 0) {
+      randomPool = diffFiltered;
+    }
+  }
+  return pickFromPool(randomPool, totalRandom, '', bankPool);
 }
 
 function getEffectiveGeminiApiKey(overrideKey = '') {
@@ -2860,7 +3356,10 @@ app.post('/api/admin/games/generate', async (req, res) => {
   try {
     const mode = req.body?.mode === 'topics' ? 'topics' : req.body?.mode === 'document' ? 'document' : 'random';
     const topics = Array.isArray(req.body?.topics) ? req.body.topics : [];
-    const randomCount = Math.max(1, Math.min(50, Math.round(Number(req.body?.randomCount) || 10)));
+    const selectedTopics = Array.isArray(req.body?.selectedTopics) ? req.body.selectedTopics : [];
+    const randomCount = Math.max(1, Math.min(1500, Math.round(Number(req.body?.randomCount) || 10)));
+    const difficulty = String(req.body?.difficulty || 'mixed').trim().toLowerCase();
+    const forceBankOnly = Boolean(req.body?.forceBankOnly);
     const customInstructions = String(req.body?.customInstructions || '').trim();
     const defaultTimer = Math.max(5, Math.min(300, Math.round(Number(req.body?.timerSeconds) || DEFAULT_TIMER_SECONDS)));
     const defaultPoints = Math.max(1, Math.min(100000, Math.round(Number(req.body?.points) || DEFAULT_POINTS)));
@@ -2874,6 +3373,8 @@ app.post('/api/admin/games/generate', async (req, res) => {
     if (!rawTitle) {
       if (mode === 'document') {
         rawTitle = 'טריוויה מקובץ';
+      } else if (selectedTopics.length > 0) {
+        rawTitle = `טריוויה: ${selectedTopics.slice(0, 2).join(' ו')}`;
       } else if (mode === 'topics' && topics.length > 0) {
         const topicNames = topics
           .map((t) => String(t?.topic || '').trim())
@@ -2887,6 +3388,11 @@ app.post('/api/admin/games/generate', async (req, res) => {
 
     let generatedQuestions = [];
     let generationSource = 'builtin-bank';
+
+    const requestedTotalCount =
+      mode === 'topics' && topics.length > 0 && selectedTopics.length === 0
+        ? topics.reduce((sum, r) => sum + Math.max(1, Math.round(Number(r?.count) || 3)), 0)
+        : randomCount;
 
     // Option 0: Questions extracted from an uploaded Word / PDF / Text document
     if (Array.isArray(req.body?.uploadedQuestions) && req.body.uploadedQuestions.length > 0) {
@@ -2911,13 +3417,23 @@ app.post('/api/admin/games/generate', async (req, res) => {
       }
     }
 
-    // Option 2: Live Gemini AI API (if key is present)
-    if (generatedQuestions.length === 0 && getEffectiveGeminiApiKey(inlineApiKey)) {
+    // Option 2: Live Gemini AI API (when not forceBankOnly, key is present, and count <= 40 or customInstructions given)
+    if (
+      !forceBankOnly &&
+      generatedQuestions.length === 0 &&
+      getEffectiveGeminiApiKey(inlineApiKey) &&
+      (requestedTotalCount <= 40 || customInstructions)
+    ) {
       try {
         const aiQuestions = await generateQuestionsViaGeminiAI({
           mode,
-          topics,
-          randomCount,
+          topics:
+            mode === 'topics' && topics.length > 0
+              ? topics
+              : customInstructions
+                ? [{ topic: customInstructions, count: Math.min(40, randomCount), difficulty }]
+                : [],
+          randomCount: Math.min(40, randomCount),
           customInstructions,
           defaultTimer,
           defaultPoints,
@@ -2932,25 +3448,38 @@ app.post('/api/admin/games/generate', async (req, res) => {
       }
     }
 
-    // Option 3: Instant Built-in Hebrew Trivia Bank
-    if (generatedQuestions.length === 0) {
+    // Option 3: Instant 1,000+ Built-in Hebrew Trivia Bank
+    if (generatedQuestions.length < requestedTotalCount && mode !== 'document') {
       let effectiveMode = mode;
       let effectiveTopics = topics;
-      if (customInstructions && effectiveMode === 'random') {
+      const neededCount = requestedTotalCount - generatedQuestions.length;
+      if (customInstructions && effectiveMode === 'random' && selectedTopics.length === 0) {
         const matchedTopicFromInstructions = matchBuiltInTopic(customInstructions);
         if (matchedTopicFromInstructions) {
           effectiveMode = 'topics';
-          effectiveTopics = [{ topic: matchedTopicFromInstructions, count: randomCount, difficulty: 'mixed' }];
+          effectiveTopics = [{ topic: matchedTopicFromInstructions, count: neededCount, difficulty }];
         }
       }
-      generatedQuestions = generateQuestionsFromBuiltInBank({
-        mode: effectiveMode,
+      const bankQuestions = generateQuestionsFromBuiltInBank({
+        mode: generatedQuestions.length > 0 ? 'random' : effectiveMode,
         topics: effectiveTopics,
-        randomCount,
+        selectedTopics,
+        randomCount: neededCount,
+        difficulty,
         defaultTimer,
         defaultPoints
       });
-      generationSource = 'builtin-bank';
+      const existingQSet = new Set(generatedQuestions.map((q) => q.question));
+      for (const bq of bankQuestions) {
+        if (generatedQuestions.length >= requestedTotalCount) break;
+        if (!existingQSet.has(bq.question)) {
+          existingQSet.add(bq.question);
+          generatedQuestions.push(bq);
+        }
+      }
+      if (generationSource !== 'gemini-ai') {
+        generationSource = 'builtin-bank';
+      }
     }
 
     const shuffleQuestionsOrder =
@@ -3074,6 +3603,7 @@ app.post('/api/admin/games/:gameId/duplicate', (req, res) => {
       subtitle: sourceGame.subtitle || '',
       headerImage: sourceGame.headerImage || '',
       backgroundImage: sourceGame.backgroundImage || '',
+      backgroundMusic: sourceGame.backgroundMusic || '',
       bgOverlayOpacity: sourceGame.bgOverlayOpacity,
       timerSeconds: sourceGame.timerSeconds,
       autoRevealOnTimeout: sourceGame.autoRevealOnTimeout,
@@ -3081,6 +3611,7 @@ app.post('/api/admin/games/:gameId/duplicate', (req, res) => {
       teams: clonedTeams,
       questions: clonedQuestions,
       savedPlayers: [],
+      playHistory: [],
       lastFinishedAt: null
     });
 
@@ -3102,6 +3633,573 @@ app.post('/api/admin/games/:gameId/duplicate', (req, res) => {
     });
   } catch (err) {
     return res.status(500).json({ ok: false, error: 'שגיאה בשכפול המשחק.' });
+  }
+});
+
+app.get('/api/admin/games/:gameId/history', (req, res) => {
+  const target =
+    store.games.find((g) => g.id === req.params.gameId) ||
+    store.games.find((g) => g.code === req.params.gameId);
+  if (!target) {
+    return res.status(404).json({ ok: false, error: 'המשחק המבוקש לא נמצא.' });
+  }
+
+  const liveLeaderboard = getSortedLeaderboard(target.id);
+  const hasLiveScores = liveLeaderboard.some((p) => (p.score || 0) > 0 || (p.correctCount || 0) > 0);
+  const historyList = Array.isArray(target.playHistory) ? [...target.playHistory] : [];
+
+  return res.json({
+    ok: true,
+    gameId: target.id,
+    gameCode: target.code,
+    title: target.title,
+    questionsCount: Array.isArray(target.questions) ? target.questions.length : 0,
+    playHistory: historyList,
+    currentLiveRun:
+      hasLiveScores && !game.currentRunArchived
+        ? {
+            id: 'live-current',
+            isLive: true,
+            playedAt: new Date().toISOString(),
+            questionsCount: Array.isArray(target.questions) ? target.questions.length : 0,
+            players: liveLeaderboard.map((p, idx) => ({
+              id: p.id,
+              name: p.name,
+              teamName: p.teamName || '',
+              weight: normalizePlayerWeight(p.weight),
+              correctCount: p.correctCount || 0,
+              score: roundScore(p.score || 0),
+              rank: idx + 1
+            }))
+          }
+        : null
+  });
+});
+
+// --- Central 1,000+ Question Bank Management & Random Raffle Endpoints ---
+
+app.get('/api/admin/question-bank', (req, res) => {
+  const topicFilter = String(req.query.topic || '').trim();
+  const diffFilter = String(req.query.difficulty || '').trim().toLowerCase();
+  const searchFilter = String(req.query.q || '').trim().toLowerCase();
+  const customOnly = req.query.customOnly === '1' || req.query.customOnly === 'true';
+  const limit = Math.max(1, Math.min(2000, Number(req.query.limit) || 1500));
+
+  let filtered = persistentQuestionBank;
+  if (customOnly) {
+    filtered = filtered.filter((item) => item.isCustom);
+  }
+  if (topicFilter && topicFilter !== 'all') {
+    filtered = filtered.filter((item) => item.topic === topicFilter);
+  }
+  if (diffFilter && diffFilter !== 'all' && diffFilter !== 'mixed') {
+    filtered = filtered.filter((item) => item.difficulty === diffFilter);
+  }
+  if (searchFilter) {
+    filtered = filtered.filter(
+      (item) =>
+        item.question.toLowerCase().includes(searchFilter) ||
+        (item.topic && item.topic.toLowerCase().includes(searchFilter)) ||
+        (Array.isArray(item.answers) &&
+          item.answers.some((a) => String(a).toLowerCase().includes(searchFilter)))
+    );
+  }
+
+  return res.json({
+    ok: true,
+    totalCount: persistentQuestionBank.length,
+    customCount: persistentQuestionBank.filter((q) => q.isCustom).length,
+    filteredCount: filtered.length,
+    topicsSummary: getQuestionBankTopicsSummary(),
+    questions: filtered.slice(0, limit)
+  });
+});
+
+// Manual selection of specific questions by ID from the 1,000+ Question Bank (סעיף ד)
+app.post('/api/admin/question-bank/select', (req, res) => {
+  try {
+    const rawIds = Array.isArray(req.body?.questionIds) ? req.body.questionIds : [];
+    const wantedIds = rawIds.map((id) => String(id || '').trim()).filter(Boolean);
+    if (wantedIds.length === 0) {
+      return res.status(400).json({ ok: false, error: 'לא נבחרו שאלות מהמאגר. סמנו לפחות שאלה אחת.' });
+    }
+
+    const activeGame = getActiveGameRecord();
+    const defaultTimer = Math.max(
+      5,
+      Math.min(300, Math.round(Number(req.body?.timerSeconds) || activeGame.timerSeconds || DEFAULT_TIMER_SECONDS))
+    );
+    const defaultPoints = Math.max(
+      1,
+      Math.min(100000, Math.round(Number(req.body?.points) || DEFAULT_POINTS))
+    );
+    const includeImages = req.body?.includeImages === undefined ? true : Boolean(req.body.includeImages);
+
+    const bankById = new Map(persistentQuestionBank.map((q) => [String(q.id), q]));
+    const selectedQuestions = [];
+
+    wantedIds.forEach((id, idx) => {
+      const item = bankById.get(id);
+      if (!item) return;
+      const shuffled = shuffleQuestionAnswers(item, defaultTimer, defaultPoints);
+      const imgUrl = includeImages
+        ? item.image || buildQuestionIllustrationUrl(item.question, item.topic || 'ידע כללי', idx + 1)
+        : item.image || '';
+      selectedQuestions.push(
+        normalizeQuestion(
+          {
+            ...shuffled,
+            image: imgUrl
+          },
+          defaultTimer
+        )
+      );
+    });
+
+    if (selectedQuestions.length === 0) {
+      return res.status(404).json({ ok: false, error: 'השאלות שנבחרו לא נמצאו במאגר.' });
+    }
+
+    if (req.body?.createNewGame) {
+      const rawTitle =
+        String(req.body?.title || '').trim() ||
+        `שאלון נבחר מהמאגר (${selectedQuestions.length} שאלות)`;
+      const cleanSettings = sanitizeSettings({
+        ...DEFAULT_GAME_SETTINGS,
+        ...req.body,
+        title: rawTitle,
+        timerSeconds: defaultTimer
+      });
+      const newGame = {
+        id: `game-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
+        ...cleanSettings,
+        questions: selectedQuestions
+      };
+      store.games.push(newGame);
+      store.activeGameId = newGame.id;
+      persistStore(store);
+
+      resetQuiz({ keepPlayers: true, clearTeamAssignments: true });
+      io.emit('settings:updated', getActiveSettings());
+      broadcastAllStates();
+
+      return res.json({
+        ok: true,
+        createdGame: true,
+        count: selectedQuestions.length,
+        game: newGame,
+        activeGameId: store.activeGameId,
+        activeGameCode: newGame.code,
+        games: getGamesSummaryList()
+      });
+    }
+
+    return res.json({
+      ok: true,
+      createdGame: false,
+      count: selectedQuestions.length,
+      questions: selectedQuestions
+    });
+  } catch (err) {
+    return res.status(500).json({ ok: false, error: 'שגיאה בטעינת השאלות שנבחרו מהמאגר.' });
+  }
+});
+
+// Add Gemini AI Questions by Topic directly into the Question Editor (סעיף ג)
+app.post('/api/admin/questions/generate-topic', async (req, res) => {
+  try {
+    const topic = String(req.body?.topic || 'ידע כללי').trim() || 'ידע כללי';
+    const count = Math.max(1, Math.min(100, Math.round(Number(req.body?.count) || 5)));
+    const difficulty = String(req.body?.difficulty || 'mixed').trim().toLowerCase();
+    const customInstructions = String(req.body?.customInstructions || '').trim();
+    const inlineApiKey = String(req.body?.apiKey || '').trim();
+    const pastedText = String(req.body?.pastedJson || '').trim();
+    const activeGame = getActiveGameRecord();
+    const defaultTimer = Math.max(
+      5,
+      Math.min(300, Math.round(Number(req.body?.timerSeconds) || activeGame.timerSeconds || DEFAULT_TIMER_SECONDS))
+    );
+    const defaultPoints = Math.max(
+      1,
+      Math.min(100000, Math.round(Number(req.body?.points) || DEFAULT_POINTS))
+    );
+    const includeImages = req.body?.includeImages === undefined ? true : Boolean(req.body.includeImages);
+
+    if (inlineApiKey) {
+      store.geminiApiKey = inlineApiKey;
+      persistStore(store);
+    }
+
+    let generated = [];
+    let source = 'gemini-ai';
+
+    if (pastedText) {
+      const parsedFromPaste = parseFreeformQuestionsText(pastedText, defaultTimer, defaultPoints);
+      if (parsedFromPaste.length > 0) {
+        generated = parsedFromPaste;
+        source = 'gemini-chat-paste';
+      } else {
+        return res.status(400).json({
+          ok: false,
+          error: 'לא הצלחנו לפענח שאלות מהטקסט שהודבק. ודאו שהדבקתם שאלות ותשובות או JSON תקין.'
+        });
+      }
+    }
+
+    if (generated.length === 0 && getEffectiveGeminiApiKey(inlineApiKey)) {
+      try {
+        const aiQuestions = await generateQuestionsViaGeminiAI({
+          mode: 'topics',
+          topics: [{ topic, count: Math.min(40, count), difficulty }],
+          randomCount: Math.min(40, count),
+          customInstructions,
+          defaultTimer,
+          defaultPoints,
+          apiKey: inlineApiKey
+        });
+        if (Array.isArray(aiQuestions) && aiQuestions.length > 0) {
+          generated = aiQuestions;
+          source = 'gemini-ai';
+        }
+      } catch (aiErr) {
+        console.warn('Gemini topic generation fallback to bank:', aiErr.message);
+      }
+    }
+
+    if (generated.length < count) {
+      const needed = count - generated.length;
+      const bankQuestions = generateQuestionsFromBuiltInBank({
+        mode: 'topics',
+        topics: [{ topic, count: needed, difficulty }],
+        randomCount: needed,
+        defaultTimer,
+        defaultPoints
+      });
+      const seen = new Set(generated.map((q) => q.question));
+      for (const bq of bankQuestions) {
+        if (generated.length >= count) break;
+        if (!seen.has(bq.question)) {
+          seen.add(bq.question);
+          generated.push(bq);
+        }
+      }
+      if (source !== 'gemini-ai' || generated.length === bankQuestions.length) {
+        source = 'builtin-bank';
+      }
+    }
+
+    const normalized = generated.map((q, idx) =>
+      normalizeQuestion(
+        {
+          ...q,
+          image: includeImages
+            ? q.image || buildQuestionIllustrationUrl(q.question, topic, idx + 1)
+            : q.image || ''
+        },
+        defaultTimer
+      )
+    );
+
+    return res.json({
+      ok: true,
+      source,
+      topic,
+      count: normalized.length,
+      questions: normalized
+    });
+  } catch (err) {
+    return res.status(500).json({ ok: false, error: 'שגיאה בייצור שאלות לפי נושא.' });
+  }
+});
+
+app.post('/api/admin/question-bank', (req, res) => {
+  try {
+    const incomingList = Array.isArray(req.body?.questions)
+      ? req.body.questions
+      : req.body?.question
+        ? [req.body]
+        : [];
+
+    if (incomingList.length === 0) {
+      return res.status(400).json({ ok: false, error: 'אנא הזינו שאלה ו-4 תשובות להוספה למאגר.' });
+    }
+
+    for (let i = 0; i < incomingList.length; i++) {
+      const item = incomingList[i];
+      const qText = String(item?.question || '').trim();
+      const ans = Array.isArray(item?.answers)
+        ? item.answers.map((a) => String(a ?? '').trim()).filter(Boolean)
+        : [];
+      if (!qText || ans.length < 4) {
+        return res.status(400).json({
+          ok: false,
+          error: `בשאלה ${i + 1} חסר נוסח שאלה או אחת מ-4 התשובות.`
+        });
+      }
+    }
+
+    const added = addQuestionsToPersistentBank(incomingList);
+    broadcastAllStates();
+
+    return res.json({
+      ok: true,
+      addedCount: added.length,
+      addedQuestions: added,
+      totalCount: persistentQuestionBank.length,
+      customCount: persistentQuestionBank.filter((q) => q.isCustom).length,
+      topicsSummary: getQuestionBankTopicsSummary()
+    });
+  } catch (err) {
+    return res.status(500).json({ ok: false, error: 'שגיאה בהוספת השאלה למאגר השאלות.' });
+  }
+});
+
+app.put('/api/admin/question-bank/:id', (req, res) => {
+  try {
+    const targetId = String(req.params.id || '').trim();
+    const idx = persistentQuestionBank.findIndex((q) => q.id === targetId);
+    if (idx === -1) {
+      return res.status(404).json({ ok: false, error: 'השאלה לעריכה לא נמצאה במאגר.' });
+    }
+
+    const existing = persistentQuestionBank[idx];
+    const qText = String(req.body?.question ?? existing.question ?? '').trim();
+    const rawAnswers = Array.isArray(req.body?.answers) ? req.body.answers : existing.answers;
+    const answers = Array.isArray(rawAnswers)
+      ? rawAnswers.slice(0, 4).map((a) => String(a ?? '').trim())
+      : [];
+    if (!qText || answers.length < 4 || answers.some((a) => !a)) {
+      return res.status(400).json({
+        ok: false,
+        error: 'נוסח השאלה וכל 4 התשובות חייבים להיות מלאים.'
+      });
+    }
+
+    const correctIndex = Math.max(0, Math.min(3, Math.round(Number(req.body?.correctIndex ?? existing.correctIndex) || 0)));
+    const topic = String(req.body?.topic ?? existing.topic ?? 'ידע כללי').trim() || 'ידע כללי';
+    const rawDiff = String(req.body?.difficulty ?? existing.difficulty ?? 'medium').trim().toLowerCase();
+    const difficulty = ['easy', 'medium', 'hard'].includes(rawDiff) ? rawDiff : 'medium';
+
+    persistentQuestionBank[idx] = {
+      ...existing,
+      topic,
+      difficulty,
+      question: qText,
+      answers,
+      correctIndex
+    };
+    savePersistentQuestionBank();
+    broadcastAllStates();
+
+    return res.json({
+      ok: true,
+      question: persistentQuestionBank[idx],
+      totalCount: persistentQuestionBank.length,
+      customCount: persistentQuestionBank.filter((q) => q.isCustom).length,
+      topicsSummary: getQuestionBankTopicsSummary()
+    });
+  } catch (err) {
+    return res.status(500).json({ ok: false, error: 'שגיאה בעדכון השאלה במאגר.' });
+  }
+});
+
+app.post('/api/admin/question-bank/categories/rename', (req, res) => {
+  try {
+    const oldTopic = String(req.body?.oldTopic || '').trim();
+    const newTopic = String(req.body?.newTopic || '').trim();
+    if (!oldTopic || !newTopic) {
+      return res.status(400).json({ ok: false, error: 'יש להזין את שם הקטגוריה הנוכחי ואת השם החדש.' });
+    }
+
+    let updatedCount = 0;
+    for (const q of persistentQuestionBank) {
+      if (q.topic === oldTopic) {
+        q.topic = newTopic;
+        updatedCount++;
+      }
+    }
+
+    if (updatedCount > 0) {
+      savePersistentQuestionBank();
+      broadcastAllStates();
+    }
+
+    return res.json({
+      ok: true,
+      oldTopic,
+      newTopic,
+      updatedCount,
+      totalCount: persistentQuestionBank.length,
+      topicsSummary: getQuestionBankTopicsSummary()
+    });
+  } catch (err) {
+    return res.status(500).json({ ok: false, error: 'שגיאה בשינוי שם הקטגוריה במאגר.' });
+  }
+});
+
+app.delete('/api/admin/question-bank/:id', (req, res) => {
+  const targetId = String(req.params.id || '').trim();
+  const idx = persistentQuestionBank.findIndex((q) => q.id === targetId);
+  if (idx === -1) {
+    return res.status(404).json({ ok: false, error: 'השאלה לא נמצאה במאגר.' });
+  }
+  persistentQuestionBank.splice(idx, 1);
+  savePersistentQuestionBank();
+  broadcastAllStates();
+  return res.json({
+    ok: true,
+    totalCount: persistentQuestionBank.length,
+    customCount: persistentQuestionBank.filter((q) => q.isCustom).length,
+    topicsSummary: getQuestionBankTopicsSummary()
+  });
+});
+
+app.post('/api/admin/question-bank/raffle', (req, res) => {
+  try {
+    const count = Math.max(1, Math.min(1500, Math.round(Number(req.body?.count) || 10)));
+    const topic = String(req.body?.topic || '').trim();
+    const selectedTopics = Array.isArray(req.body?.selectedTopics)
+      ? req.body.selectedTopics.map((t) => String(t || '').trim()).filter((t) => t && t !== 'all')
+      : [];
+    const difficulty = String(req.body?.difficulty || 'mixed').trim().toLowerCase();
+    const activeGame = getActiveGameRecord();
+    const defaultTimer =
+      Math.max(5, Math.min(300, Math.round(Number(req.body?.timerSeconds) || activeGame.timerSeconds || DEFAULT_TIMER_SECONDS)));
+    const defaultPoints =
+      Math.max(1, Math.min(100000, Math.round(Number(req.body?.points) || DEFAULT_POINTS)));
+
+    const drawn = generateQuestionsFromBuiltInBank({
+      mode: topic && topic !== 'all' ? 'topics' : 'random',
+      topics: topic && topic !== 'all' ? [{ topic, count, difficulty }] : [],
+      selectedTopics,
+      randomCount: count,
+      difficulty,
+      defaultTimer,
+      defaultPoints
+    }).map((q, idx) =>
+      normalizeQuestion(
+        {
+          ...q,
+          image: q.image || buildQuestionIllustrationUrl(q.question, q._topic || topic, idx + 1)
+        },
+        defaultTimer
+      )
+    );
+
+    return res.json({
+      ok: true,
+      count: drawn.length,
+      totalBankCount: persistentQuestionBank.length,
+      questions: drawn
+    });
+  } catch (err) {
+    return res.status(500).json({ ok: false, error: 'שגיאה בהגרלת שאלות מהמאגר.' });
+  }
+});
+
+// --- Player Question & Answers English Translation Endpoint ---
+
+const translationCache = new Map();
+
+function translateSingleTextViaGoogle(textHe) {
+  return new Promise((resolve) => {
+    const clean = String(textHe || '').trim();
+    if (!clean) return resolve('');
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=iw&tl=en&dt=t&q=${encodeURIComponent(clean)}`;
+    const req = https.get(url, { timeout: 6000 }, (resp) => {
+      let raw = '';
+      resp.on('data', (chunk) => {
+        raw += chunk;
+      });
+      resp.on('end', () => {
+        try {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed?.[0])) {
+            const joined = parsed[0].map((part) => part?.[0] || '').join('').trim();
+            if (joined) return resolve(joined);
+          }
+        } catch {
+          // ignore
+        }
+        resolve(clean);
+      });
+    });
+    req.on('error', () => resolve(clean));
+    req.on('timeout', () => {
+      req.destroy();
+      resolve(clean);
+    });
+  });
+}
+
+app.post('/api/translate-question', async (req, res) => {
+  try {
+    const questionHe = String(req.body?.question || '').trim();
+    const answersHe = Array.isArray(req.body?.answers)
+      ? req.body.answers.slice(0, 4).map((a) => String(a ?? '').trim())
+      : [];
+    if (!questionHe) {
+      return res.status(400).json({ ok: false, error: 'Missing question text' });
+    }
+
+    const cacheKey = `${questionHe}||${answersHe.join('||')}`;
+    if (translationCache.has(cacheKey)) {
+      return res.json({ ok: true, ...translationCache.get(cacheKey) });
+    }
+
+    // 1. Check if this question exists in our 1,000+ persistentQuestionBank with pre-built English translations
+    const normalizedHe = questionHe.replace(/\s+/g, ' ').toLowerCase();
+    const bankMatch = persistentQuestionBank.find(
+      (item) =>
+        item.questionEn &&
+        item.question.replace(/\s+/g, ' ').toLowerCase() === normalizedHe
+    );
+
+    if (bankMatch && Array.isArray(bankMatch.answersEn) && bankMatch.answersEn.length === 4) {
+      // Map each shuffled Hebrew answer to its corresponding English answer from bankMatch
+      const heToEnMap = new Map();
+      bankMatch.answers.forEach((ansHe, idx) => {
+        heToEnMap.set(String(ansHe).trim(), bankMatch.answersEn[idx] || ansHe);
+      });
+      const mappedAnswersEn = [];
+      let allMatched = true;
+      for (const aHe of answersHe) {
+        if (heToEnMap.has(aHe)) {
+          mappedAnswersEn.push(heToEnMap.get(aHe));
+        } else {
+          allMatched = false;
+          break;
+        }
+      }
+      if (allMatched && mappedAnswersEn.length === 4) {
+        const payload = { questionEn: bankMatch.questionEn, answersEn: mappedAnswersEn };
+        translationCache.set(cacheKey, payload);
+        return res.json({ ok: true, ...payload });
+      }
+    }
+
+    // 2. Translate question and 4 answers in parallel via Google Translate HTTPS endpoint
+    const [questionEn, ...answersEn] = await Promise.all([
+      translateSingleTextViaGoogle(questionHe),
+      ...answersHe.map((a) => translateSingleTextViaGoogle(a))
+    ]);
+
+    const payload = {
+      questionEn: questionEn || questionHe,
+      answersEn: answersEn.length === 4 ? answersEn : answersHe
+    };
+    translationCache.set(cacheKey, payload);
+
+    // Save back onto active question if it matches so future players receive it immediately
+    const activeQ = getActiveQuestions()[game.currentQuestionIndex];
+    if (activeQ && activeQ.question === questionHe) {
+      activeQ.questionEn = payload.questionEn;
+      activeQ.answersEn = payload.answersEn;
+    }
+
+    return res.json({ ok: true, ...payload });
+  } catch (err) {
+    return res.status(500).json({ ok: false, error: 'Translation failed' });
   }
 });
 
@@ -3384,15 +4482,11 @@ io.on('connection', (socket) => {
       return;
     }
 
-    if (payload.resetScores === true) {
-      for (const p of players.values()) {
-        if (p.gameId === activeGame.id) {
-          p.score = 0;
-          p.correctCount = 0;
-        }
-      }
-      syncGamePlayersToStore(activeGame.id);
-    }
+    // Archive any previous unarchived run with scores into playHistory,
+    // and reset all players' live scores to 0 for the new run!
+    archiveCurrentGameRunIfNeeded(activeGame.id);
+    game.currentRunArchived = false;
+    resetPlayersForNewRun(activeGame.id, { removeOfflinePlayers: false });
 
     startQuestion(0);
     if (typeof ack === 'function') ack({ ok: true, state: buildAdminState() });
@@ -3855,34 +4949,65 @@ io.on('connection', (socket) => {
       return;
     }
 
-    if (currentAnswers.has(pid)) {
-      if (typeof ack === 'function') {
-        ack({
-          ok: false,
-          error: 'התשובה שלך כבר ננעלה לשאלה זו.',
-          lockedAnswerIndex: currentAnswers.get(pid).answerIndex
-        });
-      }
-      return;
-    }
-
     const answerIndex = Number(payload?.answerIndex);
     if (!Number.isInteger(answerIndex) || answerIndex < 0 || answerIndex > 3) {
       if (typeof ack === 'function') ack({ ok: false, error: 'בחירה לא חוקית.' });
       return;
     }
 
+    let changeCount = 0;
+    if (currentAnswers.has(pid)) {
+      const prev = currentAnswers.get(pid);
+      const prevChanges = Number(prev.changeCount || 0);
+      if (prev.answerIndex === answerIndex) {
+        if (typeof ack === 'function') {
+          ack({
+            ok: true,
+            lockedAnswerIndex: prev.answerIndex,
+            answerChangeCount: prevChanges,
+            canChangeAnswer: prevChanges < 1
+          });
+        }
+        return;
+      }
+      if (prevChanges >= 1) {
+        if (typeof ack === 'function') {
+          ack({
+            ok: false,
+            error: 'כבר שינית את תשובתך פעם אחת לשאלה זו — התשובה נעולה סופית.',
+            lockedAnswerIndex: prev.answerIndex,
+            answerChangeCount: prevChanges,
+            canChangeAnswer: false
+          });
+        }
+        return;
+      }
+      changeCount = prevChanges + 1;
+    }
+
     currentAnswers.set(pid, {
       answerIndex,
-      answeredAt: Date.now()
+      answeredAt: Date.now(),
+      changeCount
     });
 
-    // Auto-reveal immediately if all connected players in the active game have answered!
+    // Only auto-reveal early if all connected players have answered AND finalized their 1 allowed change
     const connectedInGame = getPlayersForGame(store.activeGameId).filter((p) => p.connected);
-    if (connectedInGame.length > 0 && connectedInGame.every((p) => currentAnswers.has(p.id))) {
+    if (
+      connectedInGame.length > 0 &&
+      connectedInGame.every(
+        (p) => currentAnswers.has(p.id) && Number(currentAnswers.get(p.id)?.changeCount || 0) >= 1
+      )
+    ) {
       revealCurrentQuestion();
       if (typeof ack === 'function') {
-        ack({ ok: true, lockedAnswerIndex: answerIndex, autoRevealed: true });
+        ack({
+          ok: true,
+          lockedAnswerIndex: answerIndex,
+          answerChangeCount: changeCount,
+          canChangeAnswer: false,
+          autoRevealed: true
+        });
       }
       return;
     }
@@ -3890,7 +5015,12 @@ io.on('connection', (socket) => {
     broadcastAllStates();
 
     if (typeof ack === 'function') {
-      ack({ ok: true, lockedAnswerIndex: answerIndex });
+      ack({
+        ok: true,
+        lockedAnswerIndex: answerIndex,
+        answerChangeCount: changeCount,
+        canChangeAnswer: changeCount < 1
+      });
     }
   });
 
@@ -3906,7 +5036,13 @@ io.on('connection', (socket) => {
       }
       if (game.phase === 'question') {
         const connectedInGame = getPlayersForGame(store.activeGameId).filter((pl) => pl.connected);
-        if (connectedInGame.length > 0 && connectedInGame.every((pl) => currentAnswers.has(pl.id))) {
+        if (
+          connectedInGame.length > 0 &&
+          connectedInGame.every(
+            (pl) =>
+              currentAnswers.has(pl.id) && Number(currentAnswers.get(pl.id)?.changeCount || 0) >= 1
+          )
+        ) {
           revealCurrentQuestion();
           if (typeof ack === 'function') ack({ ok: true });
           return;
@@ -3929,7 +5065,13 @@ io.on('connection', (socket) => {
       }
       if (game.phase === 'question') {
         const connectedInGame = getPlayersForGame(store.activeGameId).filter((pl) => pl.connected);
-        if (connectedInGame.length > 0 && connectedInGame.every((pl) => currentAnswers.has(pl.id))) {
+        if (
+          connectedInGame.length > 0 &&
+          connectedInGame.every(
+            (pl) =>
+              currentAnswers.has(pl.id) && Number(currentAnswers.get(pl.id)?.changeCount || 0) >= 1
+          )
+        ) {
           revealCurrentQuestion();
           return;
         }

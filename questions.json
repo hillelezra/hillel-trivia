@@ -1,67 +1,108 @@
 [
   {
-    "question": "מי היה ראש הממשלה הראשון של מדינת ישראל?",
+    "question": "באיזו עיר או אתר בישראל נמצאים הנקרות הלבנות והרכבל התלול על גבול לבנון?",
     "answers": [
-      "משה שרת",
-      "חיים ויצמן",
-      "לוי אשכול",
-      "דוד בן-גוריון"
-    ],
-    "correctIndex": 3,
-    "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=1",
-    "points": 100,
-    "timerSeconds": 15
-  },
-  {
-    "question": "באיזו שנה הושק האייפון הראשון על ידי סטיב ג׳ובס?",
-    "answers": [
-      "2010",
-      "2005",
-      "2007",
-      "2009"
-    ],
-    "correctIndex": 2,
-    "image": "/api/question-illustration?theme=tech&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=2",
-    "points": 100,
-    "timerSeconds": 15
-  },
-  {
-    "question": "איזה סרט ישראלי זכה בפרס אופיר וייצג את ישראל באוסקר בקטגוריית הסרט הזר עם הבמאי יוסף סידר (\"בופור\" / \"הערת שוליים\")?",
-    "answers": [
-      "שניהם (בופור והערת שוליים)",
-      "רק הערת שוליים",
-      "אף אחד מהם",
-      "רק בופור"
+      "ראש הנקרה",
+      "חיפה",
+      "מצפה רמון",
+      "חולון"
     ],
     "correctIndex": 0,
-    "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=3",
+    "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=1",
     "points": 100,
-    "timerSeconds": 15
+    "timerSeconds": 20,
+    "questionEn": "In which Israeli city or site can you find The white sea grottos and cable car on the Lebanon border?",
+    "answersEn": [
+      "Rosh HaNikra",
+      "Haifa",
+      "Mitzpe Ramon",
+      "Holon"
+    ]
   },
   {
-    "question": "מי נחשב לממציא נורת הליבון החשמלית המסחרית?",
+    "question": "מהו המטבע הרשמי של דרום קוריאה?",
     "answers": [
-      "תומאס אדיסון",
-      "אלכסנדר גרהם בל",
-      "ניקולה טסלה",
-      "אלברט איינשטיין"
+      "פרנק שווייצרי",
+      "וון דרום-קוריאני",
+      "כתר שוודי (קרונה)",
+      "פורינט הונגרי"
     ],
-    "correctIndex": 0,
-    "image": "/api/question-illustration?theme=science&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=4",
+    "correctIndex": 1,
+    "image": "/api/question-illustration?theme=general&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=2",
     "points": 100,
-    "timerSeconds": 15
+    "timerSeconds": 20,
+    "questionEn": "What is the official currency of South Korea?",
+    "answersEn": [
+      "Swiss Franc",
+      "South Korean Won",
+      "Swedish Krona",
+      "Hungarian Forint"
+    ]
   },
   {
-    "question": "איזו להקה ישראלית שרה את השיר \"נתתי לה חיי\"?",
+    "question": "באיזו מדינה המטבע הרשמי הוא יואן סיני (רנמינבי)?",
     "answers": [
-      "משינה",
-      "תיסלם",
-      "אתניקס",
-      "כוורת"
+      "בריטניה",
+      "ברזיל",
+      "דרום קוריאה",
+      "סין"
     ],
     "correctIndex": 3,
-    "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=5",
+    "image": "/api/question-illustration?theme=globe&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=3",
     "points": 100,
-    "timerSeconds": 15
+    "timerSeconds": 20,
+    "questionEn": "In which country is the Chinese Yuan (Renminbi) the official currency?",
+    "answersEn": [
+      "United Kingdom",
+      "Brazil",
+      "South Korea",
+      "China"
+    ]
+  },
+  {
+    "question": "באיזו עיר או אתר בישראל נמצאים מכתש רמון וחוות האלפקות?",
+    "answers": [
+      "מצפה רמון",
+      "אילת",
+      "ירושלים",
+      "אשדוד"
+    ],
+    "correctIndex": 0,
+    "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=4",
+    "points": 100,
+    "timerSeconds": 20,
+    "questionEn": "In which Israeli city or site can you find Ramon Crater and the Alpaca Farm?",
+    "answersEn": [
+      "Mitzpe Ramon",
+      "Eilat",
+      "Jerusalem",
+      "Ashdod"
+    ]
+  },
+  {
+    "question": "מהי בירת אוסטרליה?",
+    "answers": [
+      "סידני",
+      "מלבורן",
+      "פרת׳",
+      "קנברה"
+    ],
+    "correctIndex": 3,
+    "image": "/api/question-illustration?theme=globe&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=5",
+    "points": 100,
+    "timerSeconds": 20
+  },
+  {
+    "question": "באיזו שנה נחתם הסכם השלום בין ישראל למצרים?",
+    "answers": [
+      "1982",
+      "1994",
+      "1973",
+      "1979"
+    ],
+    "correctIndex": 3,
+    "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=6",
+    "points": 100,
+    "timerSeconds": 20
   }
 ]

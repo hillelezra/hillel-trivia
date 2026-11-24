@@ -106,8 +106,8 @@
 
   async function uploadImageFile(file, category) {
     if (!file) throw new Error('לא נבחר קובץ.');
-    if (file.size > 24 * 1024 * 1024) {
-      throw new Error('הקובץ גדול מדי (מקסימום 24MB).');
+    if (file.size > 34 * 1024 * 1024) {
+      throw new Error('הקובץ גדול מדי (מקסימום 34MB).');
     }
     const parts = (file.name || '').split('.');
     const ext = parts.length > 1 ? parts.pop().toLowerCase() : '';

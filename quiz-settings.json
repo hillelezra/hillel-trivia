@@ -1,16 +1,17 @@
 {
-  "id": "game-1794763730854-684e4a",
-  "code": "1009",
-  "title": "ג'מניי ניסוי",
+  "id": "game-1795459873454-79f67b",
+  "code": "1013",
+  "title": "ג'מניי",
   "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
   "headerImage": "",
   "backgroundImage": "",
+  "backgroundMusic": "",
   "bgOverlayOpacity": 0.68,
-  "timerSeconds": 15,
+  "timerSeconds": 20,
   "autoRevealOnTimeout": true,
   "teamsEnabled": false,
   "teams": [],
-  "activeGameId": "game-1794763730854-684e4a",
+  "activeGameId": "game-1795459873454-79f67b",
   "games": [
     {
       "id": "game-default",
@@ -18,6 +19,7 @@
       "subtitle": "ענו נכון והתחלקו שווה בשווה ב-100 נקודות לכל שאלה!",
       "headerImage": "/uploads/header-1794079156027-c2f1e96a.jpg",
       "backgroundImage": "/uploads/bg-1794079173397-958946cc.jpg",
+      "backgroundMusic": "",
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
@@ -169,6 +171,7 @@
         }
       ],
       "savedPlayers": [],
+      "playHistory": [],
       "lastFinishedAt": null,
       "code": "1000"
     },
@@ -178,6 +181,7 @@
       "subtitle": "חנוכה תשפו",
       "headerImage": "",
       "backgroundImage": "",
+      "backgroundMusic": "",
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
@@ -255,6 +259,24 @@
           "joinedAt": 1794685042756
         }
       ],
+      "playHistory": [
+        {
+          "id": "run-migrated-game-1794080546987-51d203",
+          "playedAt": "2026-11-14T19:37:48.136Z",
+          "questionsCount": 2,
+          "players": [
+            {
+              "id": "a6c976b7-3814-4bd0-b267-9441d4287639",
+              "name": "מלכה",
+              "teamName": "עזרא",
+              "weight": 1,
+              "correctCount": 2,
+              "score": 200,
+              "rank": 1
+            }
+          ]
+        }
+      ],
       "lastFinishedAt": "2026-11-14T19:37:48.136Z",
       "code": "1001"
     },
@@ -264,6 +286,7 @@
       "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
       "headerImage": "",
       "backgroundImage": "",
+      "backgroundMusic": "",
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
@@ -285,6 +308,7 @@
         }
       ],
       "savedPlayers": [],
+      "playHistory": [],
       "lastFinishedAt": null,
       "code": "1002"
     },
@@ -294,6 +318,7 @@
       "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
       "headerImage": "",
       "backgroundImage": "",
+      "backgroundMusic": "",
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
@@ -533,6 +558,24 @@
           "joinedAt": 1794680956094
         }
       ],
+      "playHistory": [
+        {
+          "id": "run-migrated-game-1794431713579-5d6ad6",
+          "playedAt": "2026-11-14T18:30:01.099Z",
+          "questionsCount": 17,
+          "players": [
+            {
+              "id": "3d016c11-f310-4e96-89a9-b09a2c458969",
+              "name": "בדיחי",
+              "teamName": "",
+              "weight": 1,
+              "correctCount": 5,
+              "score": 500,
+              "rank": 1
+            }
+          ]
+        }
+      ],
       "lastFinishedAt": "2026-11-14T18:30:01.099Z",
       "code": "1003"
     },
@@ -542,6 +585,7 @@
       "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
       "headerImage": "",
       "backgroundImage": "",
+      "backgroundMusic": "",
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 25,
       "autoRevealOnTimeout": true,
@@ -823,6 +867,7 @@
         }
       ],
       "savedPlayers": [],
+      "playHistory": [],
       "lastFinishedAt": "2026-11-14T19:49:29.230Z",
       "code": "1004"
     },
@@ -832,6 +877,7 @@
       "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
       "headerImage": "",
       "backgroundImage": "",
+      "backgroundMusic": "",
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
@@ -918,6 +964,7 @@
         }
       ],
       "savedPlayers": [],
+      "playHistory": [],
       "lastFinishedAt": "2026-11-15T05:20:52.369Z",
       "code": "1005"
     },
@@ -927,6 +974,7 @@
       "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
       "headerImage": "",
       "backgroundImage": "",
+      "backgroundMusic": "",
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 20,
       "autoRevealOnTimeout": true,
@@ -1195,6 +1243,7 @@
         }
       ],
       "savedPlayers": [],
+      "playHistory": [],
       "lastFinishedAt": null,
       "code": "1006"
     },
@@ -1204,6 +1253,7 @@
       "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
       "headerImage": "",
       "backgroundImage": "/uploads/bg-1794748231330-0d705cf5.jpg",
+      "backgroundMusic": "",
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
@@ -1342,6 +1392,7 @@
         }
       ],
       "savedPlayers": [],
+      "playHistory": [],
       "lastFinishedAt": null,
       "code": "1007"
     },
@@ -1351,6 +1402,7 @@
       "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
       "headerImage": "",
       "backgroundImage": "/uploads/bg-1794748231330-0d705cf5.jpg",
+      "backgroundMusic": "",
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
@@ -1488,36 +1540,9 @@
           "timerSeconds": 15
         }
       ],
-      "savedPlayers": [
-        {
-          "id": "d9a1bcfd-0c64-4c35-8698-88a6f965d41b",
-          "name": "מלכה",
-          "teamId": null,
-          "weight": 1,
-          "score": 73.08,
-          "correctCount": 2,
-          "joinedAt": 1794753276917
-        },
-        {
-          "id": "eed0f98d-4258-4f20-bc30-261a11a8360f",
-          "name": "יצחק",
-          "teamId": null,
-          "weight": 4,
-          "score": 61.54,
-          "correctCount": 1,
-          "joinedAt": 1794753310153
-        },
-        {
-          "id": "eebc2797-bf7b-4231-a73c-96d54752899f",
-          "name": "תהילה",
-          "teamId": null,
-          "weight": 2,
-          "score": 65.38,
-          "correctCount": 2,
-          "joinedAt": 1794753326835
-        }
-      ],
-      "lastFinishedAt": "2026-11-15T17:27:42.063Z",
+      "savedPlayers": [],
+      "playHistory": [],
+      "lastFinishedAt": "2026-11-15T19:16:49.385Z",
       "code": "1008"
     },
     {
@@ -1526,6 +1551,7 @@
       "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
       "headerImage": "",
       "backgroundImage": "",
+      "backgroundMusic": "",
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
@@ -1599,8 +1625,3319 @@
         }
       ],
       "savedPlayers": [],
+      "playHistory": [],
       "lastFinishedAt": null,
       "code": "1009"
+    },
+    {
+      "id": "game-1794770676601-20887b",
+      "title": "ניסוי ענף ג",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "backgroundMusic": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 30,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": true,
+      "teams": [
+        {
+          "id": "team-97c023d0",
+          "name": "יצחק ענף"
+        },
+        {
+          "id": "team-8a8700db",
+          "name": "שושנה ענף"
+        },
+        {
+          "id": "team-31e81ff3",
+          "name": "משפחת עזרא"
+        },
+        {
+          "id": "team-f5d51783",
+          "name": "משפחת קליין"
+        },
+        {
+          "id": "team-6bb004ba",
+          "name": "הלל 11"
+        }
+      ],
+      "questions": [
+        {
+          "question": "מאיזו מדינה הגיעה הפיצה המקורית (נפוליטנית)?",
+          "answers": [
+            "איטליה",
+            "צרפת",
+            "יוון",
+            "ספרד"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%90%D7%95%D7%9B%D7%9C%20%D7%95%D7%A7%D7%95%D7%9C%D7%99%D7%A0%D7%A8%D7%99%D7%94&s=1",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "באיזו עיר הוכרזה הקמת מדינת ישראל בה׳ באייר תש\"ח?",
+          "answers": [
+            "ראשון לציון",
+            "תל אביב",
+            "ירושלים",
+            "חיפה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%A6%D7%A8%D7%A4%D7%AA&s=2",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "איזו מושבה כונתה \"אם המושבות\"?",
+          "answers": [
+            "נס ציונה",
+            "פתח תקווה",
+            "ראש פינה",
+            "זכרון יעקב"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=3",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "מהי השפה הרשמית במדינת ברזיל?",
+          "answers": [
+            "צרפתית",
+            "פורטוגזית",
+            "אנגלית",
+            "ספרדית"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=general&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=4",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "מי היה ראש הממשלה הראשון של מדינת ישראל?",
+          "answers": [
+            "לוי אשכול",
+            "משה שרת",
+            "דוד בן-גוריון",
+            "חיים ויצמן"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=holidays&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=5",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "באיזו שנה נערך הקונגרס הציוני הראשון בבאזל?",
+          "answers": [
+            "1882",
+            "1901",
+            "1897",
+            "1917"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=6",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "כמה ימים יש בשנה לועזית רגילה (שאינה מעוברת)?",
+          "answers": [
+            "360",
+            "365",
+            "366",
+            "354"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=7",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "מאיזה צמח או קטנייה מכינים ממרח חומוס מסורתי?",
+          "answers": [
+            "שעועית לבנה",
+            "פולי סויה",
+            "עדשים כתומות",
+            "גרגירי חומוס וטחינה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%95%D7%9B%D7%9C%20%D7%95%D7%A7%D7%95%D7%9C%D7%99%D7%A0%D7%A8%D7%99%D7%94&s=8",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "מי היה הנשיא הראשון של מדינת ישראל?",
+          "answers": [
+            "חיים ויצמן",
+            "אפרים קציר",
+            "יצחק בן-צבי",
+            "זלמן שזר"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=holidays&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=9",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "איזו מתכת היא נוזלית בטמפרטורת החדר?",
+          "answers": [
+            "עופרת",
+            "נחושת",
+            "כספית",
+            "אבץ"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=science&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=10",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "איזה מבצע צבאי נודע גם בשם \"מבצע יונתן\" בשנת 1976?",
+          "answers": [
+            "מבצע אנטבה",
+            "מבצע קדש",
+            "מבצע משה",
+            "מבצע שלמה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=11",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "איזו עיר באיטליה נחשבת למולדת רוטב הבולונז (ראגו)?",
+          "answers": [
+            "רומא",
+            "נאפולי",
+            "מילאנו",
+            "בולוניה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=food&badge=%D7%90%D7%95%D7%9B%D7%9C%20%D7%95%D7%A7%D7%95%D7%9C%D7%99%D7%A0%D7%A8%D7%99%D7%94&s=12",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "מאיזה חומר גלם מכינים טחינה גולמית?",
+          "answers": [
+            "גרעיני חמנייה",
+            "בוטנים",
+            "שומשום",
+            "שקדים"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%95%D7%9B%D7%9C%20%D7%95%D7%A7%D7%95%D7%9C%D7%99%D7%A0%D7%A8%D7%99%D7%94&s=13",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "באיזו שנה נחתם הסכם השלום בין ישראל למצרים?",
+          "answers": [
+            "1994",
+            "1973",
+            "1979",
+            "1982"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%A6%D7%A8%D7%A4%D7%AA&s=14",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "מי כתב את מילות ההמנון הלאומי \"התקווה\"?",
+          "answers": [
+            "נפתלי הרץ אימבר",
+            "נתן אלתרמן",
+            "חיים נחמן ביאליק",
+            "שאול טשרניחובסקי"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=holidays&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=15",
+          "points": 100,
+          "timerSeconds": 30
+        },
+        {
+          "question": "מהו התבלין היקר ביותר בעולם לפי משקל?",
+          "answers": [
+            "וניל",
+            "קינמון",
+            "הל",
+            "זעפרן"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=food&badge=%D7%90%D7%95%D7%9B%D7%9C%20%D7%95%D7%A7%D7%95%D7%9C%D7%99%D7%A0%D7%A8%D7%99%D7%94&s=16",
+          "points": 100,
+          "timerSeconds": 30
+        }
+      ],
+      "savedPlayers": [
+        {
+          "id": "9b7d201c-98e8-4582-8c57-cf4845baea3e",
+          "name": "שושנה 1",
+          "teamId": "team-8a8700db",
+          "weight": 1,
+          "score": 57.15,
+          "correctCount": 4,
+          "joinedAt": 1794770850019
+        },
+        {
+          "id": "727194a1-2b79-41a2-bfa7-05a65be436a7",
+          "name": "הלל 1",
+          "teamId": "team-6bb004ba",
+          "weight": 1,
+          "score": 219.51,
+          "correctCount": 13,
+          "joinedAt": 1794770860913
+        },
+        {
+          "id": "c5aecdeb-cec0-4af8-b7ba-6ff12c31f5bc",
+          "name": "תהילה 1",
+          "teamId": "team-31e81ff3",
+          "weight": 1,
+          "score": 116.43,
+          "correctCount": 8,
+          "joinedAt": 1794770941535
+        },
+        {
+          "id": "09e13997-226d-48b2-9a98-a4f93e292226",
+          "name": "תהילה 2",
+          "teamId": "team-31e81ff3",
+          "weight": 1,
+          "score": 141.66,
+          "correctCount": 8,
+          "joinedAt": 1794770961558
+        },
+        {
+          "id": "d604795e-531f-4e20-84f8-fc98a28c15b1",
+          "name": "מחמודי",
+          "teamId": "team-f5d51783",
+          "weight": 1,
+          "score": 433.1,
+          "correctCount": 12,
+          "joinedAt": 1794770994877
+        },
+        {
+          "id": "022849d3-fd98-4f2c-b8d0-741205d224f4",
+          "name": "פטמה",
+          "teamId": "team-f5d51783",
+          "weight": 1,
+          "score": 215.25,
+          "correctCount": 11,
+          "joinedAt": 1794771008309
+        },
+        {
+          "id": "ddc6609c-7359-4133-94cd-48dd011d65a9",
+          "name": "הללוש",
+          "teamId": "team-31e81ff3",
+          "weight": 1,
+          "score": 381.9,
+          "correctCount": 13,
+          "joinedAt": 1794771071335
+        },
+        {
+          "id": "54dcaa77-52a4-44c8-8bdd-01cf2bf6e6bf",
+          "name": "שושי",
+          "teamId": "team-8a8700db",
+          "weight": 1,
+          "score": 35,
+          "correctCount": 4,
+          "joinedAt": 1794771307286
+        }
+      ],
+      "playHistory": [
+        {
+          "id": "run-migrated-game-1794770676601-20887b",
+          "playedAt": "2026-11-15T19:38:05.172Z",
+          "questionsCount": 16,
+          "players": [
+            {
+              "id": "d604795e-531f-4e20-84f8-fc98a28c15b1",
+              "name": "מחמודי",
+              "teamName": "משפחת קליין",
+              "weight": 1,
+              "correctCount": 12,
+              "score": 433.1,
+              "rank": 1
+            },
+            {
+              "id": "ddc6609c-7359-4133-94cd-48dd011d65a9",
+              "name": "הללוש",
+              "teamName": "משפחת עזרא",
+              "weight": 1,
+              "correctCount": 13,
+              "score": 381.9,
+              "rank": 2
+            },
+            {
+              "id": "727194a1-2b79-41a2-bfa7-05a65be436a7",
+              "name": "הלל 1",
+              "teamName": "הלל 11",
+              "weight": 1,
+              "correctCount": 13,
+              "score": 219.51,
+              "rank": 3
+            },
+            {
+              "id": "022849d3-fd98-4f2c-b8d0-741205d224f4",
+              "name": "פטמה",
+              "teamName": "משפחת קליין",
+              "weight": 1,
+              "correctCount": 11,
+              "score": 215.25,
+              "rank": 4
+            },
+            {
+              "id": "09e13997-226d-48b2-9a98-a4f93e292226",
+              "name": "תהילה 2",
+              "teamName": "משפחת עזרא",
+              "weight": 1,
+              "correctCount": 8,
+              "score": 141.66,
+              "rank": 5
+            },
+            {
+              "id": "c5aecdeb-cec0-4af8-b7ba-6ff12c31f5bc",
+              "name": "תהילה 1",
+              "teamName": "משפחת עזרא",
+              "weight": 1,
+              "correctCount": 8,
+              "score": 116.43,
+              "rank": 6
+            },
+            {
+              "id": "9b7d201c-98e8-4582-8c57-cf4845baea3e",
+              "name": "שושנה 1",
+              "teamName": "שושנה ענף",
+              "weight": 1,
+              "correctCount": 4,
+              "score": 57.15,
+              "rank": 7
+            },
+            {
+              "id": "54dcaa77-52a4-44c8-8bdd-01cf2bf6e6bf",
+              "name": "שושי",
+              "teamName": "שושנה ענף",
+              "weight": 1,
+              "correctCount": 4,
+              "score": 35,
+              "rank": 8
+            }
+          ]
+        }
+      ],
+      "lastFinishedAt": "2026-11-15T19:38:05.172Z",
+      "code": "1010"
+    },
+    {
+      "id": "game-1795375897620-fbac93",
+      "title": "ניסוי 22/11",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "backgroundMusic": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 20,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "מי גילם את דמותו של סלאח שבתי בסרט הקולנוע של אפרים קישון?",
+          "answers": [
+            "זאב רווח",
+            "חיים טופול",
+            "שייקה אופיר",
+            "יהורם גאון"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=1",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה מודדים באמצעות יחידת המידה \"קלווין (או צלזיוס)\"?",
+          "answers": [
+            "עוצמת קול ורעש",
+            "זמן",
+            "טמפרטורה",
+            "מתח חשמלי"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=2",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי כתב את היצירה הספרותית \"איה פלוטו\"?",
+          "answers": [
+            "לאה גולדברג (ולאה וברוך כרמי)",
+            "מארק טוויין",
+            "ויקטור הוגו",
+            "מיגל דה סרוואנטס"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=music&badge=%D7%AA%D7%A8%D7%91%D7%95%D7%AA%2C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%95%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94&s=3",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"החומה הסינית הגדולה\"?",
+          "answers": [
+            "סין",
+            "קמבודיה",
+            "אתונה, יוון",
+            "ברלין, גרמניה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=4",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "כמה חברי כנסת מכהנים בכנסת ישראל?",
+          "answers": [
+            "100 חברי כנסת",
+            "150 חברי כנסת",
+            "120 חברי כנסת",
+            "110 חברי כנסת"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=5",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "היכן נמצא או עובר הר מון בלאן?",
+          "answers": [
+            "לונדון, בריטניה",
+            "ניו יורק, ארצות הברית",
+            "הרי האלפים (גבול צרפת-איטליה)",
+            "וינה ובודפשט (מרכז אירופה)"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=6",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי בנה את בית המקדש הראשון בירושלים?",
+          "answers": [
+            "שלמה המלך",
+            "דוד המלך",
+            "חזקיהו המלך",
+            "יאשיהו המלך"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=general&badge=%D7%AA%D7%A0%22%D7%9A%20%D7%95%D7%9E%D7%95%D7%A8%D7%A9%D7%AA&s=7",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי פיתח, גילה או המציא את פס הייצור ההמוני למכוניות?",
+          "answers": [
+            "מארי קירי",
+            "וילהלם רנטגן",
+            "הנרי פורד",
+            "אלברט איינשטיין"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=tech&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=8",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"הטאג׳ מהאל\"?",
+          "answers": [
+            "ריו דה ז׳ניירו, ברזיל",
+            "פיזה, איטליה",
+            "אגרה, הודו",
+            "ברצלונה, ספרד"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=9",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהן האותיות שעל סביבון חנוכה בישראל ומה פירושן?",
+          "answers": [
+            "נ.ג.ה.ש — נס גדול היה שם",
+            "נ.ג.ה.פ — נס גדול היה פה",
+            "מ.כ.ב.י — מי כמוך באלים ה׳",
+            "ח.נ.ו.כ — חנוכה נרות וכדים"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=holidays&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=10",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהו הערך הגימטרי של המילה \"מלך\"?",
+          "answers": [
+            "90",
+            "95",
+            "86",
+            "102"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=general&badge=%D7%94%D7%A9%D7%A4%D7%94%20%D7%94%D7%A2%D7%91%D7%A8%D7%99%D7%AA&s=11",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה וייטנאם?",
+          "answers": [
+            "אסיה",
+            "אוקיאניה",
+            "אפריקה",
+            "אירופה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=12",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "לונדון היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "לטביה",
+            "סינגפור",
+            "בריטניה",
+            "סין"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=13",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה אוזבקיסטן?",
+          "answers": [
+            "אסיה",
+            "אמריקה הצפונית",
+            "אפריקה",
+            "אמריקה הדרומית"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=14",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה פרגוואי?",
+          "answers": [
+            "אפריקה",
+            "אמריקה הדרומית",
+            "אמריקה הצפונית",
+            "אירופה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=15",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "כמה מינים נוטלים בחג הסוכות?",
+          "answers": [
+            "שלושה מינים",
+            "שבעה מינים",
+            "חמישה מינים",
+            "ארבעה מינים"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=16",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי השפה הרשמית או המדוברת העיקרית ביוון?",
+          "answers": [
+            "אמהרית",
+            "יוונית",
+            "מנדרינית (סינית)",
+            "גאורגית"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=17",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי נחשב לממציא נורת הליבון החשמלית המסחרית?",
+          "answers": [
+            "תומאס אדיסון",
+            "אלכסנדר גרהם בל",
+            "ניקולה טסלה",
+            "אלברט איינשטיין"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=science&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=18",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מהספרים הבאים נכתב על ידי דוד גרוסמן?",
+          "answers": [
+            "מישהו לרוץ איתו",
+            "רומיאו ויוליה",
+            "פיטר פן",
+            "הרפתקאות אליס בארץ הפלאות"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%AA%D7%A8%D7%91%D7%95%D7%AA%2C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%95%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94&s=19",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של קוסטה ריקה?",
+          "answers": [
+            "סן חוסה",
+            "ברן",
+            "ולטה",
+            "אמסטרדם"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=20",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי מבצע במקור את השיר הישראלי המוכר \"בואי (בואי תני לי יד ונלך)\"?",
+          "answers": [
+            "נועה קירל",
+            "עדן גולן",
+            "הפרויקט של עידן רייכל",
+            "שירי מימון"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=music&badge=%D7%AA%D7%A8%D7%91%D7%95%D7%AA%2C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%95%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94&s=21",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה יסוד כימי מסומן בטבלה המחזורית באותיות \"Na\" (מספר אטומי 11)?",
+          "answers": [
+            "סידן",
+            "כלור",
+            "נתרן",
+            "הליום"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=science&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=22",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה כוכב לכת מפורסם במערכת הטבעות המרהיבה שלו?",
+          "answers": [
+            "שבתאי (סטורן)",
+            "מאדים",
+            "צדק",
+            "נוגה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=space&badge=%D7%97%D7%9C%D7%9C%20%D7%95%D7%90%D7%A1%D7%98%D7%A8%D7%95%D7%A0%D7%95%D7%9E%D7%99%D7%94&s=23",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה מודדים באמצעות יחידת המידה \"פסקל (או בר)\"?",
+          "answers": [
+            "אורך ומרחק",
+            "התנגדות חשמלית",
+            "לחץ",
+            "מהירות של כלי שיט וכלי טיס"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=24",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "כמה ימים סופרים בספירת העומר מפסח ועד חג השבועות?",
+          "answers": [
+            "33 ימים",
+            "49 ימים (7 שבועות)",
+            "50 ימים",
+            "40 ימים"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%97%D7%92%D7%99%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%20%D7%95%D7%9E%D7%A1%D7%95%D7%A8%D7%AA&s=25",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה בריטניה?",
+          "answers": [
+            "אפריקה",
+            "אמריקה הדרומית",
+            "אירופה",
+            "אסיה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=26",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה מודדים באמצעות יחידת המידה \"אוהם\"?",
+          "answers": [
+            "התנגדות חשמלית",
+            "לחץ",
+            "מסה",
+            "טמפרטורה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=27",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו המצאה או תגלית מפורסם במיוחד מייקל פאראדיי?",
+          "answers": [
+            "המסוק המודרני הסדרתי",
+            "קרני הרנטגן (קרני X)",
+            "מנוע הקיטור המודרני",
+            "חוק האלקטרומגנטיות והאינדוקציה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=tech&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=28",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה היה המטבע הרשמי של ישראל מיד לאחר החלפת הלירה בשנת 1980?",
+          "answers": [
+            "שקל (ישן)",
+            "שקל חדש",
+            "מיל",
+            "פרוטה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=29",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהו הערך הגימטרי של המילה \"תורה\"?",
+          "answers": [
+            "623",
+            "616",
+            "607",
+            "611"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=holidays&badge=%D7%94%D7%A9%D7%A4%D7%94%20%D7%94%D7%A2%D7%91%D7%A8%D7%99%D7%AA&s=30",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהו שמה של הגלקסיה שבה נמצאת מערכת השמש שלנו?",
+          "answers": [
+            "סומבררו",
+            "שביל החלב",
+            "אנדרומדה",
+            "הענן המגלני"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=space&badge=%D7%97%D7%9C%D7%9C%20%D7%95%D7%90%D7%A1%D7%98%D7%A8%D7%95%D7%A0%D7%95%D7%9E%D7%99%D7%94&s=31",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו המצאה או תגלית מפורסם במיוחד לואי פסטר?",
+          "answers": [
+            "המסוק המודרני הסדרתי",
+            "הנייר הקדום",
+            "מבנה הסליל הכפול של ה-DNA",
+            "חיסון הכלבת ותהליך הפסטור"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=tech&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=32",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו המצאה או תגלית מפורסם במיוחד דב מורן וחברת M-Systems?",
+          "answers": [
+            "קוד המורס והטלגרף הקווי",
+            "הדיסק-און-קי (USB Flash Drive)",
+            "הטבלה המחזורית",
+            "הרשת הכלל-עולמית (WWW)"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=tech&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=33",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה יסוד כימי מסומן בטבלה המחזורית באותיות \"Cu\" (מספר אטומי 29)?",
+          "answers": [
+            "אורניום",
+            "נחושת",
+            "טיטניום",
+            "ברום"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=science&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=34",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מהאתרים הבאים מזוהה עם חברון (הר חברון)?",
+          "answers": [
+            "גני רמת הנדיב ומוזיאון ניל\"י (בית אהרנסון)",
+            "שמורת נחל דוד, נחל ערוגות ובית הכנסת העתיק",
+            "מערת המכפלה",
+            "אולמות האבירים והחומה העתיקה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=35",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי פיתח, גילה או המציא את הטלפון?",
+          "answers": [
+            "אייזק ניוטון",
+            "תומאס אדיסון",
+            "אלכסנדר גרהם בל",
+            "לינוס טורוולדס"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=tech&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=36",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי כתב את סדרת ספרי \"הארי פוטר\"?",
+          "answers": [
+            "ג׳.ר.ר. טולקין",
+            "רואלד דאל",
+            "ג׳יי קיי רולינג",
+            "ק.ס. לואיס"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=music&badge=%D7%AA%D7%A8%D7%91%D7%95%D7%AA%2C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%95%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94&s=37",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של גאנה?",
+          "answers": [
+            "פראג",
+            "אקרה",
+            "אדיס אבבה",
+            "קינגסטון"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=38",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו שנה התרחשה מלחמת יום הכיפורים?",
+          "answers": [
+            "1973",
+            "1970",
+            "1979",
+            "1967"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=holidays&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=39",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"פסל ישו הגואל על הר קורקובדו\"?",
+          "answers": [
+            "ברצלונה, ספרד",
+            "ברלין, גרמניה",
+            "ריו דה ז׳ניירו, ברזיל",
+            "פריז, צרפת"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=40",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מהספרים הבאים נכתב על ידי לאה גולדברג (ולאה וברוך כרמי)?",
+          "answers": [
+            "הזקן והים",
+            "הכבש השישה עשר",
+            "איה פלוטו",
+            "ספר הג׳ונגל"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%AA%D7%A8%D7%91%D7%95%D7%AA%2C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%95%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94&s=41",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "כמה דקות בערך לוקח לאור השמש להגיע אל כדור הארץ?",
+          "answers": [
+            "כ-8 דקות",
+            "כשעתיים",
+            "כ-30 דקות",
+            "כדקה אחת"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=space&badge=%D7%97%D7%9C%D7%9C%20%D7%95%D7%90%D7%A1%D7%98%D7%A8%D7%95%D7%A0%D7%95%D7%9E%D7%99%D7%94&s=42",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר הוכרזה הקמת מדינת ישראל בה׳ באייר תש\"ח?",
+          "answers": [
+            "תל אביב",
+            "ראשון לציון",
+            "חיפה",
+            "ירושלים"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=43",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי פיתח, גילה או המציא את הרדיו (טלגרף אלחוטי)?",
+          "answers": [
+            "איגור סיקורסקי",
+            "גוליילמו מרקוני",
+            "גרגור מנדל",
+            "דניאל גבריאל פרנהייט"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=tech&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=44",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו מדינה המטבע הרשמי הוא לירה טורקית?",
+          "answers": [
+            "טורקיה",
+            "הונגריה",
+            "דרום קוריאה",
+            "שווייץ"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=45",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה שיר של נטע ברזילי זכה באירוויזיון 2018?",
+          "answers": [
+            "Diva",
+            "Hallelujah",
+            "Toy",
+            "Unicorn"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=music&badge=%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94%20%D7%95%D7%AA%D7%A8%D7%91%D7%95%D7%AA&s=46",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה יסוד כימי מסומן בטבלה המחזורית באותיות \"He\" (מספר אטומי 2)?",
+          "answers": [
+            "אשלגן",
+            "אורניום",
+            "הליום",
+            "בריום"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=science&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=47",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יחידת מידה פיזיקלית מודדים מסה?",
+          "answers": [
+            "ג׳אול",
+            "וולט",
+            "שנייה",
+            "קילוגרם"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=48",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהו המזון העיקרי של הקואלה באוסטרליה?",
+          "answers": [
+            "חרקים",
+            "פירות טרופיים",
+            "במבוק",
+            "עלי אקליפטוס"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=science&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=49",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של גאורגיה?",
+          "answers": [
+            "טביליסי",
+            "טשקנט",
+            "ברן",
+            "וולינגטון"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=50",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה ארצות הברית?",
+          "answers": [
+            "אפריקה",
+            "אירופה",
+            "אסיה",
+            "אמריקה הצפונית"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=1",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is United States located?",
+          "answersEn": [
+            "Africa",
+            "Europe",
+            "Asia",
+            "North America"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה אוקראינה?",
+          "answers": [
+            "אמריקה הדרומית",
+            "אוקיאניה",
+            "אירופה",
+            "אסיה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=2",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Ukraine located?",
+          "answersEn": [
+            "South America",
+            "Oceania",
+            "Europe",
+            "Asia"
+          ]
+        },
+        {
+          "question": "מהי השפה הרשמית או המדוברת העיקרית בנורווגיה?",
+          "answers": [
+            "פולנית",
+            "דנית",
+            "נורווגית",
+            "טורקית"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=3",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the main official language spoken in Norway?",
+          "answersEn": [
+            "Polish",
+            "Danish",
+            "Norwegian",
+            "Turkish"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה וייטנאם?",
+          "answers": [
+            "אפריקה",
+            "אסיה",
+            "אירופה",
+            "אוקיאניה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=4",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Vietnam located?",
+          "answersEn": [
+            "Africa",
+            "Asia",
+            "Europe",
+            "Oceania"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה אוסטרליה?",
+          "answers": [
+            "אמריקה הדרומית",
+            "אוקיאניה",
+            "אסיה",
+            "אפריקה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=5",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Australia located?",
+          "answersEn": [
+            "South America",
+            "Oceania",
+            "Asia",
+            "Africa"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של יפן?",
+          "answers": [
+            "קיטו",
+            "בייג׳ינג",
+            "טוקיו",
+            "סיאול"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=6",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Japan?",
+          "answersEn": [
+            "Quito",
+            "Beijing",
+            "Tokyo",
+            "Seoul"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה איסלנד?",
+          "answers": [
+            "אוקיאניה",
+            "אירופה",
+            "אסיה",
+            "אמריקה הצפונית"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=7",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Iceland located?",
+          "answersEn": [
+            "Oceania",
+            "Europe",
+            "Asia",
+            "North America"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של דרום קוריאה?",
+          "answers": [
+            "סיאול",
+            "ברלין",
+            "מנילה",
+            "אבו דאבי"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=8",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of South Korea?",
+          "answersEn": [
+            "Seoul",
+            "Berlin",
+            "Manila",
+            "Abu Dhabi"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של אקוודור?",
+          "answers": [
+            "טאלין",
+            "קיטו",
+            "סן חוסה",
+            "קמפלה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=9",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Ecuador?",
+          "answersEn": [
+            "Tallinn",
+            "Quito",
+            "San Jose",
+            "Kampala"
+          ]
+        },
+        {
+          "question": "ברזיליה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "מקסיקו",
+            "שווייץ",
+            "ברזיל",
+            "גאורגיה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=10",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Brasilia is the capital of which country?",
+          "answersEn": [
+            "Mexico",
+            "Switzerland",
+            "Brazil",
+            "Georgia"
+          ]
+        },
+        {
+          "question": "אלג׳יר היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "אוסטרליה",
+            "ניגריה",
+            "אלג׳יריה",
+            "קניה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=11",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Algiers is the capital of which country?",
+          "answersEn": [
+            "Australia",
+            "Nigeria",
+            "Algeria",
+            "Kenya"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה לבנון?",
+          "answers": [
+            "אסיה",
+            "אוקיאניה",
+            "אמריקה הדרומית",
+            "אמריקה הצפונית"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=12",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Lebanon located?",
+          "answersEn": [
+            "Asia",
+            "Oceania",
+            "South America",
+            "North America"
+          ]
+        },
+        {
+          "question": "איזה מהאתרים הבאים מזוהה עם ראש הנקרה (הגליל המערבי)?",
+          "answers": [
+            "היקב ההיסטורי ובאר המושבה הראשונה",
+            "הנקרות הלבנות והרכבל התלול על גבול לבנון",
+            "מוזיאון הילדים ומוזיאון העיצוב",
+            "מבצר הורדוס במדבר יהודה מול ים המלח"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=13",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Which of the following landmarks is associated with Rosh HaNikra (Western Galilee)?",
+          "answersEn": [
+            "Carmel Historic Winery and the First Well",
+            "The white sea grottos and cable car on the Lebanon border",
+            "The Children’s Museum and Design Museum",
+            "Herod’s cliffside fortress overlooking the Dead Sea"
+          ]
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"הפירמידות הגדולות והספינקס\"?",
+          "answers": [
+            "דובאי, איחוד האמירויות",
+            "גיזה, מצרים",
+            "רומא, איטליה",
+            "סן פרנסיסקו, ארצות הברית"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=14",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Where in the world is the famous landmark \"The Great Pyramids and Sphinx\" located?",
+          "answersEn": [
+            "Dubai, UAE",
+            "Giza, Egypt",
+            "Rome, Italy",
+            "San Francisco, USA"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה אקוודור?",
+          "answers": [
+            "אמריקה הדרומית",
+            "אירופה",
+            "אוקיאניה",
+            "אפריקה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=15",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Ecuador located?",
+          "answersEn": [
+            "South America",
+            "Europe",
+            "Oceania",
+            "Africa"
+          ]
+        },
+        {
+          "question": "איזה מהאתרים הבאים מזוהה עם באר שבע (הנגב הצפוני)?",
+          "answers": [
+            "הגן הלאומי והשער הכנעני הקדום בעולם",
+            "אם המושבות וגשר המיתרים",
+            "מצוקי החוף וטיילת הראשונים",
+            "באר אברהם ואוניברסיטת בן-גוריון"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=16",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Which of the following landmarks is associated with Beersheba (Northern Negev)?",
+          "answersEn": [
+            "National Park with the oldest arched Canaanite gate",
+            "Known as the Mother of Moshavot",
+            "Coastal cliffs and seaside promenades",
+            "Abraham’s Well and Ben-Gurion University"
+          ]
+        },
+        {
+          "question": "ולטה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "קובה",
+            "מלטה",
+            "צ׳כיה",
+            "פרגוואי"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=17",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Valletta is the capital of which country?",
+          "answersEn": [
+            "Cuba",
+            "Malta",
+            "Czech Republic",
+            "Paraguay"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של צ׳ילה?",
+          "answers": [
+            "סנטיאגו",
+            "בוגוטה",
+            "וילנה",
+            "ניו דלהי"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=18",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Chile?",
+          "answersEn": [
+            "Santiago",
+            "Bogota",
+            "Vilnius",
+            "New Delhi"
+          ]
+        },
+        {
+          "question": "איזה מהאתרים הבאים מזוהה עם קיסריה (חוף השרון הצפוני)?",
+          "answers": [
+            "הגן הלאומי והשער הכנעני הקדום בעולם",
+            "שדרות הגעתון ונחל הגעתון החוצה את העיר",
+            "התיאטרון הרומי והנמל של הורדוס",
+            "הנמל המסחרי הגדול ומצודת אשדוד-ים"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=19",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Which of the following landmarks is associated with Caesarea (Northern Sharon Coast)?",
+          "answersEn": [
+            "National Park with the oldest arched Canaanite gate",
+            "Gaaton Boulevard with the river running through it",
+            "The Roman Theater and Herod’s Harbor",
+            "Major cargo seaport and Ashdod-Yam fortress"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה אינדונזיה?",
+          "answers": [
+            "אמריקה הדרומית",
+            "אוקיאניה",
+            "אירופה",
+            "אסיה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=20",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Indonesia located?",
+          "answersEn": [
+            "South America",
+            "Oceania",
+            "Europe",
+            "Asia"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של לטביה?",
+          "answers": [
+            "ביירות",
+            "אדיס אבבה",
+            "ניקוסיה",
+            "ריגה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=21",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Latvia?",
+          "answersEn": [
+            "Beirut",
+            "Addis Ababa",
+            "Nicosia",
+            "Riga"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של גאנה?",
+          "answers": [
+            "אדיס אבבה",
+            "אקרה",
+            "פראג",
+            "קינגסטון"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=22",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Ghana?",
+          "answersEn": [
+            "Addis Ababa",
+            "Accra",
+            "Prague",
+            "Kingston"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה סרביה?",
+          "answers": [
+            "אמריקה הצפונית",
+            "אוקיאניה",
+            "אירופה",
+            "אסיה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=23",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Serbia located?",
+          "answersEn": [
+            "North America",
+            "Oceania",
+            "Europe",
+            "Asia"
+          ]
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"מאצ׳ו פיצ׳ו (עיר האינקה העתיקה)\"?",
+          "answers": [
+            "גיזה, מצרים",
+            "ירדן",
+            "פרו",
+            "דובאי, איחוד האמירויות"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=24",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Where in the world is the famous landmark \"Machu Picchu\" located?",
+          "answersEn": [
+            "Giza, Egypt",
+            "Jordan",
+            "Peru",
+            "Dubai, UAE"
+          ]
+        },
+        {
+          "question": "היכן נמצא או עובר הר החרמון?",
+          "answers": [
+            "הגליל התחתון (עמק יזרעאל), ישראל",
+            "צפון ישראל (רמת הגולן)",
+            "הגליל העליון, ישראל",
+            "יוון"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=25",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Where is Mount Hermon located?",
+          "answersEn": [
+            "Lower Galilee, Israel",
+            "Northern Israel",
+            "Upper Galilee, Israel",
+            "Greece"
+          ]
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"מגדל בורג׳ ח׳ליפה (הבניין הגבוה בעולם)\"?",
+          "answers": [
+            "דובאי, איחוד האמירויות",
+            "גרנדה, ספרד",
+            "ברלין, גרמניה",
+            "ריו דה ז׳ניירו, ברזיל"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=26",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Where in the world is the famous landmark \"Burj Khalifa\" located?",
+          "answersEn": [
+            "Dubai, UAE",
+            "Granada, Spain",
+            "Berlin, Germany",
+            "Rio de Janeiro, Brazil"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של קזחסטן?",
+          "answers": [
+            "בלגרד",
+            "טביליסי",
+            "אסטנה",
+            "רייקיאוויק"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=27",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Kazakhstan?",
+          "answersEn": [
+            "Belgrade",
+            "Tbilisi",
+            "Astana",
+            "Reykjavik"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה קניה?",
+          "answers": [
+            "אירופה",
+            "אסיה",
+            "אפריקה",
+            "אמריקה הדרומית"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=28",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Kenya located?",
+          "answersEn": [
+            "Europe",
+            "Asia",
+            "Africa",
+            "South America"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של גאורגיה?",
+          "answers": [
+            "טביליסי",
+            "וולינגטון",
+            "טשקנט",
+            "ברן"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=29",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Georgia?",
+          "answersEn": [
+            "Tbilisi",
+            "Wellington",
+            "Tashkent",
+            "Bern"
+          ]
+        },
+        {
+          "question": "סנטיאגו היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "טורקיה",
+            "ליטא",
+            "צ׳ילה",
+            "ירדן"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=30",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Santiago is the capital of which country?",
+          "answersEn": [
+            "Turkey",
+            "Lithuania",
+            "Chile",
+            "Jordan"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה צרפת?",
+          "answers": [
+            "אפריקה",
+            "אמריקה הצפונית",
+            "אסיה",
+            "אירופה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=31",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is France located?",
+          "answersEn": [
+            "Africa",
+            "North America",
+            "Asia",
+            "Europe"
+          ]
+        },
+        {
+          "question": "סן חוסה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "פורטוגל",
+            "גרמניה",
+            "קוסטה ריקה",
+            "ונצואלה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=32",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "San Jose is the capital of which country?",
+          "answersEn": [
+            "Portugal",
+            "Germany",
+            "Costa Rica",
+            "Venezuela"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של הונגריה?",
+          "answers": [
+            "מוסקבה",
+            "בוגוטה",
+            "וושינגטון די.סי.",
+            "בודפשט"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=33",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Hungary?",
+          "answersEn": [
+            "Moscow",
+            "Bogota",
+            "Washington, D.C.",
+            "Budapest"
+          ]
+        },
+        {
+          "question": "ג׳קרטה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "אינדונזיה",
+            "ליטא",
+            "אורוגוואי",
+            "ניו זילנד"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=34",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Jakarta is the capital of which country?",
+          "answersEn": [
+            "Indonesia",
+            "Lithuania",
+            "Uruguay",
+            "New Zealand"
+          ]
+        },
+        {
+          "question": "היכן נמצא או עובר נהר ההדסון?",
+          "answers": [
+            "מצרים (מחברת את הים התיכון וים סוף)",
+            "פנמה (מחברת את האוקיינוס האטלנטי והשקט)",
+            "הגליל העליון, ישראל",
+            "ניו יורק, ארצות הברית"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=35",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Where is The Hudson River located?",
+          "answersEn": [
+            "Egypt (connecting Mediterranean and Red Sea)",
+            "Panama (connecting Atlantic and Pacific Oceans)",
+            "Upper Galilee, Israel",
+            "New York, USA"
+          ]
+        },
+        {
+          "question": "היכן נמצא או עובר נהר הטיבר?",
+          "answers": [
+            "צפון ישראל (רמת הגולן)",
+            "רומא, איטליה",
+            "יפן",
+            "הגליל התחתון (עמק יזרעאל), ישראל"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=36",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Where is The Tiber River located?",
+          "answersEn": [
+            "Northern Israel",
+            "Rome, Italy",
+            "Japan",
+            "Lower Galilee, Israel"
+          ]
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"אנגקור וואט (מתחם המקדשים העתיק)\"?",
+          "answers": [
+            "קמבודיה",
+            "סידני, אוסטרליה",
+            "אגרה, הודו",
+            "ברלין, גרמניה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=37",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Where in the world is the famous landmark \"Angkor Wat\" located?",
+          "answersEn": [
+            "Cambodia",
+            "Sydney, Australia",
+            "Agra, India",
+            "Berlin, Germany"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של פרגוואי?",
+          "answers": [
+            "אסונסיון",
+            "בריסל",
+            "ברלין",
+            "קייב"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=38",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Paraguay?",
+          "answersEn": [
+            "Asuncion",
+            "Brussels",
+            "Berlin",
+            "Kyiv"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה נורווגיה?",
+          "answers": [
+            "אמריקה הדרומית",
+            "אסיה",
+            "אוקיאניה",
+            "אירופה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=39",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Norway located?",
+          "answersEn": [
+            "South America",
+            "Asia",
+            "Oceania",
+            "Europe"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של ארצות הברית?",
+          "answers": [
+            "ברלין",
+            "אסטנה",
+            "מוסקבה",
+            "וושינגטון די.סי."
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=40",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of United States?",
+          "answersEn": [
+            "Berlin",
+            "Astana",
+            "Moscow",
+            "Washington, D.C."
+          ]
+        },
+        {
+          "question": "פנמה סיטי היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "פנמה",
+            "אוקראינה",
+            "נורווגיה",
+            "ונצואלה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=41",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Panama City is the capital of which country?",
+          "answersEn": [
+            "Panama",
+            "Ukraine",
+            "Norway",
+            "Venezuela"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של בולגריה?",
+          "answers": [
+            "סטוקהולם",
+            "מוסקבה",
+            "סופיה",
+            "זאגרב"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=42",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Bulgaria?",
+          "answersEn": [
+            "Stockholm",
+            "Moscow",
+            "Sofia",
+            "Zagreb"
+          ]
+        },
+        {
+          "question": "טוקיו היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "ג׳מייקה",
+            "יפן",
+            "ברזיל",
+            "קפריסין"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=43",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Tokyo is the capital of which country?",
+          "answersEn": [
+            "Jamaica",
+            "Japan",
+            "Brazil",
+            "Cyprus"
+          ]
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"מגדל אייפל\"?",
+          "answers": [
+            "ריו דה ז׳ניירו, ברזיל",
+            "פריז, צרפת",
+            "ירדן",
+            "ניו יורק, ארצות הברית"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=44",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Where in the world is the famous landmark \"The Eiffel Tower\" located?",
+          "answersEn": [
+            "Rio de Janeiro, Brazil",
+            "Paris, France",
+            "Jordan",
+            "New York, USA"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה גאנה?",
+          "answers": [
+            "אמריקה הדרומית",
+            "אירופה",
+            "אפריקה",
+            "אמריקה הצפונית"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=45",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Ghana located?",
+          "answersEn": [
+            "South America",
+            "Europe",
+            "Africa",
+            "North America"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה הפיליפינים?",
+          "answers": [
+            "אמריקה הדרומית",
+            "אירופה",
+            "אמריקה הצפונית",
+            "אסיה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=46",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Philippines located?",
+          "answersEn": [
+            "South America",
+            "Europe",
+            "North America",
+            "Asia"
+          ]
+        },
+        {
+          "question": "בלגרד היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "סרביה",
+            "אקוודור",
+            "אוקראינה",
+            "מרוקו"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=47",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Belgrade is the capital of which country?",
+          "answersEn": [
+            "Serbia",
+            "Ecuador",
+            "Ukraine",
+            "Morocco"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה קרואטיה?",
+          "answers": [
+            "אפריקה",
+            "אסיה",
+            "אירופה",
+            "אמריקה הדרומית"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=48",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Croatia located?",
+          "answersEn": [
+            "Africa",
+            "Asia",
+            "Europe",
+            "South America"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה גרמניה?",
+          "answers": [
+            "אסיה",
+            "אמריקה הדרומית",
+            "אירופה",
+            "אפריקה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=49",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Germany located?",
+          "answersEn": [
+            "Asia",
+            "South America",
+            "Europe",
+            "Africa"
+          ]
+        },
+        {
+          "question": "טאלין היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "אסטוניה",
+            "סרביה",
+            "סלובקיה",
+            "וייטנאם"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=50",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Tallinn is the capital of which country?",
+          "answersEn": [
+            "Estonia",
+            "Serbia",
+            "Slovakia",
+            "Vietnam"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה תוניסיה?",
+          "answers": [
+            "אפריקה",
+            "אסיה",
+            "אמריקה הצפונית",
+            "אוקיאניה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=51",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Tunisia located?",
+          "answersEn": [
+            "Africa",
+            "Asia",
+            "North America",
+            "Oceania"
+          ]
+        },
+        {
+          "question": "לובליאנה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "לבנון",
+            "סלובניה",
+            "סין",
+            "ברזיל"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=52",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Ljubljana is the capital of which country?",
+          "answersEn": [
+            "Lebanon",
+            "Slovenia",
+            "China",
+            "Brazil"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של ערב הסעודית?",
+          "answers": [
+            "ריאד",
+            "קייב",
+            "מדריד",
+            "ניו דלהי"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=53",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Saudi Arabia?",
+          "answersEn": [
+            "Riyadh",
+            "Kyiv",
+            "Madrid",
+            "New Delhi"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של הולנד?",
+          "answers": [
+            "אמסטרדם",
+            "קינגסטון",
+            "טשקנט",
+            "בואנוס איירס"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=54",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Netherlands?",
+          "answersEn": [
+            "Amsterdam",
+            "Kingston",
+            "Tashkent",
+            "Buenos Aires"
+          ]
+        },
+        {
+          "question": "היכן נמצא או עובר מפלי האיגואסו?",
+          "answers": [
+            "גבול ארגנטינה וברזיל",
+            "רומא, איטליה",
+            "וינה ובודפשט (מרכז אירופה)",
+            "הגליל העליון, ישראל"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=55",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Where is Iguazu Falls located?",
+          "answersEn": [
+            "Argentina-Brazil border",
+            "Rome, Italy",
+            "Vienna and Budapest (Central Europe)",
+            "Upper Galilee, Israel"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של נפאל?",
+          "answers": [
+            "קמפלה",
+            "ניקוסיה",
+            "קטמנדו",
+            "דוחה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=56",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the capital city of Nepal?",
+          "answersEn": [
+            "Kampala",
+            "Nicosia",
+            "Kathmandu",
+            "Doha"
+          ]
+        },
+        {
+          "question": "האנוי היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "איחוד האמירויות",
+            "נפאל",
+            "וייטנאם",
+            "הולנד"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=57",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Hanoi is the capital of which country?",
+          "answersEn": [
+            "United Arab Emirates",
+            "Nepal",
+            "Vietnam",
+            "Netherlands"
+          ]
+        },
+        {
+          "question": "מהי השפה הרשמית או המדוברת העיקרית באתיופיה?",
+          "answers": [
+            "הולנדית",
+            "גאורגית",
+            "אמהרית",
+            "ערבית"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=58",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "What is the main official language spoken in Ethiopia?",
+          "answersEn": [
+            "Dutch",
+            "Georgian",
+            "Amharic",
+            "Arabic"
+          ]
+        },
+        {
+          "question": "איזה אתר מפורסם בעולם שוכן בפרו?",
+          "answers": [
+            "מאצ׳ו פיצ׳ו (עיר האינקה העתיקה)",
+            "החומה הסינית הגדולה",
+            "שער ברנדנבורג",
+            "גשר שער הזהב (Golden Gate Bridge)"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=59",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "Which world-famous landmark is located in Peru?",
+          "answersEn": [
+            "Machu Picchu",
+            "The Great Wall of China",
+            "The Brandenburg Gate",
+            "The Golden Gate Bridge"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה פורטוגל?",
+          "answers": [
+            "אוקיאניה",
+            "אמריקה הצפונית",
+            "אמריקה הדרומית",
+            "אירופה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=60",
+          "points": 100,
+          "timerSeconds": 15,
+          "questionEn": "On which continent is Portugal located?",
+          "answersEn": [
+            "Oceania",
+            "North America",
+            "South America",
+            "Europe"
+          ]
+        }
+      ],
+      "savedPlayers": [
+        {
+          "id": "8fb7544a-2a58-4dd8-98cf-78e8d136da29",
+          "name": "תהילה",
+          "teamId": null,
+          "weight": 1,
+          "score": 100,
+          "correctCount": 0,
+          "joinedAt": 1795375974090
+        }
+      ],
+      "playHistory": [
+        {
+          "id": "run-migrated-game-1795375897620-fbac93",
+          "playedAt": "2026-11-23T18:07:00.351Z",
+          "questionsCount": 50,
+          "players": [
+            {
+              "id": "8fb7544a-2a58-4dd8-98cf-78e8d136da29",
+              "name": "תהילה",
+              "teamName": "",
+              "weight": 1,
+              "correctCount": 0,
+              "score": 100,
+              "rank": 1
+            }
+          ]
+        }
+      ],
+      "lastFinishedAt": null,
+      "code": "1011"
+    },
+    {
+      "id": "game-1795459732291-3ee11f",
+      "title": "הגרלת טריוויה: גיאוגרפיה ועולם (60 שאלות)",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "backgroundMusic": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 20,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "באיזו יבשת שוכנת המדינה בולגריה?",
+          "answers": [
+            "אמריקה הצפונית",
+            "אירופה",
+            "אמריקה הדרומית",
+            "אוקיאניה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=1",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי השפה הרשמית או המדוברת העיקרית בפינלנד?",
+          "answers": [
+            "הונגרית",
+            "הולנדית",
+            "תאית",
+            "פינית"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=2",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי השפה הרשמית או המדוברת העיקרית ביוון?",
+          "answers": [
+            "יוונית",
+            "גאורגית",
+            "אמהרית",
+            "מנדרינית (סינית)"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=3",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "תוניס היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "תוניסיה",
+            "יוון",
+            "איסלנד",
+            "מלטה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=4",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באקו היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "מונגוליה",
+            "אזרבייג׳ן",
+            "מלזיה",
+            "קטר"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=5",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה אתר מפורסם בעולם שוכן בסין?",
+          "answers": [
+            "החומה הסינית הגדולה",
+            "הקולוסיאום",
+            "פסל החירות",
+            "הטאג׳ מהאל"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=6",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "היכן נמצא או עובר נחל הירקון?",
+          "answers": [
+            "רומא, איטליה",
+            "גוש דן ותל אביב (נשפך לים התיכון)",
+            "הגליל התחתון (עמק יזרעאל), ישראל",
+            "הגליל העליון, ישראל"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=7",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "ברלין היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "מצרים",
+            "גרמניה",
+            "קפריסין",
+            "הולנד"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=8",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מהאתרים הבאים מזוהה עם נהריה (הגליל המערבי)?",
+          "answers": [
+            "הגנים הבהאיים והר הכרמל",
+            "שדרות הגעתון ונחל הגעתון החוצה את העיר",
+            "צריף בן-גוריון וקבר דוד ופולה בן-גוריון",
+            "הנקרות הלבנות והרכבל התלול על גבול לבנון"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=9",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "אקרה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "סנגל",
+            "יוון",
+            "קוסטה ריקה",
+            "גאנה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=10",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "בוקרשט היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "רומניה",
+            "קרואטיה",
+            "מלזיה",
+            "אוסטרליה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=11",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"שעון הביג בן וארמון וסטמינסטר\"?",
+          "answers": [
+            "פיזה, איטליה",
+            "ניו יורק, ארצות הברית",
+            "סין",
+            "לונדון, בריטניה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=12",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מהאתרים הבאים מזוהה עם קצרין (רמת הגולן)?",
+          "answers": [
+            "מכון ויצמן למדע ובית הנשיא חיים ויצמן",
+            "פארק קצרין העתיקה ובית הבד בגולן",
+            "כיכר הבימה ונמל יפו העתיק",
+            "שמורת נחל דוד, נחל ערוגות ובית הכנסת העתיק"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=13",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "היכן נמצא או עובר מפלי ויקטוריה?",
+          "answers": [
+            "לונדון, בריטניה",
+            "הגליל העליון, ישראל",
+            "גבול זמביה וזימבבואה באפריקה",
+            "צפון ישראל (רמת הגולן)"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=14",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מהאתרים הבאים מזוהה עם הרצליה (השרון)?",
+          "answers": [
+            "הגן הלאומי והשער הכנעני הקדום בעולם",
+            "רובע האמנים ובתי הכנסת העתיקים",
+            "מרינה הרצליה ותל אפולוניה (ארסוף)",
+            "תצפית מצפור מואב אל מדבר יהודה וים המלח"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=15",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה קנדה?",
+          "answers": [
+            "אמריקה הדרומית",
+            "אמריקה הצפונית",
+            "אירופה",
+            "אפריקה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=16",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של סלובקיה?",
+          "answers": [
+            "ריגה",
+            "ברטיסלבה",
+            "ג׳קרטה",
+            "הלסינקי"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=17",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי השפה הרשמית או המדוברת העיקרית בפולין?",
+          "answers": [
+            "פולנית",
+            "פינית",
+            "צ׳כית",
+            "גרמנית"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=18",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "קואלה לומפור היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "אוגנדה",
+            "אלג׳יריה",
+            "מלזיה",
+            "קרואטיה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=19",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "היכן נמצא או עובר נהר ההדסון?",
+          "answers": [
+            "מצרים (מחברת את הים התיכון וים סוף)",
+            "פנמה (מחברת את האוקיינוס האטלנטי והשקט)",
+            "ניו יורק, ארצות הברית",
+            "הגליל העליון, ישראל"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=20",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה בריטניה?",
+          "answers": [
+            "אירופה",
+            "אסיה",
+            "אמריקה הדרומית",
+            "אפריקה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=21",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו מדינה נמצאת העיר העתיקה מאצ׳ו פיצ׳ו?",
+          "answers": [
+            "צ׳ילה",
+            "בוליביה",
+            "מקסיקו",
+            "פרו"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=22",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של רוסיה?",
+          "answers": [
+            "ניירובי",
+            "ברזיליה",
+            "מוסקבה",
+            "סן חוסה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=23",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של איראן?",
+          "answers": [
+            "אבוג׳ה",
+            "לובליאנה",
+            "טהראן",
+            "טאלין"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=24",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה אתר מפורסם בעולם שוכן ברומא, איטליה?",
+          "answers": [
+            "שעון הביג בן וארמון וסטמינסטר",
+            "האקרופוליס והפרתנון",
+            "הקולוסיאום",
+            "מאצ׳ו פיצ׳ו (עיר האינקה העתיקה)"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=25",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של אוגנדה?",
+          "answers": [
+            "בגדאד",
+            "סטוקהולם",
+            "קטמנדו",
+            "קמפלה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=26",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה נפאל?",
+          "answers": [
+            "אסיה",
+            "אוקיאניה",
+            "אפריקה",
+            "אמריקה הדרומית"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=27",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של קולומביה?",
+          "answers": [
+            "בוגוטה",
+            "רבאט",
+            "קנברה",
+            "סטוקהולם"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=28",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה קטר?",
+          "answers": [
+            "אפריקה",
+            "אמריקה הצפונית",
+            "אוקיאניה",
+            "אסיה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=29",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "ריגה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "איחוד האמירויות",
+            "סרביה",
+            "בלגיה",
+            "לטביה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=30",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה הר הוא הגבוה ביותר בעולם?",
+          "answers": [
+            "הר האוורסט",
+            "הר קילימנג׳רו",
+            "הר מון בלאן",
+            "הר פוג׳י"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=31",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "וילנה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "לטביה",
+            "רוסיה",
+            "ליטא",
+            "אוזבקיסטן"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=32",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של הפיליפינים?",
+          "answers": [
+            "אקרה",
+            "ורשה",
+            "קופנהגן",
+            "מנילה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=33",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"הטאג׳ מהאל\"?",
+          "answers": [
+            "ריו דה ז׳ניירו, ברזיל",
+            "אגרה, הודו",
+            "פיזה, איטליה",
+            "ברצלונה, ספרד"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=34",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "הלסינקי היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "תאילנד",
+            "קטר",
+            "קולומביה",
+            "פינלנד"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=35",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "אתונה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "יוון",
+            "אוסטרליה",
+            "פינלנד",
+            "מרוקו"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=36",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "רבאט היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "הונגריה",
+            "מרוקו",
+            "איטליה",
+            "דנמרק"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=37",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה ניו זילנד?",
+          "answers": [
+            "אוקיאניה",
+            "אמריקה הצפונית",
+            "אסיה",
+            "אמריקה הדרומית"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=38",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של קנדה?",
+          "answers": [
+            "ברטיסלבה",
+            "אוטווה",
+            "ולטה",
+            "ניירובי"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=39",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי השפה הרשמית או המדוברת העיקרית בקולומביה?",
+          "answers": [
+            "מנדרינית (סינית)",
+            "הולנדית",
+            "ספרדית",
+            "אוקראינית"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=40",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של וייטנאם?",
+          "answers": [
+            "בוגוטה",
+            "לימה",
+            "האנוי",
+            "בואנוס איירס"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=41",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה קולומביה?",
+          "answers": [
+            "אמריקה הדרומית",
+            "אוקיאניה",
+            "אסיה",
+            "אירופה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=42",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "אנקרה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "ניו זילנד",
+            "טורקיה",
+            "גאנה",
+            "יוון"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=43",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "ליסבון היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "אסטוניה",
+            "פורטוגל",
+            "לבנון",
+            "עיראק"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=44",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של אזרבייג׳ן?",
+          "answers": [
+            "באקו",
+            "בייג׳ינג",
+            "רומא",
+            "סטוקהולם"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=45",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה גאורגיה?",
+          "answers": [
+            "אירופה",
+            "אוקיאניה",
+            "אפריקה",
+            "אסיה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=46",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי השפה הרשמית או המדוברת העיקרית בטורקיה?",
+          "answers": [
+            "הונגרית",
+            "יוונית",
+            "דנית",
+            "טורקית"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=47",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה איחוד האמירויות?",
+          "answers": [
+            "אירופה",
+            "אמריקה הצפונית",
+            "אסיה",
+            "אפריקה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=48",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מהאתרים הבאים מזוהה עם חברון (הר חברון)?",
+          "answers": [
+            "אולמות האבירים והחומה העתיקה",
+            "שמורת נחל דוד, נחל ערוגות ובית הכנסת העתיק",
+            "מערת המכפלה",
+            "גני רמת הנדיב ומוזיאון ניל\"י (בית אהרנסון)"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=49",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של סינגפור?",
+          "answers": [
+            "סינגפור",
+            "בוגוטה",
+            "אקרה",
+            "רבאט"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=50",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "קיטו היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "אקוודור",
+            "איסלנד",
+            "אוזבקיסטן",
+            "מקסיקו"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=51",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה ונצואלה?",
+          "answers": [
+            "אירופה",
+            "אפריקה",
+            "אמריקה הדרומית",
+            "אוקיאניה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=52",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של אתיופיה?",
+          "answers": [
+            "סופיה",
+            "בגדאד",
+            "אדיס אבבה",
+            "קואלה לומפור"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=53",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "היכן נמצא או עובר תעלת פנמה?",
+          "answers": [
+            "הגליל התחתון (עמק יזרעאל), ישראל",
+            "פריז, צרפת",
+            "פנמה (מחברת את האוקיינוס האטלנטי והשקט)",
+            "הרי האלפים (גבול צרפת-איטליה)"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=54",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "אדיס אבבה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "ספרד",
+            "אתיופיה",
+            "אזרבייג׳ן",
+            "ניגריה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=55",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה אתר מפורסם בעולם שוכן בפריז, צרפת?",
+          "answers": [
+            "האקרופוליס והפרתנון",
+            "מאצ׳ו פיצ׳ו (עיר האינקה העתיקה)",
+            "מגדל אייפל",
+            "ארמון אלהמברה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=56",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה יפן?",
+          "answers": [
+            "אוקיאניה",
+            "אסיה",
+            "אפריקה",
+            "אמריקה הצפונית"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=57",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"פסל ישו הגואל על הר קורקובדו\"?",
+          "answers": [
+            "ברלין, גרמניה",
+            "פריז, צרפת",
+            "ברצלונה, ספרד",
+            "ריו דה ז׳ניירו, ברזיל"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=58",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי עיר הבירה של הונגריה?",
+          "answers": [
+            "בוגוטה",
+            "בודפשט",
+            "מוסקבה",
+            "וושינגטון די.סי."
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=59",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה תוניסיה?",
+          "answers": [
+            "אפריקה",
+            "אוקיאניה",
+            "אסיה",
+            "אמריקה הצפונית"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=60",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה קיבוץ היה הקיבוץ הראשון שהוקם בארץ ישראל (בשנת 1910)?",
+          "answers": [
+            "כפר גלעדי",
+            "עין חרוד",
+            "נהלל",
+            "דגניה א׳"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=1",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Which was the first Kibbutz established in the Land of Israel (in 1910)?",
+          "answersEn": [
+            "Kfar Giladi",
+            "Ein Harod",
+            "Nahalal",
+            "Degania Alef"
+          ]
+        },
+        {
+          "question": "באיזו שנה הוכרזה הקמת מדינת ישראל?",
+          "answers": [
+            "1947",
+            "1949",
+            "1950",
+            "1948"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=2",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "In which year was the State of Israel declared?",
+          "answersEn": [
+            "1947",
+            "1949",
+            "1950",
+            "1948"
+          ]
+        },
+        {
+          "question": "איזה יישוב היה מושב העובדים הראשון בארץ ישראל (בשנת 1921)?",
+          "answers": [
+            "כפר יהושע",
+            "נהלל",
+            "כפר ויתקין",
+            "באר טוביה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=3",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Which was the first Moshav Ovdim established in Israel (in 1921)?",
+          "answersEn": [
+            "Kfar Yehoshua",
+            "Nahalal",
+            "Kfar Vitkin",
+            "Beer Tuvia"
+          ]
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים היקב ההיסטורי ובאר המושבה הראשונה?",
+          "answers": [
+            "טבריה",
+            "דימונה",
+            "ראשון לציון",
+            "בית שאן"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=4",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "In which Israeli city or site can you find Carmel Historic Winery and the First Well?",
+          "answersEn": [
+            "Tiberias",
+            "Dimona",
+            "Rishon LeZion",
+            "Beit Shean"
+          ]
+        },
+        {
+          "question": "איזה מבצע צבאי נודע גם בשם \"מבצע יונתן\" בשנת 1976?",
+          "answers": [
+            "מבצע קדש",
+            "מבצע שלמה",
+            "מבצע אנטבה",
+            "מבצע משה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=5",
+          "points": 100,
+          "timerSeconds": 20
+        }
+      ],
+      "code": "1012",
+      "savedPlayers": []
+    },
+    {
+      "id": "game-1795459873454-79f67b",
+      "title": "ג'מניי",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "backgroundMusic": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 20,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים הנקרות הלבנות והרכבל התלול על גבול לבנון?",
+          "answers": [
+            "ראש הנקרה",
+            "חיפה",
+            "מצפה רמון",
+            "חולון"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=1",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "In which Israeli city or site can you find The white sea grottos and cable car on the Lebanon border?",
+          "answersEn": [
+            "Rosh HaNikra",
+            "Haifa",
+            "Mitzpe Ramon",
+            "Holon"
+          ]
+        },
+        {
+          "question": "מהו המטבע הרשמי של דרום קוריאה?",
+          "answers": [
+            "פרנק שווייצרי",
+            "וון דרום-קוריאני",
+            "כתר שוודי (קרונה)",
+            "פורינט הונגרי"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=general&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=2",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "What is the official currency of South Korea?",
+          "answersEn": [
+            "Swiss Franc",
+            "South Korean Won",
+            "Swedish Krona",
+            "Hungarian Forint"
+          ]
+        },
+        {
+          "question": "באיזו מדינה המטבע הרשמי הוא יואן סיני (רנמינבי)?",
+          "answers": [
+            "בריטניה",
+            "ברזיל",
+            "דרום קוריאה",
+            "סין"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=3",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "In which country is the Chinese Yuan (Renminbi) the official currency?",
+          "answersEn": [
+            "United Kingdom",
+            "Brazil",
+            "South Korea",
+            "China"
+          ]
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים מכתש רמון וחוות האלפקות?",
+          "answers": [
+            "מצפה רמון",
+            "אילת",
+            "ירושלים",
+            "אשדוד"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=4",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "In which Israeli city or site can you find Ramon Crater and the Alpaca Farm?",
+          "answersEn": [
+            "Mitzpe Ramon",
+            "Eilat",
+            "Jerusalem",
+            "Ashdod"
+          ]
+        },
+        {
+          "question": "מהי בירת אוסטרליה?",
+          "answers": [
+            "סידני",
+            "מלבורן",
+            "פרת׳",
+            "קנברה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%99%D7%93%D7%A2%20%D7%9B%D7%9C%D7%9C%D7%99&s=5",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו שנה נחתם הסכם השלום בין ישראל למצרים?",
+          "answers": [
+            "1982",
+            "1994",
+            "1973",
+            "1979"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=6",
+          "points": 100,
+          "timerSeconds": 20
+        }
+      ],
+      "code": "1013",
+      "savedPlayers": []
     }
   ]
 }

@@ -84,17 +84,20 @@
         <!-- Drawer Section 2: Questions, Branding & Leaderboard Tools -->
         <section class="drawer-section">
           <div class="drawer-section-title">
-            <span>🛠️ הגדרות, שאלות ולוח תוצאות</span>
+            <span>🛠️ הגדרות, שאלות ומאגר מרכזי</span>
           </div>
           <div style="display:flex; flex-direction:column; gap:0.5rem;">
+            <button type="button" id="btn-drawer-question-bank" class="btn btn--gold btn--sm" style="justify-content:flex-start;">
+              📚 מאגר השאלות (הוספה ושינוי שאלות וקטגוריות)
+            </button>
             <button type="button" id="btn-open-settings" class="btn btn--primary btn--sm" style="justify-content:flex-start;">
-              🎨 עיצוב וניהול שאלות מלא
+              ⚙️ הגדרות שאלון (זמנים, קבוצות, מוזיקה ורקע)
+            </button>
+            <button type="button" id="btn-shortcut-questions" class="btn btn--sm" style="justify-content:flex-start;">
+              📝 שאלות השאלון והוספת שאלות (<span id="lobby-q-count">0</span>)
             </button>
             <button type="button" id="btn-shortcut-branding" class="btn btn--sm" style="justify-content:flex-start;">
               🖼️ העלאת רקע וכותרת ראשית מהמחשב
-            </button>
-            <button type="button" id="btn-shortcut-questions" class="btn btn--sm" style="justify-content:flex-start;">
-              📝 עריכת שאלות, ניקוד וזמנים (<span id="lobby-q-count">0</span>)
             </button>
             <button type="button" id="btn-open-leaderboard" class="btn btn--gold btn--sm" style="justify-content:flex-start;">
               🏆 צפייה בלוח התוצאות
@@ -170,7 +173,7 @@
   <div class="app-shell">
     <!-- Top Main Header (Only Menu with Settings & Statistics) -->
     <header class="brand-bar">
-      <div style="display:flex; align-items:center; gap:0.75rem; min-width:0;">
+      <div style="display:flex; align-items:center; gap:0.65rem; min-width:0; flex-wrap:wrap;">
         <button
           type="button"
           id="drawer-open"
@@ -183,6 +186,15 @@
             <path d="M4 6h16M4 12h16M4 18h16" />
           </svg>
           <span>תפריט הגדרות וסטטיסטיקות</span>
+        </button>
+
+        <button
+          type="button"
+          id="btn-open-question-bank"
+          class="btn btn--gold btn--sm"
+          title="צפייה במאגר 1,000+ השאלות, הגרלה רנדומלית והוספת שאלות משלך למאגר"
+        >
+          📚 מאגר השאלות (<span id="top-bank-count">1000+</span>)
         </button>
       </div>
 
@@ -220,8 +232,11 @@
             <h2 id="entry-game-title" style="font-size:clamp(1.4rem, 1.1rem + 1.2vw, 2.1rem); color:#ffffff;">שם המשחק</h2>
           </div>
           <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-            <button type="button" id="btn-entry-open-lb" class="btn btn--gold btn--sm">
-              📊 היסטוריית משתתפים וניקוד שמור
+            <button type="button" id="btn-entry-open-history" class="btn btn--gold btn--sm">
+              📜 היסטוריית משחקים
+            </button>
+            <button type="button" id="btn-entry-open-lb" class="btn btn--sm">
+              📊 לוח משתתפים נוכחי
             </button>
             <button type="button" id="btn-entry-back-hub" class="btn btn--danger btn--sm">
               🏠 סגור משחק וחזור למסך הראשי
@@ -321,20 +336,61 @@
           ></progress>
         </div>
 
-        <div id="admin-live-barchart" class="stage-sticks-box" aria-label="דיאגרמת מקלות">
-          <div class="live-bar-col">
-            <span id="admin-bar-correct-val" class="live-bar-value live-bar-value--correct">0</span>
-            <div class="live-bar-track" aria-hidden="true">
-              <div id="admin-bar-correct-fill" class="live-bar-fill live-bar-fill--correct" style="height: 0%;"></div>
+        <div id="admin-live-barchart" class="stage-sticks-box" aria-label="מצב תשובות והתפלגות">
+          <!-- Shown while timer is running (before reveal): ONLY how many players answered -->
+          <div id="admin-bar-answered-col" class="live-bar-col">
+            <span id="admin-bar-answered-val" class="live-bar-value live-bar-value--answered">0</span>
+            <div class="live-bar-track" style="width: clamp(36px, 4.2vw, 52px);" aria-hidden="true">
+              <div id="admin-bar-answered-fill" class="live-bar-fill live-bar-fill--answered" style="height: 0%;"></div>
             </div>
-            <span class="live-bar-label live-bar-label--correct">✓</span>
+            <span class="live-bar-label live-bar-label--answered">🗳️ ענו</span>
           </div>
-          <div class="live-bar-col">
-            <span id="admin-bar-wrong-val" class="live-bar-value live-bar-value--wrong">0</span>
-            <div class="live-bar-track" aria-hidden="true">
-              <div id="admin-bar-wrong-fill" class="live-bar-fill live-bar-fill--wrong" style="height: 0%;"></div>
+
+          <!-- Shown ONLY after answer reveal: Distribution across options (א-ד) + Right/Wrong -->
+          <div id="admin-bar-distribution-cols" hidden style="display:none; align-items:flex-end; gap:clamp(0.4rem, 0.9vw, 0.75rem);">
+            <div class="live-bar-col">
+              <span id="admin-bar-opt-0-val" class="live-bar-value">0</span>
+              <div class="live-bar-track" style="width: clamp(22px, 2.6vw, 32px);" aria-hidden="true">
+                <div id="admin-bar-opt-0-fill" class="live-bar-fill live-bar-fill--answered" style="height: 0%;"></div>
+              </div>
+              <span id="admin-bar-opt-0-lbl" class="live-bar-label">א</span>
             </div>
-            <span class="live-bar-label live-bar-label--wrong">✗</span>
+            <div class="live-bar-col">
+              <span id="admin-bar-opt-1-val" class="live-bar-value">0</span>
+              <div class="live-bar-track" style="width: clamp(22px, 2.6vw, 32px);" aria-hidden="true">
+                <div id="admin-bar-opt-1-fill" class="live-bar-fill live-bar-fill--answered" style="height: 0%;"></div>
+              </div>
+              <span id="admin-bar-opt-1-lbl" class="live-bar-label">ב</span>
+            </div>
+            <div class="live-bar-col">
+              <span id="admin-bar-opt-2-val" class="live-bar-value">0</span>
+              <div class="live-bar-track" style="width: clamp(22px, 2.6vw, 32px);" aria-hidden="true">
+                <div id="admin-bar-opt-2-fill" class="live-bar-fill live-bar-fill--answered" style="height: 0%;"></div>
+              </div>
+              <span id="admin-bar-opt-2-lbl" class="live-bar-label">ג</span>
+            </div>
+            <div class="live-bar-col">
+              <span id="admin-bar-opt-3-val" class="live-bar-value">0</span>
+              <div class="live-bar-track" style="width: clamp(22px, 2.6vw, 32px);" aria-hidden="true">
+                <div id="admin-bar-opt-3-fill" class="live-bar-fill live-bar-fill--answered" style="height: 0%;"></div>
+              </div>
+              <span id="admin-bar-opt-3-lbl" class="live-bar-label">ד</span>
+            </div>
+            <div style="width:1px; height:clamp(54px, 10dvh, 80px); background:rgba(255,255,255,0.16); margin-inline:0.15rem;"></div>
+            <div class="live-bar-col">
+              <span id="admin-bar-correct-val" class="live-bar-value live-bar-value--correct">0</span>
+              <div class="live-bar-track" style="width: clamp(24px, 2.8vw, 34px);" aria-hidden="true">
+                <div id="admin-bar-correct-fill" class="live-bar-fill live-bar-fill--correct" style="height: 0%;"></div>
+              </div>
+              <span class="live-bar-label live-bar-label--correct">✓</span>
+            </div>
+            <div class="live-bar-col">
+              <span id="admin-bar-wrong-val" class="live-bar-value live-bar-value--wrong">0</span>
+              <div class="live-bar-track" style="width: clamp(24px, 2.8vw, 34px);" aria-hidden="true">
+                <div id="admin-bar-wrong-fill" class="live-bar-fill live-bar-fill--wrong" style="height: 0%;"></div>
+              </div>
+              <span class="live-bar-label live-bar-label--wrong">✗</span>
+            </div>
           </div>
         </div>
       </div>
@@ -442,10 +498,10 @@
     </div>
   </dialog>
 
-  <!-- MODAL 2: Branding, Background & Questions Manager Dialog -->
-  <dialog id="settings-dialog" aria-labelledby="settings-dialog-title">
+  <!-- MODAL 2: Quiz Settings (Timers, Teams, Music, Background) & Questions Editor Dialog -->
+  <dialog id="settings-dialog" class="dialog--wide" aria-labelledby="settings-dialog-title">
     <div class="dialog-header">
-      <h2 id="settings-dialog-title" style="font-size:1.35rem;">🎨 עיצוב המשחק וניהול שאלות</h2>
+      <h2 id="settings-dialog-title" style="font-size:1.35rem;">⚙️ הגדרות השאלון וניהול שאלות</h2>
       <div style="display:flex; gap:0.5rem;">
         <button type="button" class="btn btn--sm" data-modal-return-home>🏠 מסך ראשי</button>
         <form method="dialog">
@@ -455,20 +511,124 @@
     </div>
 
     <div class="dialog-body">
+      <div
+        id="settings-after-create-banner"
+        hidden
+        style="display:none; align-items:center; justify-content:space-between; gap:0.75rem; flex-wrap:wrap; padding:0.85rem 1.1rem; border-radius:14px; background:linear-gradient(135deg, rgba(16, 185, 129, 0.24), rgba(15, 23, 42, 0.9)); border:1px solid rgba(52, 211, 153, 0.65);"
+      >
+        <div style="display:flex; flex-direction:column; gap:0.2rem;">
+          <strong id="settings-after-create-title" style="font-size:1.05rem; color:#6ee7b7;">
+            ✅ השאלות נוספו לשאלון בהצלחה!
+          </strong>
+          <span style="font-size:0.86rem; color:#e2e8f0;">
+            כעת הגדירו את זמני השאלות, מצב קבוצות, מוזיקת רקע ועיצוב השאלון (או לחצו על לשונית השאלות לצפייה והוספת שאלות נוספות).
+          </span>
+        </div>
+        <button type="button" id="btn-banner-go-lobby" class="btn btn--primary btn--sm">
+          🚀 שמור ועבור לדף הכניסה למשחק (QR וקוד)
+        </button>
+      </div>
+
       <nav class="tabs-nav" aria-label="לשוניות ניהול">
         <button type="button" class="tab-btn is-active" data-tab="branding">
-          🖼️ כותרת ראשית, רקע והגדרות
+          ⚙️ הגדרות שאלון (זמנים, קבוצות, מוזיקה, רקע וכותרת)
         </button>
         <button type="button" class="tab-btn" data-tab="questions">
-          📝 שאלות, ניקוד, זמנים ותמונות (<span id="tab-q-count">0</span>)
+          📝 שאלות השאלון והוספת שאלות (<span id="tab-q-count">0</span>)
         </button>
       </nav>
 
-      <!-- TAB A: Branding & Global Background -->
-      <section id="tab-panel-branding" style="display:flex; flex-direction:column; gap:1.25rem;">
+      <!-- TAB A: Quiz Settings (Timers, Teams, Music, Background, Header) -->
+      <section id="tab-panel-branding" style="display:flex; flex-direction:column; gap:1.15rem;">
+        <!-- 1. Quiz Title & Timers -->
+        <div class="upload-zone" style="gap:0.85rem;">
+          <label style="font-weight:800; font-size:1.02rem; color:#7dd3fc;">1. ⏱️ שם השאלון, זמנים וחשיפת תשובות</label>
+          <div class="form-grid">
+            <div class="field">
+              <label for="input-quiz-title">שם השאלון / כותרת ראשית</label>
+              <input id="input-quiz-title" type="text" class="input" maxlength="120" placeholder="לדוגמה: חידון יום העצמאות" />
+            </div>
+
+            <div class="field">
+              <label for="input-quiz-subtitle">תת-כותרת / שורת הסבר</label>
+              <input id="input-quiz-subtitle" type="text" class="input" maxlength="200" placeholder="לדוגמה: קופת הנקודות מתחלקת בין העונים נכון!" />
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="input-timer-seconds">⏱️ זמן ברירת מחדל לשאלה (שניות)</label>
+              <input id="input-timer-seconds" type="number" class="input" min="5" max="300" value="20" />
+            </div>
+
+            <div class="field" style="justify-content:flex-end;">
+              <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:700; cursor:pointer; padding-block:0.55rem;">
+                <input id="input-auto-reveal" type="checkbox" checked />
+                חשוף תשובה וחלק ניקוד אוטומטית כשהטיימר מגיע ל-0
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Teams / Families Setting -->
+        <div class="upload-zone" style="gap:0.75rem;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; flex-wrap:wrap;">
+            <div>
+              <label style="font-weight:800; font-size:1.02rem; color:#fde68a;">2. 👨‍👩‍👧‍👦 מצב קבוצות / משפחות או תחרות אישית</label>
+              <p style="font-size:0.84rem; color:var(--text-secondary);">
+                בחרו האם כל משתתף מתחרה לבד או שהמשתתפים מתחלקים לקבוצות / משפחות
+              </p>
+            </div>
+            <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:800; font-size:0.95rem; cursor:pointer; padding:0.45rem 0.85rem; border-radius:10px; background:rgba(2, 6, 23, 0.55); border:1px solid var(--border-subtle);">
+              <input id="input-settings-teams-enabled" type="checkbox" />
+              הפעל חלוקה לקבוצות / משפחות בשאלון זה
+            </label>
+          </div>
+
+          <div id="settings-teams-editor-box" hidden style="display:none; flex-direction:column; gap:0.55rem; padding-top:0.55rem; border-top:1px solid rgba(255,255,255,0.08);">
+            <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+              <input
+                id="settings-new-team-name"
+                type="text"
+                class="input"
+                maxlength="36"
+                placeholder="הקלידו שם קבוצה / משפחה להוספה מראש (אופציונלי — שחקנים יכולים לפתוח גם בעצמם)..."
+                style="flex:1; min-width:220px;"
+              />
+              <button type="button" id="btn-settings-add-team" class="btn btn--primary btn--sm">+ הוסף קבוצה</button>
+            </div>
+            <div id="settings-teams-chips" style="display:flex; gap:0.45rem; flex-wrap:wrap;"></div>
+          </div>
+        </div>
+
+        <!-- 3. Background Music -->
+        <div class="upload-zone">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+            <label style="font-weight:800; font-size:1.02rem; color:#6ee7b7;">3. 🎵 מוזיקת רקע לשאלון (מתנגנת מרגע הרצת השאלות)</label>
+            <span id="music-status-pill" class="pill" style="font-size:0.78rem;">ללא מוזיקת רקע</span>
+          </div>
+          <p style="font-size:0.86rem; color:var(--text-secondary);">
+            העלו קובץ מוזיקה מהמחשב (MP3 / WAV / OGG / M4A) או הפעילו מנגינת טריוויה קצבית מובנית שתלווה את השאלות.
+          </p>
+          <audio id="preview-music-audio" controls hidden style="width:100%; max-width:360px; height:36px;"></audio>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <input type="file" id="input-music-file" accept="audio/*,.mp3,.wav,.ogg,.m4a,.aac" hidden />
+            <button type="button" id="btn-upload-music" class="btn btn--primary btn--sm">
+              🎵 בחר קובץ מוזיקה מהמחשב
+            </button>
+            <button type="button" id="btn-use-builtin-music" class="btn btn--gold btn--sm">
+              🎹 השתמש במנגינת טריוויה מובנית
+            </button>
+            <button type="button" id="btn-clear-music" class="btn btn--danger btn--sm" hidden>
+              🔇 הסר מוזיקה
+            </button>
+          </div>
+        </div>
+
+        <!-- 4. Header Logo & Background Image -->
         <div class="form-grid">
           <div class="upload-zone">
-            <label style="font-weight:800; font-size:1rem;">1. כותרת ראשית / לוגו (העלאה מהמחשב)</label>
+            <label style="font-weight:800; font-size:1rem;">4. 🖼️ כותרת ראשית / לוגו (העלאה מהמחשב)</label>
             <p style="font-size:0.86rem; color:var(--text-secondary);">
               העלו תמונת באנר או לוגו שיופיעו בראש החידון במסך המרכזי ובמסכי השחקנים.
             </p>
@@ -485,7 +645,7 @@
           </div>
 
           <div class="upload-zone">
-            <label style="font-weight:800; font-size:1rem;">2. רקע שילווה את כל החידון (העלאה מהמחשב)</label>
+            <label style="font-weight:800; font-size:1rem;">5. 🌌 רקע שילווה את כל החידון (העלאה מהמחשב)</label>
             <p style="font-size:0.86rem; color:var(--text-secondary);">
               תמונת הרקע תוצג לאורך כל שלבי החידון גם אצל המנחה וגם במכשירי המשתתפים.
             </p>
@@ -499,349 +659,410 @@
                 הסר רקע
               </button>
             </div>
+            <div class="field" style="padding-top:0.35rem;">
+              <label for="input-bg-opacity" style="font-size:0.82rem;">
+                כהות שכבת מעטפת על הרקע לקריאות טקסט: <span id="bg-opacity-val">68%</span>
+              </label>
+              <input id="input-bg-opacity" type="range" min="15" max="90" step="1" value="68" />
+            </div>
           </div>
         </div>
 
-        <div class="form-grid">
-          <div class="field">
-            <label for="input-quiz-title">שם המשחק / טקסט כותרת ראשית</label>
-            <input id="input-quiz-title" type="text" class="input" maxlength="120" placeholder="לדוגמה: חידון יום העצמאות" />
-          </div>
-
-          <div class="field">
-            <label for="input-quiz-subtitle">תת-כותרת / שורת הסבר</label>
-            <input id="input-quiz-subtitle" type="text" class="input" maxlength="200" placeholder="לדוגמה: קופת הנקודות מתחלקת בין העונים נכון!" />
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <div class="field">
-            <label for="input-bg-opacity">
-              כהות שכבת מעטפת על הרקע לקריאות טקסט: <span id="bg-opacity-val">68%</span>
-            </label>
-            <input id="input-bg-opacity" type="range" min="15" max="90" step="1" value="68" />
-          </div>
-
-          <div class="field">
-            <label for="input-timer-seconds">ברירת מחדל של זמן לשאלה חדשה (שניות)</label>
-            <input id="input-timer-seconds" type="number" class="input" min="5" max="300" value="15" />
-          </div>
-        </div>
-
-        <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:700; cursor:pointer;">
-          <input id="input-auto-reveal" type="checkbox" checked />
-          חשוף תשובה וחלק את קופת הנקודות אוטומטית כשהטיימר מגיע ל-0
-        </label>
-
-        <div style="display:flex; justify-content:flex-end;">
-          <button type="button" id="btn-save-settings" class="btn btn--success">
-            💾 שמור הגדרות עיצוב וטיימר
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.65rem; padding-top:0.4rem; border-top:1px solid var(--border-subtle);">
+          <button type="button" id="btn-settings-switch-to-questions" class="btn btn--sm">
+            📝 עבור לצפייה / הוספת שאלות לשאלון
           </button>
+          <div style="display:flex; gap:0.55rem; flex-wrap:wrap;">
+            <button type="button" id="btn-save-settings" class="btn btn--success">
+              💾 שמור הגדרות שאלון
+            </button>
+            <button type="button" id="btn-save-settings-and-enter" class="btn btn--primary">
+              🚀 שמור הגדרות ופתח דף כניסה למשחק (QR וקוד)
+            </button>
+          </div>
         </div>
       </section>
 
-      <!-- TAB B: Questions, Per-Question Points, Timer & Image Editor -->
-      <section id="tab-panel-questions" hidden style="display:flex; flex-direction:column; gap:1rem;">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem;">
-          <p style="font-size:0.92rem; color:var(--text-secondary);">
-            לכל שאלה ברירת מחדל של <strong>100 נקודות</strong> ו-<strong>15 שניות</strong>, עם אפשרות לשנות ניקוד וזמן לכל שאלה בנפרד לפי אופייה.
-          </p>
-          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-            <input
-              type="file"
-              id="input-import-doc"
-              accept=".docx,.doc,.pdf,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,text/plain"
-              hidden
-            />
-            <button type="button" id="btn-import-doc" class="btn btn--gold btn--sm">
-              📄 ייבוא מקובץ Word / PDF חופשי
-            </button>
-            <input type="file" id="input-import-json" accept=".json,application/json" hidden />
-            <button type="button" id="btn-import-json" class="btn btn--sm">📂 ייבוא JSON</button>
-            <button type="button" id="btn-export-json" class="btn btn--sm">⬇️ ייצוא JSON</button>
-            <button type="button" id="btn-add-question" class="btn btn--primary btn--sm">+ הוסף שאלה חדשה</button>
+      <!-- TAB B: Existing Quiz Questions + 4 Unified Question-Addition Options -->
+      <section id="tab-panel-questions" hidden style="display:flex; flex-direction:column; gap:1.1rem;">
+        <!-- Unified 4-Option Adder Box for Existing Quiz (מוסיף על השאלון הקיים!) -->
+        <section style="padding:1rem 1.15rem; border-radius:16px; background:linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(30, 41, 59, 0.88)); border:1px solid rgba(56, 189, 248, 0.48); display:flex; flex-direction:column; gap:0.85rem;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+            <div>
+              <strong style="font-size:1.06rem; color:#7dd3fc;">➕ הוספת שאלות לשאלון הקיים (מתווספות על השאלות שכבר קיימות)</strong>
+              <p style="font-size:0.82rem; color:var(--text-secondary);">
+                בחרו באחת מ-4 האופציות, הגדירו מספר שאלות ורמת קושי, והשאלות יתווספו לשאלון זה:
+              </p>
+            </div>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+              <button type="button" id="btn-save-game-to-bank" class="btn btn--sm" title="שמור את כל שאלות השאלון הנוכחי לתוך מאגר השאלות הקבוע">
+                📥 גבה שאלות אלו למאגר הקבוע
+              </button>
+              <input
+                type="file"
+                id="input-import-doc"
+                accept=".docx,.doc,.pdf,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,text/plain"
+                hidden
+              />
+              <button type="button" id="btn-import-doc" class="btn btn--sm">📄 ייבוא מקובץ Word / PDF</button>
+              <input type="file" id="input-import-json" accept=".json,application/json" hidden />
+              <button type="button" id="btn-import-json" class="btn btn--sm">📂 ייבוא JSON</button>
+              <button type="button" id="btn-export-json" class="btn btn--sm">⬇️ ייצוא JSON</button>
+            </div>
           </div>
-        </div>
+
+          <!-- 4 Option Selector Tabs for Existing Quiz -->
+          <div class="mode-switch" role="group" aria-label="בחירת אופן הוספת שאלות לשאלון הקיים" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(195px, 1fr)); gap:0.45rem; padding:0.35rem;">
+            <button type="button" class="mode-switch-btn is-active" data-existing-add-mode="random-bank" style="padding:0.6rem 0.75rem; font-size:0.88rem;">
+              א. 🎲 רנדומלי ממאגר קיים
+            </button>
+            <button type="button" class="mode-switch-btn" data-existing-add-mode="gemini-text" style="padding:0.6rem 0.75rem; font-size:0.88rem;">
+              ב. ✨ טקסט חופשי לג׳מניי
+            </button>
+            <button type="button" class="mode-switch-btn" data-existing-add-mode="manual" style="padding:0.6rem 0.75rem; font-size:0.88rem;">
+              ג. ✍️ הוספת שאלות ידנית
+            </button>
+            <button type="button" class="mode-switch-btn" data-existing-add-mode="bank-topics" style="padding:0.6rem 0.75rem; font-size:0.88rem;">
+              ד. 🎯 ממאגר לפי סינון נושאים
+            </button>
+          </div>
+
+          <!-- Common Row for Existing Quiz Adder: Number of Questions & Difficulty -->
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:0.65rem; align-items:end; padding:0.7rem 0.85rem; border-radius:12px; background:rgba(2, 6, 23, 0.45); border:1px solid var(--border-subtle);">
+            <div class="field" style="gap:0.25rem;">
+              <label for="existing-add-count" style="font-size:0.82rem; font-weight:700; color:#bae6fd;">מספר שאלות להוספה:</label>
+              <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap;">
+                <input
+                  id="existing-add-count"
+                  type="number"
+                  class="input"
+                  min="1"
+                  max="1500"
+                  value="5"
+                  style="max-width:105px; text-align:center; font-weight:800;"
+                />
+                <button type="button" class="btn btn--sm" data-existing-count-preset="1">1</button>
+                <button type="button" class="btn btn--sm" data-existing-count-preset="5">5</button>
+                <button type="button" class="btn btn--sm" data-existing-count-preset="10">10</button>
+                <button type="button" class="btn btn--sm" data-existing-count-preset="20">20</button>
+                <button type="button" class="btn btn--sm" data-existing-count-preset="50">50</button>
+              </div>
+            </div>
+
+            <div class="field" style="gap:0.25rem;">
+              <label for="existing-add-diff" style="font-size:0.82rem; font-weight:700; color:#bae6fd;">רמת קושי:</label>
+              <select id="existing-add-diff" class="select">
+                <option value="mixed">🌈 מעורב (כל הרמות)</option>
+                <option value="easy">🟢 קל</option>
+                <option value="medium">🟡 בינוני</option>
+                <option value="hard">🔴 קשה</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Existing Mode Panel א: Random from Bank -->
+          <div id="existing-panel-random-bank" style="font-size:0.85rem; color:var(--text-secondary);">
+            🎲 המערכת תגריל שאלות אקראיות מתוך המאגר הקיים לפי מספר השאלות ורמת הקושי שבחרתם למעלה, ותוסיף אותן לשאלון הנוכחי.
+          </div>
+
+          <!-- Existing Mode Panel ב: Free Text to Gemini -->
+          <div id="existing-panel-gemini-text" hidden style="display:none; flex-direction:column; gap:0.55rem;">
+            <div class="field" style="gap:0.25rem;">
+              <label for="existing-gemini-free-text" style="font-size:0.83rem; font-weight:700; color:#fde68a;">
+                כתבו בטקסט חופשי על מה תרצו שג׳מניי ייצר את השאלות הנוספות:
+              </label>
+              <textarea
+                id="existing-gemini-free-text"
+                class="textarea"
+                rows="2"
+                placeholder="לדוגמה: שאלות על מלחמת ששת הימים וירושלים, או שאלות טריוויה מצחיקות על אוכל ישראלי..."
+                style="min-height:60px; font-size:0.88rem;"
+              ></textarea>
+            </div>
+            <details style="background:rgba(2, 6, 23, 0.45); border:1px solid var(--border-subtle); border-radius:10px; padding:0.45rem 0.75rem;">
+              <summary style="cursor:pointer; font-size:0.8rem; font-weight:700; color:#bae6fd;">
+                🔑 מפתח Gemini API או העתקה/הדבקה מצ׳אט ג׳מני (אופציונלי)
+              </summary>
+              <div style="display:flex; flex-direction:column; gap:0.45rem; padding-top:0.5rem;">
+                <input id="editor-gemini-api-key" type="password" class="input" placeholder="מפתח Gemini API (נשמר אוטומטית)..." style="font-size:0.82rem;" />
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:0.4rem; flex-wrap:wrap;">
+                  <span style="font-size:0.78rem; color:var(--text-secondary);">או העתיקו פרומפט לצ׳אט Gemini והדביקו תשובה:</span>
+                  <button type="button" id="btn-editor-copy-gemini-prompt" class="btn btn--gold btn--sm">📋 העתק פרומפט לג׳מני</button>
+                </div>
+                <textarea id="editor-gemini-pasted-json" class="input" rows="2" placeholder="הדביקו כאן תשובה מצ׳אט ג׳מני (אופציונלי)..." style="font-size:0.8rem;"></textarea>
+              </div>
+            </details>
+          </div>
+
+          <!-- Existing Mode Panel ג: Manual Questions Addition -->
+          <div id="existing-panel-manual" hidden style="display:none; font-size:0.85rem; color:var(--text-secondary);">
+            ✍️ לחיצה על הכפתור למטה תוסיף לשאלון כרטיסי שאלה חדשים (לפי מספר השאלות שבחרתם למעלה) למילוי ידני של השאלה ו-4 התשובות.
+          </div>
+
+          <!-- Existing Mode Panel ד: From Bank by Filtering Existing Topics -->
+          <div id="existing-panel-bank-topics" hidden style="display:none; flex-direction:column; gap:0.55rem;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+              <span style="font-size:0.84rem; font-weight:700; color:#6ee7b7;">
+                סמנו נושא אחד או יותר מתוך הנושאים הקיימים במאגר:
+              </span>
+              <div style="display:flex; gap:0.4rem;">
+                <button type="button" id="btn-existing-topics-all" class="btn btn--sm" style="padding:0.15rem 0.55rem; font-size:0.76rem;">סמן הכל</button>
+                <button type="button" id="btn-existing-topics-clear" class="btn btn--sm" style="padding:0.15rem 0.55rem; font-size:0.76rem;">נקה סימון</button>
+              </div>
+            </div>
+            <div id="existing-bank-topics-chips" style="display:flex; flex-wrap:wrap; gap:0.45rem; max-height:145px; overflow-y:auto; padding:0.35rem;"></div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; align-items:center; gap:0.5rem;">
+            <button type="button" id="btn-existing-run-add" class="btn btn--primary">
+              ➕ הוסף שאלות אלו על הקיים בשאלון
+            </button>
+          </div>
+        </section>
 
         <div id="questions-editor-list" style="display:flex; flex-direction:column; gap:0.9rem;"></div>
 
-        <div style="display:flex; justify-content:flex-end; gap:0.6rem; position:sticky; bottom:0; background:rgba(15,23,42,0.95); padding-top:0.75rem; border-top:1px solid var(--border-subtle);">
-          <button type="button" id="btn-save-questions" class="btn btn--success">
-            💾 שמור את כל השאלות
-          </button>
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem; position:sticky; bottom:0; background:rgba(15,23,42,0.95); padding-top:0.75rem; border-top:1px solid var(--border-subtle);">
+          <button type="button" id="btn-add-question" class="btn btn--sm">+ הוסף כרטיס שאלה בודד</button>
+          <div style="display:flex; gap:0.55rem; flex-wrap:wrap;">
+            <button type="button" id="btn-save-questions" class="btn btn--success">
+              💾 שמור את כל השאלות
+            </button>
+            <button type="button" id="btn-save-questions-and-settings" class="btn btn--primary">
+              ⚙️ שמור שאלות ועבור להגדרות (זמנים, קבוצות, מוזיקה ורקע) ⬅
+            </button>
+          </div>
         </div>
       </section>
     </div>
   </dialog>
 
-  <!-- MODAL 3: Create New Game Dialog (Manual Build OR Automatic On-Demand Build / Document Import) -->
+  <!-- MODAL 3: Clean New Quiz Creation Dialog (4 Unified Options -> Auto-Opens Settings Next) -->
   <dialog id="new-game-dialog" class="dialog--wide" closedby="any" aria-labelledby="new-game-dialog-title">
     <div class="dialog-header">
-      <h2 id="new-game-dialog-title" style="font-size:1.3rem;">➕ פתיחת משחק טריוויה חדש</h2>
+      <h2 id="new-game-dialog-title" style="font-size:1.3rem;">➕ פתיחת שאלון חדש</h2>
       <div style="display:flex; gap:0.5rem; align-items:center;">
-        <span id="new-game-code-preview" class="pill pill--gold">🔢 קוד המשחק שיוקצה: 1001</span>
+        <span id="new-game-code-preview" class="pill pill--gold">🔢 קוד השאלון: 1001</span>
         <form method="dialog">
           <button type="submit" class="btn btn--sm">✕ ביטול</button>
         </form>
       </div>
     </div>
-    <form id="new-game-form" class="dialog-body" style="gap:1.1rem;">
-      <!-- Build Mode Selector: Manual vs Automatic On-Demand -->
+
+    <form id="new-game-form" class="dialog-body" style="gap:1.05rem;">
+      <!-- Step 1: Quiz Name -->
+      <div class="field">
+        <label for="new-game-title" id="new-game-title-label" style="font-weight:800;">שם השאלון החדש</label>
+        <input
+          id="new-game-title"
+          type="text"
+          class="input"
+          maxlength="120"
+          placeholder="לדוגמה: חידון משפחתי / ערב גיבוש (אם יישאר ריק ייבחר שם אוטומטי)"
+          autofocus
+        />
+      </div>
+
+      <!-- Step 2: The 4 Clear Quiz Creation Options (א, ב, ג, ד) -->
       <div style="display:flex; flex-direction:column; gap:0.5rem;">
-        <span style="font-weight:800; font-size:0.95rem; color:#e2e8f0;">בחרו אופן יצירת המשחק החדש:</span>
-        <div class="mode-switch" role="group" aria-label="בחירת אופן בניית משחק" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0.5rem; padding:0.4rem;">
-          <button type="button" id="btn-new-mode-manual" class="mode-switch-btn is-active" style="padding:0.7rem 0.9rem; font-size:0.95rem;">
-            ✏️ משחק בבנייה אישית (רגיל)
+        <span style="font-weight:800; font-size:0.96rem; color:#e2e8f0;">בחרו כיצד ליצור את השאלות לשאלון החדש:</span>
+        <div role="group" aria-label="ארבע אפשרויות ליצירת שאלון חדש" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(215px, 1fr)); gap:0.55rem;">
+          <button
+            type="button"
+            class="mode-switch-btn is-active"
+            data-new-quiz-opt="random-bank"
+            style="padding:0.8rem 0.9rem; font-size:0.93rem; text-align:right; display:flex; flex-direction:column; align-items:flex-start; gap:0.2rem; border:1px solid rgba(56, 189, 248, 0.35);"
+          >
+            <strong style="font-size:0.98rem; color:#ffffff;">א. 🎲 שאלון רנדומלי ממאגר קיים</strong>
+            <span style="font-size:0.78rem; color:var(--text-secondary); font-weight:500;">הגרלה אקראית מכלל מאגר השאלות הקיים</span>
           </button>
-          <button type="button" id="btn-new-mode-auto" class="mode-switch-btn" style="padding:0.7rem 0.9rem; font-size:0.95rem;">
-            ✨ משחק אוטומטי (ג׳מני / רנדומלי / מקובץ Word או PDF)
+
+          <button
+            type="button"
+            class="mode-switch-btn"
+            data-new-quiz-opt="gemini-text"
+            style="padding:0.8rem 0.9rem; font-size:0.93rem; text-align:right; display:flex; flex-direction:column; align-items:flex-start; gap:0.2rem; border:1px solid rgba(56, 189, 248, 0.35);"
+          >
+            <strong style="font-size:0.98rem; color:#ffffff;">ב. ✨ טקסט חופשי שיעבור לג׳מניי</strong>
+            <span style="font-size:0.78rem; color:var(--text-secondary); font-weight:500;">כתבו בטקסט חופשי על מה השאלון וג׳מניי ייצר אותו</span>
+          </button>
+
+          <button
+            type="button"
+            class="mode-switch-btn"
+            data-new-quiz-opt="manual"
+            style="padding:0.8rem 0.9rem; font-size:0.93rem; text-align:right; display:flex; flex-direction:column; align-items:flex-start; gap:0.2rem; border:1px solid rgba(56, 189, 248, 0.35);"
+          >
+            <strong style="font-size:0.98rem; color:#ffffff;">ג. ✍️ יצירת שאלון ידני</strong>
+            <span style="font-size:0.78rem; color:var(--text-secondary); font-weight:500;">כתיבה והזנה ידנית של השאלות והתשובות בעצמך</span>
+          </button>
+
+          <button
+            type="button"
+            class="mode-switch-btn"
+            data-new-quiz-opt="bank-topics"
+            style="padding:0.8rem 0.9rem; font-size:0.93rem; text-align:right; display:flex; flex-direction:column; align-items:flex-start; gap:0.2rem; border:1px solid rgba(56, 189, 248, 0.35);"
+          >
+            <strong style="font-size:0.98rem; color:#ffffff;">ד. 🎯 ממאגר קיים לפי סינון נושאים</strong>
+            <span style="font-size:0.78rem; color:var(--text-secondary); font-weight:500;">סינון נושאים מתוך מה שקיים במאגר השאלות</span>
           </button>
         </div>
       </div>
 
-      <!-- Common Game Settings -->
-      <div class="editor-grid-2">
-        <div class="field">
-          <label for="new-game-title" id="new-game-title-label">שם המשחק החדש / כותרת ראשית</label>
-          <input
-            id="new-game-title"
-            type="text"
-            class="input"
-            maxlength="120"
-            placeholder="לדוגמה: חידון משפחתי / חנוכה"
-            autofocus
-          />
+      <!-- Step 3: Shared Controls for ALL 4 Options: Number of Questions & Difficulty -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0.8rem; align-items:end; padding:0.9rem 1.05rem; border-radius:14px; background:rgba(15, 23, 42, 0.78); border:1px solid rgba(56, 189, 248, 0.4);">
+        <div class="field" style="gap:0.35rem;">
+          <label for="new-quiz-q-count" style="font-weight:800; font-size:0.9rem; color:#7dd3fc;">מספר שאלות בשאלון:</label>
+          <div style="display:flex; align-items:center; gap:0.4rem; flex-wrap:wrap;">
+            <input
+              id="new-quiz-q-count"
+              type="number"
+              class="input"
+              min="1"
+              max="1500"
+              value="10"
+              style="max-width:115px; font-weight:900; text-align:center; font-size:1.05rem;"
+            />
+            <button type="button" class="btn btn--sm" data-new-count-preset="5">5</button>
+            <button type="button" class="btn btn--sm" data-new-count-preset="10">10</button>
+            <button type="button" class="btn btn--sm" data-new-count-preset="20">20</button>
+            <button type="button" class="btn btn--sm" data-new-count-preset="50">50</button>
+            <button type="button" class="btn btn--sm" data-new-count-preset="100">100</button>
+            <button type="button" class="btn btn--sm" data-new-count-preset="200">200</button>
+            <button type="button" class="btn btn--sm" data-new-count-preset="500">500</button>
+            <button type="button" class="btn btn--sm" data-new-count-preset="1000">1,000</button>
+          </div>
         </div>
 
-        <div class="field">
-          <label for="new-game-subtitle">תת-כותרת (אופציונלי)</label>
-          <input
-            id="new-game-subtitle"
-            type="text"
-            class="input"
-            maxlength="200"
-            value="ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!"
-          />
-        </div>
-      </div>
-
-      <div class="editor-grid-2">
-        <div class="field">
-          <label for="new-game-timer">ברירת מחדל לזמן שאלה במשחק זה (שניות)</label>
-          <input id="new-game-timer" type="number" class="input" min="5" max="300" value="15" />
-        </div>
-
-        <div class="field">
-          <label for="new-game-points">ניקוד ברירת מחדל לכל שאלה</label>
-          <input id="new-game-points" type="number" class="input" min="1" max="100000" value="100" />
+        <div class="field" style="gap:0.35rem;">
+          <label for="new-quiz-q-diff" style="font-weight:800; font-size:0.9rem; color:#7dd3fc;">רמת קושי:</label>
+          <select id="new-quiz-q-diff" class="select" style="font-weight:700;">
+            <option value="mixed">🌈 מעורב (שילוב של קל, בינוני וקשה)</option>
+            <option value="easy">🟢 קל</option>
+            <option value="medium">🟡 בינוני</option>
+            <option value="hard">🔴 קשה</option>
+          </select>
         </div>
       </div>
 
-      <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:700; cursor:pointer;">
-        <input id="new-game-teams-enabled" type="checkbox" />
-        חלק את המשחק לקבוצות / משפחות (ניתן לשנות ולהגדיר קבוצות גם בתפריט הצד)
-      </label>
+      <!-- Option-Specific Content Panels -->
 
-      <!-- AUTOMATIC ON-DEMAND BUILD PANEL -->
+      <!-- Panel א: Random from Existing Bank -->
       <section
-        id="new-game-auto-panel"
-        hidden
-        style="display:none; flex-direction:column; gap:1rem; padding:1rem; border-radius:16px; background:rgba(15, 23, 42, 0.72); border:1px solid rgba(56, 189, 248, 0.35);"
+        id="new-opt-panel-random-bank"
+        style="padding:0.95rem 1.1rem; border-radius:14px; background:rgba(2, 6, 23, 0.5); border:1px solid var(--border-subtle); display:flex; flex-direction:column; gap:0.4rem;"
       >
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; flex-wrap:wrap;">
-          <div>
-            <strong style="font-size:1.05rem; color:#bae6fd;">✨ הגדרת שאלות אוטומטיות למשחק</strong>
-            <p style="font-size:0.84rem; color:var(--text-secondary);">
-              בחרו בין הגדרת נושאים, שאלות רנדומליות מהירות, או העלאת קובץ Word / PDF שכתבתם באופן חופשי
-            </p>
-          </div>
-          <div class="mode-switch" role="group" aria-label="סוג יצירה אוטומטית">
-            <button type="button" id="btn-auto-sub-topics" class="mode-switch-btn is-active">
-              🎯 לפי נושאים ורמת קושי
-            </button>
-            <button type="button" id="btn-auto-sub-random" class="mode-switch-btn">
-              🎲 שאלות רנדומליות מהירות
-            </button>
-            <button type="button" id="btn-auto-sub-document" class="mode-switch-btn">
-              📄 העלאת קובץ Word / PDF חופשי
-            </button>
-          </div>
-        </div>
+        <strong style="color:#fde68a; font-size:0.98rem;">🎲 הגרלה רנדומלית מכלל מאגר השאלות הקיים</strong>
+        <p style="font-size:0.86rem; color:var(--text-secondary);">
+          המערכת תגריל באופן אקראי את מספר השאלות ורמת הקושי שבחרתם מתוך מאגר השאלות הקיים במערכת, ומיד לאחר מכן ייפתח תפריט ההגדרות (זמנים, קבוצות, מוזיקה ורקע).
+        </p>
+      </section>
 
-        <datalist id="trivia-topics-datalist">
-          <option value="ידע כללי"></option>
-          <option value="היסטוריה של ישראל"></option>
-          <option value="גיאוגרפיה ועולם"></option>
-          <option value="מדע וטבע"></option>
-          <option value="ספורט"></option>
-          <option value="מוזיקה ותרבות"></option>
-          <option value="חגי ישראל ומסורת"></option>
-          <option value="אוכל וקולינריה"></option>
-          <option value="טכנולוגיה והמצאות"></option>
-        </datalist>
-
-        <!-- Sub-Mode 1: Custom Topics + Count per Topic + Difficulty per Topic -->
-        <div id="auto-topics-section" style="display:flex; flex-direction:column; gap:0.75rem;">
-          <div id="auto-topics-rows" style="display:flex; flex-direction:column; gap:0.6rem;"></div>
-
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.6rem; flex-wrap:wrap;">
-            <button type="button" id="btn-add-topic-row" class="btn btn--sm">
-              ➕ הוסף נושא נוסף
-            </button>
-            <span id="auto-topics-total-badge" class="pill pill--emerald">סה"כ ייווצרו: 5 שאלות</span>
-          </div>
-        </div>
-
-        <!-- Sub-Mode 2: Pure Random Questions -->
-        <div
-          id="auto-random-section"
-          hidden
-          style="display:none; flex-direction:column; gap:0.75rem; padding:0.85rem; border-radius:12px; background:rgba(2, 6, 23, 0.45); border:1px solid var(--border-subtle);"
-        >
-          <div class="field">
-            <label for="auto-random-count">מספר שאלות במשחק:</label>
-            <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
-              <input
-                id="auto-random-count"
-                type="number"
-                class="input"
-                min="1"
-                max="50"
-                value="10"
-                style="max-width:130px; font-weight:800; text-align:center;"
-              />
-              <button type="button" class="btn btn--sm" data-random-preset="5">5 שאלות</button>
-              <button type="button" class="btn btn--sm" data-random-preset="10">10 שאלות</button>
-              <button type="button" class="btn btn--sm" data-random-preset="15">15 שאלות</button>
-              <button type="button" class="btn btn--sm" data-random-preset="20">20 שאלות</button>
-            </div>
-          </div>
-          <p style="font-size:0.84rem; color:var(--text-secondary);">
-            🎲 המערכת תבחר ותערבב עבורך שאלות טריוויה מגוונות (ניתן גם לכתוב הוראות מפורטות לג׳מני בתיבה למטה!).
-          </p>
-        </div>
-
-        <!-- Sub-Mode 3: Free-Form Word / PDF / Text Upload -->
-        <div
-          id="auto-document-section"
-          hidden
-          style="display:none; flex-direction:column; gap:0.75rem; padding:0.95rem; border-radius:12px; background:rgba(2, 6, 23, 0.55); border:1px dashed rgba(251, 191, 36, 0.55);"
-        >
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; flex-wrap:wrap;">
-            <div style="display:flex; flex-direction:column; gap:0.2rem;">
-              <strong style="font-size:0.98rem; color:#fde68a;">📄 העלאת קובץ Word (.docx) או PDF (.pdf) עם שאלות ותשובות חופשיות</strong>
-              <span style="font-size:0.82rem; color:var(--text-secondary);">
-                אין צורך בשום מבנה מוגדר! גם אם כתבתם רק שאלה ותשובה אחת נכונה — המערכת תשלים אוטומטית 3 תשובות מסיחות ותיצור 4 אמריקאיות לכל שאלה.
-              </span>
-            </div>
-            <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-              <input
-                type="file"
-                id="input-new-game-doc"
-                accept=".docx,.doc,.pdf,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,text/plain"
-                hidden
-              />
-              <button type="button" id="btn-pick-new-game-doc" class="btn btn--gold btn--sm">
-                📂 בחר קובץ Word / PDF מהמחשב
-              </button>
-              <span id="doc-upload-status-pill" class="pill" hidden></span>
-            </div>
-          </div>
-
-          <div class="field" style="gap:0.3rem;">
-            <label for="auto-doc-raw-text" style="font-size:0.83rem; color:var(--text-secondary);">
-              תוכן הקובץ שחולץ (או הדביקו כאן ישירות שאלות ותשובות שכתבתם באופן חופשי):
-            </label>
-            <textarea
-              id="auto-doc-raw-text"
-              class="textarea"
-              rows="4"
-              placeholder="לדוגמה:&#10;מהי בירת ישראל? ירושלים&#10;באיזו שנה הוקמה המדינה? 1948&#10;או כל ניסוח חופשי אחר מתוך קובץ ה-Word / PDF..."
-              style="min-height:90px; font-size:0.86rem;"
-            ></textarea>
-          </div>
-        </div>
-
-        <!-- Detailed Free-Text Instructions for Gemini -->
-        <div
-          style="display:flex; flex-direction:column; gap:0.45rem; padding:0.85rem 0.95rem; border-radius:12px; background:rgba(14, 165, 233, 0.1); border:1px solid rgba(56, 189, 248, 0.4);"
-        >
-          <label for="auto-custom-instructions" style="font-weight:800; font-size:0.92rem; color:#bae6fd;">
-            📝 הוראות מפורטות וחופשיות לג׳מני ליצירת החידון (אופציונלי):
+      <!-- Panel ב: Free Text to Gemini -->
+      <section
+        id="new-opt-panel-gemini-text"
+        hidden
+        style="display:none; flex-direction:column; gap:0.75rem; padding:1rem 1.1rem; border-radius:14px; background:rgba(14, 165, 233, 0.1); border:1px solid rgba(56, 189, 248, 0.45);"
+      >
+        <div class="field" style="gap:0.35rem;">
+          <label for="new-quiz-gemini-text" style="font-weight:800; font-size:0.95rem; color:#bae6fd;">
+            ✨ כתבו בטקסט חופשי מה תרצו שג׳מניי ייצר עבורכם:
           </label>
           <textarea
-            id="auto-custom-instructions"
+            id="new-quiz-gemini-text"
             class="textarea"
-            rows="2"
-            placeholder="כתבו כאן בשפה חופשית כל הנחיה שתרצו! לדוגמה: &quot;צור שאלות קלילות ומצחיקות ליום הולדת 40, שלב שאלות על שנות ה-80, קולנוע ישראלי וטיולים בעולם...&quot;"
-            style="min-height:62px; font-size:0.88rem;"
+            rows="3"
+            placeholder="לדוגמה: &quot;שאלות על ההיסטוריה של מדינת ישראל, מלחמות ישראל וראשי ממשלה&quot; או &quot;שאלון מצחיק ליום הולדת 30 עם שאלות על תרבות פופ, סרטים ומוזיקה ישראלית&quot;..."
+            style="min-height:82px; font-size:0.92rem;"
           ></textarea>
-          <span style="font-size:0.79rem; color:var(--text-secondary);">
-            💡 ההוראות ישולבו אוטומטית גם ביצירה ישירה עם מפתח Gemini API וגם בכפתור <strong>"📋 העתק בקשה מוכנה לצ׳אט ג׳מני"</strong> למטה.
-          </span>
         </div>
 
-        <!-- Question Ordering (Random vs Grouped by Topic) + Automatic Matching Images -->
-        <div
-          style="display:flex; flex-direction:column; gap:0.65rem; padding:0.85rem 0.95rem; border-radius:12px; background:rgba(2, 6, 23, 0.5); border:1px solid var(--border-subtle);"
-        >
-          <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:700; font-size:0.9rem; cursor:pointer;">
-            <input id="auto-shuffle-order" type="checkbox" checked />
-            🔀 הצג את השאלות בסדר רנדומלי במשחק (מעורבב בין הנושאים ולא מקובץ לנושאים)
-          </label>
-
-          <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:700; font-size:0.9rem; cursor:pointer;">
-            <input id="auto-include-images" type="checkbox" checked />
-            🖼️ הוסף תמונה מתאימה אוטומטית לכל שאלה (לפי נושא ותוכן השאלה)
-          </label>
-        </div>
-
-        <!-- Optional Gemini AI Connection (API Key OR Copy/Paste with Gemini Subscription) -->
-        <details open style="padding:0.75rem 0.9rem; border-radius:12px; background:rgba(2, 6, 23, 0.45); border:1px solid var(--border-subtle);">
-          <summary style="cursor:pointer; font-weight:700; font-size:0.88rem; color:#fde68a;">
-            🤖 חיבור לג׳מני (מפתח Gemini API ליצירה ישירה או העתקה/הדבקה מצ׳אט ג׳מני שלך)
+        <details style="padding:0.65rem 0.85rem; border-radius:10px; background:rgba(2, 6, 23, 0.5); border:1px solid var(--border-subtle);">
+          <summary style="cursor:pointer; font-weight:700; font-size:0.84rem; color:#fde68a;">
+            🤖 הגדרת מפתח Gemini API או העתקה/הדבקה מצ׳אט ג׳מני (אופציונלי)
           </summary>
-          <div style="display:flex; flex-direction:column; gap:0.75rem; padding-top:0.75rem; margin-top:0.55rem; border-top:1px solid rgba(255,255,255,0.08);">
-            <div class="field">
-              <label for="input-gemini-api-key" style="font-size:0.84rem;">
-                מפתח Gemini API ליצירה ישירה (אופציונלי — נשמר במחשב שלך):
-              </label>
-              <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
-                <input
-                  id="input-gemini-api-key"
-                  type="password"
-                  class="input"
-                  placeholder="הדביקו מפתח מ-Google AI Studio (אופציונלי)..."
-                  style="flex:1; min-width:200px;"
-                />
-                <span id="gemini-key-status-pill" class="pill" style="font-size:0.78rem;">מאגר מובנה פעיל</span>
-              </div>
+          <div style="display:flex; flex-direction:column; gap:0.6rem; padding-top:0.6rem;">
+            <div style="display:flex; gap:0.45rem; flex-wrap:wrap; align-items:center;">
+              <input
+                id="input-gemini-api-key"
+                type="password"
+                class="input"
+                placeholder="הדביקו מפתח Gemini API מ-Google AI Studio (אופציונלי — נשמר אוטומטית)..."
+                style="flex:1; min-width:200px;"
+              />
+              <span id="gemini-key-status-pill" class="pill" style="font-size:0.78rem;">מאגר חכם פעיל</span>
             </div>
-
-            <div style="display:flex; flex-direction:column; gap:0.45rem;">
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
-                <span style="font-size:0.84rem; font-weight:700; color:var(--text-secondary);">
-                  או צרו דרך מנוי הצ׳אט של ג׳מני שלכם (ללא מפתח API):
-                </span>
-                <button type="button" id="btn-copy-gemini-prompt" class="btn btn--gold btn--sm">
-                  📋 1. העתק בקשה מוכנה (כולל ההוראות המפורטות שלך) לצ׳אט ג׳מני
-                </button>
-              </div>
-              <textarea
-                id="input-pasted-gemini-json"
-                class="textarea"
-                rows="3"
-                placeholder="2. אם העתקתם בקשה לצ׳אט ג׳מני, הדביקו כאן את תשובת ג׳מני (או השאירו ריק ליצירה אוטומטית מיידית!)."
-                style="min-height:70px; font-size:0.82rem;"
-              ></textarea>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+              <span style="font-size:0.8rem; color:var(--text-secondary);">או העתיקו פרומפט מוכן לצ׳אט ג׳מני שלכם והדביקו כאן את התוצאה:</span>
+              <button type="button" id="btn-copy-gemini-prompt" class="btn btn--gold btn--sm">
+                📋 העתק פרומפט מוכן לג׳מני
+              </button>
             </div>
+            <textarea
+              id="input-pasted-gemini-json"
+              class="textarea"
+              rows="2"
+              placeholder="אם העתקתם לצ׳אט ג׳מני, הדביקו כאן את התשובה (או השאירו ריק ליצירה אוטומטית)..."
+              style="min-height:56px; font-size:0.82rem;"
+            ></textarea>
           </div>
         </details>
       </section>
 
-      <div style="display:flex; justify-content:flex-end; gap:0.6rem; padding-top:0.3rem;">
+      <!-- Panel ג: Manual Quiz Creation -->
+      <section
+        id="new-opt-panel-manual"
+        hidden
+        style="display:none; flex-direction:column; gap:0.45rem; padding:0.95rem 1.1rem; border-radius:14px; background:rgba(2, 6, 23, 0.5); border:1px solid var(--border-subtle);"
+      >
+        <strong style="color:#7dd3fc; font-size:0.98rem;">✍️ יצירת שאלון בהזנה ידנית</strong>
+        <p style="font-size:0.86rem; color:var(--text-secondary);">
+          ייווצר שאלון חדש עם מספר כרטיסי השאלות שבחרתם למעלה להזנה ידנית של השאלות והתשובות. מיד לאחר הזנת השאלות ושמירתן ייפתח תפריט ההגדרות (זמנים, קבוצות, מוזיקה ורקע).
+        </p>
+      </section>
+
+      <!-- Panel ד: From Existing Bank by Filtering Existing Topics -->
+      <section
+        id="new-opt-panel-bank-topics"
+        hidden
+        style="display:none; flex-direction:column; gap:0.7rem; padding:1rem 1.1rem; border-radius:14px; background:rgba(16, 185, 129, 0.08); border:1px solid rgba(52, 211, 153, 0.45);"
+      >
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+          <div>
+            <strong style="color:#6ee7b7; font-size:0.98rem;">🎯 סינון נושאים מתוך מה שקיים במאגר השאלות</strong>
+            <p style="font-size:0.82rem; color:var(--text-secondary);">
+              סמנו נושא אחד או יותר מתוך הקטגוריות הקיימות במאגר — השאלות יישלפו מהנושאים שסימנתם לפי מספר השאלות ורמת הקושי שלמעלה:
+            </p>
+          </div>
+          <div style="display:flex; gap:0.4rem;">
+            <button type="button" id="btn-new-topics-select-all" class="btn btn--sm" style="padding:0.2rem 0.6rem; font-size:0.78rem;">☑️ סמן את כל הנושאים</button>
+            <button type="button" id="btn-new-topics-clear-all" class="btn btn--sm" style="padding:0.2rem 0.6rem; font-size:0.78rem;">🧹 נקה סימון</button>
+          </div>
+        </div>
+        <div id="new-quiz-bank-topics-chips" style="display:flex; flex-wrap:wrap; gap:0.5rem; max-height:190px; overflow-y:auto; padding:0.25rem;"></div>
+      </section>
+
+      <datalist id="trivia-topics-datalist">
+        <option value="ידע כללי"></option>
+        <option value="היסטוריה של ישראל"></option>
+        <option value="גיאוגרפיה ועולם"></option>
+        <option value="מדע וטבע"></option>
+        <option value="ספורט וכדורגל"></option>
+        <option value="תרבות, קולנוע ומוזיקה"></option>
+        <option value="חגי ישראל ומסורת"></option>
+        <option value="אוכל וקולינריה"></option>
+        <option value="טכנולוגיה והמצאות"></option>
+        <option value="תנ&quot;ך ומורשת"></option>
+        <option value="חלל ואסטרונומיה"></option>
+        <option value="השפה העברית"></option>
+      </datalist>
+
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:0.65rem; flex-wrap:wrap; padding-top:0.35rem; border-top:1px solid var(--border-subtle);">
+        <span style="font-size:0.82rem; color:var(--text-secondary);">
+          ⚙️ בשלב הבא (מיד לאחר הוספת השאלות) ייפתח אוטומטית תפריט הגדרות זמנים, קבוצות, מוזיקה ורקע.
+        </span>
         <button type="submit" id="btn-submit-new-game" class="btn btn--primary">
-          🚀 צור משחק חדש והוסף שאלות
+          🚀 צור שאלון והמשך להגדרות (זמנים, קבוצות, מוזיקה ורקע) ⬅
         </button>
       </div>
     </form>
@@ -880,6 +1101,170 @@
       <img id="zoom-dialog-img" alt="תמונת שאלה" style="max-width:100%; max-height:76dvh; object-fit:contain; border-radius:12px;" />
     </div>
   </dialog>
+
+  <!-- MODAL 6: Game Play History Dialog (היסטוריית משחקים לכל משחק) -->
+  <dialog id="game-history-dialog" class="dialog--wide" closedby="any" aria-labelledby="game-history-dialog-title">
+    <div class="dialog-header">
+      <h2 id="game-history-dialog-title" style="font-size:1.3rem;">📜 היסטוריית משחקים</h2>
+      <div style="display:flex; gap:0.5rem;">
+        <form method="dialog">
+          <button type="submit" class="btn btn--sm" autofocus>✕ סגור</button>
+        </form>
+      </div>
+    </div>
+    <div id="game-history-dialog-body" class="dialog-body" style="gap:1rem;">
+      <p style="color:var(--text-muted); text-align:center;">טוען היסטוריית משחקים...</p>
+    </div>
+  </dialog>
+
+  <!-- MODAL 7: Central Question Bank Manager (זמין בתפריט הראשי להוספה ולשינוי שאלות או קטגוריות) -->
+  <dialog id="question-bank-dialog" class="dialog--wide" closedby="any" aria-labelledby="question-bank-dialog-title">
+    <div class="dialog-header">
+      <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
+        <h2 id="question-bank-dialog-title" style="font-size:1.3rem;">📚 ניהול מאגר השאלות והקטגוריות</h2>
+        <span id="bank-total-pill" class="pill pill--gold">1,000+ שאלות במאגר</span>
+        <span id="bank-custom-pill" class="pill pill--emerald" hidden>0 שאלות שהוספת</span>
+      </div>
+      <form method="dialog">
+        <button type="submit" class="btn btn--sm" autofocus>✕ סגור</button>
+      </form>
+    </div>
+
+    <div class="dialog-body" style="gap:1.1rem;">
+      <!-- Section 1: Add New Question to the Bank (or Import from Word/PDF) -->
+      <section style="padding:0.95rem 1.1rem; border-radius:14px; background:rgba(15, 23, 42, 0.82); border:1px solid rgba(52, 211, 153, 0.45); display:flex; flex-direction:column; gap:0.75rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+          <strong style="font-size:1.05rem; color:#6ee7b7;">➕ הוספת שאלה חדשה למאגר השאלות</strong>
+          <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
+            <input
+              type="file"
+              id="input-bank-import-doc"
+              accept=".docx,.doc,.pdf,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,text/plain"
+              hidden
+            />
+            <button type="button" id="btn-bank-import-doc" class="btn btn--gold btn--sm">
+              📄 ייבא שאלות מקובץ Word / PDF ישירות למאגר
+            </button>
+          </div>
+        </div>
+
+        <form id="bank-add-question-form" style="display:flex; flex-direction:column; gap:0.65rem;">
+          <div style="display:grid; grid-template-columns:1fr 160px; gap:0.55rem;">
+            <div class="field" style="gap:0.2rem;">
+              <label for="bank-new-topic" style="font-size:0.78rem;">קטגוריה / נושא השאלה (בחרו קיימת או הקלידו קטגוריה חדשה):</label>
+              <input id="bank-new-topic" type="text" class="input" list="trivia-topics-datalist" value="ידע כללי" placeholder="לדוגמה: ידע כללי / משפחה / היסטוריה" required />
+            </div>
+            <div class="field" style="gap:0.2rem;">
+              <label for="bank-new-diff" style="font-size:0.78rem;">רמת קושי:</label>
+              <select id="bank-new-diff" class="select">
+                <option value="easy">🟢 קל</option>
+                <option value="medium" selected>🟡 בינוני</option>
+                <option value="hard">🔴 קשה</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field" style="gap:0.2rem;">
+            <label for="bank-new-q-text" style="font-size:0.78rem;">נוסח השאלה החדשה:</label>
+            <input id="bank-new-q-text" type="text" class="input" placeholder="הקלידו את נוסח השאלה שתרצו להוסיף למאגר..." required />
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:0.5rem;">
+            <label style="display:flex; align-items:center; gap:0.4rem;">
+              <input type="radio" name="bank-new-correct" value="0" checked title="סמן כתשובה נכונה" />
+              <input id="bank-new-ans-0" type="text" class="input" placeholder="תשובה א׳ (נכונה כברירת מחדל)" required />
+            </label>
+            <label style="display:flex; align-items:center; gap:0.4rem;">
+              <input type="radio" name="bank-new-correct" value="1" title="סמן כתשובה נכונה" />
+              <input id="bank-new-ans-1" type="text" class="input" placeholder="תשובה ב׳" required />
+            </label>
+            <label style="display:flex; align-items:center; gap:0.4rem;">
+              <input type="radio" name="bank-new-correct" value="2" title="סמן כתשובה נכונה" />
+              <input id="bank-new-ans-2" type="text" class="input" placeholder="תשובה ג׳" required />
+            </label>
+            <label style="display:flex; align-items:center; gap:0.4rem;">
+              <input type="radio" name="bank-new-correct" value="3" title="סמן כתשובה נכונה" />
+              <input id="bank-new-ans-3" type="text" class="input" placeholder="תשובה ד׳" required />
+            </label>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button type="submit" id="btn-submit-bank-question" class="btn btn--success btn--sm">
+              💾 הוסף ושמור שאלה זו במאגר הקבוע
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Section 2: Manage & Rename Categories / Topics in the Bank -->
+      <section style="padding:0.85rem 1.1rem; border-radius:14px; background:rgba(15, 23, 42, 0.75); border:1px solid rgba(251, 191, 36, 0.4); display:flex; flex-direction:column; gap:0.6rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+          <strong style="font-size:1rem; color:#fde68a;">🏷️ ניהול ושינוי קטגוריות (נושאים) במאגר</strong>
+          <span style="font-size:0.8rem; color:var(--text-secondary);">שינוי שם של קטגוריה קיימת או איחוד קטגוריות בכל המאגר</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:0.55rem; align-items:end;">
+          <div class="field" style="gap:0.2rem;">
+            <label for="bank-cat-rename-old" style="font-size:0.78rem;">בחרו קטגוריה קיימת לשינוי:</label>
+            <select id="bank-cat-rename-old" class="select"></select>
+          </div>
+          <div class="field" style="gap:0.2rem;">
+            <label for="bank-cat-rename-new" style="font-size:0.78rem;">השם החדש של הקטגוריה:</label>
+            <input id="bank-cat-rename-new" type="text" class="input" placeholder="הקלידו שם חדש לקטגוריה..." />
+          </div>
+          <button type="button" id="btn-bank-rename-category" class="btn btn--gold btn--sm" style="height:40px;">
+            ✏️ עדכן שם קטגוריה במאגר
+          </button>
+        </div>
+      </section>
+
+      <!-- Section 3: Search, Filter & Edit Existing Questions in the Bank -->
+      <section style="padding:1rem 1.15rem; border-radius:14px; background:rgba(15, 23, 42, 0.85); border:1px solid rgba(56, 189, 248, 0.45); display:flex; flex-direction:column; gap:0.75rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+          <div>
+            <strong style="font-size:1.05rem; color:#7dd3fc;">✏️ חיפוש, סינון ועריכת שאלות וקטגוריות במאגר</strong>
+            <p style="font-size:0.8rem; color:var(--text-secondary);">
+              לחצו על "✏️ ערוך שאלה / קטגוריה" ליד כל שאלה כדי לשנות את הנוסח, התשובות, הקטגוריה או רמת הקושי שלה
+            </p>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+          <input id="bank-search-input" type="text" class="input" placeholder="🔍 חפש שאלה או תשובה במאגר..." style="flex:1; min-width:170px;" />
+          <select id="bank-filter-topic" class="select" style="max-width:220px;">
+            <option value="all">כל הקטגוריות</option>
+          </select>
+          <select id="bank-filter-diff" class="select" style="max-width:150px;">
+            <option value="all">כל רמות הקושי</option>
+            <option value="easy">🟢 קל בלבד</option>
+            <option value="medium">🟡 בינוני בלבד</option>
+            <option value="hard">🔴 קשה בלבד</option>
+          </select>
+          <label style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.82rem; cursor:pointer;">
+            <input id="bank-filter-custom-only" type="checkbox" />
+            רק שאלות שהוספתי
+          </label>
+        </div>
+
+        <div id="bank-questions-list" style="display:flex; flex-direction:column; gap:0.55rem; max-height:360px; overflow-y:auto; padding-inline-end:0.25rem;"></div>
+      </section>
+    </div>
+  </dialog>
+
+  <!-- Corner QR + 4-Digit Game Code Rejoin Widget (Available at the corner of the screen throughout the entire game & competition) -->
+  <aside id="live-corner-join-widget" class="live-corner-join-widget" hidden aria-label="קוד משחק וקיואר להצטרפות מהירה">
+    <button type="button" id="btn-corner-qr-zoom" class="live-corner-qr-btn" title="לחצו להגדלת קוד ה-QR להצטרפות">
+      <img id="live-corner-qr-img" class="live-corner-qr-img" alt="QR להצטרפות למשחק" />
+    </button>
+    <div class="live-corner-meta">
+      <span id="live-corner-code" class="live-corner-code">קוד: 1000</span>
+      <span class="live-corner-sub">סרקו לחזרה למשחק</span>
+      <button type="button" id="btn-corner-music-toggle" class="btn btn--sm" hidden style="padding:0.12rem 0.45rem; font-size:0.72rem; margin-top:0.15rem;">
+        🎵 מוזיקה פעילה
+      </button>
+    </div>
+  </aside>
+
+  <audio id="quiz-bg-audio" loop preload="auto" hidden></audio>
 
   <div id="app-toast" class="toast" role="status" aria-live="polite" hidden></div>
 
@@ -1274,11 +1659,89 @@
 
       function renderAdminLiveBarChart(state) {
         const ans = state?.answers || {};
-        const correctCount = Number(ans.correctCount) || 0;
-        const wrongCount = Number(ans.wrongCount) || 0;
-        const totalVotes = correctCount + wrongCount;
+        const isRevealed = state?.phase === 'revealed' || Boolean(ans.isDistributionVisible);
+        const answeredCol = document.getElementById('admin-bar-answered-col');
+        const distCols = document.getElementById('admin-bar-distribution-cols');
+        const answeredVal = document.getElementById('admin-bar-answered-val');
+        const answeredFill = document.getElementById('admin-bar-answered-fill');
+
+        if (!isRevealed) {
+          // While timer is running: show ONLY how many answered so far (no right/wrong or option leak!)
+          if (answeredCol) {
+            answeredCol.hidden = false;
+            answeredCol.style.display = 'flex';
+          }
+          if (distCols) {
+            distCols.hidden = true;
+            distCols.style.display = 'none';
+          }
+          const answeredCount = Number(ans.answeredCount) || 0;
+          const totalActive = Number(ans.connectedPlayers) || Number(ans.totalPlayers) || 0;
+          const pct =
+            totalActive > 0
+              ? Math.min(100, Math.round((answeredCount / totalActive) * 100))
+              : answeredCount > 0
+                ? 100
+                : 0;
+          if (answeredVal) {
+            answeredVal.textContent = totalActive > 0 ? `${answeredCount}/${totalActive}` : `${answeredCount}`;
+          }
+          if (answeredFill) {
+            answeredFill.style.height = `${answeredCount > 0 ? Math.max(14, pct) : 0}%`;
+          }
+          return;
+        }
+
+        // After answer reveal: show full distribution across options (א-ד) and Right/Wrong (✓/✗)
+        if (answeredCol) {
+          answeredCol.hidden = true;
+          answeredCol.style.display = 'none';
+        }
+        if (distCols) {
+          distCols.hidden = false;
+          distCols.style.display = 'flex';
+        }
+
+        const rev = state?.lastReveal || {};
+        const correctIdx =
+          typeof state?.currentQuestion?.correctIndex === 'number'
+            ? state.currentQuestion.correctIndex
+            : typeof rev.correctIndex === 'number'
+              ? rev.correctIndex
+              : -1;
+        const optCounts = Array.isArray(rev.optionCounts)
+          ? rev.optionCounts
+          : Array.isArray(ans.optionCounts)
+            ? ans.optionCounts
+            : [0, 0, 0, 0];
+        const correctCount = Number(rev.correctCount ?? ans.correctCount) || 0;
+        const wrongCount = Number(rev.wrongCount ?? ans.wrongCount) || 0;
+        const totalVotes = Math.max(
+          correctCount + wrongCount,
+          optCounts.reduce((s, n) => s + (Number(n) || 0), 0)
+        );
         const correctPct = totalVotes > 0 ? Math.round((correctCount / totalVotes) * 100) : 0;
         const wrongPct = totalVotes > 0 ? Math.round((wrongCount / totalVotes) * 100) : 0;
+
+        for (let i = 0; i < 4; i++) {
+          const valEl = document.getElementById(`admin-bar-opt-${i}-val`);
+          const fillEl = document.getElementById(`admin-bar-opt-${i}-fill`);
+          const lblEl = document.getElementById(`admin-bar-opt-${i}-lbl`);
+          const c = Number(optCounts[i]) || 0;
+          const p = totalVotes > 0 ? Math.round((c / totalVotes) * 100) : 0;
+          const isRightOpt = i === correctIdx;
+          if (valEl) {
+            valEl.textContent = `${c}`;
+            valEl.className = `live-bar-value ${isRightOpt ? 'live-bar-value--correct' : ''}`;
+          }
+          if (fillEl) {
+            fillEl.style.height = `${c > 0 ? Math.max(12, p) : 0}%`;
+            fillEl.className = `live-bar-fill ${isRightOpt ? 'live-bar-fill--correct' : 'live-bar-fill--answered'}`;
+          }
+          if (lblEl) {
+            lblEl.className = `live-bar-label ${isRightOpt ? 'live-bar-label--correct' : ''}`;
+          }
+        }
 
         if (adminBarCorrectVal) {
           adminBarCorrectVal.textContent = `${correctCount}`;
@@ -1319,9 +1782,11 @@
                 🔢 קוד משחק: ${escapeHtml(g.code || '1000')}
               </span>
               ${
-                g.playersCount > 0
-                  ? `<span class="pill pill--gold" style="font-size:0.78rem; padding:0.2rem 0.6rem;">💾 ${g.playersCount} משתתפים שמורים</span>`
-                  : ''
+                (g.playHistoryCount || 0) > 0
+                  ? `<span class="pill pill--gold" style="font-size:0.78rem; padding:0.2rem 0.6rem;">📜 ${g.playHistoryCount} משחקים בהיסטוריה</span>`
+                  : g.playersCount > 0
+                    ? `<span class="pill pill--gold" style="font-size:0.78rem; padding:0.2rem 0.6rem;">💾 ${g.playersCount} משתתפים</span>`
+                    : ''
               }
             </div>
             <div style="display:flex; flex-direction:column; gap:0.25rem;">
@@ -1333,23 +1798,23 @@
             <div style="display:flex; gap:0.45rem; flex-wrap:wrap; font-size:0.82rem; color:#cbd5e1;">
               <span class="pill" style="font-size:0.78rem;">❓ ${g.questionsCount} שאלות</span>
               <span class="pill" style="font-size:0.78rem;">${g.teamsEnabled ? `👨‍👩‍👧‍👦 קבוצות (${g.teamsCount})` : '👤 משחק אישי'}</span>
-              <span class="pill pill--sky" style="font-size:0.78rem;">👥 ${g.playersCount || 0} משתתפים</span>
+              ${g.backgroundMusic ? `<span class="pill pill--emerald" style="font-size:0.78rem;">🎵 מוזיקה</span>` : ''}
             </div>
             <div style="display:flex; gap:0.45rem; flex-wrap:wrap; margin-top:auto; padding-top:0.35rem; border-top:1px solid rgba(255,255,255,0.08);">
               <button type="button" class="btn btn--primary btn--sm" data-game-action="enter-lobby" data-game-id="${escapeHtml(g.id)}">
                 🚀 כניסה להפעלת המשחק
               </button>
-              <button type="button" class="btn btn--gold btn--sm" data-game-action="view-stats" data-game-id="${escapeHtml(g.id)}">
-                📊 משתתפים וניקוד
-              </button>
               <button type="button" class="btn btn--sm" data-game-action="edit" data-game-id="${escapeHtml(g.id)}">
-                ✏️ שאלות
+                ➕ שאלות והוספה
               </button>
-              <button type="button" class="btn btn--sm" data-game-action="open-drawer" data-game-id="${escapeHtml(g.id)}">
+              <button type="button" class="btn btn--sm" data-game-action="open-settings" data-game-id="${escapeHtml(g.id)}">
                 ⚙️ הגדרות
               </button>
+              <button type="button" class="btn btn--gold btn--sm" data-game-action="view-history" data-game-id="${escapeHtml(g.id)}">
+                📜 היסטוריה
+              </button>
               <button type="button" class="btn btn--sm" data-game-action="duplicate" data-game-id="${escapeHtml(g.id)}" title="שכפל משחק זה (כל השאלות וההגדרות)">
-                📋 שכפל משחק
+                📋 שכפל
               </button>
               ${
                 canDelete
@@ -1367,20 +1832,23 @@
           `
           <article class="game-hub-card game-hub-card--new" data-game-action="create-new">
             <span class="game-hub-card--new-icon" aria-hidden="true">➕</span>
-            <strong style="font-size:1.25rem; color:#ffffff;">הוספת משחק חדש</strong>
-            <span style="font-size:0.88rem; color:var(--text-secondary);">
-              בנייה אישית, יצירה אוטומטית עם ג׳מני, או העלאת קובץ Word / PDF חופשי
+            <strong style="font-size:1.25rem; color:#ffffff;">פתיחת שאלון חדש</strong>
+            <span style="font-size:0.86rem; color:var(--text-secondary);">
+              בחרו אחת מ-4 האופציות ליצירת השאלות, ומיד לאחר מכן ייפתח תפריט ההגדרות (זמנים, קבוצות, מוזיקה ורקע):
             </span>
             <span class="pill pill--gold" style="font-size:0.8rem; padding:0.2rem 0.65rem;">🔢 קוד הבא: ${escapeHtml(nextNewGameCode)}</span>
-            <div style="display:flex; gap:0.45rem; flex-wrap:wrap; justify-content:center; width:100%; padding-top:0.35rem;">
-              <button type="button" class="btn btn--sm" data-game-action="create-manual" style="flex:1; min-width:115px;">
-                ✏️ בנייה אישית
+            <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:0.45rem; width:100%; padding-top:0.35rem;">
+              <button type="button" class="btn btn--primary btn--sm" data-game-action="create-opt-random-bank">
+                א. 🎲 רנדומלי ממאגר
               </button>
-              <button type="button" class="btn btn--primary btn--sm" data-game-action="create-auto" style="flex:1; min-width:125px;">
-                ✨ אוטומטי / ג׳מני
+              <button type="button" class="btn btn--primary btn--sm" data-game-action="create-opt-gemini-text">
+                ב. ✨ טקסט חופשי לג׳מני
               </button>
-              <button type="button" class="btn btn--gold btn--sm" data-game-action="create-doc" style="flex:1; min-width:135px;">
-                📄 מקובץ Word / PDF
+              <button type="button" class="btn btn--sm" data-game-action="create-opt-manual">
+                ג. ✍️ שאלון ידני
+              </button>
+              <button type="button" class="btn btn--gold btn--sm" data-game-action="create-opt-bank-topics">
+                ד. 🎯 ממאגר לפי נושאים
               </button>
             </div>
           </article>
@@ -1477,18 +1945,30 @@
         }
 
         adminTop5List.innerHTML = list
-          .map(
-            (item, idx) => `
+          .map((item, idx) => {
+            const outcome = !useTeams ? item.lastQuestionOutcome : null;
+            let outcomeHtml = '';
+            if (outcome) {
+              const statusBadge = outcome.isCorrect
+                ? `<span class="pill pill--emerald" style="font-size:0.7rem; padding:0.06rem 0.4rem;">✓ ענה נכון</span>`
+                : outcome.answered
+                  ? `<span class="pill pill--rose" style="font-size:0.7rem; padding:0.06rem 0.4rem;">✗ טעה</span>`
+                  : `<span class="pill" style="font-size:0.7rem; padding:0.06rem 0.4rem;">⏰ לא ענה</span>`;
+              const deltaBadge = `<span style="font-size:0.78rem; font-weight:800; color:${outcome.pointsEarned > 0 ? '#34d399' : '#94a3b8'};">+${formatScore(outcome.pointsEarned)}</span>`;
+              outcomeHtml = `<span style="display:inline-flex; align-items:center; gap:0.3rem; margin-inline-start:0.35rem;">${statusBadge}${deltaBadge}</span>`;
+            }
+            return `
           <div class="host-top5-item" data-rank="${idx + 1}">
             <span class="host-top5-rank">${medals[idx] || `#${idx + 1}`}</span>
             <span class="host-top5-name">
               ${escapeHtml(item.name)}
               ${!useTeams && Number(item.weight) > 1 ? `<span class="pill pill--gold" style="font-size:0.72rem; padding:0.05rem 0.4rem; margin-inline-start:0.25rem;">×${Number(item.weight)}</span>` : ''}
+              ${outcomeHtml}
             </span>
-            <span class="host-top5-score">${formatScore(item.score)} נק'</span>
+            <span class="host-top5-score">סה"כ: ${formatScore(item.score)} נק'</span>
           </div>
-        `
-          )
+        `;
+          })
           .join('');
       }
 
@@ -1580,14 +2060,28 @@
           .join('');
 
         const rowsHtml = leaderboard
-          .map(
-            (p) => `
+          .map((p) => {
+            const out = p.lastQuestionOutcome;
+            const outHtml = out
+              ? `<span style="display:inline-flex; align-items:center; gap:0.3rem; margin-inline-start:0.4rem;">
+                   ${
+                     out.isCorrect
+                       ? '<span class="pill pill--emerald" style="font-size:0.72rem; padding:0.06rem 0.45rem;">✓ ענה נכון</span>'
+                       : out.answered
+                         ? '<span class="pill pill--rose" style="font-size:0.72rem; padding:0.06rem 0.45rem;">✗ טעה</span>'
+                         : '<span class="pill" style="font-size:0.72rem; padding:0.06rem 0.45rem;">⏰ לא ענה</span>'
+                   }
+                   <span style="font-size:0.8rem; font-weight:800; color:${out.pointsEarned > 0 ? '#34d399' : '#94a3b8'};">+${formatScore(out.pointsEarned)} נק'</span>
+                 </span>`
+              : '';
+            return `
           <tr>
             <td style="font-weight:800;">#${p.rank}</td>
             <td>
-              <span style="display:inline-flex; align-items:center; gap:0.45rem; font-weight:700;">
+              <span style="display:inline-flex; align-items:center; gap:0.45rem; font-weight:700; flex-wrap:wrap;">
                 <span class="status-dot ${p.connected ? '' : 'is-offline'}"></span>
                 ${escapeHtml(p.name)}
+                ${outHtml}
               </span>
             </td>
             ${showTeamCol ? `<td style="color:#bae6fd;">${escapeHtml(p.teamName || '—')}</td>` : ''}
@@ -1595,8 +2089,8 @@
             <td>${p.correctCount}</td>
             <td style="font-weight:900; color:#fde68a;">${formatScore(p.score)} נק'</td>
           </tr>
-        `
-          )
+        `;
+          })
           .join('');
 
         tableWrapEl.innerHTML = `
@@ -1782,6 +2276,11 @@
         const primaryUrl = resolvePublicJoinUrl(state);
         joinUrlDisplay.textContent = primaryUrl;
 
+        const topBankCountEl = document.getElementById('top-bank-count');
+        if (topBankCountEl && state.questionBankCount) {
+          topBankCountEl.textContent = `${state.questionBankCount}`;
+        }
+
         const isSessionOpen = Boolean(state.isSessionOpen);
         const inHub = !isSessionOpen || state.phase === 'hub';
         const inEntryLobby = isSessionOpen && state.phase === 'lobby';
@@ -1790,6 +2289,27 @@
 
         document.body.classList.toggle('is-playing', inQuestion);
         btnTopHome.hidden = inHub;
+
+        // Corner QR + 4-Digit Game Code Rejoin Widget (visible during gameplay & competition)
+        const cornerWidget = document.getElementById('live-corner-join-widget');
+        const cornerQrImg = document.getElementById('live-corner-qr-img');
+        const cornerCodeEl = document.getElementById('live-corner-code');
+        if (cornerWidget) {
+          const showCorner = isSessionOpen && (inQuestion || inFinished);
+          cornerWidget.hidden = !showCorner;
+          if (showCorner) {
+            const cleanBaseUrl = primaryUrl.replace(/\/$/, '');
+            const directQrUrl = `${cleanBaseUrl}/?code=${encodeURIComponent(activeCode)}`;
+            const qrSrc = `/api/qr?text=${encodeURIComponent(directQrUrl)}`;
+            if (cornerCodeEl) cornerCodeEl.textContent = `קוד: ${activeCode}`;
+            if (cornerQrImg && cornerQrImg.getAttribute('data-qr-url') !== directQrUrl) {
+              cornerQrImg.setAttribute('data-qr-url', directQrUrl);
+              cornerQrImg.src = qrSrc;
+            }
+          }
+        }
+
+        syncBackgroundMusicForPhase(state);
 
         viewLobby.hidden = !inHub;
         viewLobby.style.display = inHub ? '' : 'none';
@@ -1859,13 +2379,16 @@
               if (isRevealed && rev) {
                 const isCorrect = idx === q.correctIndex;
                 stateCls = isCorrect ? 'is-correct' : 'is-wrong';
-                if (isCorrect) {
-                  metaHtml = `
-                    <div class="opt-meta">
-                      <span class="pill pill--emerald">✓ תשובה נכונה</span>
-                    </div>
-                  `;
-                }
+                const optCounts = Array.isArray(rev.optionCounts) ? rev.optionCounts : [0, 0, 0, 0];
+                const optCount = Number(optCounts[idx]) || 0;
+                const totalAns = Number(rev.totalAnswers) || 0;
+                const optPct = totalAns > 0 ? Math.round((optCount / totalAns) * 100) : 0;
+                metaHtml = `
+                  <div class="opt-meta" style="display:flex; flex-direction:row; align-items:center; gap:0.4rem; flex-wrap:wrap;">
+                    <span class="pill ${isCorrect ? 'pill--emerald' : ''}" style="font-size:0.78rem;">👥 ${optCount} (${optPct}%)</span>
+                    ${isCorrect ? '<span class="pill pill--emerald">✓ תשובה נכונה</span>' : ''}
+                  </div>
+                `;
               }
               return `
                 <div class="answer-card ${stateCls}" data-opt="${idx}">
@@ -1949,37 +2472,27 @@
         }
       }
 
-      // -------------------- New Game Modal (Manual Build & Automatic On-Demand Build) --------------------
-      let newGameBuildMode = 'manual'; // 'manual' | 'auto'
-      let autoSubMode = 'topics'; // 'topics' | 'random'
-      let autoTopicRows = [
-        { topic: 'ידע כללי', count: 3, difficulty: 'mixed' },
-        { topic: 'היסטוריה של ישראל', count: 3, difficulty: 'easy' }
-      ];
+      // -------------------- New Quiz Modal (4 Unified Options: א, ב, ג, ד) --------------------
+      let newQuizOption = 'random-bank'; // 'random-bank' | 'gemini-text' | 'manual' | 'bank-topics'
+      let newQuizSelectedTopics = new Set();
+      let existingQuizAddOption = 'random-bank'; // 'random-bank' | 'gemini-text' | 'manual' | 'bank-topics'
+      let existingQuizSelectedTopics = new Set();
+      let cachedBankTopicsSummary = [];
 
-      const btnNewModeManual = document.getElementById('btn-new-mode-manual');
-      const btnNewModeAuto = document.getElementById('btn-new-mode-auto');
-      const newGameAutoPanel = document.getElementById('new-game-auto-panel');
       const btnSubmitNewGame = document.getElementById('btn-submit-new-game');
       const newGameTitleInput = document.getElementById('new-game-title');
-
-      const btnAutoSubTopics = document.getElementById('btn-auto-sub-topics');
-      const btnAutoSubRandom = document.getElementById('btn-auto-sub-random');
-      const btnAutoSubDocument = document.getElementById('btn-auto-sub-document');
-      const autoTopicsSection = document.getElementById('auto-topics-section');
-      const autoRandomSection = document.getElementById('auto-random-section');
-      const autoDocumentSection = document.getElementById('auto-document-section');
-      const autoTopicsRowsEl = document.getElementById('auto-topics-rows');
-      const autoTopicsTotalBadge = document.getElementById('auto-topics-total-badge');
-      const autoRandomCountInput = document.getElementById('auto-random-count');
-      const autoCustomInstructions = document.getElementById('auto-custom-instructions');
-      const inputNewGameDoc = document.getElementById('input-new-game-doc');
-      const btnPickNewGameDoc = document.getElementById('btn-pick-new-game-doc');
-      const docUploadStatusPill = document.getElementById('doc-upload-status-pill');
-      const autoDocRawText = document.getElementById('auto-doc-raw-text');
+      const newQuizCountInput = document.getElementById('new-quiz-q-count');
+      const newQuizDiffSelect = document.getElementById('new-quiz-q-diff');
+      const newQuizGeminiText = document.getElementById('new-quiz-gemini-text');
+      const newQuizBankTopicsChips = document.getElementById('new-quiz-bank-topics-chips');
       const geminiKeyStatusPill = document.getElementById('gemini-key-status-pill');
 
-      let uploadedDocQuestions = [];
+      const newOptPanels = {
+        'random-bank': document.getElementById('new-opt-panel-random-bank'),
+        'gemini-text': document.getElementById('new-opt-panel-gemini-text'),
+        manual: document.getElementById('new-opt-panel-manual'),
+        'bank-topics': document.getElementById('new-opt-panel-bank-topics')
+      };
 
       function readFileAsDataUrl(file) {
         return new Promise((resolve, reject) => {
@@ -1990,7 +2503,7 @@
         });
       }
 
-      async function parseUploadedDocumentFile(file, { timerSeconds = 15, points = 100, customInstructions = '', apiKey = '' } = {}) {
+      async function parseUploadedDocumentFile(file, { timerSeconds = 20, points = 100, customInstructions = '', apiKey = '' } = {}) {
         const fileData = await readFileAsDataUrl(file);
         const res = await fetch('/api/admin/parse-document', {
           method: 'POST',
@@ -2005,283 +2518,185 @@
             apiKey
           })
         });
-        const data = await res.json();
-        return data;
+        return await res.json();
       }
 
-      function setNewGameBuildMode(mode) {
-        newGameBuildMode = mode === 'auto' ? 'auto' : 'manual';
-        const isAuto = newGameBuildMode === 'auto';
-        btnNewModeManual.classList.toggle('is-active', !isAuto);
-        btnNewModeAuto.classList.toggle('is-active', isAuto);
-        newGameAutoPanel.hidden = !isAuto;
-        newGameAutoPanel.style.display = isAuto ? 'flex' : 'none';
-        newGameTitleInput.placeholder = isAuto
-          ? 'אופציונלי — אם יישאר ריק ייבחר שם אוטומטי'
-          : 'לדוגמה: חידון משפחתי / חנוכה';
-        btnSubmitNewGame.textContent = isAuto
-          ? '✨ צור משחק ושאלות אוטומטית עכשיו'
-          : '🚀 צור משחק חדש והוסף שאלות';
-      }
-
-      function setAutoSubMode(subMode) {
-        autoSubMode = subMode === 'random' ? 'random' : subMode === 'document' ? 'document' : 'topics';
-        const isTopics = autoSubMode === 'topics';
-        const isRandom = autoSubMode === 'random';
-        const isDoc = autoSubMode === 'document';
-        btnAutoSubTopics.classList.toggle('is-active', isTopics);
-        btnAutoSubRandom.classList.toggle('is-active', isRandom);
-        if (btnAutoSubDocument) btnAutoSubDocument.classList.toggle('is-active', isDoc);
-
-        autoTopicsSection.hidden = !isTopics;
-        autoTopicsSection.style.display = isTopics ? 'flex' : 'none';
-        autoRandomSection.hidden = !isRandom;
-        autoRandomSection.style.display = isRandom ? 'flex' : 'none';
-        if (autoDocumentSection) {
-          autoDocumentSection.hidden = !isDoc;
-          autoDocumentSection.style.display = isDoc ? 'flex' : 'none';
+      async function ensureBankTopicsSummary() {
+        if (Array.isArray(adminState?.questionBankTopics) && adminState.questionBankTopics.length > 0) {
+          cachedBankTopicsSummary = adminState.questionBankTopics;
+          return cachedBankTopicsSummary;
         }
-      }
-
-      function syncAutoTopicsFromDom() {
-        const rowEls = autoTopicsRowsEl.querySelectorAll('[data-topic-row-idx]');
-        if (rowEls.length === 0) return;
-        const updated = [];
-        rowEls.forEach((rowEl) => {
-          const topic = rowEl.querySelector('[data-topic-name]')?.value.trim() || '';
-          const count = Math.max(1, Math.min(30, Number(rowEl.querySelector('[data-topic-count]')?.value) || 3));
-          const difficulty = rowEl.querySelector('[data-topic-diff]')?.value || 'mixed';
-          updated.push({ topic, count, difficulty });
-        });
-        autoTopicRows = updated;
-        updateAutoTopicsTotalBadge();
-      }
-
-      function updateAutoTopicsTotalBadge() {
-        const total = autoTopicRows.reduce((sum, r) => sum + (Number(r.count) || 0), 0);
-        if (autoTopicsTotalBadge) {
-          autoTopicsTotalBadge.textContent = `סה"כ ייווצרו: ${total} שאלות מ-${autoTopicRows.length} נושאים`;
-        }
-      }
-
-      function renderAutoTopicsRows() {
-        const canRemove = autoTopicRows.length > 1;
-        autoTopicsRowsEl.innerHTML = autoTopicRows
-          .map(
-            (row, idx) => `
-          <div
-            data-topic-row-idx="${idx}"
-            style="display:grid; grid-template-columns:minmax(160px, 1.6fr) 110px 140px auto; gap:0.5rem; align-items:end; padding:0.65rem; border-radius:12px; background:rgba(2, 6, 23, 0.45); border:1px solid var(--border-subtle);"
-          >
-            <div class="field" style="gap:0.25rem;">
-              <label style="font-size:0.78rem; color:var(--text-secondary);">נושא השאלות #${idx + 1}</label>
-              <input
-                type="text"
-                class="input"
-                list="trivia-topics-datalist"
-                data-topic-name
-                value="${escapeHtml(row.topic)}"
-                placeholder="הזינו או בחרו נושא (למשל: ספורט, מדע...)"
-                style="padding:0.45rem 0.65rem;"
-              />
-            </div>
-
-            <div class="field" style="gap:0.25rem;">
-              <label style="font-size:0.78rem; color:var(--text-secondary);">מספר שאלות</label>
-              <input
-                type="number"
-                class="input"
-                min="1"
-                max="30"
-                data-topic-count
-                value="${Number(row.count) || 3}"
-                style="padding:0.45rem 0.55rem; text-align:center; font-weight:800;"
-              />
-            </div>
-
-            <div class="field" style="gap:0.25rem;">
-              <label style="font-size:0.78rem; color:var(--text-secondary);">רמת קושי</label>
-              <select class="select" data-topic-diff style="padding:0.45rem 0.55rem;">
-                <option value="easy" ${row.difficulty === 'easy' ? 'selected' : ''}>🟢 קל</option>
-                <option value="medium" ${row.difficulty === 'medium' ? 'selected' : ''}>🟡 בינוני</option>
-                <option value="hard" ${row.difficulty === 'hard' ? 'selected' : ''}>🔴 קשה</option>
-                <option value="mixed" ${row.difficulty === 'mixed' || !row.difficulty ? 'selected' : ''}>🌈 מעורב</option>
-              </select>
-            </div>
-
-            <button
-              type="button"
-              class="btn btn--danger btn--sm"
-              data-remove-topic-idx="${idx}"
-              ${canRemove ? '' : 'disabled'}
-              title="הסר נושא"
-              style="height:38px;"
-            >🗑️</button>
-          </div>
-        `
-          )
-          .join('');
-        updateAutoTopicsTotalBadge();
-      }
-
-      btnNewModeManual.addEventListener('click', () => setNewGameBuildMode('manual'));
-      btnNewModeAuto.addEventListener('click', () => setNewGameBuildMode('auto'));
-      btnAutoSubTopics.addEventListener('click', () => setAutoSubMode('topics'));
-      btnAutoSubRandom.addEventListener('click', () => setAutoSubMode('random'));
-      if (btnAutoSubDocument) {
-        btnAutoSubDocument.addEventListener('click', () => setAutoSubMode('document'));
-      }
-
-      if (btnPickNewGameDoc && inputNewGameDoc) {
-        btnPickNewGameDoc.addEventListener('click', () => {
-          inputNewGameDoc.value = '';
-          inputNewGameDoc.click();
-        });
-
-        inputNewGameDoc.addEventListener('change', async () => {
-          const file = inputNewGameDoc.files?.[0];
-          if (!file) return;
-          const timerSeconds = Number(document.getElementById('new-game-timer').value) || 15;
-          const points = Number(document.getElementById('new-game-points').value) || 100;
-          const customInstructions = autoCustomInstructions ? autoCustomInstructions.value.trim() : '';
-          const apiKey = document.getElementById('input-gemini-api-key').value.trim();
-
-          if (docUploadStatusPill) {
-            docUploadStatusPill.hidden = false;
-            docUploadStatusPill.className = 'pill pill--sky';
-            docUploadStatusPill.textContent = `⏳ קורא את "${file.name}"...`;
-          }
-
-          try {
-            const data = await parseUploadedDocumentFile(file, {
-              timerSeconds,
-              points,
-              customInstructions,
-              apiKey
-            });
-            if (data.extractedText && autoDocRawText) {
-              autoDocRawText.value = data.extractedText;
-            }
-            if (!data.ok) {
-              throw new Error(data.error || 'לא הצלחנו לחלץ שאלות מהקובץ.');
-            }
-            uploadedDocQuestions = Array.isArray(data.questions) ? data.questions : [];
-            if (!newGameTitleInput.value.trim()) {
-              const baseName = file.name.replace(/\.[^.]+$/, '');
-              newGameTitleInput.value = `טריוויה: ${baseName}`;
-            }
-            if (docUploadStatusPill) {
-              docUploadStatusPill.hidden = false;
-              docUploadStatusPill.className = 'pill pill--emerald';
-              docUploadStatusPill.textContent = `✅ זוהו ${uploadedDocQuestions.length} שאלות מתוך "${file.name}"!`;
-            }
-            showToast(`חולצו ${uploadedDocQuestions.length} שאלות מהקובץ "${file.name}"!`);
-          } catch (err) {
-            uploadedDocQuestions = [];
-            if (docUploadStatusPill) {
-              docUploadStatusPill.hidden = false;
-              docUploadStatusPill.className = 'pill pill--rose';
-              docUploadStatusPill.textContent = '⚠️ נדרשת בדיקת הטקסט בתיבה';
-            }
-            showToast(err.message || 'שגיאה בקריאת הקובץ.');
-          }
-        });
-      }
-
-      document.getElementById('btn-add-topic-row').addEventListener('click', () => {
-        syncAutoTopicsFromDom();
-        autoTopicRows.push({ topic: '', count: 3, difficulty: 'mixed' });
-        renderAutoTopicsRows();
-      });
-
-      autoTopicsRowsEl.addEventListener('input', () => {
-        syncAutoTopicsFromDom();
-      });
-
-      autoTopicsRowsEl.addEventListener('click', (e) => {
-        const rmBtn = e.target.closest('[data-remove-topic-idx]');
-        if (!rmBtn) return;
-        syncAutoTopicsFromDom();
-        const idx = Number(rmBtn.getAttribute('data-remove-topic-idx'));
-        if (autoTopicRows.length > 1 && idx >= 0 && idx < autoTopicRows.length) {
-          autoTopicRows.splice(idx, 1);
-          renderAutoTopicsRows();
-        }
-      });
-
-      document.querySelectorAll('[data-random-preset]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          autoRandomCountInput.value = btn.getAttribute('data-random-preset');
-        });
-      });
-
-      document.getElementById('btn-copy-gemini-prompt').addEventListener('click', async () => {
-        syncAutoTopicsFromDom();
-        const diffLabels = { easy: 'קלה', medium: 'בינונית', hard: 'קשה', mixed: 'מעורבת' };
-        const customInstructions = autoCustomInstructions ? autoCustomInstructions.value.trim() : '';
-        const docText = autoDocRawText ? autoDocRawText.value.trim() : '';
-
-        let reqText = '';
-        if (autoSubMode === 'document' && docText) {
-          reqText = `הפוך את השאלות והתשובות מהטקסט החופשי הבא לשאלות טריוויה אמריקאיות בעברית (אם לשאלה יש רק תשובה אחת נכונה, השלם עבורה 3 תשובות מסיחות הגיוניות כך שלכל שאלה יהיו 4 אפשרויות):\n"""\n${docText}\n"""`;
-        } else if (autoSubMode === 'topics') {
-          const validRows = autoTopicRows.filter((r) => r.topic.trim());
-          const rowsToUse = validRows.length > 0 ? validRows : [{ topic: 'ידע כללי', count: 5, difficulty: 'mixed' }];
-          reqText = rowsToUse
-            .map(
-              (r, i) =>
-                `${i + 1}. נושא: "${r.topic}" — ${r.count} שאלות, רמת קושי: ${diffLabels[r.difficulty] || 'מעורבת'}`
-            )
-            .join('\n');
-        } else {
-          const count = Number(autoRandomCountInput.value) || 10;
-          reqText = `צור ${count} שאלות טריוויה רנדומליות ומגוונות במגוון נושאים וברמת קושי מעורבת.`;
-        }
-
-        const customBlock = customInstructions
-          ? `\n\nהוראות מפורטות נוספות מהמנחה:\n${customInstructions}`
-          : '';
-
-        const promptToCopy = `צור עבורי שאלות טריוויה אמריקאיות בעברית לפי הדרישה הבאה:\n${reqText}${customBlock}\n\nהחזר אך ורק קוד JSON תקין (ללא טקסט נוסף) במבנה של מערך אובייקטים, כאשר לכל שאלה יש:\n[\n  {\n    "question": "נוסח השאלה?",\n    "answers": ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],\n    "correctIndex": 0\n  }\n]`;
-
         try {
-          await navigator.clipboard.writeText(promptToCopy);
-          showToast('הבקשה המפורטת הועתקה! הדביקו אותה בצ׳אט ג׳מני שלכם והדביקו כאן את התוצאה.');
+          const res = await fetch('/api/admin/question-bank?limit=1');
+          const data = await res.json();
+          if (data.ok && Array.isArray(data.topicsSummary)) {
+            cachedBankTopicsSummary = data.topicsSummary;
+          }
         } catch {
-          showToast('לא ניתן להעתיק אוטומטית בדפדפן זה.');
+          // ignore
         }
+        return cachedBankTopicsSummary;
+      }
+
+      function renderTopicsChipsInto(containerEl, selectedSet) {
+        if (!containerEl) return;
+        const list =
+          Array.isArray(adminState?.questionBankTopics) && adminState.questionBankTopics.length > 0
+            ? adminState.questionBankTopics
+            : cachedBankTopicsSummary;
+
+        if (!list || list.length === 0) {
+          containerEl.innerHTML =
+            '<span style="font-size:0.82rem; color:var(--text-muted);">טוען קטגוריות מהמאגר...</span>';
+          return;
+        }
+
+        containerEl.innerHTML = list
+          .map((item) => {
+            const topicName = String(item.topic || '').trim();
+            const isChecked = selectedSet.has(topicName);
+            return `
+              <button
+                type="button"
+                data-topic-chip="${escapeHtml(topicName)}"
+                class="btn btn--sm ${isChecked ? 'btn--primary' : ''}"
+                style="border-radius:999px; padding:0.32rem 0.78rem; font-size:0.82rem; border-color:${isChecked ? '#38bdf8' : 'rgba(255,255,255,0.18)'};"
+              >
+                ${isChecked ? '☑️' : '⬜'} ${escapeHtml(topicName)} <span style="opacity:0.75; font-size:0.75rem;">(${item.count})</span>
+              </button>
+            `;
+          })
+          .join('');
+      }
+
+      function setNewQuizOption(opt) {
+        const validOpts = ['random-bank', 'gemini-text', 'manual', 'bank-topics'];
+        newQuizOption = validOpts.includes(opt) ? opt : 'random-bank';
+
+        document.querySelectorAll('[data-new-quiz-opt]').forEach((btn) => {
+          btn.classList.toggle('is-active', btn.getAttribute('data-new-quiz-opt') === newQuizOption);
+        });
+
+        Object.entries(newOptPanels).forEach(([key, panelEl]) => {
+          if (!panelEl) return;
+          const active = key === newQuizOption;
+          panelEl.hidden = !active;
+          panelEl.style.display = active ? 'flex' : 'none';
+        });
+
+        if (newQuizOption === 'manual') {
+          btnSubmitNewGame.textContent = '✍️ צור שאלון ועבור להזנת השאלות (ואז להגדרות) ⬅';
+        } else {
+          btnSubmitNewGame.textContent = '🚀 צור שאלון והמשך להגדרות (זמנים, קבוצות, מוזיקה ורקע) ⬅';
+        }
+
+        if (newQuizOption === 'bank-topics') {
+          ensureBankTopicsSummary().then(() => {
+            if (newQuizSelectedTopics.size === 0 && cachedBankTopicsSummary.length > 0) {
+              newQuizSelectedTopics.add(cachedBankTopicsSummary[0].topic);
+            }
+            renderTopicsChipsInto(newQuizBankTopicsChips, newQuizSelectedTopics);
+          });
+        }
+      }
+
+      document.querySelectorAll('[data-new-quiz-opt]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          setNewQuizOption(btn.getAttribute('data-new-quiz-opt'));
+        });
       });
 
-      function openNewGameModal(initialBuildMode = 'manual', initialSubMode = 'topics') {
+      document.querySelectorAll('[data-new-count-preset]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (newQuizCountInput) {
+            newQuizCountInput.value = btn.getAttribute('data-new-count-preset');
+          }
+        });
+      });
+
+      if (newQuizBankTopicsChips) {
+        newQuizBankTopicsChips.addEventListener('click', (e) => {
+          const chip = e.target.closest('[data-topic-chip]');
+          if (!chip) return;
+          const t = chip.getAttribute('data-topic-chip');
+          if (newQuizSelectedTopics.has(t)) {
+            newQuizSelectedTopics.delete(t);
+          } else {
+            newQuizSelectedTopics.add(t);
+          }
+          renderTopicsChipsInto(newQuizBankTopicsChips, newQuizSelectedTopics);
+        });
+      }
+
+      const btnNewTopicsSelectAll = document.getElementById('btn-new-topics-select-all');
+      if (btnNewTopicsSelectAll) {
+        btnNewTopicsSelectAll.addEventListener('click', () => {
+          const list = adminState?.questionBankTopics || cachedBankTopicsSummary || [];
+          list.forEach((item) => newQuizSelectedTopics.add(item.topic));
+          renderTopicsChipsInto(newQuizBankTopicsChips, newQuizSelectedTopics);
+        });
+      }
+
+      const btnNewTopicsClearAll = document.getElementById('btn-new-topics-clear-all');
+      if (btnNewTopicsClearAll) {
+        btnNewTopicsClearAll.addEventListener('click', () => {
+          newQuizSelectedTopics.clear();
+          renderTopicsChipsInto(newQuizBankTopicsChips, newQuizSelectedTopics);
+        });
+      }
+
+      const inputGeminiApiKey = document.getElementById('input-gemini-api-key');
+      if (inputGeminiApiKey) {
+        const savedKey = localStorage.getItem('trivia_gemini_api_key') || '';
+        if (savedKey) inputGeminiApiKey.value = savedKey;
+        inputGeminiApiKey.addEventListener('change', () => {
+          localStorage.setItem('trivia_gemini_api_key', inputGeminiApiKey.value.trim());
+        });
+      }
+
+      const btnCopyGeminiPrompt = document.getElementById('btn-copy-gemini-prompt');
+      if (btnCopyGeminiPrompt) {
+        btnCopyGeminiPrompt.addEventListener('click', async () => {
+          const diffLabels = { easy: 'קלה', medium: 'בינונית', hard: 'קשה', mixed: 'מעורבת' };
+          const count = Math.max(1, Math.min(1500, Number(newQuizCountInput?.value) || 10));
+          const diff = newQuizDiffSelect?.value || 'mixed';
+          const freeText = (newQuizGeminiText?.value || '').trim() || 'ידע כללי';
+          const promptToCopy = `צור עבורי ${count} שאלות טריוויה אמריקאיות בעברית ברמת קושי ${diffLabels[diff] || 'מעורבת'} לפי הבקשה הבאה:\n"${freeText}"\n\nהחזר אך ורק קוד JSON תקין (ללא טקסט נוסף) במבנה:\n[\n  {\n    "question": "נוסח השאלה?",\n    "answers": ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],\n    "correctIndex": 0\n  }\n]`;
+          try {
+            await navigator.clipboard.writeText(promptToCopy);
+            showToast('📋 הבקשה הועתקה! הדביקו אותה בצ׳אט ג׳מני שלכם והדביקו כאן את התוצאה.');
+          } catch {
+            showToast('לא ניתן להעתיק אוטומטית בדפדפן זה.');
+          }
+        });
+      }
+
+      async function openNewGameModal(initialOption = 'random-bank') {
         dismissDrawerImmediately();
-        document.getElementById('new-game-title').value = '';
-        document.getElementById('new-game-timer').value = '15';
-        document.getElementById('new-game-points').value = '100';
-        document.getElementById('new-game-teams-enabled').checked = false;
-        document.getElementById('input-pasted-gemini-json').value = '';
-        if (autoCustomInstructions) autoCustomInstructions.value = '';
-        if (autoDocRawText) autoDocRawText.value = '';
-        if (docUploadStatusPill) docUploadStatusPill.hidden = true;
-        uploadedDocQuestions = [];
+        if (newGameTitleInput) newGameTitleInput.value = '';
+        if (newQuizCountInput) newQuizCountInput.value = '10';
+        if (newQuizDiffSelect) newQuizDiffSelect.value = 'mixed';
+        if (newQuizGeminiText) newQuizGeminiText.value = '';
+        const pastedEl = document.getElementById('input-pasted-gemini-json');
+        if (pastedEl) pastedEl.value = '';
 
         const nextCode = adminState?.nextNewGameCode || String(1000 + (adminState?.games?.length || 1));
         if (newGameCodePreview) {
-          newGameCodePreview.textContent = `🔢 קוד המשחק שיוקצה: ${nextCode}`;
+          newGameCodePreview.textContent = `🔢 קוד השאלון: ${nextCode}`;
         }
         if (geminiKeyStatusPill) {
           geminiKeyStatusPill.textContent = adminState?.hasGeminiApiKey
-            ? '🟢 מפתח Gemini AI מוגדר ופעיל'
-            : '📚 מאגר טריוויה חכם מובנה פעיל';
+            ? '🟢 מפתח Gemini AI פעיל'
+            : '📚 מאגר חכם מובנה פעיל';
           geminiKeyStatusPill.className = adminState?.hasGeminiApiKey ? 'pill pill--emerald' : 'pill pill--sky';
         }
 
-        renderAutoTopicsRows();
-        setNewGameBuildMode(initialBuildMode === 'auto' ? 'auto' : 'manual');
-        setAutoSubMode(initialSubMode);
+        await ensureBankTopicsSummary();
+        setNewQuizOption(initialOption);
         if (!newGameDialog.open) newGameDialog.showModal();
       }
 
-      document.getElementById('btn-open-new-game').addEventListener('click', () => openNewGameModal('manual', 'topics'));
+      document.getElementById('btn-open-new-game').addEventListener('click', () => openNewGameModal('random-bank'));
 
       if (quickGameMenuSelect) {
         quickGameMenuSelect.addEventListener('change', async () => {
@@ -2290,7 +2705,7 @@
             if (adminState?.activeGameId) {
               quickGameMenuSelect.value = adminState.activeGameId;
             }
-            openNewGameModal('manual', 'topics');
+            openNewGameModal('random-bank');
             return;
           }
           if (val && val !== adminState?.activeGameId) {
@@ -2305,32 +2720,40 @@
         const action = btn.getAttribute('data-game-action');
         const gameId = btn.getAttribute('data-game-id');
 
-        if (action === 'create-manual') {
+        if (action === 'create-opt-random-bank') {
           e.stopPropagation();
-          openNewGameModal('manual', 'topics');
+          openNewGameModal('random-bank');
           return;
         }
-
-        if (action === 'create-auto') {
+        if (action === 'create-opt-gemini-text') {
           e.stopPropagation();
-          openNewGameModal('auto', 'topics');
+          openNewGameModal('gemini-text');
           return;
         }
-
-        if (action === 'create-doc') {
+        if (action === 'create-opt-manual') {
           e.stopPropagation();
-          openNewGameModal('auto', 'document');
+          openNewGameModal('manual');
           return;
         }
-
+        if (action === 'create-opt-bank-topics') {
+          e.stopPropagation();
+          openNewGameModal('bank-topics');
+          return;
+        }
         if (action === 'create-new') {
-          openNewGameModal('manual', 'topics');
+          openNewGameModal('random-bank');
           return;
         }
 
         if ((action === 'enter-lobby' || action === 'select' || action === 'start') && gameId) {
           e.stopPropagation();
           await selectGameFromMenu(gameId, { openSession: true });
+          return;
+        }
+
+        if (action === 'view-history' && gameId) {
+          e.stopPropagation();
+          await openGameHistoryModal(gameId);
           return;
         }
 
@@ -2343,12 +2766,12 @@
           return;
         }
 
-        if (action === 'open-drawer') {
+        if (action === 'open-settings' || action === 'open-drawer') {
           e.stopPropagation();
           if (gameId && gameId !== adminState?.activeGameId) {
             await selectGameFromMenu(gameId, { openSession: false, silent: true });
           }
-          openDrawer();
+          openSettingsModal('branding');
           return;
         }
 
@@ -2402,113 +2825,165 @@
 
       document.getElementById('new-game-form').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const title = document.getElementById('new-game-title').value.trim();
-        const subtitle = document.getElementById('new-game-subtitle').value.trim();
-        const timerSeconds = Number(document.getElementById('new-game-timer').value) || 15;
-        const points = Number(document.getElementById('new-game-points').value) || 100;
-        const teamsEnabled = document.getElementById('new-game-teams-enabled').checked;
+        const rawTitle = (newGameTitleInput?.value || '').trim();
+        const qCount = Math.max(1, Math.min(1500, Number(newQuizCountInput?.value) || 10));
+        const difficulty = newQuizDiffSelect?.value || 'mixed';
 
-        if (newGameBuildMode === 'manual') {
-          if (!title) {
-            showToast('אנא הזינו שם למשחק החדש.');
-            newGameTitleInput.focus();
-            return;
-          }
-
+        // Option ג: Manual Quiz Creation -> create game, open Question Editor with qCount slots, then Settings!
+        if (newQuizOption === 'manual') {
+          const title = rawTitle || `שאלון ידני (${qCount} שאלות)`;
+          btnSubmitNewGame.disabled = true;
           try {
             const res = await fetch('/api/admin/games', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ title, subtitle, timerSeconds, teamsEnabled })
+              body: JSON.stringify({ title, timerSeconds: 20 })
             });
             const data = await res.json();
             if (!data.ok) throw new Error(data.error);
             newGameDialog.close();
-            showToast(`המשחק "${title}" נוצר עם קוד ${data.game.code}! כעת הוסיפו שאלות.`);
-            openSettingsModal('questions');
+            showToast(`השאלון "${title}" נוצר! הזינו את השאלות ולחצו "שמור שאלות ועבור להגדרות".`);
+            await openSettingsModal('questions', { initialBlankCount: Math.min(50, qCount) });
           } catch (err) {
-            showToast(err.message || 'שגיאה ביצירת המשחק.');
+            showToast(err.message || 'שגיאה ביצירת השאלון.');
+          } finally {
+            btnSubmitNewGame.disabled = false;
           }
           return;
         }
 
-        // Automatic On-Demand Build Mode (Topics / Random / Document Upload)
-        syncAutoTopicsFromDom();
-        const cleanedTopics = autoTopicRows
-          .map((r) => ({
-            topic: String(r.topic || '').trim() || 'ידע כללי',
-            count: Math.max(1, Math.min(30, Number(r.count) || 3)),
-            difficulty: r.difficulty || 'mixed'
-          }));
+        // Option ב: Free Text to Gemini
+        if (newQuizOption === 'gemini-text') {
+          const freeText = (newQuizGeminiText?.value || '').trim();
+          const pastedJson = (document.getElementById('input-pasted-gemini-json')?.value || '').trim();
+          if (!freeText && !pastedJson) {
+            showToast('אנא כתבו בטקסט חופשי על מה תרצו את השאלון.');
+            if (newQuizGeminiText) newQuizGeminiText.focus();
+            return;
+          }
+          const apiKey = (inputGeminiApiKey?.value || '').trim();
+          if (apiKey) localStorage.setItem('trivia_gemini_api_key', apiKey);
 
-        const randomCount = Math.max(1, Math.min(50, Number(autoRandomCountInput.value) || 10));
-        const customInstructions = autoCustomInstructions ? autoCustomInstructions.value.trim() : '';
-        const docRawText = autoDocRawText ? autoDocRawText.value.trim() : '';
-        const shuffleQuestionsOrder = document.getElementById('auto-shuffle-order').checked;
-        const includeImages = document.getElementById('auto-include-images').checked;
-        const apiKey = document.getElementById('input-gemini-api-key').value.trim();
-        const pastedJson = document.getElementById('input-pasted-gemini-json').value.trim();
-
-        btnSubmitNewGame.disabled = true;
-        const prevBtnText = btnSubmitNewGame.textContent;
-        btnSubmitNewGame.textContent = '⏳ מייצר משחק ושאלות...';
-
-        try {
-          let finalUploadedQuestions = uploadedDocQuestions;
-          if (autoSubMode === 'document' && finalUploadedQuestions.length === 0 && docRawText) {
-            const parseRes = await fetch('/api/admin/parse-document', {
+          const title = rawTitle || `שאלון: ${freeText.slice(0, 38) || 'ג׳מניי'}`;
+          btnSubmitNewGame.disabled = true;
+          const prevText = btnSubmitNewGame.textContent;
+          btnSubmitNewGame.textContent = '⏳ מייצר שאלות באמצעות ג׳מניי...';
+          try {
+            const res = await fetch('/api/admin/games/generate', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                rawText: docRawText,
-                customInstructions,
-                timerSeconds,
-                points,
-                apiKey
+                title,
+                timerSeconds: 20,
+                points: 100,
+                mode: 'topics',
+                topics: [{ topic: freeText || 'ידע כללי', count: qCount, difficulty }],
+                randomCount: qCount,
+                difficulty,
+                customInstructions: freeText,
+                forceBankOnly: false,
+                shuffleQuestionsOrder: true,
+                includeImages: true,
+                apiKey,
+                pastedJson
               })
             });
-            const parseData = await parseRes.json();
-            if (!parseData.ok) {
-              throw new Error(parseData.error || 'לא הצלחנו לחלץ שאלות מהטקסט.');
-            }
-            finalUploadedQuestions = parseData.questions || [];
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error || 'שגיאה ביצירת השאלון.');
+            newGameDialog.close();
+            showToast(`✨ נוספו ${data.generatedCount} שאלות לשאלון "${data.game.title}"! כעת הגדירו זמנים, קבוצות, מוזיקה ורקע.`);
+            await openSettingsModal('branding', {
+              afterCreate: true,
+              bannerText: `✅ נוספו ${data.generatedCount} שאלות לשאלון "${data.game.title}" (קוד ${data.game.code})!`
+            });
+          } catch (err) {
+            showToast(err.message || 'שגיאה ביצירת השאלון.');
+          } finally {
+            btnSubmitNewGame.disabled = false;
+            btnSubmitNewGame.textContent = prevText;
           }
+          return;
+        }
 
-          if (autoSubMode === 'document' && finalUploadedQuestions.length === 0 && !pastedJson) {
-            throw new Error('אנא בחרו קובץ Word / PDF או הדביקו שאלות ותשובות בתיבת הטקסט.');
+        // Option ד: From Existing Bank by Filtering Existing Topics
+        if (newQuizOption === 'bank-topics') {
+          const selectedTopics = Array.from(newQuizSelectedTopics);
+          if (selectedTopics.length === 0) {
+            showToast('אנא סמנו לפחות נושא אחד מתוך רשימת הנושאים הקיימים במאגר.');
+            return;
           }
+          const title = rawTitle || `טריוויה: ${selectedTopics.slice(0, 2).join(' ו')} (${qCount} שאלות)`;
+          btnSubmitNewGame.disabled = true;
+          const prevText = btnSubmitNewGame.textContent;
+          btnSubmitNewGame.textContent = '⏳ שולף שאלות מהנושאים שנבחרו במאגר...';
+          try {
+            const res = await fetch('/api/admin/games/generate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                title,
+                timerSeconds: 20,
+                points: 100,
+                mode: 'topics',
+                selectedTopics,
+                randomCount: qCount,
+                difficulty,
+                forceBankOnly: true,
+                shuffleQuestionsOrder: true,
+                includeImages: true
+              })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error || 'שגיאה ביצירת השאלון.');
+            newGameDialog.close();
+            showToast(`🎯 נוספו ${data.generatedCount} שאלות מהמאגר לשאלון "${data.game.title}"! כעת הגדירו זמנים, קבוצות, מוזיקה ורקע.`);
+            await openSettingsModal('branding', {
+              afterCreate: true,
+              bannerText: `✅ נוספו ${data.generatedCount} שאלות מהמאגר לשאלון "${data.game.title}" (קוד ${data.game.code})!`
+            });
+          } catch (err) {
+            showToast(err.message || 'שגיאה ביצירת השאלון.');
+          } finally {
+            btnSubmitNewGame.disabled = false;
+            btnSubmitNewGame.textContent = prevText;
+          }
+          return;
+        }
 
+        // Option א (default): Random Quiz from Existing Bank
+        const title = rawTitle || `טריוויה רנדומלית (${qCount} שאלות)`;
+        btnSubmitNewGame.disabled = true;
+        const prevText = btnSubmitNewGame.textContent;
+        btnSubmitNewGame.textContent = '⏳ מגריל שאלות מהמאגר הקיים...';
+        try {
           const res = await fetch('/api/admin/games/generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               title,
-              subtitle,
-              timerSeconds,
-              points,
-              teamsEnabled,
-              mode: autoSubMode,
-              topics: cleanedTopics,
-              randomCount,
-              customInstructions,
-              uploadedQuestions: finalUploadedQuestions,
-              shuffleQuestionsOrder,
-              includeImages,
-              apiKey,
-              pastedJson
+              timerSeconds: 20,
+              points: 100,
+              mode: 'random',
+              randomCount: qCount,
+              difficulty,
+              forceBankOnly: true,
+              shuffleQuestionsOrder: true,
+              includeImages: true
             })
           });
           const data = await res.json();
-          if (!data.ok) throw new Error(data.error || 'שגיאה ביצירת המשחק האוטומטי.');
+          if (!data.ok) throw new Error(data.error || 'שגיאה ביצירת השאלון הרנדומלי.');
           newGameDialog.close();
-          showToast(
-            `המשחק "${data.game.title}" נוצר אוטומטית עם ${data.generatedCount} שאלות! (קוד כניסה: ${data.game.code})`
-          );
+          showToast(`🎲 הוגרלו ${data.generatedCount} שאלות לשאלון "${data.game.title}"! כעת הגדירו זמנים, קבוצות, מוזיקה ורקע.`);
+          await openSettingsModal('branding', {
+            afterCreate: true,
+            bannerText: `✅ הוגרלו ${data.generatedCount} שאלות לשאלון "${data.game.title}" (קוד ${data.game.code})!`
+          });
         } catch (err) {
-          showToast(err.message || 'שגיאה ביצירת המשחק האוטומטי.');
+          showToast(err.message || 'שגיאה ביצירת השאלון.');
         } finally {
           btnSubmitNewGame.disabled = false;
-          btnSubmitNewGame.textContent = prevBtnText;
+          btnSubmitNewGame.textContent = prevText;
         }
       });
 
@@ -2729,6 +3204,8 @@
       const tabBtns = document.querySelectorAll('.tab-btn');
       const panelBranding = document.getElementById('tab-panel-branding');
       const panelQuestions = document.getElementById('tab-panel-questions');
+      const settingsAfterCreateBanner = document.getElementById('settings-after-create-banner');
+      const settingsAfterCreateTitle = document.getElementById('settings-after-create-title');
 
       function switchSettingsTab(tabName) {
         tabBtns.forEach((b) => b.classList.toggle('is-active', b.dataset.tab === tabName));
@@ -2736,11 +3213,24 @@
         panelBranding.style.display = tabName === 'branding' ? 'flex' : 'none';
         panelQuestions.hidden = tabName !== 'questions';
         panelQuestions.style.display = tabName === 'questions' ? 'flex' : 'none';
+        if (tabName === 'questions') {
+          ensureBankTopicsSummary().then(() => {
+            renderTopicsChipsInto(
+              document.getElementById('existing-bank-topics-chips'),
+              existingQuizSelectedTopics
+            );
+          });
+        }
       }
 
       tabBtns.forEach((btn) => {
         btn.addEventListener('click', () => switchSettingsTab(btn.dataset.tab));
       });
+
+      const btnSettingsSwitchToQuestions = document.getElementById('btn-settings-switch-to-questions');
+      if (btnSettingsSwitchToQuestions) {
+        btnSettingsSwitchToQuestions.addEventListener('click', () => switchSettingsTab('questions'));
+      }
 
       function createDefaultQuestionObject() {
         return {
@@ -2749,16 +3239,25 @@
           correctIndex: 0,
           image: '',
           points: 100,
-          timerSeconds: Number(draftSettings.timerSeconds) || 15
+          timerSeconds: Number(draftSettings.timerSeconds) || 20
         };
       }
 
-      async function openSettingsModal(initialTab = 'branding') {
+      async function openSettingsModal(initialTab = 'branding', options = {}) {
         dismissDrawerImmediately();
         if (adminState?.settings) {
           draftSettings = { ...adminState.settings };
         }
         populateSettingsForm();
+
+        if (settingsAfterCreateBanner) {
+          const showBanner = Boolean(options?.afterCreate);
+          settingsAfterCreateBanner.hidden = !showBanner;
+          settingsAfterCreateBanner.style.display = showBanner ? 'flex' : 'none';
+          if (showBanner && options?.bannerText && settingsAfterCreateTitle) {
+            settingsAfterCreateTitle.textContent = options.bannerText;
+          }
+        }
 
         try {
           const res = await fetch('/api/admin/questions');
@@ -2773,10 +3272,23 @@
               timerSeconds:
                 Number(q.timerSeconds) >= 5
                   ? Number(q.timerSeconds)
-                  : Number(draftSettings.timerSeconds) || 15
+                  : Number(draftSettings.timerSeconds) || 20
             }));
+            const initialBlankCount = Math.max(1, Math.min(50, Number(options?.initialBlankCount) || 1));
             if (editableQuestions.length === 0) {
-              editableQuestions.push(createDefaultQuestionObject());
+              for (let k = 0; k < initialBlankCount; k++) {
+                editableQuestions.push(createDefaultQuestionObject());
+              }
+            } else if (
+              options?.initialBlankCount &&
+              editableQuestions.length === 1 &&
+              !editableQuestions[0].question.trim() &&
+              editableQuestions[0].answers.every((a) => !a.trim())
+            ) {
+              editableQuestions = [];
+              for (let k = 0; k < initialBlankCount; k++) {
+                editableQuestions.push(createDefaultQuestionObject());
+              }
             }
             renderQuestionsEditor();
           }
@@ -2792,17 +3304,88 @@
       document.getElementById('btn-shortcut-branding').addEventListener('click', () => openSettingsModal('branding'));
       document.getElementById('btn-shortcut-questions').addEventListener('click', () => openSettingsModal('questions'));
 
-      // Branding Form Controls
+      // Branding, Teams & Background Music Form Controls
       const previewHeaderImg = document.getElementById('preview-header-img');
       const btnClearHeader = document.getElementById('btn-clear-header');
       const previewBgImg = document.getElementById('preview-bg-img');
       const btnClearBg = document.getElementById('btn-clear-bg');
+      const previewMusicAudio = document.getElementById('preview-music-audio');
+      const musicStatusPill = document.getElementById('music-status-pill');
+      const btnClearMusic = document.getElementById('btn-clear-music');
       const inputTitle = document.getElementById('input-quiz-title');
       const inputSubtitle = document.getElementById('input-quiz-subtitle');
       const inputBgOpacity = document.getElementById('input-bg-opacity');
       const bgOpacityVal = document.getElementById('bg-opacity-val');
       const inputTimerSeconds = document.getElementById('input-timer-seconds');
       const inputAutoReveal = document.getElementById('input-auto-reveal');
+      const inputSettingsTeamsEnabled = document.getElementById('input-settings-teams-enabled');
+      const settingsTeamsEditorBox = document.getElementById('settings-teams-editor-box');
+      const settingsNewTeamName = document.getElementById('settings-new-team-name');
+      const btnSettingsAddTeam = document.getElementById('btn-settings-add-team');
+      const settingsTeamsChips = document.getElementById('settings-teams-chips');
+
+      function renderSettingsTeamsChips() {
+        if (!settingsTeamsChips) return;
+        const teams = Array.isArray(adminState?.availableTeams)
+          ? adminState.availableTeams
+          : Array.isArray(draftSettings.teams)
+            ? draftSettings.teams
+            : [];
+        if (teams.length === 0) {
+          settingsTeamsChips.innerHTML =
+            '<span style="font-size:0.8rem; color:var(--text-muted);">עדיין לא הוגדרו קבוצות מראש — תוכלו להוסיף כאן או לתת למשתתפים לפתוח קבוצות בעצמם בכניסה.</span>';
+          return;
+        }
+        settingsTeamsChips.innerHTML = teams
+          .map(
+            (t) => `
+            <span class="player-chip" style="font-size:0.84rem; padding:0.28rem 0.65rem;">
+              <span>👨‍👩‍👧‍👦 ${escapeHtml(t.name)}</span>
+              <button type="button" class="chip-kick" data-settings-rm-team="${escapeHtml(t.id)}" title="הסר קבוצה">✕</button>
+            </span>
+          `
+          )
+          .join('');
+      }
+
+      if (inputSettingsTeamsEnabled) {
+        inputSettingsTeamsEnabled.addEventListener('change', () => {
+          const enabled = inputSettingsTeamsEnabled.checked;
+          draftSettings.teamsEnabled = enabled;
+          if (settingsTeamsEditorBox) {
+            settingsTeamsEditorBox.hidden = !enabled;
+            settingsTeamsEditorBox.style.display = enabled ? 'flex' : 'none';
+          }
+          socket.emit('admin:setTeamsEnabled', { enabled });
+        });
+      }
+
+      if (btnSettingsAddTeam && settingsNewTeamName) {
+        btnSettingsAddTeam.addEventListener('click', () => {
+          const name = settingsNewTeamName.value.trim();
+          if (!name) return;
+          socket.emit('admin:addTeam', { name }, (res) => {
+            if (!res?.ok) {
+              showToast(res?.error || 'לא ניתן להוסיף קבוצה.');
+              return;
+            }
+            settingsNewTeamName.value = '';
+            renderSettingsTeamsChips();
+            showToast(`הקבוצה "${res.team.name}" נוספה!`);
+          });
+        });
+      }
+
+      if (settingsTeamsChips) {
+        settingsTeamsChips.addEventListener('click', (e) => {
+          const rmBtn = e.target.closest('[data-settings-rm-team]');
+          if (!rmBtn) return;
+          const teamId = rmBtn.getAttribute('data-settings-rm-team');
+          socket.emit('admin:removeTeam', { teamId }, () => {
+            renderSettingsTeamsChips();
+          });
+        });
+      }
 
       function populateSettingsForm() {
         inputTitle.value = draftSettings.title || '';
@@ -2810,8 +3393,18 @@
         const opPct = Math.round((draftSettings.bgOverlayOpacity ?? 0.68) * 100);
         inputBgOpacity.value = String(opPct);
         bgOpacityVal.textContent = `${opPct}%`;
-        inputTimerSeconds.value = String(draftSettings.timerSeconds || 15);
+        inputTimerSeconds.value = String(draftSettings.timerSeconds || 20);
         inputAutoReveal.checked = Boolean(draftSettings.autoRevealOnTimeout);
+
+        const teamsOn = Boolean(adminState?.teamsEnabled ?? draftSettings.teamsEnabled);
+        if (inputSettingsTeamsEnabled) {
+          inputSettingsTeamsEnabled.checked = teamsOn;
+        }
+        if (settingsTeamsEditorBox) {
+          settingsTeamsEditorBox.hidden = !teamsOn;
+          settingsTeamsEditorBox.style.display = teamsOn ? 'flex' : 'none';
+        }
+        renderSettingsTeamsChips();
 
         if (draftSettings.headerImage) {
           previewHeaderImg.src = draftSettings.headerImage;
@@ -2829,6 +3422,37 @@
         } else {
           previewBgImg.hidden = true;
           btnClearBg.hidden = true;
+        }
+
+        const bgMusic = String(draftSettings.backgroundMusic || '').trim();
+        if (bgMusic === '__builtin_synth__') {
+          if (musicStatusPill) {
+            musicStatusPill.className = 'pill pill--emerald';
+            musicStatusPill.textContent = '🎹 מנגינת טריוויה מובנית פעילה';
+          }
+          if (previewMusicAudio) previewMusicAudio.hidden = true;
+          if (btnClearMusic) btnClearMusic.hidden = false;
+        } else if (bgMusic) {
+          if (musicStatusPill) {
+            musicStatusPill.className = 'pill pill--emerald';
+            musicStatusPill.textContent = '🎵 קובץ מוזיקה הועלה ופעיל';
+          }
+          if (previewMusicAudio) {
+            previewMusicAudio.src = bgMusic;
+            previewMusicAudio.hidden = false;
+          }
+          if (btnClearMusic) btnClearMusic.hidden = false;
+        } else {
+          if (musicStatusPill) {
+            musicStatusPill.className = 'pill';
+            musicStatusPill.textContent = 'ללא מוזיקת רקע';
+          }
+          if (previewMusicAudio) {
+            previewMusicAudio.pause();
+            previewMusicAudio.removeAttribute('src');
+            previewMusicAudio.hidden = true;
+          }
+          if (btnClearMusic) btnClearMusic.hidden = true;
         }
       }
 
@@ -2890,15 +3514,57 @@
         await persistDraftSettings('תמונת הרקע הוסרה.');
       });
 
+      const inputMusicFile = document.getElementById('input-music-file');
+      const btnUploadMusic = document.getElementById('btn-upload-music');
+      const btnUseBuiltinMusic = document.getElementById('btn-use-builtin-music');
+      if (btnUploadMusic && inputMusicFile) {
+        btnUploadMusic.addEventListener('click', () => {
+          inputMusicFile.value = '';
+          inputMusicFile.click();
+        });
+
+        inputMusicFile.addEventListener('change', async () => {
+          const file = inputMusicFile.files?.[0];
+          if (!file) return;
+          try {
+            showToast('⏳ מעלה קובץ מוזיקה לחידון...');
+            const url = await uploadImageFile(file, 'music');
+            draftSettings.backgroundMusic = url;
+            populateSettingsForm();
+            await persistDraftSettings('🎵 קובץ המוזיקה לחידון הועלה ונשמר בהצלחה!');
+          } catch (err) {
+            showToast(err.message || 'שגיאה בהעלאת קובץ המוזיקה.');
+          }
+        });
+      }
+
+      if (btnUseBuiltinMusic) {
+        btnUseBuiltinMusic.addEventListener('click', async () => {
+          draftSettings.backgroundMusic = '__builtin_synth__';
+          populateSettingsForm();
+          await persistDraftSettings('🎹 מנגינת הטריוויה המובנית הופעלה למשחק זה!');
+        });
+      }
+
+      if (btnClearMusic) {
+        btnClearMusic.addEventListener('click', async () => {
+          draftSettings.backgroundMusic = '';
+          populateSettingsForm();
+          await persistDraftSettings('🔇 מוזיקת הרקע הוסרה.');
+        });
+      }
+
       async function persistDraftSettings(successMsg) {
         const payload = {
           title: inputTitle.value,
           subtitle: inputSubtitle.value,
           headerImage: draftSettings.headerImage,
           backgroundImage: draftSettings.backgroundImage,
+          backgroundMusic: draftSettings.backgroundMusic || '',
           bgOverlayOpacity: Number(inputBgOpacity.value) / 100,
-          timerSeconds: Number(inputTimerSeconds.value) || 15,
-          autoRevealOnTimeout: inputAutoReveal.checked
+          timerSeconds: Number(inputTimerSeconds.value) || 20,
+          autoRevealOnTimeout: inputAutoReveal.checked,
+          teamsEnabled: inputSettingsTeamsEnabled ? inputSettingsTeamsEnabled.checked : Boolean(draftSettings.teamsEnabled)
         };
 
         const res = await fetch('/api/admin/settings', {
@@ -2915,11 +3581,897 @@
 
       document.getElementById('btn-save-settings').addEventListener('click', async () => {
         try {
-          await persistDraftSettings('עיצוב המשחק וההגדרות נשמרו!');
+          await persistDraftSettings('הגדרות השאלון (זמנים, קבוצות, מוזיקה ורקע) נשמרו!');
         } catch (err) {
           showToast(err.message);
         }
       });
+
+      async function saveSettingsAndEnterGameLobby() {
+        try {
+          await persistDraftSettings('ההגדרות נשמרו! פותח את דף הכניסה למשחק...');
+          if (settingsDialog.open) settingsDialog.close();
+          if (adminState?.activeGameId) {
+            await selectGameFromMenu(adminState.activeGameId, { openSession: true });
+          }
+        } catch (err) {
+          showToast(err.message || 'שגיאה בשמירת ההגדרות.');
+        }
+      }
+
+      const btnSaveSettingsAndEnter = document.getElementById('btn-save-settings-and-enter');
+      if (btnSaveSettingsAndEnter) {
+        btnSaveSettingsAndEnter.addEventListener('click', saveSettingsAndEnterGameLobby);
+      }
+
+      const btnBannerGoLobby = document.getElementById('btn-banner-go-lobby');
+      if (btnBannerGoLobby) {
+        btnBannerGoLobby.addEventListener('click', saveSettingsAndEnterGameLobby);
+      }
+
+      // -------------------- Background Music Engine (Uploaded Audio + Built-In Synth Melody) --------------------
+
+      const quizBgAudio = document.getElementById('quiz-bg-audio');
+      const btnCornerMusicToggle = document.getElementById('btn-corner-music-toggle');
+      let musicMutedByHost = false;
+      let synthInterval = null;
+      let synthAudioCtx = null;
+
+      function startBuiltinTriviaSynth() {
+        if (synthInterval || musicMutedByHost) return;
+        try {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return;
+          if (!synthAudioCtx) synthAudioCtx = new AudioCtx();
+          if (synthAudioCtx.state === 'suspended') synthAudioCtx.resume();
+          const notes = [261.63, 329.63, 392.0, 523.25, 392.0, 329.63, 293.66, 349.23, 440.0, 587.33, 440.0, 349.23];
+          let step = 0;
+          synthInterval = setInterval(() => {
+            if (musicMutedByHost || !synthAudioCtx) return;
+            const osc = synthAudioCtx.createOscillator();
+            const gain = synthAudioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(notes[step % notes.length], synthAudioCtx.currentTime);
+            gain.gain.setValueAtTime(0.045, synthAudioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, synthAudioCtx.currentTime + 0.36);
+            osc.connect(gain);
+            gain.connect(synthAudioCtx.destination);
+            osc.start();
+            osc.stop(synthAudioCtx.currentTime + 0.38);
+            step++;
+          }, 420);
+        } catch {
+          // ignore autoplay restriction
+        }
+      }
+
+      function stopBuiltinTriviaSynth() {
+        if (synthInterval) {
+          clearInterval(synthInterval);
+          synthInterval = null;
+        }
+      }
+
+      function syncBackgroundMusicForPhase(state) {
+        const musicUrl = String(state?.settings?.backgroundMusic || '').trim();
+        const isRunningQuestions =
+          Boolean(state?.isSessionOpen) &&
+          (state?.phase === 'question' || state?.phase === 'revealed');
+
+        if (btnCornerMusicToggle) {
+          btnCornerMusicToggle.hidden = !musicUrl || !isRunningQuestions;
+          btnCornerMusicToggle.textContent = musicMutedByHost ? '🔇 מוזיקה מושתקת' : '🎵 מוזיקה פעילה';
+        }
+
+        if (!isRunningQuestions || !musicUrl || musicMutedByHost) {
+          stopBuiltinTriviaSynth();
+          if (quizBgAudio && !quizBgAudio.paused) {
+            quizBgAudio.pause();
+          }
+          return;
+        }
+
+        if (musicUrl === '__builtin_synth__') {
+          if (quizBgAudio && !quizBgAudio.paused) quizBgAudio.pause();
+          startBuiltinTriviaSynth();
+          return;
+        }
+
+        stopBuiltinTriviaSynth();
+        if (quizBgAudio) {
+          if (quizBgAudio.getAttribute('data-music-src') !== musicUrl) {
+            quizBgAudio.setAttribute('data-music-src', musicUrl);
+            quizBgAudio.src = musicUrl;
+            quizBgAudio.volume = 0.45;
+          }
+          if (quizBgAudio.paused) {
+            quizBgAudio.play().catch(() => {});
+          }
+        }
+      }
+
+      if (btnCornerMusicToggle) {
+        btnCornerMusicToggle.addEventListener('click', () => {
+          musicMutedByHost = !musicMutedByHost;
+          if (adminState) syncBackgroundMusicForPhase(adminState);
+        });
+      }
+
+      const btnCornerQrZoom = document.getElementById('btn-corner-qr-zoom');
+      if (btnCornerQrZoom) {
+        btnCornerQrZoom.addEventListener('click', () => {
+          const qrImg = document.getElementById('live-corner-qr-img');
+          const code = adminState?.gameCode || adminState?.settings?.code || '1000';
+          if (qrImg && qrImg.src) {
+            openImageZoom(qrImg.src, `סרקו להצטרפות ישירה למשחק (קוד משחק: ${code})`);
+          }
+        });
+      }
+
+      // -------------------- Game Play History Modal (סעיפים ד-ה) --------------------
+
+      const gameHistoryDialog = document.getElementById('game-history-dialog');
+      const gameHistoryDialogTitle = document.getElementById('game-history-dialog-title');
+      const gameHistoryDialogBody = document.getElementById('game-history-dialog-body');
+      const btnEntryOpenHistory = document.getElementById('btn-entry-open-history');
+
+      async function openGameHistoryModal(targetGameId) {
+        const gameId = targetGameId || adminState?.activeGameId;
+        if (!gameId || !gameHistoryDialog) return;
+        dismissDrawerImmediately();
+
+        gameHistoryDialogBody.innerHTML =
+          '<p style="color:var(--text-muted); text-align:center; padding:1.5rem;">⏳ טוען היסטוריית משחקים...</p>';
+        if (!gameHistoryDialog.open) gameHistoryDialog.showModal();
+
+        try {
+          const res = await fetch(`/api/admin/games/${encodeURIComponent(gameId)}/history`);
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error || 'לא ניתן לטעון היסטוריית משחקים.');
+
+          if (gameHistoryDialogTitle) {
+            gameHistoryDialogTitle.textContent = `📜 היסטוריית משחקים — "${data.title}" (קוד ${data.gameCode})`;
+          }
+
+          const allRuns = [];
+          if (data.currentLiveRun) {
+            allRuns.push(data.currentLiveRun);
+          }
+          if (Array.isArray(data.playHistory)) {
+            allRuns.push(...data.playHistory);
+          }
+
+          if (allRuns.length === 0) {
+            gameHistoryDialogBody.innerHTML = `
+              <div style="padding:2rem; text-align:center; color:var(--text-secondary); border:1px dashed var(--border-subtle); border-radius:14px;">
+                עדיין לא נרשמו משחקים שהסתיימו עבור משחק זה.<br/>
+                ברגע שתריצו ותסיימו סבב של המשחק, יופיע כאן סיכום מלא של כל מי ששיחק, כמה שאלות נענו נכון וכמה סה"כ נקודות צבר כל שחקן!
+              </div>
+            `;
+            return;
+          }
+
+          gameHistoryDialogBody.innerHTML = allRuns
+            .map((run, runIdx) => {
+              const dateStr = run.playedAt
+                ? new Date(run.playedAt).toLocaleString('he-IL', {
+                    dateStyle: 'short',
+                    timeStyle: 'short'
+                  })
+                : '';
+              const qTotal = Number(run.questionsCount || data.questionsCount || 0);
+              const players = Array.isArray(run.players) ? run.players : [];
+              const totalCorrectAll = players.reduce((s, p) => s + (Number(p.correctCount) || 0), 0);
+
+              const rowsHtml = players
+                .map(
+                  (p, pIdx) => `
+                  <tr>
+                    <td style="font-weight:800;">#${p.rank || pIdx + 1}</td>
+                    <td style="font-weight:700;">
+                      ${escapeHtml(p.name)}
+                      ${Number(p.weight) > 1 ? `<span class="pill pill--gold" style="font-size:0.72rem; padding:0.05rem 0.4rem;">×${Number(p.weight)}</span>` : ''}
+                      ${p.teamName ? `<span style="font-size:0.8rem; color:#7dd3fc;">(${escapeHtml(p.teamName)})</span>` : ''}
+                    </td>
+                    <td><strong>${p.correctCount || 0}</strong>${qTotal > 0 ? ` מתוך ${qTotal}` : ''}</td>
+                    <td style="font-weight:900; color:#fde68a;">${formatScore(p.score || 0)} נק'</td>
+                  </tr>
+                `
+                )
+                .join('');
+
+              return `
+                <article class="history-run-card">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
+                    <strong style="font-size:1.05rem; color:#bae6fd;">
+                      ${run.isLive ? '🟢 סבב נוכחי פעיל' : `🏁 משחק #${allRuns.length - runIdx} • ${escapeHtml(dateStr)}`}
+                    </strong>
+                    <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                      <span class="pill pill--sky" style="font-size:0.78rem;">👥 ${players.length} משתתפים</span>
+                      <span class="pill pill--emerald" style="font-size:0.78rem;">✓ ${totalCorrectAll} תשובות נכונות סה"כ</span>
+                    </div>
+                  </div>
+                  <div class="leaderboard-table-wrap">
+                    <table class="leaderboard-table">
+                      <thead>
+                        <tr>
+                          <th>מקום</th>
+                          <th>שם השחקן</th>
+                          <th>שאלות שנענו נכון</th>
+                          <th>סה"כ ניקוד</th>
+                        </tr>
+                      </thead>
+                      <tbody>${rowsHtml}</tbody>
+                    </table>
+                  </div>
+                </article>
+              `;
+            })
+            .join('');
+        } catch (err) {
+          gameHistoryDialogBody.innerHTML = `<p style="color:#fda4af; text-align:center;">${escapeHtml(err.message)}</p>`;
+        }
+      }
+
+      if (btnEntryOpenHistory) {
+        btnEntryOpenHistory.addEventListener('click', () => {
+          openGameHistoryModal(adminState?.activeGameId);
+        });
+      }
+
+      // -------------------- Central Question Bank Manager (Main Menu: Add & Edit Questions or Categories) --------------------
+
+      const questionBankDialog = document.getElementById('question-bank-dialog');
+      const bankTotalPill = document.getElementById('bank-total-pill');
+      const bankCustomPill = document.getElementById('bank-custom-pill');
+      const bankSearchInput = document.getElementById('bank-search-input');
+      const bankFilterTopic = document.getElementById('bank-filter-topic');
+      const bankFilterDiff = document.getElementById('bank-filter-diff');
+      const bankFilterCustomOnly = document.getElementById('bank-filter-custom-only');
+      const bankQuestionsList = document.getElementById('bank-questions-list');
+      const bankCatRenameOld = document.getElementById('bank-cat-rename-old');
+      const bankCatRenameNew = document.getElementById('bank-cat-rename-new');
+      const btnBankRenameCategory = document.getElementById('btn-bank-rename-category');
+
+      let currentlyVisibleBankQuestions = [];
+      let editingBankQuestionId = null;
+
+      async function loadAndRenderQuestionBank() {
+        if (!questionBankDialog) return;
+        const q = bankSearchInput ? bankSearchInput.value.trim() : '';
+        const topic = bankFilterTopic ? bankFilterTopic.value : 'all';
+        const diff = bankFilterDiff ? bankFilterDiff.value : 'all';
+        const customOnly = bankFilterCustomOnly ? bankFilterCustomOnly.checked : false;
+
+        try {
+          const url = `/api/admin/question-bank?topic=${encodeURIComponent(topic)}&difficulty=${encodeURIComponent(diff)}&q=${encodeURIComponent(q)}&customOnly=${customOnly ? '1' : '0'}&limit=1500`;
+          const res = await fetch(url);
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.error || 'שגיאה בטעינת המאגר');
+
+          currentlyVisibleBankQuestions = Array.isArray(data.questions) ? data.questions : [];
+          if (Array.isArray(data.topicsSummary)) {
+            cachedBankTopicsSummary = data.topicsSummary;
+          }
+
+          if (bankTotalPill) {
+            bankTotalPill.textContent = `📚 ${data.totalCount} שאלות במאגר`;
+          }
+          if (bankCustomPill) {
+            bankCustomPill.hidden = !data.customCount;
+            bankCustomPill.textContent = `✨ ${data.customCount} שאלות שהוספת`;
+          }
+
+          if (Array.isArray(data.topicsSummary)) {
+            const currentFilterVal = bankFilterTopic ? bankFilterTopic.value || 'all' : 'all';
+            const currentRenameOldVal = bankCatRenameOld ? bankCatRenameOld.value : '';
+            const topicOpts = data.topicsSummary
+              .map(
+                (t) =>
+                  `<option value="${escapeHtml(t.topic)}">${escapeHtml(t.topic)} (${t.count})</option>`
+              )
+              .join('');
+
+            if (bankFilterTopic) {
+              bankFilterTopic.innerHTML = `<option value="all">כל הקטגוריות (${data.totalCount})</option>${topicOpts}`;
+              bankFilterTopic.value = currentFilterVal;
+            }
+            if (bankCatRenameOld) {
+              bankCatRenameOld.innerHTML = topicOpts;
+              if (currentRenameOldVal) bankCatRenameOld.value = currentRenameOldVal;
+            }
+          }
+
+          const diffBadge = { easy: '🟢 קל', medium: '🟡 בינוני', hard: '🔴 קשה' };
+          if (currentlyVisibleBankQuestions.length === 0) {
+            bankQuestionsList.innerHTML =
+              '<p style="color:var(--text-muted); text-align:center; padding:1rem;">לא נמצאו שאלות התואמות לחיפוש.</p>';
+          } else {
+            bankQuestionsList.innerHTML = currentlyVisibleBankQuestions
+              .map((item) => {
+                const isEditing = editingBankQuestionId === String(item.id);
+                if (isEditing) {
+                  return `
+                    <div
+                      data-bank-edit-card="${escapeHtml(item.id)}"
+                      style="padding:0.85rem 1rem; border-radius:12px; background:rgba(15, 23, 42, 0.95); border:1px solid #38bdf8; display:flex; flex-direction:column; gap:0.55rem;"
+                    >
+                      <div style="display:grid; grid-template-columns:1fr 140px; gap:0.5rem;">
+                        <div class="field" style="gap:0.2rem;">
+                          <label style="font-size:0.75rem; color:#bae6fd;">קטגוריה / נושא:</label>
+                          <input type="text" class="input" list="trivia-topics-datalist" data-edit-bank-field="topic" value="${escapeHtml(item.topic || 'ידע כללי')}" />
+                        </div>
+                        <div class="field" style="gap:0.2rem;">
+                          <label style="font-size:0.75rem; color:#bae6fd;">רמת קושי:</label>
+                          <select class="select" data-edit-bank-field="difficulty">
+                            <option value="easy" ${item.difficulty === 'easy' ? 'selected' : ''}>🟢 קל</option>
+                            <option value="medium" ${item.difficulty === 'medium' || !item.difficulty ? 'selected' : ''}>🟡 בינוני</option>
+                            <option value="hard" ${item.difficulty === 'hard' ? 'selected' : ''}>🔴 קשה</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="field" style="gap:0.2rem;">
+                        <label style="font-size:0.75rem; color:#bae6fd;">נוסח השאלה:</label>
+                        <input type="text" class="input" data-edit-bank-field="question" value="${escapeHtml(item.question)}" />
+                      </div>
+                      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.45rem;">
+                        ${[0, 1, 2, 3]
+                          .map(
+                            (idx) => `
+                          <label style="display:flex; align-items:center; gap:0.35rem;">
+                            <input type="radio" name="bank-edit-correct-${escapeHtml(item.id)}" value="${idx}" ${item.correctIndex === idx ? 'checked' : ''} />
+                            <span style="font-weight:800; font-size:0.8rem;">${LETTERS[idx]}.</span>
+                            <input type="text" class="input" data-edit-bank-ans="${idx}" value="${escapeHtml((item.answers || [])[idx] || '')}" />
+                          </label>
+                        `
+                          )
+                          .join('')}
+                      </div>
+                      <div style="display:flex; justify-content:flex-end; gap:0.45rem; padding-top:0.25rem;">
+                        <button type="button" class="btn btn--sm" data-cancel-edit-bank-q="${escapeHtml(item.id)}">ביטול</button>
+                        <button type="button" class="btn btn--success btn--sm" data-save-edit-bank-q="${escapeHtml(item.id)}">💾 שמור שינויים במאגר</button>
+                      </div>
+                    </div>
+                  `;
+                }
+
+                return `
+                <div
+                  style="padding:0.65rem 0.85rem; border-radius:10px; background:rgba(15, 23, 42, 0.72); border:1px solid var(--border-subtle); display:flex; flex-direction:column; gap:0.35rem;"
+                >
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:0.4rem; flex-wrap:wrap;">
+                    <div style="display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap;">
+                      <span class="pill pill--sky" style="font-size:0.72rem; padding:0.08rem 0.45rem;">${escapeHtml(item.topic || 'ידע כללי')}</span>
+                      <span class="pill" style="font-size:0.72rem; padding:0.08rem 0.45rem;">${diffBadge[item.difficulty] || '🟡 בינוני'}</span>
+                      ${item.isCustom ? '<span class="pill pill--emerald" style="font-size:0.72rem; padding:0.08rem 0.45rem;">✨ שאלה שלך</span>' : ''}
+                    </div>
+                    <div style="display:flex; gap:0.35rem; align-items:center;">
+                      <button type="button" class="btn btn--sm" data-start-edit-bank-q="${escapeHtml(item.id)}" style="padding:0.12rem 0.55rem; font-size:0.75rem;">
+                        ✏️ ערוך שאלה / קטגוריה
+                      </button>
+                      <button type="button" class="btn btn--danger btn--sm" data-delete-bank-q="${escapeHtml(item.id)}" style="padding:0.12rem 0.45rem; font-size:0.75rem;">
+                        🗑️ מחק
+                      </button>
+                    </div>
+                  </div>
+                  <strong style="font-size:0.94rem; color:#ffffff;">${escapeHtml(item.question)}</strong>
+                  <div style="display:flex; gap:0.35rem; flex-wrap:wrap; font-size:0.79rem;">
+                    ${(item.answers || [])
+                      .map(
+                        (ans, idx) =>
+                          `<span class="pill ${idx === item.correctIndex ? 'pill--emerald' : ''}" style="font-size:0.75rem; padding:0.08rem 0.45rem;">${LETTERS[idx]}. ${escapeHtml(ans)}${idx === item.correctIndex ? ' ✓' : ''}</span>`
+                      )
+                      .join('')}
+                  </div>
+                </div>
+              `;
+              })
+              .join('');
+          }
+        } catch (err) {
+          showToast(err.message || 'שגיאה בטעינת מאגר השאלות.');
+        }
+      }
+
+      async function openQuestionBankModal() {
+        dismissDrawerImmediately();
+        editingBankQuestionId = null;
+        if (!questionBankDialog.open) questionBankDialog.showModal();
+        await loadAndRenderQuestionBank();
+      }
+
+      const btnOpenQuestionBank = document.getElementById('btn-open-question-bank');
+      if (btnOpenQuestionBank) {
+        btnOpenQuestionBank.addEventListener('click', openQuestionBankModal);
+      }
+
+      const btnDrawerQuestionBank = document.getElementById('btn-drawer-question-bank');
+      if (btnDrawerQuestionBank) {
+        btnDrawerQuestionBank.addEventListener('click', openQuestionBankModal);
+      }
+
+      if (bankSearchInput) bankSearchInput.addEventListener('input', loadAndRenderQuestionBank);
+      if (bankFilterTopic) bankFilterTopic.addEventListener('change', loadAndRenderQuestionBank);
+      if (bankFilterDiff) bankFilterDiff.addEventListener('change', loadAndRenderQuestionBank);
+      if (bankFilterCustomOnly) bankFilterCustomOnly.addEventListener('change', loadAndRenderQuestionBank);
+
+      if (btnBankRenameCategory) {
+        btnBankRenameCategory.addEventListener('click', async () => {
+          const oldTopic = bankCatRenameOld ? bankCatRenameOld.value.trim() : '';
+          const newTopic = bankCatRenameNew ? bankCatRenameNew.value.trim() : '';
+          if (!oldTopic || !newTopic) {
+            showToast('אנא בחרו קטגוריה קיימת והקלידו את השם החדש שלה.');
+            if (bankCatRenameNew) bankCatRenameNew.focus();
+            return;
+          }
+          btnBankRenameCategory.disabled = true;
+          try {
+            const res = await fetch('/api/admin/question-bank/categories/rename', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ oldTopic, newTopic })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            if (bankCatRenameNew) bankCatRenameNew.value = '';
+            showToast(`🏷️ הקטגוריה "${oldTopic}" שונתה ל-"${newTopic}" ב-${data.updatedCount} שאלות במאגר!`);
+            await loadAndRenderQuestionBank();
+          } catch (err) {
+            showToast(err.message || 'שגיאה בשינוי שם הקטגוריה.');
+          } finally {
+            btnBankRenameCategory.disabled = false;
+          }
+        });
+      }
+
+      if (bankQuestionsList) {
+        bankQuestionsList.addEventListener('click', async (e) => {
+          const startEditBtn = e.target.closest('[data-start-edit-bank-q]');
+          if (startEditBtn) {
+            editingBankQuestionId = startEditBtn.getAttribute('data-start-edit-bank-q');
+            await loadAndRenderQuestionBank();
+            return;
+          }
+
+          const cancelEditBtn = e.target.closest('[data-cancel-edit-bank-q]');
+          if (cancelEditBtn) {
+            editingBankQuestionId = null;
+            await loadAndRenderQuestionBank();
+            return;
+          }
+
+          const saveEditBtn = e.target.closest('[data-save-edit-bank-q]');
+          if (saveEditBtn) {
+            const id = saveEditBtn.getAttribute('data-save-edit-bank-q');
+            const editCard = bankQuestionsList.querySelector(`[data-bank-edit-card="${CSS.escape(id)}"]`);
+            if (!editCard) return;
+            const topic = editCard.querySelector('[data-edit-bank-field="topic"]')?.value.trim() || 'ידע כללי';
+            const difficulty = editCard.querySelector('[data-edit-bank-field="difficulty"]')?.value || 'medium';
+            const question = editCard.querySelector('[data-edit-bank-field="question"]')?.value.trim() || '';
+            const answers = [0, 1, 2, 3].map(
+              (idx) => editCard.querySelector(`[data-edit-bank-ans="${idx}"]`)?.value.trim() || ''
+            );
+            const checkedRadio = editCard.querySelector(`input[name="bank-edit-correct-${CSS.escape(id)}"]:checked`);
+            const correctIndex = checkedRadio ? Number(checkedRadio.value) : 0;
+
+            if (!question || answers.some((a) => !a)) {
+              showToast('נוסח השאלה וכל 4 התשובות חייבים להיות מלאים.');
+              return;
+            }
+
+            saveEditBtn.disabled = true;
+            try {
+              const res = await fetch(`/api/admin/question-bank/${encodeURIComponent(id)}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ topic, difficulty, question, answers, correctIndex })
+              });
+              const data = await res.json();
+              if (!data.ok) throw new Error(data.error);
+              editingBankQuestionId = null;
+              showToast('✅ השאלה עודכנה ונשמרה במאגר הקבוע!');
+              await loadAndRenderQuestionBank();
+            } catch (err) {
+              showToast(err.message || 'שגיאה בעדכון השאלה.');
+            } finally {
+              saveEditBtn.disabled = false;
+            }
+            return;
+          }
+
+          const delBtn = e.target.closest('[data-delete-bank-q]');
+          if (delBtn) {
+            const id = delBtn.getAttribute('data-delete-bank-q');
+            try {
+              const res = await fetch(`/api/admin/question-bank/${encodeURIComponent(id)}`, {
+                method: 'DELETE'
+              });
+              const data = await res.json();
+              if (!data.ok) throw new Error(data.error);
+              showToast('השאלה הוסרה מהמאגר.');
+              await loadAndRenderQuestionBank();
+            } catch (err) {
+              showToast(err.message || 'שגיאה במחיקת השאלה.');
+            }
+          }
+        });
+      }
+
+      const bankAddQuestionForm = document.getElementById('bank-add-question-form');
+      if (bankAddQuestionForm) {
+        bankAddQuestionForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const topic = document.getElementById('bank-new-topic').value.trim() || 'ידע כללי';
+          const difficulty = document.getElementById('bank-new-diff').value || 'medium';
+          const question = document.getElementById('bank-new-q-text').value.trim();
+          const answers = [
+            document.getElementById('bank-new-ans-0').value.trim(),
+            document.getElementById('bank-new-ans-1').value.trim(),
+            document.getElementById('bank-new-ans-2').value.trim(),
+            document.getElementById('bank-new-ans-3').value.trim()
+          ];
+          const checkedRadio = bankAddQuestionForm.querySelector('input[name="bank-new-correct"]:checked');
+          const correctIndex = checkedRadio ? Number(checkedRadio.value) : 0;
+
+          if (!question || answers.some((a) => !a)) {
+            showToast('אנא מלאו את נוסח השאלה ואת כל 4 התשובות.');
+            return;
+          }
+
+          try {
+            const res = await fetch('/api/admin/question-bank', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ topic, difficulty, question, answers, correctIndex })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            document.getElementById('bank-new-q-text').value = '';
+            document.getElementById('bank-new-ans-0').value = '';
+            document.getElementById('bank-new-ans-1').value = '';
+            document.getElementById('bank-new-ans-2').value = '';
+            document.getElementById('bank-new-ans-3').value = '';
+            showToast(`✅ השאלה נוספה למאגר הקבוע! (סה"כ במאגר: ${data.totalCount} שאלות)`);
+            await loadAndRenderQuestionBank();
+          } catch (err) {
+            showToast(err.message || 'שגיאה בהוספת השאלה למאגר.');
+          }
+        });
+      }
+
+      const btnBankImportDoc = document.getElementById('btn-bank-import-doc');
+      const inputBankImportDoc = document.getElementById('input-bank-import-doc');
+      if (btnBankImportDoc && inputBankImportDoc) {
+        btnBankImportDoc.addEventListener('click', () => {
+          inputBankImportDoc.value = '';
+          inputBankImportDoc.click();
+        });
+
+        inputBankImportDoc.addEventListener('change', async () => {
+          const file = inputBankImportDoc.files?.[0];
+          if (!file) return;
+          btnBankImportDoc.disabled = true;
+          try {
+            showToast(`⏳ מחלץ שאלות מתוך "${file.name}" להוספה למאגר...`);
+            const parsed = await parseUploadedDocumentFile(file, { timerSeconds: 20, points: 100 });
+            if (!parsed.ok || !Array.isArray(parsed.questions) || parsed.questions.length === 0) {
+              throw new Error(parsed.error || 'לא נמצאו שאלות בקובץ.');
+            }
+            const topic = document.getElementById('bank-new-topic')?.value.trim() || 'ידע כללי';
+            const toAdd = parsed.questions.map((q) => ({ ...q, topic }));
+            const res = await fetch('/api/admin/question-bank', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ questions: toAdd })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            showToast(`✅ נוספו ${data.addedCount} שאלות חדשות מהקובץ למאגר הקבוע! (סה"כ: ${data.totalCount})`);
+            await loadAndRenderQuestionBank();
+          } catch (err) {
+            showToast(err.message || 'שגיאה בייבוא הקובץ למאגר.');
+          } finally {
+            btnBankImportDoc.disabled = false;
+          }
+        });
+      }
+
+      // -------------------- Existing Quiz: 4 Unified Question-Addition Options (מוסיף על השאלון הקיים!) --------------------
+
+      const existingAddCount = document.getElementById('existing-add-count');
+      const existingAddDiff = document.getElementById('existing-add-diff');
+      const existingGeminiFreeText = document.getElementById('existing-gemini-free-text');
+      const existingBankTopicsChips = document.getElementById('existing-bank-topics-chips');
+      const editorGeminiApiKey = document.getElementById('editor-gemini-api-key');
+      const editorGeminiPastedJson = document.getElementById('editor-gemini-pasted-json');
+      const btnEditorCopyGeminiPrompt = document.getElementById('btn-editor-copy-gemini-prompt');
+      const btnExistingRunAdd = document.getElementById('btn-existing-run-add');
+
+      const existingPanels = {
+        'random-bank': document.getElementById('existing-panel-random-bank'),
+        'gemini-text': document.getElementById('existing-panel-gemini-text'),
+        manual: document.getElementById('existing-panel-manual'),
+        'bank-topics': document.getElementById('existing-panel-bank-topics')
+      };
+
+      if (editorGeminiApiKey) {
+        const savedKey = localStorage.getItem('trivia_gemini_api_key') || '';
+        if (savedKey) editorGeminiApiKey.value = savedKey;
+        editorGeminiApiKey.addEventListener('change', () => {
+          localStorage.setItem('trivia_gemini_api_key', editorGeminiApiKey.value.trim());
+        });
+      }
+
+      function setExistingQuizAddMode(mode) {
+        const valid = ['random-bank', 'gemini-text', 'manual', 'bank-topics'];
+        existingQuizAddOption = valid.includes(mode) ? mode : 'random-bank';
+
+        document.querySelectorAll('[data-existing-add-mode]').forEach((btn) => {
+          btn.classList.toggle('is-active', btn.getAttribute('data-existing-add-mode') === existingQuizAddOption);
+        });
+
+        Object.entries(existingPanels).forEach(([key, panelEl]) => {
+          if (!panelEl) return;
+          const active = key === existingQuizAddOption;
+          panelEl.hidden = !active;
+          panelEl.style.display = active ? (key === 'gemini-text' || key === 'bank-topics' ? 'flex' : 'block') : 'none';
+        });
+
+        if (existingQuizAddOption === 'bank-topics') {
+          ensureBankTopicsSummary().then(() => {
+            if (existingQuizSelectedTopics.size === 0 && cachedBankTopicsSummary.length > 0) {
+              existingQuizSelectedTopics.add(cachedBankTopicsSummary[0].topic);
+            }
+            renderTopicsChipsInto(existingBankTopicsChips, existingQuizSelectedTopics);
+          });
+        }
+      }
+
+      document.querySelectorAll('[data-existing-add-mode]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          setExistingQuizAddMode(btn.getAttribute('data-existing-add-mode'));
+        });
+      });
+
+      document.querySelectorAll('[data-existing-count-preset]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          if (existingAddCount) {
+            existingAddCount.value = btn.getAttribute('data-existing-count-preset');
+          }
+        });
+      });
+
+      if (existingBankTopicsChips) {
+        existingBankTopicsChips.addEventListener('click', (e) => {
+          const chip = e.target.closest('[data-topic-chip]');
+          if (!chip) return;
+          const t = chip.getAttribute('data-topic-chip');
+          if (existingQuizSelectedTopics.has(t)) {
+            existingQuizSelectedTopics.delete(t);
+          } else {
+            existingQuizSelectedTopics.add(t);
+          }
+          renderTopicsChipsInto(existingBankTopicsChips, existingQuizSelectedTopics);
+        });
+      }
+
+      const btnExistingTopicsAll = document.getElementById('btn-existing-topics-all');
+      if (btnExistingTopicsAll) {
+        btnExistingTopicsAll.addEventListener('click', () => {
+          const list = adminState?.questionBankTopics || cachedBankTopicsSummary || [];
+          list.forEach((item) => existingQuizSelectedTopics.add(item.topic));
+          renderTopicsChipsInto(existingBankTopicsChips, existingQuizSelectedTopics);
+        });
+      }
+
+      const btnExistingTopicsClear = document.getElementById('btn-existing-topics-clear');
+      if (btnExistingTopicsClear) {
+        btnExistingTopicsClear.addEventListener('click', () => {
+          existingQuizSelectedTopics.clear();
+          renderTopicsChipsInto(existingBankTopicsChips, existingQuizSelectedTopics);
+        });
+      }
+
+      if (btnEditorCopyGeminiPrompt) {
+        btnEditorCopyGeminiPrompt.addEventListener('click', async () => {
+          const freeText = (existingGeminiFreeText?.value || '').trim() || 'ידע כללי';
+          const count = Math.max(1, Math.min(1500, Number(existingAddCount?.value) || 5));
+          const diff = existingAddDiff?.value || 'mixed';
+          const diffLabels = { easy: 'קלה', medium: 'בינונית', hard: 'קשה', mixed: 'מעורבת' };
+          const promptToCopy = `צור עבורי ${count} שאלות טריוויה אמריקאיות בעברית ברמת קושי ${diffLabels[diff] || 'מעורבת'} לפי הבקשה הבאה:\n"${freeText}"\n\nהחזר אך ורק קוד JSON תקין (ללא טקסט נוסף) במבנה:\n[\n  {\n    "question": "נוסח השאלה?",\n    "answers": ["תשובה א", "תשובה ב", "תשובה ג", "תשובה ד"],\n    "correctIndex": 0\n  }\n]`;
+          try {
+            await navigator.clipboard.writeText(promptToCopy);
+            showToast('📋 הפרומפט הועתק! הדביקו אותו בצ׳אט ג׳מיני והדביקו כאן את התוצאה.');
+          } catch {
+            showToast('לא ניתן להעתיק אוטומטית בדפדפן זה.');
+          }
+        });
+      }
+
+      async function appendQuestionsToCurrentQuizEditor(newQuestions, toastMsg) {
+        if (!Array.isArray(newQuestions) || newQuestions.length === 0) return;
+        syncEditorDomToArray();
+        if (
+          editableQuestions.length === 1 &&
+          !editableQuestions[0].question.trim() &&
+          editableQuestions[0].answers.every((a) => !a.trim())
+        ) {
+          editableQuestions = newQuestions;
+        } else {
+          editableQuestions = [...editableQuestions, ...newQuestions];
+        }
+        renderQuestionsEditor();
+
+        const validToPersist = editableQuestions.filter(
+          (q) => q.question && q.question.trim() && Array.isArray(q.answers) && q.answers.every((a) => a && a.trim())
+        );
+        if (validToPersist.length > 0) {
+          await fetch('/api/admin/questions', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ questions: validToPersist })
+          });
+        }
+        showToast(toastMsg || `✅ נוספו ${newQuestions.length} שאלות לשאלון הקיים!`);
+      }
+
+      if (btnExistingRunAdd) {
+        btnExistingRunAdd.addEventListener('click', async () => {
+          const count = Math.max(1, Math.min(1500, Number(existingAddCount?.value) || 5));
+          const difficulty = existingAddDiff?.value || 'mixed';
+          const defaultTimer = Number(draftSettings.timerSeconds) || 20;
+
+          // Option ג: Add blank manual question cards to the existing quiz
+          if (existingQuizAddOption === 'manual') {
+            syncEditorDomToArray();
+            const blanksCount = Math.min(50, count);
+            for (let k = 0; k < blanksCount; k++) {
+              editableQuestions.push(createDefaultQuestionObject());
+            }
+            renderQuestionsEditor();
+            const lastCard = questionsEditorList.lastElementChild;
+            if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToast(`✍️ נוספו ${blanksCount} כרטיסי שאלות חדשים למילוי ידני בתחתית הרשימה!`);
+            return;
+          }
+
+          // Option ב: Free Text to Gemini
+          if (existingQuizAddOption === 'gemini-text') {
+            const freeText = (existingGeminiFreeText?.value || '').trim();
+            const pastedJson = (editorGeminiPastedJson?.value || '').trim();
+            if (!freeText && !pastedJson) {
+              showToast('אנא כתבו בטקסט חופשי על מה תרצו שג׳מניי ייצר את השאלות.');
+              if (existingGeminiFreeText) existingGeminiFreeText.focus();
+              return;
+            }
+            const apiKey = (editorGeminiApiKey?.value || '').trim();
+            if (apiKey) localStorage.setItem('trivia_gemini_api_key', apiKey);
+
+            const prevLabel = btnExistingRunAdd.textContent;
+            btnExistingRunAdd.disabled = true;
+            btnExistingRunAdd.textContent = '⏳ מייצר ומוסיף שאלות...';
+            try {
+              const res = await fetch('/api/admin/questions/generate-topic', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  topic: freeText || 'ידע כללי',
+                  count,
+                  difficulty,
+                  customInstructions: freeText,
+                  apiKey,
+                  pastedJson,
+                  timerSeconds: defaultTimer,
+                  points: 100,
+                  includeImages: true
+                })
+              });
+              const data = await res.json();
+              if (!data.ok || !Array.isArray(data.questions)) throw new Error(data.error);
+              if (editorGeminiPastedJson) editorGeminiPastedJson.value = '';
+              await appendQuestionsToCurrentQuizEditor(
+                data.questions,
+                `✨ נוספו ונשמרו ${data.questions.length} שאלות חדשות על הקיים בשאלון!`
+              );
+            } catch (err) {
+              showToast(err.message || 'שגיאה בהוספת שאלות.');
+            } finally {
+              btnExistingRunAdd.disabled = false;
+              btnExistingRunAdd.textContent = prevLabel;
+            }
+            return;
+          }
+
+          // Option ד: From Existing Bank by Filtering Existing Topics
+          if (existingQuizAddOption === 'bank-topics') {
+            const selectedTopics = Array.from(existingQuizSelectedTopics);
+            if (selectedTopics.length === 0) {
+              showToast('אנא סמנו לפחות נושא אחד מתוך הנושאים הקיימים במאגר.');
+              return;
+            }
+            btnExistingRunAdd.disabled = true;
+            try {
+              const res = await fetch('/api/admin/question-bank/raffle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  count,
+                  selectedTopics,
+                  difficulty,
+                  timerSeconds: defaultTimer,
+                  points: 100
+                })
+              });
+              const data = await res.json();
+              if (!data.ok || !Array.isArray(data.questions)) throw new Error(data.error);
+              await appendQuestionsToCurrentQuizEditor(
+                data.questions,
+                `🎯 נוספו ונשמרו ${data.questions.length} שאלות מהנושאים המסוננים לשאלון הקיים!`
+              );
+            } catch (err) {
+              showToast(err.message || 'שגיאה בשליפת שאלות מהמאגר.');
+            } finally {
+              btnExistingRunAdd.disabled = false;
+            }
+            return;
+          }
+
+          // Option א (default): Random from Existing Bank
+          btnExistingRunAdd.disabled = true;
+          try {
+            const res = await fetch('/api/admin/question-bank/raffle', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                count,
+                topic: 'all',
+                difficulty,
+                timerSeconds: defaultTimer,
+                points: 100
+              })
+            });
+            const data = await res.json();
+            if (!data.ok || !Array.isArray(data.questions)) throw new Error(data.error);
+            await appendQuestionsToCurrentQuizEditor(
+              data.questions,
+              `🎲 הוגרלו ונוספו ${data.questions.length} שאלות מהמאגר לשאלון הקיים!`
+            );
+          } catch (err) {
+            showToast(err.message || 'שגיאה בהגרלת שאלות מהמאגר.');
+          } finally {
+            btnExistingRunAdd.disabled = false;
+          }
+        });
+      }
+
+      const btnSaveGameToBank = document.getElementById('btn-save-game-to-bank');
+      if (btnSaveGameToBank) {
+        btnSaveGameToBank.addEventListener('click', async () => {
+          syncEditorDomToArray();
+          const valid = editableQuestions.filter(
+            (q) => q.question && q.question.trim() && Array.isArray(q.answers) && q.answers.every((a) => a && a.trim())
+          );
+          if (valid.length === 0) {
+            showToast('אין שאלות מלאות לשמירה במאגר.');
+            return;
+          }
+          try {
+            const topic = draftSettings.title || 'ידע כללי';
+            const res = await fetch('/api/admin/question-bank', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                questions: valid.map((q) => ({ ...q, topic }))
+              })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            showToast(`📥 נשמרו ${data.addedCount} שאלות חדשות במאגר הקבוע! (סה"כ במאגר: ${data.totalCount})`);
+          } catch (err) {
+            showToast(err.message || 'שגיאה בשמירת השאלות למאגר.');
+          }
+        });
+      }
 
       // -------------------- Questions, Points, Timer & Image Editor --------------------
 
@@ -2943,7 +4495,7 @@
           if (qTimer) {
             const secs = Math.round(Number(qTimer.value));
             editableQuestions[i].timerSeconds =
-              Number.isFinite(secs) && secs >= 5 && secs <= 300 ? secs : 15;
+              Number.isFinite(secs) && secs >= 5 && secs <= 300 ? secs : 20;
           }
 
           card.querySelectorAll('[data-ans-idx]').forEach((inp) => {
@@ -3003,7 +4555,7 @@
                   min="5"
                   max="300"
                   step="1"
-                  value="${Number(q.timerSeconds) >= 5 ? Number(q.timerSeconds) : 15}"
+                  value="${Number(q.timerSeconds) >= 5 ? Number(q.timerSeconds) : 20}"
                 />
               </label>
             </div>
@@ -3104,23 +4656,48 @@
         if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
 
-      document.getElementById('btn-save-questions').addEventListener('click', async () => {
+      async function saveAllEditableQuestions() {
         syncEditorDomToArray();
+        const res = await fetch('/api/admin/questions', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ questions: editableQuestions })
+        });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || 'שגיאה בשמירת השאלות.');
+        editableQuestions = data.questions;
+        renderQuestionsEditor();
+        return data;
+      }
+
+      document.getElementById('btn-save-questions').addEventListener('click', async () => {
         try {
-          const res = await fetch('/api/admin/questions', {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ questions: editableQuestions })
-          });
-          const data = await res.json();
-          if (!data.ok) throw new Error(data.error || 'שגיאה בשמירת השאלות.');
-          editableQuestions = data.questions;
-          renderQuestionsEditor();
+          await saveAllEditableQuestions();
           showToast('כל השאלות, הניקוד והזמנים נשמרו בהצלחה!');
         } catch (err) {
           showToast(err.message);
         }
       });
+
+      const btnSaveQuestionsAndSettings = document.getElementById('btn-save-questions-and-settings');
+      if (btnSaveQuestionsAndSettings) {
+        btnSaveQuestionsAndSettings.addEventListener('click', async () => {
+          try {
+            const data = await saveAllEditableQuestions();
+            if (settingsAfterCreateBanner) {
+              settingsAfterCreateBanner.hidden = false;
+              settingsAfterCreateBanner.style.display = 'flex';
+              if (settingsAfterCreateTitle) {
+                settingsAfterCreateTitle.textContent = `✅ נשמרו ${data.questions.length} שאלות בשאלון!`;
+              }
+            }
+            switchSettingsTab('branding');
+            showToast('✅ השאלות נשמרו! כעת הגדירו זמנים, קבוצות, מוזיקה ורקע לשאלון.');
+          } catch (err) {
+            showToast(err.message);
+          }
+        });
+      }
 
       const inputImportDoc = document.getElementById('input-import-doc');
       const btnImportDoc = document.getElementById('btn-import-doc');

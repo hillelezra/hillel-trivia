@@ -1696,6 +1696,10 @@ body.is-playing .question-stage {
   color: #fda4af;
 }
 
+.live-bar-value--answered {
+  color: #7dd3fc;
+}
+
 .live-bar-track {
   width: clamp(28px, 3.6vw, 42px);
   height: clamp(58px, 11dvh, 92px);
@@ -1726,6 +1730,11 @@ body.is-playing .question-stage {
   box-shadow: 0 0 12px rgba(244, 63, 94, 0.45);
 }
 
+.live-bar-fill--answered {
+  background: linear-gradient(180deg, #38bdf8 0%, #2563eb 100%);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.45);
+}
+
 .live-bar-label {
   font-size: 0.86rem;
   font-weight: 900;
@@ -1738,6 +1747,12 @@ body.is-playing .question-stage {
 
 .live-bar-label--wrong {
   color: #fb7185;
+}
+
+.live-bar-label--answered {
+  color: #7dd3fc;
+  font-size: 0.78rem;
+  white-space: nowrap;
 }
 
 /* Player Score Status + Growing Pillar Widget (עמוד שהולך וגובה ככל שמתווספות הנקודות) */
@@ -2068,6 +2083,103 @@ body.is-playing .choice-btn {
 .chip-weight-select option {
   background: #0f172a;
   color: #f8fafc;
+}
+
+.player-score-outcome {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 0.14rem 0.5rem;
+  border-radius: var(--radius-pill);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.player-score-outcome.is-correct {
+  background: rgba(16, 185, 129, 0.24);
+  border: 1px solid rgba(52, 211, 153, 0.75);
+  color: #6ee7b7;
+}
+
+.player-score-outcome.is-wrong {
+  background: rgba(244, 63, 94, 0.24);
+  border: 1px solid rgba(251, 113, 133, 0.75);
+  color: #fda4af;
+}
+
+/* Corner QR + Game Code Rejoin Widget (available throughout gameplay & competition) */
+.live-corner-join-widget {
+  position: fixed;
+  bottom: 0.65rem;
+  left: 0.65rem;
+  z-index: 45;
+  background: rgba(9, 13, 26, 0.92);
+  border: 1px solid rgba(251, 191, 36, 0.55);
+  border-radius: 14px;
+  padding: 0.4rem 0.55rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+}
+
+.live-corner-join-widget[hidden] {
+  display: none !important;
+}
+
+.live-corner-qr-btn {
+  background: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.live-corner-qr-btn:hover {
+  transform: scale(1.06);
+}
+
+.live-corner-qr-img {
+  width: 52px;
+  height: 52px;
+  display: block;
+  object-fit: contain;
+}
+
+.live-corner-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12rem;
+  line-height: 1.15;
+}
+
+.live-corner-code {
+  font-size: 0.96rem;
+  font-weight: 900;
+  color: #fde68a;
+  font-variant-numeric: tabular-nums;
+}
+
+.live-corner-sub {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+}
+
+.history-run-card {
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.95rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
 }
 
 @media (max-width: 720px) {

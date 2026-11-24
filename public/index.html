@@ -26,6 +26,9 @@
         <span id="player-name-pill" class="pill pill--sky">👤 שחקן</span>
         <span id="player-team-pill" class="pill pill--emerald" hidden>👨‍👩‍👧‍👦 קבוצה: 0</span>
         <span id="player-score-pill" class="pill pill--gold">⭐ אישי: 0</span>
+        <button type="button" id="btn-player-translate" class="btn btn--sm" title="תרגום שאלות ותשובות לאנגלית">
+          🌐 English
+        </button>
         <button type="button" id="btn-player-home" class="btn btn--sm" title="חזרה למסך הראשי">
           🏠 מסך ראשי
         </button>
@@ -150,6 +153,12 @@
     <main id="screen-question" class="question-stage" hidden style="flex:1;">
       <div class="player-stage-top">
         <section id="p-question-hero" class="question-hero">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.4rem; width:100%; flex-wrap:wrap;">
+            <button type="button" id="btn-stage-translate" class="btn btn--sm" style="padding:0.18rem 0.6rem; font-size:0.78rem;" title="Translate Question & Answers to English / עברית">
+              🌐 English
+            </button>
+            <span id="p-change-answer-hint" class="pill pill--sky" hidden style="font-size:0.75rem; padding:0.14rem 0.55rem;"></span>
+          </div>
           <div id="p-q-media" class="question-media-wrap" hidden></div>
           <h2 id="p-question-text" class="question-heading question-heading--player"></h2>
         </section>
@@ -157,8 +166,9 @@
         <!-- Score Status + Growing Score Pillar next to Question -->
         <div class="player-score-widget" aria-label="מצב ניקוד">
           <div class="player-score-widget__stats">
-            <span id="p-current-q-points" class="player-score-widget__added is-neutral">+0</span>
-            <span id="p-total-score-val" class="player-score-widget__total">סה"כ: 0</span>
+            <span id="p-answer-outcome-pill" class="player-score-outcome" hidden></span>
+            <span id="p-current-q-points" class="player-score-widget__added is-neutral">+0 נק'</span>
+            <span id="p-total-score-val" class="player-score-widget__total">סה"כ: 0 נק'</span>
           </div>
           <div class="score-pillar-track" aria-hidden="true">
             <div id="p-score-pillar-fill" class="score-pillar-fill" style="height: 6%;"></div>
@@ -167,7 +177,7 @@
 
         <!-- Timer next to Question -->
         <div id="p-timer-stat-box" class="stage-timer-box">
-          <span id="p-timer-pill" class="player-timer-digits">15</span>
+          <span id="p-timer-pill" class="player-timer-digits">20</span>
           <progress id="p-timer-bar" class="quiz-timer-progress" max="100" value="100" aria-label="זמן נותר לשאלה"></progress>
         </div>
       </div>
@@ -308,12 +318,94 @@
       const pTimerStatBox = document.getElementById('p-timer-stat-box');
       const pTimerPill = document.getElementById('p-timer-pill');
       const pTimerBar = document.getElementById('p-timer-bar');
+      const pAnswerOutcomePill = document.getElementById('p-answer-outcome-pill');
       const pCurrentQPoints = document.getElementById('p-current-q-points');
       const pTotalScoreVal = document.getElementById('p-total-score-val');
       const pScorePillarFill = document.getElementById('p-score-pillar-fill');
       const pQuestionHero = document.getElementById('p-question-hero');
       const pQMedia = document.getElementById('p-q-media');
       const pQuestionText = document.getElementById('p-question-text');
+      const pChangeAnswerHint = document.getElementById('p-change-answer-hint');
+      const btnPlayerTranslate = document.getElementById('btn-player-translate');
+      const btnStageTranslate = document.getElementById('btn-stage-translate');
+
+      let englishModeEnabled = localStorage.getItem('trivia_player_lang_en') === '1';
+      const clientTranslationCache = new Map();
+      let activeTranslationKey = '';
+
+      function syncTranslateButtonsUi() {
+        const label = englishModeEnabled ? '🇮🇱 עברית' : '🌐 English';
+        if (btnPlayerTranslate) {
+          btnPlayerTranslate.textContent = label;
+          btnPlayerTranslate.classList.toggle('btn--primary', englishModeEnabled);
+        }
+        if (btnStageTranslate) {
+          btnStageTranslate.textContent = label;
+          btnStageTranslate.classList.toggle('btn--primary', englishModeEnabled);
+        }
+      }
+      syncTranslateButtonsUi();
+
+      async function fetchEnglishTranslationForQuestion(q) {
+        if (!q || !q.question) return null;
+        if (q.questionEn && Array.isArray(q.answersEn) && q.answersEn.length === 4) {
+          return { questionEn: q.questionEn, answersEn: q.answersEn };
+        }
+        const cacheKey = `${q.question}||${(q.answers || []).join('||')}`;
+        if (clientTranslationCache.has(cacheKey)) {
+          return clientTranslationCache.get(cacheKey);
+        }
+        try {
+          const res = await fetch('/api/translate-question', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: q.question, answers: q.answers })
+          });
+          const data = await res.json();
+          if (data?.ok && data.questionEn && Array.isArray(data.answersEn)) {
+            const payload = { questionEn: data.questionEn, answersEn: data.answersEn };
+            clientTranslationCache.set(cacheKey, payload);
+            return payload;
+          }
+        } catch {
+          // Fallback to client-side Google Translate if server is offline
+        }
+        try {
+          const translateOne = async (txt) => {
+            const r = await fetch(
+              `https://translate.googleapis.com/translate_a/single?client=gtx&sl=iw&tl=en&dt=t&q=${encodeURIComponent(txt)}`
+            );
+            const j = await r.json();
+            return Array.isArray(j?.[0]) ? j[0].map((p) => p?.[0] || '').join('').trim() : txt;
+          };
+          const [qEn, ...aEn] = await Promise.all([
+            translateOne(q.question),
+            ...(q.answers || []).map((a) => translateOne(a))
+          ]);
+          const payload = { questionEn: qEn || q.question, answersEn: aEn };
+          clientTranslationCache.set(cacheKey, payload);
+          return payload;
+        } catch {
+          return null;
+        }
+      }
+
+      function toggleEnglishMode() {
+        englishModeEnabled = !englishModeEnabled;
+        localStorage.setItem('trivia_player_lang_en', englishModeEnabled ? '1' : '0');
+        syncTranslateButtonsUi();
+        if (playerState) {
+          renderPlayerState(playerState);
+        }
+        showToast(
+          englishModeEnabled
+            ? '🌐 English translation enabled for questions & answers'
+            : '🇮🇱 התצוגה הוחזרה לעברית'
+        );
+      }
+
+      if (btnPlayerTranslate) btnPlayerTranslate.addEventListener('click', toggleEnglishMode);
+      if (btnStageTranslate) btnStageTranslate.addEventListener('click', toggleEnglishMode);
 
       const choiceButtons = Array.from(document.querySelectorAll('#p-choices-grid .choice-btn'));
 
@@ -606,35 +698,41 @@
         .getElementById('btn-confirm-player-exit')
         .addEventListener('click', doLeaveToMainScreen);
 
-      // Choice Selection (Immediate Answer Lock)
+      // Choice Selection (Allows 1 change before timer ends)
       choiceButtons.forEach((btn) => {
         btn.addEventListener('click', () => {
           if (!playerState || playerState.phase !== 'question') return;
-          if (playerState.lockedAnswerIndex !== null || submittingAnswer) return;
+          if (submittingAnswer) return;
           if (playerState.timer?.timeExpiredAwaitingReveal) return;
 
           const answerIndex = Number(btn.getAttribute('data-opt'));
+          if (playerState.lockedAnswerIndex !== null) {
+            if (playerState.lockedAnswerIndex === answerIndex) return;
+            if (!playerState.canChangeAnswer && Number(playerState.answerChangeCount || 0) >= 1) {
+              showToast('כבר ניצלת את שינוי התשובה לשאלה זו.');
+              return;
+            }
+          }
+
           submittingAnswer = true;
-
-          choiceButtons.forEach((b, idx) => {
-            b.disabled = true;
-            b.classList.toggle('is-selected', idx === answerIndex);
-            b.classList.toggle('is-dimmed', idx !== answerIndex);
-          });
-
           socket.emit('player:answer', { answerIndex }, (res) => {
             submittingAnswer = false;
             if (!res || !res.ok) {
               if (typeof res?.lockedAnswerIndex === 'number') {
                 playerState.lockedAnswerIndex = res.lockedAnswerIndex;
-                renderPlayerState(playerState);
-              } else {
-                showToast(res?.error || 'לא ניתן לשלוח תשובה.');
+                playerState.answerChangeCount = Number(res.answerChangeCount || 1);
+                playerState.canChangeAnswer = Boolean(res.canChangeAnswer);
                 renderPlayerState(playerState);
               }
+              showToast(res?.error || 'לא ניתן לשלוח תשובה.');
               return;
             }
             playerState.lockedAnswerIndex = res.lockedAnswerIndex;
+            playerState.answerChangeCount = Number(res.answerChangeCount || 0);
+            playerState.canChangeAnswer = Boolean(res.canChangeAnswer);
+            if (playerState.answerChangeCount >= 1) {
+              showToast('🔒 התשובה החדשה ננעלה סופית!');
+            }
             renderPlayerState(playerState);
           });
         });
@@ -674,14 +772,40 @@
       function renderPlayerScoreWidget(state) {
         const totalScore = Number(state?.player?.score || 0);
         const isRevealed = state?.phase === 'revealed';
-        const earnedNow = isRevealed ? Number(state?.lastQuestionOutcome?.pointsEarned || 0) : 0;
+        const outcome = state?.lastQuestionOutcome || null;
+        const earnedNow = isRevealed ? Number(outcome?.pointsEarned || 0) : 0;
+
+        if (pAnswerOutcomePill) {
+          if (!isRevealed) {
+            pAnswerOutcomePill.hidden = true;
+            pAnswerOutcomePill.textContent = '';
+          } else {
+            pAnswerOutcomePill.hidden = false;
+            const didAnswer = Boolean(outcome?.answered || state.lockedAnswerIndex !== null);
+            const isCorrect = Boolean(outcome?.isCorrect);
+            if (isCorrect) {
+              pAnswerOutcomePill.className = 'player-score-outcome is-correct';
+              pAnswerOutcomePill.textContent = englishModeEnabled ? '✓ Correct!' : '✓ ענית נכון!';
+            } else if (didAnswer) {
+              pAnswerOutcomePill.className = 'player-score-outcome is-wrong';
+              pAnswerOutcomePill.textContent = englishModeEnabled ? '✗ Wrong' : '✗ תשובה שגויה';
+            } else {
+              pAnswerOutcomePill.className = 'player-score-outcome is-wrong';
+              pAnswerOutcomePill.textContent = englishModeEnabled ? '⏰ No answer' : '⏰ לא נענה';
+            }
+          }
+        }
 
         if (pCurrentQPoints) {
-          pCurrentQPoints.textContent = `+${formatScore(earnedNow)}`;
+          pCurrentQPoints.textContent = englishModeEnabled
+            ? `+${formatScore(earnedNow)} pts`
+            : `+${formatScore(earnedNow)} נק'`;
           pCurrentQPoints.classList.toggle('is-neutral', !isRevealed || earnedNow <= 0);
         }
         if (pTotalScoreVal) {
-          pTotalScoreVal.textContent = `סה"כ: ${formatScore(totalScore)}`;
+          pTotalScoreVal.textContent = englishModeEnabled
+            ? `Total: ${formatScore(totalScore)}`
+            : `סה"כ: ${formatScore(totalScore)} נק'`;
         }
         if (pScorePillarFill) {
           const heightPct =
@@ -690,6 +814,64 @@
               : 6;
           pScorePillarFill.style.height = `${heightPct}%`;
         }
+      }
+
+      function applyQuestionAndAnswersText(q) {
+        if (!q) return;
+        const cacheKey = `${q.question}||${(q.answers || []).join('||')}`;
+        activeTranslationKey = cacheKey;
+
+        if (!englishModeEnabled) {
+          pQuestionText.textContent = q.question;
+          pQuestionText.dir = 'rtl';
+          choiceButtons.forEach((btn, idx) => {
+            const textSpan = btn.querySelector('.opt-text');
+            if (textSpan) {
+              textSpan.textContent = q.answers[idx] || '';
+              textSpan.dir = 'rtl';
+            }
+          });
+          return;
+        }
+
+        // If built-in or cached English translation is ready right now, render immediately
+        const cached =
+          q.questionEn && Array.isArray(q.answersEn) && q.answersEn.length === 4
+            ? { questionEn: q.questionEn, answersEn: q.answersEn }
+            : clientTranslationCache.get(cacheKey);
+
+        if (cached) {
+          pQuestionText.textContent = cached.questionEn;
+          pQuestionText.dir = 'ltr';
+          choiceButtons.forEach((btn, idx) => {
+            const textSpan = btn.querySelector('.opt-text');
+            if (textSpan) {
+              textSpan.textContent = cached.answersEn[idx] || q.answers[idx] || '';
+              textSpan.dir = 'ltr';
+            }
+          });
+          return;
+        }
+
+        // Show Hebrew momentarily while fetching English translation
+        pQuestionText.textContent = q.question;
+        choiceButtons.forEach((btn, idx) => {
+          const textSpan = btn.querySelector('.opt-text');
+          if (textSpan) textSpan.textContent = q.answers[idx] || '';
+        });
+
+        fetchEnglishTranslationForQuestion(q).then((translated) => {
+          if (!translated || !englishModeEnabled || activeTranslationKey !== cacheKey) return;
+          pQuestionText.textContent = translated.questionEn;
+          pQuestionText.dir = 'ltr';
+          choiceButtons.forEach((btn, idx) => {
+            const textSpan = btn.querySelector('.opt-text');
+            if (textSpan) {
+              textSpan.textContent = translated.answersEn[idx] || q.answers[idx] || '';
+              textSpan.dir = 'ltr';
+            }
+          });
+        });
       }
 
       function renderPlayerState(state) {
@@ -738,7 +920,7 @@
           const q = state.currentQuestion;
           if (!q) return;
 
-          pQuestionText.textContent = q.question;
+          applyQuestionAndAnswersText(q);
           renderPlayerTimer(state.timer);
           renderPlayerScoreWidget(state);
 
@@ -764,11 +946,34 @@
           const lockedIdx = state.lockedAnswerIndex;
           const isRevealed = state.phase === 'revealed';
           const isTimeUp = Boolean(state.timer?.timeExpiredAwaitingReveal);
+          const changeCount = Number(state.answerChangeCount || 0);
+          const canChange = Boolean(
+            !isRevealed &&
+              !isTimeUp &&
+              lockedIdx !== null &&
+              (state.canChangeAnswer || changeCount < 1)
+          );
+
+          if (pChangeAnswerHint) {
+            if (isRevealed || lockedIdx === null) {
+              pChangeAnswerHint.hidden = true;
+            } else if (canChange) {
+              pChangeAnswerHint.hidden = false;
+              pChangeAnswerHint.className = 'pill pill--sky';
+              pChangeAnswerHint.textContent = englishModeEnabled
+                ? '🔄 You can change your answer 1 time'
+                : '🔄 ניתן לשנות תשובה עוד פעם אחת';
+            } else {
+              pChangeAnswerHint.hidden = false;
+              pChangeAnswerHint.className = 'pill pill--gold';
+              pChangeAnswerHint.textContent = englishModeEnabled
+                ? '🔒 Final answer locked'
+                : '🔒 התשובה ננעלה סופית';
+            }
+          }
 
           choiceButtons.forEach((btn, idx) => {
-            const textSpan = btn.querySelector('.opt-text');
             const metaSpan = btn.querySelector('.opt-meta');
-            textSpan.textContent = q.answers[idx] || '';
 
             btn.classList.remove('is-selected', 'is-dimmed', 'is-correct', 'is-wrong', 'is-selected-wrong');
             metaSpan.innerHTML = '';
@@ -788,10 +993,14 @@
                 btn.classList.add('is-wrong');
               }
             } else if (lockedIdx !== null) {
-              btn.disabled = true;
               if (idx === lockedIdx) {
                 btn.classList.add('is-selected');
+                btn.disabled = true;
+              } else if (canChange) {
+                // Player still has their 1 allowed answer change -> keep the other 3 options clickable!
+                btn.disabled = false;
               } else {
+                btn.disabled = true;
                 btn.classList.add('is-dimmed');
               }
             } else if (isTimeUp) {
