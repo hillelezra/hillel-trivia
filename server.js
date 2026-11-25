@@ -41,6 +41,7 @@ const DEFAULT_GAME_SETTINGS = {
   bgOverlayOpacity: 0.68,
   timerSeconds: DEFAULT_TIMER_SECONDS,
   autoRevealOnTimeout: true,
+  hideLeaderboardUntilEnd: false,
   teamsEnabled: false,
   teams: []
 };
@@ -130,6 +131,7 @@ function sanitizeSettings(input) {
   const autoRevealOnTimeout =
     input?.autoRevealOnTimeout === undefined ? true : Boolean(input.autoRevealOnTimeout);
 
+  const hideLeaderboardUntilEnd = Boolean(input?.hideLeaderboardUntilEnd);
   const teamsEnabled = Boolean(input?.teamsEnabled);
   const teams = normalizeTeamsList(input?.teams);
 
@@ -142,6 +144,7 @@ function sanitizeSettings(input) {
     bgOverlayOpacity,
     timerSeconds,
     autoRevealOnTimeout,
+    hideLeaderboardUntilEnd,
     teamsEnabled,
     teams
   };
@@ -304,6 +307,7 @@ function extractSettingsFromGame(gameRecord) {
     bgOverlayOpacity: gameRecord.bgOverlayOpacity,
     timerSeconds: gameRecord.timerSeconds,
     autoRevealOnTimeout: gameRecord.autoRevealOnTimeout,
+    hideLeaderboardUntilEnd: Boolean(gameRecord.hideLeaderboardUntilEnd),
     teamsEnabled: Boolean(gameRecord.teamsEnabled),
     teams: Array.isArray(gameRecord.teams)
       ? gameRecord.teams.map((t) => ({ id: t.id, name: t.name }))
@@ -513,6 +517,7 @@ function getGamesSummaryList() {
       backgroundImage: g.backgroundImage,
       backgroundMusic: g.backgroundMusic || '',
       timerSeconds: g.timerSeconds,
+      hideLeaderboardUntilEnd: Boolean(g.hideLeaderboardUntilEnd),
       teamsEnabled: Boolean(g.teamsEnabled),
       teamsCount: Array.isArray(g.teams) ? g.teams.length : 0,
       questionsCount: g.questions.length,
@@ -746,6 +751,7 @@ function buildAdminState() {
     questionBankTopics: typeof getQuestionBankTopicsSummary === 'function' ? getQuestionBankTopicsSummary() : [],
     games: getGamesSummaryList(),
     settings,
+    hideLeaderboardUntilEnd: Boolean(settings.hideLeaderboardUntilEnd),
     playHistory: Array.isArray(activeGame.playHistory) ? activeGame.playHistory : [],
     teamsEnabled: Boolean(settings.teamsEnabled),
     availableTeams,
@@ -847,16 +853,21 @@ function buildPlayerState(playerId, overridePhase = null) {
     };
   }
 
+  const isLeaderboardHiddenNow =
+    Boolean(settings.hideLeaderboardUntilEnd) && effectivePhase !== 'finished';
+
   return {
     phase: effectivePhase,
     gameCode: settings.code,
     settings,
+    hideLeaderboardUntilEnd: Boolean(settings.hideLeaderboardUntilEnd),
+    isLeaderboardHiddenNow,
     teamsEnabled: Boolean(settings.teamsEnabled),
     availableTeams: availableTeams.map((t) => ({
       id: t.id,
       name: t.name,
       memberCount: t.memberCount,
-      score: t.score
+      score: isLeaderboardHiddenNow ? 0 : t.score
     })),
     questionBudget: currentQPublic ? currentQPublic.points : DEFAULT_POINTS,
     player: {
@@ -867,13 +878,13 @@ function buildPlayerState(playerId, overridePhase = null) {
       gameTitle: settings.title,
       teamId: myTeamEntry ? myTeamEntry.id : null,
       teamName: myTeamEntry ? myTeamEntry.name : '',
-      teamScore: myTeamEntry ? myTeamEntry.score : 0,
-      teamRank: myTeamEntry ? myTeamEntry.rank : null,
+      teamScore: isLeaderboardHiddenNow ? 0 : myTeamEntry ? myTeamEntry.score : 0,
+      teamRank: isLeaderboardHiddenNow ? null : myTeamEntry ? myTeamEntry.rank : null,
       totalTeams: teamLeaderboard.length,
       weight: normalizePlayerWeight(player.weight),
-      score: player.score,
+      score: isLeaderboardHiddenNow ? 0 : player.score,
       correctCount: player.correctCount,
-      rank: myRankEntry ? myRankEntry.rank : leaderboard.length,
+      rank: isLeaderboardHiddenNow ? null : myRankEntry ? myRankEntry.rank : leaderboard.length,
       totalPlayers: leaderboard.length
     },
     currentQuestion: currentQPublic,
@@ -898,8 +909,8 @@ function buildPlayerState(playerId, overridePhase = null) {
       timeExpiredAwaitingReveal: game.timeExpiredAwaitingReveal
     },
     lastQuestionOutcome,
-    topLeaderboard: leaderboard.slice(0, 10),
-    topTeamLeaderboard: teamLeaderboard.slice(0, 10)
+    topLeaderboard: isLeaderboardHiddenNow ? [] : leaderboard.slice(0, 10),
+    topTeamLeaderboard: isLeaderboardHiddenNow ? [] : teamLeaderboard.slice(0, 10)
   };
 }
 
@@ -3899,6 +3910,7 @@ app.post('/api/admin/games/:gameId/duplicate', (req, res) => {
       bgOverlayOpacity: sourceGame.bgOverlayOpacity,
       timerSeconds: sourceGame.timerSeconds,
       autoRevealOnTimeout: sourceGame.autoRevealOnTimeout,
+      hideLeaderboardUntilEnd: Boolean(sourceGame.hideLeaderboardUntilEnd),
       teamsEnabled: Boolean(sourceGame.teamsEnabled),
       teams: clonedTeams,
       questions: clonedQuestions,
@@ -3925,6 +3937,60 @@ app.post('/api/admin/games/:gameId/duplicate', (req, res) => {
     });
   } catch (err) {
     return res.status(500).json({ ok: false, error: 'שגיאה בשכפול המשחק.' });
+  }
+});
+
+// Reshuffle the order of questions (and their 4 answer choices) in any quiz
+app.post('/api/admin/games/:gameId/shuffle', (req, res) => {
+  try {
+    const targetGame =
+      req.params.gameId === 'active'
+        ? getActiveGameRecord()
+        : store.games.find((g) => g.id === req.params.gameId) ||
+          store.games.find((g) => g.code === req.params.gameId);
+
+    if (!targetGame) {
+      return res.status(404).json({ ok: false, error: 'השאלון לערבוב לא נמצא.' });
+    }
+
+    const currentList = Array.isArray(targetGame.questions) ? targetGame.questions : [];
+    if (currentList.length <= 1) {
+      return res.status(400).json({ ok: false, error: 'יש צורך בלפחות 2 שאלות בשאלון כדי לערבב את הסדר.' });
+    }
+
+    const shuffleAnswersToo =
+      req.body?.shuffleAnswers === undefined ? true : Boolean(req.body.shuffleAnswers);
+
+    let reshuffled = shuffleArray(currentList);
+    // Guarantee the order actually changes when length >= 2
+    if (
+      reshuffled.length >= 2 &&
+      reshuffled.every((q, idx) => q.question === currentList[idx]?.question)
+    ) {
+      reshuffled = [...reshuffled.slice(1), reshuffled[0]];
+    }
+
+    if (shuffleAnswersToo) {
+      reshuffled = reshuffled.map((q) =>
+        shuffleQuestionAnswers(q, q.timerSeconds || targetGame.timerSeconds, q.points || DEFAULT_POINTS)
+      );
+    }
+
+    targetGame.questions = reshuffled;
+    persistStore(store);
+    broadcastAllStates();
+
+    return res.json({
+      ok: true,
+      gameId: targetGame.id,
+      gameCode: targetGame.code,
+      title: targetGame.title,
+      questionsCount: targetGame.questions.length,
+      questions: targetGame.questions,
+      games: getGamesSummaryList()
+    });
+  } catch (err) {
+    return res.status(500).json({ ok: false, error: 'שגיאה בערבוב השאלות בשאלון.' });
   }
 });
 
@@ -4727,6 +4793,17 @@ io.on('connection', (socket) => {
     io.emit('settings:updated', getActiveSettings());
     broadcastAllStates();
     if (typeof ack === 'function') ack({ ok: true, teamsEnabled: activeGame.teamsEnabled });
+  });
+
+  socket.on('admin:setHideLeaderboardUntilEnd', (payload, ack) => {
+    const activeGame = getActiveGameRecord();
+    activeGame.hideLeaderboardUntilEnd = Boolean(payload?.hidden);
+    persistStore(store);
+    io.emit('settings:updated', getActiveSettings());
+    broadcastAllStates();
+    if (typeof ack === 'function') {
+      ack({ ok: true, hideLeaderboardUntilEnd: activeGame.hideLeaderboardUntilEnd });
+    }
   });
 
   socket.on('admin:addTeam', (payload, ack) => {

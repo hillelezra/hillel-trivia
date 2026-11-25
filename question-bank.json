@@ -20797,5 +20797,1005 @@
       "2010"
     ],
     "correctIndex": 0
+  },
+  {
+    "id": "qbank-1004",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי ביים את הסרט הישראלי \"גבעת חלפון אינה עונה\"?",
+    "answers": [
+      "בועז דוידזון",
+      "רונית ושלומי אלקבץ",
+      "אסי דיין",
+      "דובר קוסאשווילי"
+    ],
+    "correctIndex": 2,
+    "questionEn": "Who directed the Israeli film \"Givat Halfon Eina Ona\"?",
+    "answersEn": [
+      "Boaz Davidson",
+      "Ronit and Shlomi Elkabetz",
+      "Assi Dayan",
+      "Dover Kosashvili"
+    ]
+  },
+  {
+    "id": "qbank-1005",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי ביים את הסרט הישראלי \"סלאח שבתי\"?",
+    "answers": [
+      "ניר ברגמן",
+      "אפרים קישון",
+      "שמואל מעוז",
+      "אורי זוהר"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Who directed the Israeli film \"Sallah Shabati\"?",
+    "answersEn": [
+      "Nir Bergman",
+      "Ephraim Kishon",
+      "Samuel Maoz",
+      "Uri Zohar"
+    ]
+  },
+  {
+    "id": "qbank-1006",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי ביים את הסרט הישראלי \"השוטר אזולאי\"?",
+    "answers": [
+      "ניר ברגמן",
+      "אסי דיין",
+      "טליה לביא",
+      "אפרים קישון"
+    ],
+    "correctIndex": 3,
+    "questionEn": "Who directed the Israeli film \"The Policeman (HaShoter Azoulay)\"?",
+    "answersEn": [
+      "Nir Bergman",
+      "Assi Dayan",
+      "Talia Lavie",
+      "Ephraim Kishon"
+    ]
+  },
+  {
+    "id": "qbank-1007",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי ביים את הסרט הישראלי \"תעלת בלאומילך\"?",
+    "answers": [
+      "דרור שאול",
+      "אפרים קישון",
+      "שמואל מעוז",
+      "אסי דיין"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Who directed the Israeli film \"The Blaumilch Canal\"?",
+    "answersEn": [
+      "Dror Shaul",
+      "Ephraim Kishon",
+      "Samuel Maoz",
+      "Assi Dayan"
+    ]
+  },
+  {
+    "id": "qbank-1008",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי ביים את הסרט הישראלי \"חגיגה בסנוקר\"?",
+    "answers": [
+      "אסי דיין",
+      "בועז דוידזון",
+      "אבי נשר",
+      "שמואל מעוז"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Who directed the Israeli film \"Hagiga B’Snooker\"?",
+    "answersEn": [
+      "Assi Dayan",
+      "Boaz Davidson",
+      "Avi Nesher",
+      "Samuel Maoz"
+    ]
+  },
+  {
+    "id": "qbank-1009",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי ביים את הסרט הישראלי \"צ׳ארלי וחצי\"?",
+    "answers": [
+      "דובר קוסאשווילי",
+      "אורי זוהר",
+      "רונית ושלומי אלקבץ",
+      "בועז דוידזון"
+    ],
+    "correctIndex": 3,
+    "questionEn": "Who directed the Israeli film \"Charlie VeHetsi\"?",
+    "answersEn": [
+      "Dover Kosashvili",
+      "Uri Zohar",
+      "Ronit and Shlomi Elkabetz",
+      "Boaz Davidson"
+    ]
+  },
+  {
+    "id": "qbank-1010",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי ביים את הסרט הישראלי \"אלכס חולה אהבה\"?",
+    "answers": [
+      "שמואל מעוז",
+      "בועז דוידזון",
+      "אפרים קישון",
+      "אסי דיין"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Who directed the Israeli film \"Alex Holeh Ahava\"?",
+    "answersEn": [
+      "Samuel Maoz",
+      "Boaz Davidson",
+      "Ephraim Kishon",
+      "Assi Dayan"
+    ]
+  },
+  {
+    "id": "qbank-1011",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי ביים את הסרט הישראלי \"אסקימו לימון\"?",
+    "answers": [
+      "ארי פולמן",
+      "בועז דוידזון",
+      "ניר ברגמן",
+      "ערן קולירין"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Who directed the Israeli film \"Eskimo Limon (Lemon Popsicle)\"?",
+    "answersEn": [
+      "Ari Folman",
+      "Boaz Davidson",
+      "Nir Bergman",
+      "Eran Kolirin"
+    ]
+  },
+  {
+    "id": "qbank-1012",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי ביים את הסרט הישראלי \"מציצים\"?",
+    "answers": [
+      "ערן קולירין",
+      "דובר קוסאשווילי",
+      "בועז דוידזון",
+      "אורי זוהר"
+    ],
+    "correctIndex": 3,
+    "questionEn": "Who directed the Israeli film \"Metzitzim (Peeping Toms)\"?",
+    "answersEn": [
+      "Eran Kolirin",
+      "Dover Kosashvili",
+      "Boaz Davidson",
+      "Uri Zohar"
+    ]
+  },
+  {
+    "id": "qbank-1013",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי ביים את הסרט הישראלי \"מבצע סבתא\"?",
+    "answers": [
+      "דרור שאול",
+      "אבי נשר",
+      "אסי דיין",
+      "טליה לביא"
+    ],
+    "correctIndex": 0,
+    "questionEn": "Who directed the Israeli film \"Operation Grandma (Mivtza Savta)\"?",
+    "answersEn": [
+      "Dror Shaul",
+      "Avi Nesher",
+      "Assi Dayan",
+      "Talia Lavie"
+    ]
+  },
+  {
+    "id": "qbank-1014",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי ביים את הסרט הישראלי \"בופור\"?",
+    "answers": [
+      "יוסף סידר",
+      "רמה בורשטיין",
+      "טליה לביא",
+      "רונית ושלומי אלקבץ"
+    ],
+    "correctIndex": 0,
+    "questionEn": "Who directed the Israeli film \"Beaufort\"?",
+    "answersEn": [
+      "Joseph Cedar",
+      "Rama Burshtein",
+      "Talia Lavie",
+      "Ronit and Shlomi Elkabetz"
+    ]
+  },
+  {
+    "id": "qbank-1015",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי ביים את הסרט הישראלי \"הערת שוליים\"?",
+    "answers": [
+      "אורי זוהר",
+      "יוסף סידר",
+      "אפרים קישון",
+      "רונית ושלומי אלקבץ"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Who directed the Israeli film \"Footnote (Hearat Shulayim)\"?",
+    "answersEn": [
+      "Uri Zohar",
+      "Joseph Cedar",
+      "Ephraim Kishon",
+      "Ronit and Shlomi Elkabetz"
+    ]
+  },
+  {
+    "id": "qbank-1016",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי ביים את הסרט הישראלי \"ואלס עם באשיר\"?",
+    "answers": [
+      "דרור שאול",
+      "אפרים קישון",
+      "ארי פולמן",
+      "אבי נשר"
+    ],
+    "correctIndex": 2,
+    "questionEn": "Who directed the Israeli film \"Waltz with Bashir\"?",
+    "answersEn": [
+      "Dror Shaul",
+      "Ephraim Kishon",
+      "Ari Folman",
+      "Avi Nesher"
+    ]
+  },
+  {
+    "id": "qbank-1017",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי ביים את הסרט הישראלי \"ביקור התזמורת\"?",
+    "answers": [
+      "אסי דיין",
+      "ערן קולירין",
+      "שמואל מעוז",
+      "סכנדר קובטי וירון שני"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Who directed the Israeli film \"The Band’s Visit\"?",
+    "answersEn": [
+      "Assi Dayan",
+      "Eran Kolirin",
+      "Samuel Maoz",
+      "Scandar Copti and Yaron Shani"
+    ]
+  },
+  {
+    "id": "qbank-1018",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי ביים את הסרט הישראלי \"אפס ביחסי אנוש\"?",
+    "answers": [
+      "טליה לביא",
+      "אפרים קישון",
+      "רונית ושלומי אלקבץ",
+      "אסי דיין"
+    ],
+    "correctIndex": 0,
+    "questionEn": "Who directed the Israeli film \"Zero Motivation\"?",
+    "answersEn": [
+      "Talia Lavie",
+      "Ephraim Kishon",
+      "Ronit and Shlomi Elkabetz",
+      "Assi Dayan"
+    ]
+  },
+  {
+    "id": "qbank-1019",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי ביים את הסרט הישראלי \"למלא את החלל\"?",
+    "answers": [
+      "רמה בורשטיין",
+      "טליה לביא",
+      "אורי זוהר",
+      "ניר ברגמן"
+    ],
+    "correctIndex": 0,
+    "questionEn": "Who directed the Israeli film \"Fill the Void\"?",
+    "answersEn": [
+      "Rama Burshtein",
+      "Talia Lavie",
+      "Uri Zohar",
+      "Nir Bergman"
+    ]
+  },
+  {
+    "id": "qbank-1020",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "hard",
+    "question": "מי ביים את הסרט הישראלי \"עג׳מי\"?",
+    "answers": [
+      "אפרים קישון",
+      "סכנדר קובטי וירון שני",
+      "אבי נשר",
+      "בועז דוידזון"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Who directed the Israeli film \"Ajami\"?",
+    "answersEn": [
+      "Ephraim Kishon",
+      "Scandar Copti and Yaron Shani",
+      "Avi Nesher",
+      "Boaz Davidson"
+    ]
+  },
+  {
+    "id": "qbank-1021",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "hard",
+    "question": "מי ביים את הסרט הישראלי \"לבנון\"?",
+    "answers": [
+      "אורי זוהר",
+      "טליה לביא",
+      "שמואל מעוז",
+      "בועז דוידזון"
+    ],
+    "correctIndex": 2,
+    "questionEn": "Who directed the Israeli film \"Lebanon\"?",
+    "answersEn": [
+      "Uri Zohar",
+      "Talia Lavie",
+      "Samuel Maoz",
+      "Boaz Davidson"
+    ]
+  },
+  {
+    "id": "qbank-1022",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "hard",
+    "question": "מי ביים את הסרט הישראלי \"פוקסטרוט\"?",
+    "answers": [
+      "בועז דוידזון",
+      "ארי פולמן",
+      "ערן קולירין",
+      "שמואל מעוז"
+    ],
+    "correctIndex": 3,
+    "questionEn": "Who directed the Israeli film \"Foxtrot\"?",
+    "answersEn": [
+      "Boaz Davidson",
+      "Ari Folman",
+      "Eran Kolirin",
+      "Samuel Maoz"
+    ]
+  },
+  {
+    "id": "qbank-1023",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי ביים את הסרט הישראלי \"גט — המשפט של ויויאן אמסלם\"?",
+    "answers": [
+      "דובר קוסאשווילי",
+      "רונית ושלומי אלקבץ",
+      "אסי דיין",
+      "שמואל מעוז"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Who directed the Israeli film \"Gett: The Trial of Viviane Amsalem\"?",
+    "answersEn": [
+      "Dover Kosashvili",
+      "Ronit and Shlomi Elkabetz",
+      "Assi Dayan",
+      "Samuel Maoz"
+    ]
+  },
+  {
+    "id": "qbank-1024",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי ביים את הסרט הישראלי \"סוף העולם שמאלה\"?",
+    "answers": [
+      "דובר קוסאשווילי",
+      "רמה בורשטיין",
+      "אבי נשר",
+      "ערן קולירין"
+    ],
+    "correctIndex": 2,
+    "questionEn": "Who directed the Israeli film \"Turn Left at the End of the World\"?",
+    "answersEn": [
+      "Dover Kosashvili",
+      "Rama Burshtein",
+      "Avi Nesher",
+      "Eran Kolirin"
+    ]
+  },
+  {
+    "id": "qbank-1025",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי ביים את הסרט הישראלי \"הלהקה\"?",
+    "answers": [
+      "דובר קוסאשווילי",
+      "אבי נשר",
+      "יוסף סידר",
+      "רונית ושלומי אלקבץ"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Who directed the Israeli film \"The Troupe (HaLahaka)\"?",
+    "answersEn": [
+      "Dover Kosashvili",
+      "Avi Nesher",
+      "Joseph Cedar",
+      "Ronit and Shlomi Elkabetz"
+    ]
+  },
+  {
+    "id": "qbank-1026",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי ביים את הסרט הישראלי \"דיזנגוף 99\"?",
+    "answers": [
+      "טליה לביא",
+      "אבי נשר",
+      "יוסף סידר",
+      "ניר ברגמן"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Who directed the Israeli film \"Dizengoff 99\"?",
+    "answersEn": [
+      "Talia Lavie",
+      "Avi Nesher",
+      "Joseph Cedar",
+      "Nir Bergman"
+    ]
+  },
+  {
+    "id": "qbank-1027",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי ביים את הסרט הישראלי \"כנפיים שבורות\"?",
+    "answers": [
+      "טליה לביא",
+      "סכנדר קובטי וירון שני",
+      "ניר ברגמן",
+      "אורי זוהר"
+    ],
+    "correctIndex": 2,
+    "questionEn": "Who directed the Israeli film \"Broken Wings\"?",
+    "answersEn": [
+      "Talia Lavie",
+      "Scandar Copti and Yaron Shani",
+      "Nir Bergman",
+      "Uri Zohar"
+    ]
+  },
+  {
+    "id": "qbank-1028",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי ביים את הסרט הישראלי \"חתונה מאוחרת\"?",
+    "answers": [
+      "טליה לביא",
+      "שמואל מעוז",
+      "דרור שאול",
+      "דובר קוסאשווילי"
+    ],
+    "correctIndex": 3,
+    "questionEn": "Who directed the Israeli film \"Late Marriage\"?",
+    "answersEn": [
+      "Talia Lavie",
+      "Samuel Maoz",
+      "Dror Shaul",
+      "Dover Kosashvili"
+    ]
+  },
+  {
+    "id": "qbank-1029",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "איזו שלישיית בדרנים מובילה את הסרט הישראלי הקלאסי \"גבעת חלפון אינה עונה\"?",
+    "answers": [
+      "הגשש החיוור",
+      "החמישייה הקאמרית",
+      "שלישיית גשר הירקון",
+      "שלישיית מה קשור"
+    ],
+    "correctIndex": 0,
+    "questionEn": "Which comedy trio stars in the classic Israeli film \"Givat Halfon Eina Ona\"?",
+    "answersEn": [
+      "HaGashash HaHiver",
+      "The Chamber Quintet",
+      "Yarkon Bridge Trio",
+      "Ma Kashur Trio"
+    ]
+  },
+  {
+    "id": "qbank-1030",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי גילם את הדמות הראשית בסרט הישראלי \"סלאח שבתי\" (1964)?",
+    "answers": [
+      "שייקה אופיר",
+      "יהודה ברקן",
+      "חיים טופול",
+      "זאב רווח"
+    ],
+    "correctIndex": 2,
+    "questionEn": "Who played the title character in the Israeli film \"Sallah Shabati\" (1964)?",
+    "answersEn": [
+      "Shaike Ophir",
+      "Yehuda Barkan",
+      "Chaim Topol",
+      "Ze’ev Revach"
+    ]
+  },
+  {
+    "id": "qbank-1031",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי גילם את דמותו של השוטר אברהם אזולאי בסרט \"השוטר אזולאי\"?",
+    "answers": [
+      "יוסי בנאי",
+      "אריק איינשטיין",
+      "שייקה אופיר",
+      "אורי זוהר"
+    ],
+    "correctIndex": 2,
+    "questionEn": "Who portrayed Constable Abraham Azoulay in \"The Policeman\"?",
+    "answersEn": [
+      "Yossi Banai",
+      "Arik Einstein",
+      "Shaike Ophir",
+      "Uri Zohar"
+    ]
+  },
+  {
+    "id": "qbank-1032",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "באיזה סרט ישראלי מופיעות הדמויות של גבריאל וחנוכה (זאב רווח ויהודה ברקן)?",
+    "answers": [
+      "מבצע סבתא",
+      "צ׳ארלי וחצי",
+      "חגיגה בסנוקר",
+      "קזבלן"
+    ],
+    "correctIndex": 2,
+    "questionEn": "In which Israeli film do the characters Gavriel and Hanukkah appear?",
+    "answersEn": [
+      "Operation Grandma",
+      "Charlie VeHetsi",
+      "Hagiga B’Snooker",
+      "Kazablan"
+    ]
+  },
+  {
+    "id": "qbank-1033",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "באיזה סרט ישראלי נאמר המשפט המפורסם \"מי מתעסק? זה מיקו!\"?",
+    "answers": [
+      "חגיגה בסנוקר",
+      "אלכס חולה אהבה",
+      "צ׳ארלי וחצי",
+      "גבעת חלפון אינה עונה"
+    ],
+    "correctIndex": 2,
+    "questionEn": "In which Israeli film is the famous quote \"Mi mit’asek? Zeh Miko!\" said?",
+    "answersEn": [
+      "Hagiga B’Snooker",
+      "Alex Holeh Ahava",
+      "Charlie VeHetsi",
+      "Givat Halfon Eina Ona"
+    ]
+  },
+  {
+    "id": "qbank-1034",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "כיצד נקרא הפרס היוקרתי ביותר של האקדמיה הישראלית לקולנוע וטלוויזיה?",
+    "answers": [
+      "פרס כינור דוד",
+      "פרס דקל הזהב",
+      "פרס אריה הזהב",
+      "פרס אופיר"
+    ],
+    "correctIndex": 3,
+    "questionEn": "What is the name of the Israeli Academy Award for excellence in cinema?",
+    "answersEn": [
+      "Kinor David",
+      "Palme d’Or",
+      "Golden Lion",
+      "Ophir Award"
+    ]
+  },
+  {
+    "id": "qbank-1035",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "על שם איזה שחקן ופנטומימאי דגול נקרא \"פרס אופיר\" של הקולנוע הישראלי?",
+    "answers": [
+      "אפרים קישון",
+      "אסי דיין",
+      "מנחם גולן",
+      "שייקה אופיר"
+    ],
+    "correctIndex": 3,
+    "questionEn": "After which legendary Israeli actor is the Ophir Award named?",
+    "answersEn": [
+      "Ephraim Kishon",
+      "Assi Dayan",
+      "Menahem Golan",
+      "Shaike Ophir"
+    ]
+  },
+  {
+    "id": "qbank-1036",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מי גילם את התפקיד הראשי במחזמר ובסרט הישראלי \"קזבלן\" (1973)?",
+    "answers": [
+      "גידי גוב",
+      "אריק איינשטיין",
+      "יהורם גאון",
+      "חיים טופול"
+    ],
+    "correctIndex": 2,
+    "questionEn": "Who starred in the title role of the Israeli musical film \"Kazablan\" (1973)?",
+    "answersEn": [
+      "Gidi Gov",
+      "Arik Einstein",
+      "Yehoram Gaon",
+      "Chaim Topol"
+    ]
+  },
+  {
+    "id": "qbank-1037",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "כמה אחים מנסים לקבור את סבתם בקיבוץ בסרט הקאלט הישראלי \"מבצע סבתא\"?",
+    "answers": [
+      "שני אחים",
+      "חמישה אחים",
+      "שלושה אחים (אלון, בני ועידן)",
+      "ארבעה אחים"
+    ],
+    "correctIndex": 2,
+    "questionEn": "How many brothers try to bury their grandmother in the cult Israeli film \"Operation Grandma\"?",
+    "answersEn": [
+      "Two brothers",
+      "Five brothers",
+      "Three brothers (Alon, Benny, Idan)",
+      "Four brothers"
+    ]
+  },
+  {
+    "id": "qbank-1038",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "איזה סרט אנימציה תיעודי ישראלי של ארי פולמן היה מועמד לפרס האוסקר וזכה בגלובוס הזהב?",
+    "answers": [
+      "בופור",
+      "ואלס עם באשיר",
+      "עג׳מי",
+      "הערת שוליים"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Which Israeli animated documentary by Ari Folman won a Golden Globe and was nominated for an Oscar?",
+    "answersEn": [
+      "Beaufort",
+      "Waltz with Bashir",
+      "Ajami",
+      "Footnote"
+    ]
+  },
+  {
+    "id": "qbank-1039",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "היכן מתרחשת עלילת הסרט הישראלי המצליח \"אפס ביחסי אנוש\"?",
+    "answers": [
+      "במוצב ברמת הגולן",
+      "במשרד שלישות בבסיס צבאי בנגב (שיזפון)",
+      "בבסיס חיל הים בחיפה",
+      "בלשכת גיוס תל השומר"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Where does the plot of the Israeli film \"Zero Motivation\" take place?",
+    "answersEn": [
+      "Golan Heights outpost",
+      "An administration office at an IDF base in the Negev",
+      "Haifa naval base",
+      "Tel HaShomer recruitment center"
+    ]
+  },
+  {
+    "id": "qbank-1040",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי גילם את דמותו של סרג׳יו קונסטנצה בסרט \"גבעת חלפון אינה עונה\"?",
+    "answers": [
+      "גברי בנאי",
+      "שייקה לוי",
+      "טוביה צפיר",
+      "ישראל (פולי) פוליאקוב"
+    ],
+    "correctIndex": 3,
+    "questionEn": "Who played Sergio Constanza in \"Givat Halfon Eina Ona\"?",
+    "answersEn": [
+      "Gavri Banai",
+      "Shaike Levi",
+      "Tuvia Tzafir",
+      "Yisrael (Poli) Poliakov"
+    ]
+  },
+  {
+    "id": "qbank-1041",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי גילם את דמותו של ויקטור חסון בסרט \"גבעת חלפון אינה עונה\"?",
+    "answers": [
+      "גברי בנאי",
+      "ישראל פוליאקוב",
+      "זאב רווח",
+      "שייקה לוי"
+    ],
+    "correctIndex": 3,
+    "questionEn": "Who played Victor Hasson in \"Givat Halfon Eina Ona\"?",
+    "answersEn": [
+      "Gavri Banai",
+      "Yisrael Poliakov",
+      "Ze’ev Revach",
+      "Shaike Levi"
+    ]
+  },
+  {
+    "id": "qbank-1042",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "באיזה סרט ישראלי של אורי זוהר ואריק איינשטיין נאמר המשפט \"יבוא לך דינה, יבוא לך\"?",
+    "answers": [
+      "שבלול",
+      "הלהקה",
+      "מציצים",
+      "עיניים גדולות"
+    ],
+    "correctIndex": 2,
+    "questionEn": "In which Israeli film by Uri Zohar and Arik Einstein does the quote \"Yavo lach Dina\" appear?",
+    "answersEn": [
+      "Shablool",
+      "The Troupe",
+      "Metzitzim",
+      "Big Eyes"
+    ]
+  },
+  {
+    "id": "qbank-1043",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "באיזה סרט ישראלי מככבים השחקנים בנצי, מומו ויהודהל׳ה?",
+    "answers": [
+      "הלהקה",
+      "אלכס חולה אהבה",
+      "אסקימו לימון",
+      "דיזנגוף 99"
+    ],
+    "correctIndex": 2,
+    "questionEn": "Which Israeli film features the characters Bentzi, Momo, and Yudale?",
+    "answersEn": [
+      "The Troupe",
+      "Alex Holeh Ahava",
+      "Eskimo Limon (Lemon Popsicle)",
+      "Dizengoff 99"
+    ]
+  },
+  {
+    "id": "qbank-1044",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "במה עוסק הסרט הישראלי עטור הפרסים \"הערת שוליים\" של יוסף סידר?",
+    "answers": [
+      "מוצב צה\"ל בלבנון לפני הנסיגה",
+      "יריבות בין אב ובנו שהם חוקרי תלמוד באוניברסיטה העברית",
+      "להקה צבאית בתקופת מלחמת ההתשה",
+      "תזמורת משטרה מצרית שנוחתת בעיירה בנגב"
+    ],
+    "correctIndex": 1,
+    "questionEn": "What is Joseph Cedar’s award-winning Israeli film \"Footnote\" about?",
+    "answersEn": [
+      "An IDF outpost in Lebanon",
+      "Rivalry between a father and son who are Talmud scholars",
+      "A military entertainment troupe",
+      "An Egyptian police band in the Negev"
+    ]
+  },
+  {
+    "id": "qbank-1045",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "במה עוסק הסרט הישראלי \"ביקור התזמורת\" בכיכובם של ששון גבאי ורונית אלקבץ?",
+    "answers": [
+      "תזמורת משטרה מצרית שמגיעה בטעות לעיירה בנגב",
+      "פסטיבל זמר בערד",
+      "להקה צבאית בשנות ה-70",
+      "תזמורת הפילהרמונית בסיבוב הופעות"
+    ],
+    "correctIndex": 0,
+    "questionEn": "What is the Israeli film \"The Band’s Visit\" starring Sasson Gabai and Ronit Elkabetz about?",
+    "answersEn": [
+      "An Egyptian police orchestra that accidentally arrives in a Negev town",
+      "Arad music festival",
+      "A 1970s IDF military band",
+      "The Philharmonic on tour"
+    ]
+  },
+  {
+    "id": "qbank-1046",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "איזה סרט ישראלי זכה בפרס \"אריה הזהב\" בפסטיבל ונציה בשנת 2009?",
+    "answers": [
+      "ביקור התזמורת",
+      "ואלס עם באשיר",
+      "בופור (של יוסף סידר)",
+      "לבנון (של שמואל מעוז)"
+    ],
+    "correctIndex": 3,
+    "questionEn": "Which Israeli film won the Golden Lion at the Venice Film Festival in 2009?",
+    "answersEn": [
+      "The Band’s Visit",
+      "Waltz with Bashir",
+      "Beaufort",
+      "Lebanon (by Samuel Maoz)"
+    ]
+  },
+  {
+    "id": "qbank-1047",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "איזה סרט ישראלי עוסק בחיילים ואזרחים במהלך מבצע יהונתן לשחרור החטופים באנטבה?",
+    "answers": [
+      "בופור",
+      "לבנון",
+      "מבצע יונתן (בבימוי מנחם גולן ובכיכוב יהורם גאון)",
+      "גבעת חלפון אינה עונה"
+    ],
+    "correctIndex": 2,
+    "questionEn": "Which Israeli film depicts the Entebbe hostage rescue mission and was nominated for an Oscar?",
+    "answersEn": [
+      "Beaufort",
+      "Lebanon",
+      "Operation Thunderbolt (Mivtza Yonatan)",
+      "Givat Halfon Eina Ona"
+    ]
+  },
+  {
+    "id": "qbank-1048",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "איזו שחקנית ישראלית זכתה שלוש פעמים בפרס אופיר לשחקנית הראשית הטובה ביותר (בסרטים \"שחור\", \"חתונה מאוחרת\" ו\"ביקור התזמורת\")?",
+    "answers": [
+      "גילה אלמגור",
+      "רונית אלקבץ",
+      "דאנה איבגי",
+      "ריימונד אמסלם"
+    ],
+    "correctIndex": 1,
+    "questionEn": "Which acclaimed Israeli actress won three Ophir Awards for Best Actress (\"Sh’Chur\", \"Late Marriage\", \"The Band’s Visit\")?",
+    "answersEn": [
+      "Gila Almagor",
+      "Ronit Elkabetz",
+      "Dana Ivgy",
+      "Reymond Amsalem"
+    ]
+  },
+  {
+    "id": "qbank-1049",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי כתבה ושיחקה בסרט האוטוביוגרפי הישראלי \"הקיץ של אביה\"?",
+    "answers": [
+      "אורנה פורת",
+      "רבקה מיכאלי",
+      "חנה מרון",
+      "גילה אלמגור"
+    ],
+    "correctIndex": 3,
+    "questionEn": "Who wrote and starred in the autobiographical Israeli film \"The Summer of Aviya\"?",
+    "answersEn": [
+      "Orna Porat",
+      "Rivka Michaeli",
+      "Hanna Maron",
+      "Gila Almagor"
+    ]
+  },
+  {
+    "id": "qbank-1050",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "מהו שמה של הדמות שמגלם טוביה צפיר בסרט \"גבעת חלפון אינה עונה\"?",
+    "answers": [
+      "ויקטור חסון",
+      "סרג׳יו קונסטנצה",
+      "המ\"פ שמגר",
+      "ג׳ינג׳י"
+    ],
+    "correctIndex": 2,
+    "questionEn": "What is the name of the character played by Tuvia Tzafir in \"Givat Halfon Eina Ona\"?",
+    "answersEn": [
+      "Victor Hasson",
+      "Sergio Constanza",
+      "Company Commander Shamgar",
+      "Gingi"
+    ]
+  },
+  {
+    "id": "qbank-1051",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "easy",
+    "question": "באיזה סרט ישראלי מופיעה הדמות של פארוק (\"תסגור את התריס\")?",
+    "answers": [
+      "אלכס חולה אהבה",
+      "משפחת צנעני",
+      "צ׳ארלי וחצי",
+      "חגיגה בסנוקר"
+    ],
+    "correctIndex": 0,
+    "questionEn": "In which Israeli film does the character Farouk (\"Close the shutter!\") appear?",
+    "answersEn": [
+      "Alex Holeh Ahava",
+      "Mishpachat Tzan’ani",
+      "Charlie VeHetsi",
+      "Hagiga B’Snooker"
+    ]
+  },
+  {
+    "id": "qbank-1052",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "על איזה ספר של רון לשם מבוסס הסרט הישראלי \"בופור\"?",
+    "answers": [
+      "מישהו לרוץ איתו",
+      "סיפור על אהבה וחושך",
+      "אם יש גן עדן",
+      "שתי שלגיות"
+    ],
+    "correctIndex": 2,
+    "questionEn": "On which novel by Ron Leshem is the Israeli film \"Beaufort\" based?",
+    "answersEn": [
+      "Someone to Run With",
+      "A Tale of Love and Darkness",
+      "If There Is a Heaven (Im Yesh Gan Eden)",
+      "Two Snow Whites"
+    ]
+  },
+  {
+    "id": "qbank-1053",
+    "topic": "קולנוע ישראלי",
+    "difficulty": "medium",
+    "question": "מי הצמד שיצר וכתב את סדרת הטלוויזיה הישראלית הבין-לאומית \"פאודה\"?",
+    "answers": [
+      "ליאור רז ואבי יששכרוף",
+      "אסי כהן וגורי אלפי",
+      "חגי לוי ואורי סיון",
+      "גידי רף וניר ברגמן"
+    ],
+    "correctIndex": 0,
+    "questionEn": "Which duo co-created the hit Israeli television series \"Fauda\"?",
+    "answersEn": [
+      "Lior Raz and Avi Issacharoff",
+      "Assi Cohen and Guri Alfi",
+      "Hagai Levi and Ori Sivan",
+      "Gideon Raff and Nir Bergman"
+    ]
   }
 ]

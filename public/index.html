@@ -772,6 +772,11 @@
       function renderPlayerScoreWidget(state) {
         const totalScore = Number(state?.player?.score || 0);
         const isRevealed = state?.phase === 'revealed';
+        const isHiddenUntilEnd = Boolean(
+          state?.isLeaderboardHiddenNow ||
+            ((state?.hideLeaderboardUntilEnd ?? state?.settings?.hideLeaderboardUntilEnd) &&
+              state?.phase !== 'finished')
+        );
         const outcome = state?.lastQuestionOutcome || null;
         const earnedNow = isRevealed ? Number(outcome?.pointsEarned || 0) : 0;
 
@@ -803,13 +808,18 @@
           pCurrentQPoints.classList.toggle('is-neutral', !isRevealed || earnedNow <= 0);
         }
         if (pTotalScoreVal) {
-          pTotalScoreVal.textContent = englishModeEnabled
-            ? `Total: ${formatScore(totalScore)}`
-            : `סה"כ: ${formatScore(totalScore)} נק'`;
+          if (isHiddenUntilEnd) {
+            pTotalScoreVal.textContent = englishModeEnabled ? '🙈 Rank at end' : '🙈 דירוג בסיום';
+          } else {
+            pTotalScoreVal.textContent = englishModeEnabled
+              ? `Total: ${formatScore(totalScore)}`
+              : `סה"כ: ${formatScore(totalScore)} נק'`;
+          }
         }
         if (pScorePillarFill) {
-          const heightPct =
-            totalScore > 0
+          const heightPct = isHiddenUntilEnd
+            ? 50
+            : totalScore > 0
               ? Math.min(96, Math.max(16, Math.round(100 * (totalScore / (totalScore + 120)))))
               : 6;
           pScorePillarFill.style.height = `${heightPct}%`;
@@ -881,16 +891,27 @@
         const gTitle = state.player.gameTitle || state.settings?.title || 'אלופי הטריוויה';
 
         // Top HUD
+        const isHiddenUntilEnd = Boolean(
+          state.isLeaderboardHiddenNow ||
+            ((state.hideLeaderboardUntilEnd ?? state.settings?.hideLeaderboardUntilEnd) &&
+              state.phase !== 'finished')
+        );
         playerScoreHud.hidden = false;
         playerCodePill.textContent = `🔢 קוד: ${gCode}`;
         playerNamePill.textContent = `👤 ${state.player.name}`;
         if (state.teamsEnabled && state.player.teamId) {
           playerTeamPill.hidden = false;
-          playerTeamPill.textContent = `👨‍👩‍👧‍👦 ${state.player.teamName}: ${formatScore(state.player.teamScore)} נק'`;
-          playerScorePill.textContent = `⭐ אישי: ${formatScore(state.player.score)}`;
+          playerTeamPill.textContent = isHiddenUntilEnd
+            ? `👨‍👩‍👧‍👦 ${state.player.teamName}`
+            : `👨‍👩‍👧‍👦 ${state.player.teamName}: ${formatScore(state.player.teamScore)} נק'`;
+          playerScorePill.textContent = isHiddenUntilEnd
+            ? '🙈 הדירוג ייחשף בסוף'
+            : `⭐ אישי: ${formatScore(state.player.score)}`;
         } else {
           playerTeamPill.hidden = true;
-          playerScorePill.textContent = `⭐ ניקוד אישי: ${formatScore(state.player.score)}`;
+          playerScorePill.textContent = isHiddenUntilEnd
+            ? '🙈 הדירוג ייחשף בסוף'
+            : `⭐ ניקוד אישי: ${formatScore(state.player.score)}`;
         }
 
         // If Teams Mode is enabled and player has not picked/created a team yet -> show Team Selection Screen!
