@@ -742,6 +742,7 @@ function buildAdminState() {
     nextNewGameCode: String(BASE_GAME_CODE + store.games.length),
     hasGeminiApiKey: Boolean(store.geminiApiKey || process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY),
     questionBankCount: typeof getQuestionBankCount === 'function' ? getQuestionBankCount() : 1000,
+    privateQuestionBankCount: typeof getPrivateQuestionBankCount === 'function' ? getPrivateQuestionBankCount() : 0,
     questionBankTopics: typeof getQuestionBankTopicsSummary === 'function' ? getQuestionBankTopicsSummary() : [],
     games: getGamesSummaryList(),
     settings,
@@ -1779,6 +1780,11 @@ app.post('/api/admin/games', (req, res) => {
     store.activeGameId = newGame.id;
     persistStore(store);
 
+    const privateSync = autoSyncUserWrittenQuestionsToPrivateBank(
+      Array.isArray(req.body?.questions) ? req.body.questions : [],
+      'שאלות פרטיות'
+    );
+
     resetQuiz({ keepPlayers: true, clearTeamAssignments: true });
     io.emit('settings:updated', getActiveSettings());
     broadcastAllStates();
@@ -1788,7 +1794,8 @@ app.post('/api/admin/games', (req, res) => {
       game: newGame,
       activeGameId: store.activeGameId,
       activeGameCode: newGame.code,
-      games: getGamesSummaryList()
+      games: getGamesSummaryList(),
+      privateSync
     });
   } catch (err) {
     return res.status(500).json({ ok: false, error: 'שגיאה ביצירת משחק חדש.' });
@@ -2147,6 +2154,14 @@ function normalizeBankQuestionEntry(rawItem, indexFallback = 1) {
 }
 
 let persistentQuestionBank = [];
+const BUILTIN_QUESTION_TEXTS_SET = new Set();
+
+function normalizeQuestionKeyText(text) {
+  return String(text || '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
 
 function savePersistentQuestionBank() {
   try {
@@ -2160,10 +2175,24 @@ function loadOrInitializeQuestionBank() {
   const seenQuestions = new Set();
   const merged = [];
 
+  // 0. Build the canonical set of all built-in questions so we can accurately identify user-written questions
+  BUILTIN_QUESTION_TEXTS_SET.clear();
+  const generated1000 = generateFullQuestionBank();
+  for (const item of generated1000) {
+    if (item && item.question) {
+      BUILTIN_QUESTION_TEXTS_SET.add(normalizeQuestionKeyText(item.question));
+    }
+  }
+  for (const item of BUILTIN_TRIVIA_BANK) {
+    if (item && item.question) {
+      BUILTIN_QUESTION_TEXTS_SET.add(normalizeQuestionKeyText(item.question));
+    }
+  }
+
   function pushUnique(rawItem) {
     const clean = normalizeBankQuestionEntry(rawItem, merged.length + 1);
     if (!clean) return false;
-    const key = clean.question.replace(/\s+/g, ' ').toLowerCase();
+    const key = normalizeQuestionKeyText(clean.question);
     if (seenQuestions.has(key)) return false;
     seenQuestions.add(key);
     merged.push(clean);
@@ -2191,7 +2220,6 @@ function loadOrInitializeQuestionBank() {
   const initialCount = merged.length;
 
   // 2. Ensure all 1,000+ generated questions and built-in questions are present
-  const generated1000 = generateFullQuestionBank();
   for (const item of generated1000) {
     pushUnique(item);
   }
@@ -2212,6 +2240,10 @@ function getQuestionBankCount() {
   return persistentQuestionBank.length;
 }
 
+function getPrivateQuestionBankCount() {
+  return persistentQuestionBank.filter((q) => q.isCustom || q.topic === 'שאלות פרטיות').length;
+}
+
 function getQuestionBankTopicsSummary() {
   const counts = new Map();
   for (const q of persistentQuestionBank) {
@@ -2223,10 +2255,10 @@ function getQuestionBankTopicsSummary() {
     .sort((a, b) => b.count - a.count);
 }
 
-function addQuestionsToPersistentBank(rawItems) {
+function addQuestionsToPersistentBank(rawItems, { markCustom = true, defaultTopic = 'שאלות פרטיות' } = {}) {
   const list = Array.isArray(rawItems) ? rawItems : [rawItems];
   const seenQuestions = new Set(
-    persistentQuestionBank.map((q) => q.question.replace(/\s+/g, ' ').toLowerCase())
+    persistentQuestionBank.map((q) => normalizeQuestionKeyText(q.question))
   );
   const added = [];
 
@@ -2234,13 +2266,14 @@ function addQuestionsToPersistentBank(rawItems) {
     const clean = normalizeBankQuestionEntry(
       {
         ...raw,
+        topic: String(raw?.topic || defaultTopic || 'שאלות פרטיות').trim() || 'שאלות פרטיות',
         id: `qbank-custom-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
-        isCustom: true
+        isCustom: Boolean(markCustom)
       },
       persistentQuestionBank.length + 1
     );
     if (!clean) continue;
-    const key = clean.question.replace(/\s+/g, ' ').toLowerCase();
+    const key = normalizeQuestionKeyText(clean.question);
     if (seenQuestions.has(key)) continue;
     seenQuestions.add(key);
     persistentQuestionBank.unshift(clean);
@@ -2251,6 +2284,98 @@ function addQuestionsToPersistentBank(rawItems) {
     savePersistentQuestionBank();
   }
   return added;
+}
+
+function isPlaceholderQuestionEntry(q) {
+  const qText = String(q?.question || '').trim();
+  if (!qText || qText.length < 4) return true;
+  if (qText.includes('שאלה חדשה – הקלידו כאן')) return true;
+  const answers = Array.isArray(q?.answers) ? q.answers.map((a) => String(a ?? '').trim()) : [];
+  if (answers.length < 4 || answers.some((a) => !a)) return true;
+  // Check if all 4 answers are still default placeholders ("תשובה 1", "תשובה 2", ...)
+  const allPlaceholderAnswers = answers.every((a, idx) => a === `תשובה ${idx + 1}` || a === `אפשרות ${idx + 1}`);
+  if (allPlaceholderAnswers) return true;
+  return false;
+}
+
+/**
+ * Automatically saves any user-written (or user-modified) questions to the Private Question Bank (`מאגר שאלות פרטיות`).
+ * Questions that belong unaltered to the 1,100+ built-in bank are skipped so only genuine user-written questions are added.
+ */
+function autoSyncUserWrittenQuestionsToPrivateBank(questionsList, fallbackTopic = 'שאלות פרטיות') {
+  const list = Array.isArray(questionsList) ? questionsList : [questionsList];
+  let addedCount = 0;
+  let updatedCount = 0;
+
+  for (const raw of list) {
+    if (!raw || isPlaceholderQuestionEntry(raw)) continue;
+    const qText = String(raw.question || '').trim();
+    const key = normalizeQuestionKeyText(qText);
+    const explicitlyUserWritten = Boolean(raw.isUserWritten || raw.isCustom || raw.isPrivate);
+
+    // If this question is an unmodified built-in question and wasn't explicitly written by the user, skip it
+    if (BUILTIN_QUESTION_TEXTS_SET.has(key) && !explicitlyUserWritten) {
+      continue;
+    }
+
+    const answers = Array.isArray(raw.answers)
+      ? raw.answers.slice(0, 4).map((a) => String(a ?? '').trim())
+      : [];
+    if (answers.length < 4 || answers.some((a) => !a)) continue;
+
+    const correctIndex =
+      Number.isInteger(Number(raw.correctIndex)) &&
+      Number(raw.correctIndex) >= 0 &&
+      Number(raw.correctIndex) <= 3
+        ? Number(raw.correctIndex)
+        : 0;
+
+    const existingIdx = persistentQuestionBank.findIndex(
+      (item) => normalizeQuestionKeyText(item.question) === key
+    );
+
+    if (existingIdx !== -1) {
+      const existing = persistentQuestionBank[existingIdx];
+      if (existing.isCustom || explicitlyUserWritten) {
+        const answersChanged =
+          existing.correctIndex !== correctIndex ||
+          existing.answers.some((a, i) => a !== answers[i]);
+        if (answersChanged || !existing.isCustom) {
+          persistentQuestionBank[existingIdx] = {
+            ...existing,
+            answers,
+            correctIndex,
+            isCustom: true,
+            topic: existing.topic || fallbackTopic || 'שאלות פרטיות'
+          };
+          updatedCount++;
+        }
+      }
+    } else {
+      const cleanEntry = normalizeBankQuestionEntry(
+        {
+          id: `qbank-private-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
+          topic: String(raw.topic || raw._topic || fallbackTopic || 'שאלות פרטיות').trim() || 'שאלות פרטיות',
+          difficulty: String(raw.difficulty || 'medium').toLowerCase(),
+          question: qText,
+          answers,
+          correctIndex,
+          isCustom: true
+        },
+        persistentQuestionBank.length + 1
+      );
+      if (cleanEntry) {
+        persistentQuestionBank.unshift(cleanEntry);
+        addedCount++;
+      }
+    }
+  }
+
+  if (addedCount > 0 || updatedCount > 0) {
+    savePersistentQuestionBank();
+  }
+
+  return { addedCount, updatedCount, totalPrivateCount: getPrivateQuestionBankCount() };
 }
 
 function shuffleArray(arr) {
@@ -2305,44 +2430,101 @@ function shuffleQuestionAnswers(qObj, defaultTimer, defaultPoints) {
 function matchBuiltInTopic(rawTopic) {
   const t = String(rawTopic || '').trim().toLowerCase();
   if (!t) return null;
-  // Exact match against any topic in persistentQuestionBank first
+  if (t === '__private_bank__' || t.includes('שאלות פרטיות') || t.includes('מאגר פרטי')) {
+    return '__PRIVATE_BANK__';
+  }
+  // 1. Exact match against any topic in persistentQuestionBank first
   for (const q of persistentQuestionBank) {
     if (String(q.topic || '').toLowerCase() === t) {
       return q.topic;
     }
   }
-  if (t.includes('תנ"ך') || t.includes('מקרא') || t.includes('מורשת')) return 'תנ"ך ומורשת';
-  if (t.includes('עברית') || t.includes('לשון') || t.includes('שפה') || t.includes('ניב')) return 'השפה העברית';
-  if (t.includes('חלל') || t.includes('אסטרונומ') || t.includes('כוכב')) return 'חלל ואסטרונומיה';
-  if (t.includes('היסטור') || t.includes('ישראל') || t.includes('ציונ')) return 'היסטוריה של ישראל';
-  if (t.includes('גיאוגרפ') || t.includes('עולם') || t.includes('מדינ') || t.includes('בירות')) return 'גיאוגרפיה ועולם';
-  if (t.includes('מדע') || t.includes('טבע') || t.includes('חיות') || t.includes('בעלי חיים')) return 'מדע וטבע';
-  if (t.includes('ספורט') || t.includes('כדורגל') || t.includes('כדורסל') || t.includes('אולימפ')) return 'ספורט וכדורגל';
-  if (t.includes('מוזיק') || t.includes('תרבות') || t.includes('קולנוע') || t.includes('סרט') || t.includes('שיר') || t.includes('ספרות')) return 'תרבות, קולנוע ומוזיקה';
-  if (t.includes('חג') || t.includes('מסורת') || t.includes('יהדות') || t.includes('חנוכ') || t.includes('פסח') || t.includes('פורים')) return 'חגי ישראל ומסורת';
-  if (t.includes('אוכל') || t.includes('קולינר') || t.includes('מטבח') || t.includes('בישול')) return 'אוכל וקולינריה';
-  if (t.includes('טכנולוג') || t.includes('מחשב') || t.includes('המצא') || t.includes('הייטק')) return 'טכנולוגיה והמצאות';
+  // 2. Check Israeli Cinema & Television BEFORE generic 'ישראל' so "קולנוע ישראלי" or "סרטים ישראלים" matches 'קולנוע ישראלי'!
+  if (
+    t.includes('קולנוע') ||
+    t.includes('סרט') ||
+    t.includes('במאי') ||
+    t.includes('שחקן') ||
+    t.includes('שחקנ') ||
+    t.includes('אופיר') ||
+    t.includes('בורקס') ||
+    t.includes('גשש') ||
+    t.includes('טלוויזיה') ||
+    t.includes('סדרה') ||
+    t.includes('סדרות')
+  ) {
+    return 'קולנוע ישראלי';
+  }
+  if (t.includes('תנ"ך') || t.includes('תנך') || t.includes('מקרא') || t.includes('מורשת')) return 'תנ"ך ומורשת';
+  if (t.includes('עברית') || t.includes('לשון') || t.includes('שפה') || t.includes('ניב') || t.includes('פתגם')) return 'השפה העברית';
+  if (t.includes('חלל') || t.includes('אסטרונומ') || t.includes('כוכב') || t.includes('גלקסי') || t.includes('מאדים')) return 'חלל ואסטרונומיה';
+  if (t.includes('מדע') || t.includes('טבע') || t.includes('חיות') || t.includes('בעלי חיים') || t.includes('ביולוג') || t.includes('פיזיק') || t.includes('כימי')) return 'מדע וטבע';
+  if (t.includes('ספורט') || t.includes('כדורגל') || t.includes('כדורסל') || t.includes('אולימפ') || t.includes('מונדיאל')) return 'ספורט וכדורגל';
+  if (t.includes('מוזיק') || t.includes('תרבות') || t.includes('שיר') || t.includes('זמר') || t.includes('להק') || t.includes('אירוויזיון') || t.includes('ספרות') || t.includes('אמנות')) return 'תרבות, קולנוע ומוזיקה';
+  if (t.includes('חג') || t.includes('מסורת') || t.includes('יהדות') || t.includes('חנוכ') || t.includes('פסח') || t.includes('פורים') || t.includes('סוכות') || t.includes('שבועות')) return 'חגי ישראל ומסורת';
+  if (t.includes('אוכל') || t.includes('קולינר') || t.includes('מטבח') || t.includes('בישול') || t.includes('מאכל') || t.includes('מסעד')) return 'אוכל וקולינריה';
+  if (t.includes('טכנולוג') || t.includes('מחשב') || t.includes('המצא') || t.includes('הייטק') || t.includes('אינטרנט') || t.includes('סמארטפון')) return 'טכנולוגיה והמצאות';
+  if (t.includes('גיאוגרפ') || t.includes('גאוגרפ') || t.includes('עולם') || t.includes('מדינ') || t.includes('בירות') || t.includes('יבשת')) return 'גיאוגרפיה ועולם';
+  if (t.includes('היסטור') || t.includes('ציונ') || t.includes('מלחמת') || t.includes('ראש ממשלה') || t.includes('ישראל')) return 'היסטוריה של ישראל';
   if (t.includes('כללי')) return 'ידע כללי';
   return null;
+}
+
+const HEBREW_SEARCH_STOPWORDS = new Set([
+  'אני', 'רוצה', 'מבקש', 'מבקשת', 'תעשה', 'תעשו', 'תכין', 'תכינו', 'תיצור', 'לי', 'לנו',
+  'שאלות', 'שאלה', 'שאלון', 'טריוויה', 'חידון', 'משחק', 'בנושא', 'בנושאים', 'נושא', 'על',
+  'של', 'עם', 'מתוך', 'בבקשה', 'רק', 'הרבה', 'קצת', 'קשות', 'קלות', 'בינוניות', 'רמה',
+  'רמת', 'קושי', 'קשה', 'קל', 'קלה', 'בינוני', 'בינונית', 'מעורב', 'מעורבת', 'אמריקאיות'
+]);
+
+function extractHebrewSearchKeywords(rawText) {
+  const cleaned = String(rawText || '')
+    .toLowerCase()
+    .replace(/[^\u0590-\u05FFa-z0-9\s"]/g, ' ')
+    .split(/\s+/)
+    .map((w) => w.trim())
+    .filter((w) => w.length >= 2 && !HEBREW_SEARCH_STOPWORDS.has(w));
+
+  const keywords = new Set();
+  for (const word of cleaned) {
+    keywords.add(word);
+    // Strip common Hebrew single-letter prefixes (ה, ו, ב, ל, מ, כ, ש) if root >= 3 chars
+    if (word.length >= 4 && /^[הובלמכש]/.test(word)) {
+      const stripped = word.slice(1);
+      if (!HEBREW_SEARCH_STOPWORDS.has(stripped)) {
+        keywords.add(stripped);
+      }
+    }
+    // Strip plural suffixes (ים / ות) if root >= 3 chars
+    if (word.length >= 5 && (word.endsWith('ים') || word.endsWith('ות'))) {
+      keywords.add(word.slice(0, -2));
+    }
+  }
+  return Array.from(keywords);
 }
 
 function generateQuestionsFromBuiltInBank({
   mode = 'random',
   topics = [],
   selectedTopics = [],
+  privateOnly = false,
   randomCount = 10,
   difficulty = 'mixed',
   defaultTimer = DEFAULT_TIMER_SECONDS,
   defaultPoints = DEFAULT_POINTS
 }) {
-  const bankPool =
+  const fullBankPool =
     Array.isArray(persistentQuestionBank) && persistentQuestionBank.length > 0
       ? persistentQuestionBank
       : BUILTIN_TRIVIA_BANK;
+  const privatePool = fullBankPool.filter((q) => q.isCustom || q.topic === 'שאלות פרטיות');
+  const bankPool =
+    privateOnly && privatePool.length > 0 ? privatePool : fullBankPool;
+
   const usedQuestions = new Set();
   const result = [];
 
-  function pickFromPool(pool, count, fallbackTopicLabel = '', strictPoolFallback = null) {
+  function pickFromPool(pool, count, fallbackTopicLabel = '', strictPoolFallback = null, allowGlobalFallback = true) {
     const picked = [];
     const shuffledPool = shuffleArray(pool);
     for (const item of shuffledPool) {
@@ -2366,7 +2548,7 @@ function generateQuestionsFromBuiltInBank({
       }
     }
 
-    if (picked.length < count) {
+    if (picked.length < count && allowGlobalFallback) {
       const remainingAll = shuffleArray(bankPool);
       for (const item of remainingAll) {
         if (picked.length >= count) break;
@@ -2385,8 +2567,13 @@ function generateQuestionsFromBuiltInBank({
     ? selectedTopics.map((t) => String(t || '').trim()).filter((t) => t && t !== 'all')
     : [];
   if (cleanSelectedTopics.length > 0) {
-    const topicSet = new Set(cleanSelectedTopics);
-    let topicFilteredPool = bankPool.filter((q) => topicSet.has(q.topic));
+    const wantsPrivateBank = cleanSelectedTopics.includes('__PRIVATE_BANK__');
+    const topicSet = new Set(cleanSelectedTopics.filter((t) => t !== '__PRIVATE_BANK__'));
+    let topicFilteredPool = fullBankPool.filter(
+      (q) =>
+        topicSet.has(q.topic) ||
+        (wantsPrivateBank && (q.isCustom || q.topic === 'שאלות פרטיות'))
+    );
     if (topicFilteredPool.length === 0) topicFilteredPool = bankPool;
     const diff = String(difficulty || 'mixed').toLowerCase();
     let prioritizedPool = topicFilteredPool;
@@ -2397,7 +2584,7 @@ function generateQuestionsFromBuiltInBank({
       }
     }
     const totalWanted = Math.max(1, Math.min(1500, Math.round(Number(randomCount) || 10)));
-    return pickFromPool(prioritizedPool, totalWanted, '', topicFilteredPool);
+    return pickFromPool(prioritizedPool, totalWanted, '', topicFilteredPool, false);
   }
 
   if (mode === 'topics' && Array.isArray(topics) && topics.length > 0) {
@@ -2406,23 +2593,56 @@ function generateQuestionsFromBuiltInBank({
       const count = Math.max(1, Math.min(1500, Math.round(Number(reqRow?.count) || 3)));
       const diff = String(reqRow?.difficulty || difficulty || 'mixed').toLowerCase();
       const matchedCategory = matchBuiltInTopic(rawTopic);
+      const searchKeywords = extractHebrewSearchKeywords(rawTopic);
 
-      let topicPool = bankPool.filter((q) => q.topic === rawTopic);
-      if (topicPool.length === 0) {
-        topicPool = matchedCategory
-          ? bankPool.filter(
-              (q) =>
-                q.topic === matchedCategory ||
-                (matchedCategory === 'ספורט וכדורגל' && q.topic === 'ספורט') ||
-                (matchedCategory === 'תרבות, קולנוע ומוזיקה' && q.topic === 'מוזיקה ותרבות')
-            )
-          : bankPool.filter(
-              (q) =>
-                q.question.includes(rawTopic) ||
-                (q.topic && q.topic.includes(rawTopic))
-            );
+      let topicPool = [];
+      if (matchedCategory === '__PRIVATE_BANK__') {
+        topicPool = privatePool;
+      } else {
+        topicPool = bankPool.filter((q) => q.topic === rawTopic);
       }
-      if (topicPool.length === 0) topicPool = bankPool;
+
+      if (topicPool.length === 0 && matchedCategory) {
+        topicPool = bankPool.filter((q) => {
+          if (q.topic === matchedCategory) return true;
+          if (matchedCategory === 'קולנוע ישראלי') {
+            return (
+              q.topic === 'קולנוע ישראלי' ||
+              ((q.topic === 'תרבות, קולנוע ומוזיקה' || q.topic === 'מוזיקה ותרבות') &&
+                /(?:סרט|קולנוע|במאי|שחקן|שחקנית|אופיר|אוסקר|סלאח|גבעת חלפון|השוטר אזולאי|סדרה|טלוויזיה)/.test(
+                  `${q.question} ${(q.answers || []).join(' ')}`
+                ))
+            );
+          }
+          if (matchedCategory === 'ספורט וכדורגל' && q.topic === 'ספורט') return true;
+          if (matchedCategory === 'תרבות, קולנוע ומוזיקה' && (q.topic === 'מוזיקה ותרבות' || q.topic === 'קולנוע ישראלי')) return true;
+          return false;
+        });
+      }
+
+      // Also score questions across the bank by keyword match against the user's free text
+      if (searchKeywords.length > 0) {
+        const scoredMatches = [];
+        const baseCandidates = topicPool.length > 0 ? topicPool : bankPool;
+        for (const q of baseCandidates) {
+          const hay = `${q.topic || ''} ${q.question || ''} ${(q.answers || []).join(' ')}`.toLowerCase();
+          let score = 0;
+          for (const kw of searchKeywords) {
+            if (hay.includes(kw)) score++;
+          }
+          if (score > 0) {
+            scoredMatches.push({ q, score });
+          }
+        }
+        if (scoredMatches.length > 0 && topicPool.length === 0) {
+          scoredMatches.sort((a, b) => b.score - a.score);
+          topicPool = scoredMatches.map((item) => item.q);
+        }
+      }
+
+      if (topicPool.length === 0) {
+        topicPool = bankPool;
+      }
 
       let pool = topicPool;
       if (diff === 'easy' || diff === 'medium' || diff === 'hard') {
@@ -2432,9 +2652,15 @@ function generateQuestionsFromBuiltInBank({
         }
       }
 
-      const rowQuestions = pickFromPool(pool, count, matchedCategory ? '' : rawTopic, topicPool);
+      const rowQuestions = pickFromPool(
+        pool,
+        count,
+        matchedCategory && matchedCategory !== '__PRIVATE_BANK__' ? matchedCategory : rawTopic,
+        topicPool,
+        topicPool.length < count
+      );
       rowQuestions.forEach((rq) => {
-        rq._topic = rawTopic;
+        rq._topic = matchedCategory && matchedCategory !== '__PRIVATE_BANK__' ? matchedCategory : rawTopic;
       });
       result.push(...rowQuestions);
     }
@@ -2450,7 +2676,7 @@ function generateQuestionsFromBuiltInBank({
       randomPool = diffFiltered;
     }
   }
-  return pickFromPool(randomPool, totalRandom, '', bankPool);
+  return pickFromPool(randomPool, totalRandom, '', bankPool, !privateOnly);
 }
 
 function getEffectiveGeminiApiKey(overrideKey = '') {
@@ -2485,12 +2711,12 @@ async function generateQuestionsViaGeminiAI({
   if (mode === 'topics' && Array.isArray(topics) && topics.length > 0) {
     const lines = topics.map((t, idx) => {
       const topicName = String(t?.topic || 'ידע כללי').trim();
-      const count = Math.max(1, Math.min(30, Math.round(Number(t?.count) || 3)));
+      const count = Math.max(1, Math.min(50, Math.round(Number(t?.count) || 3)));
       const diffKey = String(t?.difficulty || 'mixed').toLowerCase();
       const diffDesc = diffLabels[diffKey] || diffLabels.mixed;
-      return `${idx + 1}. נושא: "${topicName}" — בדיוק ${count} שאלות, ברמת קושי: ${diffDesc}.`;
+      return `${idx + 1}. נושא מבוקש: "${topicName}" — בדיוק ${count} שאלות טריוויה בנושא זה בלבד, ברמת קושי: ${diffDesc}.`;
     });
-    promptInstruction = `צור שאלות טריוויה אמריקאיות מקוריות ומדויקות בעברית תקנית לפי הפירוט הבא:\n${lines.join('\n')}`;
+    promptInstruction = `צור שאלות טריוויה אמריקאיות מקוריות, מדויקות ומרתקות בעברית תקנית אך ורק על הנושא המבוקש:\n${lines.join('\n')}`;
   } else {
     const count = Math.max(1, Math.min(50, Math.round(Number(randomCount) || 10)));
     promptInstruction = `צור בדיוק ${count} שאלות טריוויה אמריקאיות מגוונות, מהנות ומפתיעות בעברית תקנית במגוון נושאים אקראיים (ידע כללי, ישראל, מדע, תרבות, היסטוריה, ספורט, טבע ואוכל) ברמת קושי מעורבת.`;
@@ -2505,7 +2731,8 @@ async function generateQuestionsViaGeminiAI({
 כל שאלה חייבת להכיל:
 - question: נוסח השאלה בעברית ברורה.
 - answers: מערך של בדיוק 4 תשובות אפשריות בעברית (רק אחת מהן נכונה).
-- correctIndex: מספר שלם בין 0 ל-3 המציין את מיקום התשובה הנכונה במערך answers (פזר את מיקום התשובה הנכונה באופן אקראי בין 0, 1, 2, 3).`;
+- correctIndex: מספר שלם בין 0 ל-3 המציין את מיקום התשובה הנכונה במערך answers (פזר את מיקום התשובה הנכונה באופן אקראי בין 0, 1, 2, 3).
+החזר אובייקט JSON בלבד במבנה: { "questions": [ { "question": "...", "answers": ["...", "...", "...", "..."], "correctIndex": 0 } ] }`;
 
   const schema = {
     type: 'object',
@@ -2529,6 +2756,64 @@ async function generateQuestionsViaGeminiAI({
     required: ['questions']
   };
 
+  function parseGeminiQuestionsArray(rawJsonText) {
+    if (!rawJsonText) return null;
+    const cleaned = String(rawJsonText)
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```$/, '')
+      .trim();
+    const parsed = JSON.parse(cleaned);
+    const arr = Array.isArray(parsed) ? parsed : parsed?.questions;
+    if (!Array.isArray(arr) || arr.length === 0) return null;
+    return arr
+      .map((q) => shuffleQuestionAnswers(q, defaultTimer, defaultPoints))
+      .filter((q) => q.question.length > 0 && q.answers.every((a) => a.length > 0));
+  }
+
+  // Try standard Google AI Studio generateContent endpoints (gemini-2.5-flash, gemini-2.0-flash) and interactions
+  const candidateModels = ['gemini-2.5-flash', 'gemini-2.0-flash'];
+  let lastError = null;
+
+  for (const modelName of candidateModels) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 25000);
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${encodeURIComponent(effectiveKey)}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
+            generationConfig: {
+              responseMimeType: 'application/json',
+              responseSchema: schema,
+              temperature: 0.7
+            }
+          }),
+          signal: controller.signal
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Gemini ${modelName} status ${response.status}`);
+      }
+
+      const data = await response.json();
+      const textCandidate =
+        data?.candidates?.[0]?.content?.parts?.find((p) => typeof p?.text === 'string')?.text || '';
+      const validQuestions = parseGeminiQuestionsArray(textCandidate);
+      if (validQuestions && validQuestions.length > 0) {
+        return validQuestions;
+      }
+    } catch (err) {
+      lastError = err;
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
+  // Fallback to v1beta/interactions
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 25000);
 
@@ -2573,19 +2858,11 @@ async function generateQuestionsViaGeminiAI({
       }
     }
 
-    if (!jsonText) {
-      throw new Error('Empty output from Gemini API');
+    const validQuestions = parseGeminiQuestionsArray(jsonText);
+    if (!validQuestions || validQuestions.length === 0) {
+      throw lastError || new Error('No questions array in Gemini response');
     }
-
-    const parsed = JSON.parse(jsonText);
-    const arr = Array.isArray(parsed) ? parsed : parsed?.questions;
-    if (!Array.isArray(arr) || arr.length === 0) {
-      throw new Error('No questions array in Gemini response');
-    }
-
-    return arr
-      .map((q) => shuffleQuestionAnswers(q, defaultTimer, defaultPoints))
-      .filter((q) => q.question.length > 0 && q.answers.every((a) => a.length > 0));
+    return validQuestions;
   } finally {
     clearTimeout(timeoutId);
   }
@@ -3357,6 +3634,7 @@ app.post('/api/admin/games/generate', async (req, res) => {
     const mode = req.body?.mode === 'topics' ? 'topics' : req.body?.mode === 'document' ? 'document' : 'random';
     const topics = Array.isArray(req.body?.topics) ? req.body.topics : [];
     const selectedTopics = Array.isArray(req.body?.selectedTopics) ? req.body.selectedTopics : [];
+    const privateOnly = Boolean(req.body?.privateOnly);
     const randomCount = Math.max(1, Math.min(1500, Math.round(Number(req.body?.randomCount) || 10)));
     const difficulty = String(req.body?.difficulty || 'mixed').trim().toLowerCase();
     const forceBankOnly = Boolean(req.body?.forceBankOnly);
@@ -3442,6 +3720,15 @@ app.post('/api/admin/games/generate', async (req, res) => {
         if (Array.isArray(aiQuestions) && aiQuestions.length > 0) {
           generatedQuestions = aiQuestions;
           generationSource = 'gemini-ai';
+          const aiTopicLabel =
+            (mode === 'topics' && topics[0]?.topic) ||
+            matchBuiltInTopic(customInstructions) ||
+            customInstructions ||
+            'ידע כללי';
+          addQuestionsToPersistentBank(aiQuestions, {
+            markCustom: false,
+            defaultTopic: String(aiTopicLabel).slice(0, 48)
+          });
         }
       } catch (aiErr) {
         console.warn('Gemini AI generation fallback to built-in bank:', aiErr.message);
@@ -3455,15 +3742,20 @@ app.post('/api/admin/games/generate', async (req, res) => {
       const neededCount = requestedTotalCount - generatedQuestions.length;
       if (customInstructions && effectiveMode === 'random' && selectedTopics.length === 0) {
         const matchedTopicFromInstructions = matchBuiltInTopic(customInstructions);
-        if (matchedTopicFromInstructions) {
-          effectiveMode = 'topics';
-          effectiveTopics = [{ topic: matchedTopicFromInstructions, count: neededCount, difficulty }];
-        }
+        effectiveMode = 'topics';
+        effectiveTopics = [
+          {
+            topic: matchedTopicFromInstructions || customInstructions,
+            count: neededCount,
+            difficulty
+          }
+        ];
       }
       const bankQuestions = generateQuestionsFromBuiltInBank({
         mode: generatedQuestions.length > 0 ? 'random' : effectiveMode,
         topics: effectiveTopics,
         selectedTopics,
+        privateOnly,
         randomCount: neededCount,
         difficulty,
         defaultTimer,
@@ -3860,10 +4152,18 @@ app.post('/api/admin/questions/generate-topic', async (req, res) => {
         if (Array.isArray(aiQuestions) && aiQuestions.length > 0) {
           generated = aiQuestions;
           source = 'gemini-ai';
+          addQuestionsToPersistentBank(aiQuestions, {
+            markCustom: false,
+            defaultTopic: String(matchBuiltInTopic(topic) || topic).slice(0, 48)
+          });
         }
       } catch (aiErr) {
         console.warn('Gemini topic generation fallback to bank:', aiErr.message);
       }
+    }
+
+    if (source === 'gemini-chat-paste' && generated.length > 0) {
+      autoSyncUserWrittenQuestionsToPrivateBank(generated, 'שאלות פרטיות');
     }
 
     if (generated.length < count) {
@@ -4061,6 +4361,7 @@ app.post('/api/admin/question-bank/raffle', (req, res) => {
     const selectedTopics = Array.isArray(req.body?.selectedTopics)
       ? req.body.selectedTopics.map((t) => String(t || '').trim()).filter((t) => t && t !== 'all')
       : [];
+    const privateOnly = Boolean(req.body?.privateOnly);
     const difficulty = String(req.body?.difficulty || 'mixed').trim().toLowerCase();
     const activeGame = getActiveGameRecord();
     const defaultTimer =
@@ -4072,6 +4373,7 @@ app.post('/api/admin/question-bank/raffle', (req, res) => {
       mode: topic && topic !== 'all' ? 'topics' : 'random',
       topics: topic && topic !== 'all' ? [{ topic, count, difficulty }] : [],
       selectedTopics,
+      privateOnly,
       randomCount: count,
       difficulty,
       defaultTimer,
@@ -4308,11 +4610,20 @@ app.put('/api/admin/questions', (req, res) => {
     activeGame.questions = cleaned;
     persistStore(store);
 
+    // Automatically save any user-written or user-edited questions into the Private Question Bank
+    const privateSync = autoSyncUserWrittenQuestionsToPrivateBank(incoming, 'שאלות פרטיות');
+
     if (game.currentQuestionIndex >= activeGame.questions.length) {
       game.currentQuestionIndex = activeGame.questions.length - 1;
     }
     broadcastAllStates();
-    return res.json({ ok: true, questions: activeGame.questions, games: getGamesSummaryList() });
+    return res.json({
+      ok: true,
+      questions: activeGame.questions,
+      games: getGamesSummaryList(),
+      privateSync,
+      privateQuestionBankCount: getPrivateQuestionBankCount()
+    });
   } catch (err) {
     return res.status(500).json({ ok: false, error: 'שגיאה בשמירת השאלות.' });
   }
@@ -4342,8 +4653,18 @@ app.patch('/api/admin/questions/:index', (req, res) => {
 
   questions[idx] = updated;
   persistStore(store);
+  const privateSync = autoSyncUserWrittenQuestionsToPrivateBank(
+    [{ ...updated, isUserWritten: Boolean(req.body?.isUserWritten) }],
+    'שאלות פרטיות'
+  );
   broadcastAllStates();
-  return res.json({ ok: true, question: questions[idx], questions });
+  return res.json({
+    ok: true,
+    question: questions[idx],
+    questions,
+    privateSync,
+    privateQuestionBankCount: getPrivateQuestionBankCount()
+  });
 });
 
 app.post('/api/admin/questions/reload', (_req, res) => {

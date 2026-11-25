@@ -761,8 +761,12 @@
           </div>
 
           <!-- Existing Mode Panel א: Random from Bank -->
-          <div id="existing-panel-random-bank" style="font-size:0.85rem; color:var(--text-secondary);">
-            🎲 המערכת תגריל שאלות אקראיות מתוך המאגר הקיים לפי מספר השאלות ורמת הקושי שבחרתם למעלה, ותוסיף אותן לשאלון הנוכחי.
+          <div id="existing-panel-random-bank" style="display:flex; flex-direction:column; gap:0.45rem; font-size:0.85rem; color:var(--text-secondary);">
+            <span>🎲 המערכת תגריל שאלות אקראיות מתוך המאגר הקיים לפי מספר השאלות ורמת הקושי שבחרתם למעלה, ותוסיף אותן לשאלון הנוכחי.</span>
+            <label style="display:inline-flex; align-items:center; gap:0.45rem; font-weight:800; color:#6ee7b7; cursor:pointer;">
+              <input id="existing-random-private-only" type="checkbox" />
+              🔒 הגרל רק ממאגר השאלות הפרטיות שכתבתי בעצמי
+            </label>
           </div>
 
           <!-- Existing Mode Panel ב: Free Text to Gemini -->
@@ -797,6 +801,7 @@
           <!-- Existing Mode Panel ג: Manual Questions Addition -->
           <div id="existing-panel-manual" hidden style="display:none; font-size:0.85rem; color:var(--text-secondary);">
             ✍️ לחיצה על הכפתור למטה תוסיף לשאלון כרטיסי שאלה חדשים (לפי מספר השאלות שבחרתם למעלה) למילוי ידני של השאלה ו-4 התשובות.
+            <strong style="display:block; margin-top:0.3rem; color:#6ee7b7;">🔒 כל שאלה שאתם כותבים בעצמכם נשמרת אוטומטית למאגר שאלות פרטיות לשימוש בהמשך!</strong>
           </div>
 
           <!-- Existing Mode Panel ד: From Bank by Filtering Existing Topics -->
@@ -950,12 +955,16 @@
       <!-- Panel א: Random from Existing Bank -->
       <section
         id="new-opt-panel-random-bank"
-        style="padding:0.95rem 1.1rem; border-radius:14px; background:rgba(2, 6, 23, 0.5); border:1px solid var(--border-subtle); display:flex; flex-direction:column; gap:0.4rem;"
+        style="padding:0.95rem 1.1rem; border-radius:14px; background:rgba(2, 6, 23, 0.5); border:1px solid var(--border-subtle); display:flex; flex-direction:column; gap:0.45rem;"
       >
         <strong style="color:#fde68a; font-size:0.98rem;">🎲 הגרלה רנדומלית מכלל מאגר השאלות הקיים</strong>
         <p style="font-size:0.86rem; color:var(--text-secondary);">
           המערכת תגריל באופן אקראי את מספר השאלות ורמת הקושי שבחרתם מתוך מאגר השאלות הקיים במערכת, ומיד לאחר מכן ייפתח תפריט ההגדרות (זמנים, קבוצות, מוזיקה ורקע).
         </p>
+        <label style="display:inline-flex; align-items:center; gap:0.5rem; font-weight:800; font-size:0.88rem; color:#6ee7b7; cursor:pointer; padding-top:0.2rem;">
+          <input id="new-quiz-random-private-only" type="checkbox" />
+          🔒 הגרל רק מתוך מאגר השאלות הפרטיות שכתבתי בעצמי
+        </label>
       </section>
 
       <!-- Panel ב: Free Text to Gemini -->
@@ -1019,6 +1028,9 @@
         <p style="font-size:0.86rem; color:var(--text-secondary);">
           ייווצר שאלון חדש עם מספר כרטיסי השאלות שבחרתם למעלה להזנה ידנית של השאלות והתשובות. מיד לאחר הזנת השאלות ושמירתן ייפתח תפריט ההגדרות (זמנים, קבוצות, מוזיקה ורקע).
         </p>
+        <span style="font-size:0.84rem; font-weight:800; color:#6ee7b7;">
+          🔒 כל שאלה שתכתבו בעצמכם עוברת אוטומטית למאגר השאלות הפרטיות שלכם לשימוש חוזר בהמשך!
+        </span>
       </section>
 
       <!-- Panel ד: From Existing Bank by Filtering Existing Topics -->
@@ -1043,6 +1055,8 @@
       </section>
 
       <datalist id="trivia-topics-datalist">
+        <option value="שאלות פרטיות"></option>
+        <option value="קולנוע ישראלי"></option>
         <option value="ידע כללי"></option>
         <option value="היסטוריה של ישראל"></option>
         <option value="גיאוגרפיה ועולם"></option>
@@ -1239,9 +1253,9 @@
             <option value="medium">🟡 בינוני בלבד</option>
             <option value="hard">🔴 קשה בלבד</option>
           </select>
-          <label style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.82rem; cursor:pointer;">
+          <label style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.84rem; font-weight:800; color:#6ee7b7; cursor:pointer; padding:0.35rem 0.7rem; border-radius:10px; background:rgba(16, 185, 129, 0.14); border:1px solid rgba(52, 211, 153, 0.45);">
             <input id="bank-filter-custom-only" type="checkbox" />
-            רק שאלות שהוספתי
+            🔒 מאגר שאלות פרטיות שכתבתי
           </label>
         </div>
 
@@ -2551,11 +2565,29 @@
           return;
         }
 
-        containerEl.innerHTML = list
-          .map((item) => {
-            const topicName = String(item.topic || '').trim();
-            const isChecked = selectedSet.has(topicName);
-            return `
+        const privateCount =
+          typeof adminState?.privateQuestionBankCount === 'number'
+            ? adminState.privateQuestionBankCount
+            : (list.find((item) => item.topic === 'שאלות פרטיות')?.count || 0);
+        const isPrivateChecked = selectedSet.has('__PRIVATE_BANK__');
+        const privateChipHtml = `
+          <button
+            type="button"
+            data-topic-chip="__PRIVATE_BANK__"
+            class="btn btn--sm ${isPrivateChecked ? 'btn--success' : 'btn--gold'}"
+            style="border-radius:999px; padding:0.34rem 0.85rem; font-size:0.84rem; font-weight:800;"
+          >
+            ${isPrivateChecked ? '☑️' : '🔒'} מאגר שאלות פרטיות שכתבתי <span style="opacity:0.85; font-size:0.76rem;">(${privateCount})</span>
+          </button>
+        `;
+
+        containerEl.innerHTML =
+          privateChipHtml +
+          list
+            .map((item) => {
+              const topicName = String(item.topic || '').trim();
+              const isChecked = selectedSet.has(topicName);
+              return `
               <button
                 type="button"
                 data-topic-chip="${escapeHtml(topicName)}"
@@ -2565,8 +2597,8 @@
                 ${isChecked ? '☑️' : '⬜'} ${escapeHtml(topicName)} <span style="opacity:0.75; font-size:0.75rem;">(${item.count})</span>
               </button>
             `;
-          })
-          .join('');
+            })
+            .join('');
       }
 
       function setNewQuizOption(opt) {
@@ -2951,7 +2983,12 @@
         }
 
         // Option א (default): Random Quiz from Existing Bank
-        const title = rawTitle || `טריוויה רנדומלית (${qCount} שאלות)`;
+        const privateOnly = Boolean(document.getElementById('new-quiz-random-private-only')?.checked);
+        const title =
+          rawTitle ||
+          (privateOnly
+            ? `שאלון ממאגר שאלות פרטיות (${qCount} שאלות)`
+            : `טריוויה רנדומלית (${qCount} שאלות)`);
         btnSubmitNewGame.disabled = true;
         const prevText = btnSubmitNewGame.textContent;
         btnSubmitNewGame.textContent = '⏳ מגריל שאלות מהמאגר הקיים...';
@@ -2964,6 +3001,7 @@
               timerSeconds: 20,
               points: 100,
               mode: 'random',
+              privateOnly,
               randomCount: qCount,
               difficulty,
               forceBankOnly: true,
@@ -3239,7 +3277,8 @@
           correctIndex: 0,
           image: '',
           points: 100,
-          timerSeconds: Number(draftSettings.timerSeconds) || 20
+          timerSeconds: Number(draftSettings.timerSeconds) || 20,
+          isUserWritten: true
         };
       }
 
@@ -4417,6 +4456,7 @@
           }
 
           // Option א (default): Random from Existing Bank
+          const privateOnly = Boolean(document.getElementById('existing-random-private-only')?.checked);
           btnExistingRunAdd.disabled = true;
           try {
             const res = await fetch('/api/admin/question-bank/raffle', {
@@ -4425,6 +4465,7 @@
               body: JSON.stringify({
                 count,
                 topic: 'all',
+                privateOnly,
                 difficulty,
                 timerSeconds: defaultTimer,
                 points: 100
@@ -4648,6 +4689,20 @@
         }
       });
 
+      questionsEditorList.addEventListener('input', (e) => {
+        const card = e.target.closest('.q-editor-card');
+        if (!card) return;
+        const idx = Number(card.getAttribute('data-q-idx'));
+        if (!Number.isInteger(idx) || !editableQuestions[idx]) return;
+        if (
+          e.target.matches('[data-field="question"]') ||
+          e.target.matches('[data-ans-idx]') ||
+          e.target.matches('input[type="radio"]')
+        ) {
+          editableQuestions[idx].isUserWritten = true;
+        }
+      });
+
       document.getElementById('btn-add-question').addEventListener('click', () => {
         syncEditorDomToArray();
         editableQuestions.push(createDefaultQuestionObject());
@@ -4672,8 +4727,18 @@
 
       document.getElementById('btn-save-questions').addEventListener('click', async () => {
         try {
-          await saveAllEditableQuestions();
-          showToast('כל השאלות, הניקוד והזמנים נשמרו בהצלחה!');
+          const data = await saveAllEditableQuestions();
+          const addedPrivate = Number(data?.privateSync?.addedCount || 0);
+          const updatedPrivate = Number(data?.privateSync?.updatedCount || 0);
+          if (addedPrivate > 0) {
+            showToast(
+              `כל השאלות נשמרו! 🔒 נוספו אוטומטית ${addedPrivate} שאלות שכתבת למאגר השאלות הפרטיות.`
+            );
+          } else if (updatedPrivate > 0) {
+            showToast('כל השאלות נשמרו וערוצי מאגר השאלות הפרטיות עודכנו אוטומטית!');
+          } else {
+            showToast('כל השאלות, הניקוד והזמנים נשמרו בהצלחה!');
+          }
         } catch (err) {
           showToast(err.message);
         }
@@ -4684,15 +4749,23 @@
         btnSaveQuestionsAndSettings.addEventListener('click', async () => {
           try {
             const data = await saveAllEditableQuestions();
+            const addedPrivate = Number(data?.privateSync?.addedCount || 0);
             if (settingsAfterCreateBanner) {
               settingsAfterCreateBanner.hidden = false;
               settingsAfterCreateBanner.style.display = 'flex';
               if (settingsAfterCreateTitle) {
-                settingsAfterCreateTitle.textContent = `✅ נשמרו ${data.questions.length} שאלות בשאלון!`;
+                settingsAfterCreateTitle.textContent =
+                  addedPrivate > 0
+                    ? `✅ נשמרו ${data.questions.length} שאלות בשאלון (ו-${addedPrivate} שאלות שכתבת נוספו אוטומטית למאגר השאלות הפרטיות)!`
+                    : `✅ נשמרו ${data.questions.length} שאלות בשאלון!`;
               }
             }
             switchSettingsTab('branding');
-            showToast('✅ השאלות נשמרו! כעת הגדירו זמנים, קבוצות, מוזיקה ורקע לשאלון.');
+            showToast(
+              addedPrivate > 0
+                ? `✅ השאלות נשמרו ו-${addedPrivate} שאלות שכתבת הועברו אוטומטית למאגר השאלות הפרטיות! כעת הגדירו זמנים, קבוצות, מוזיקה ורקע.`
+                : '✅ השאלות נשמרו! כעת הגדירו זמנים, קבוצות, מוזיקה ורקע לשאלון.'
+            );
           } catch (err) {
             showToast(err.message);
           }

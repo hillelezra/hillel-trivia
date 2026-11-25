@@ -1234,6 +1234,264 @@ function generateFullQuestionBank() {
     );
   }
 
+  // 16. Israeli Cinema & Television (קולנוע ישראלי — 50+ dedicated questions)
+  const ISRAELI_FILMS_DIRECTORS = [
+    ['גבעת חלפון אינה עונה', 'אסי דיין', 'Givat Halfon Eina Ona', 'Assi Dayan', 'easy'],
+    ['סלאח שבתי', 'אפרים קישון', 'Sallah Shabati', 'Ephraim Kishon', 'easy'],
+    ['השוטר אזולאי', 'אפרים קישון', 'The Policeman (HaShoter Azoulay)', 'Ephraim Kishon', 'easy'],
+    ['תעלת בלאומילך', 'אפרים קישון', 'The Blaumilch Canal', 'Ephraim Kishon', 'medium'],
+    ['חגיגה בסנוקר', 'בועז דוידזון', 'Hagiga B’Snooker', 'Boaz Davidson', 'easy'],
+    ['צ׳ארלי וחצי', 'בועז דוידזון', 'Charlie VeHetsi', 'Boaz Davidson', 'easy'],
+    ['אלכס חולה אהבה', 'בועז דוידזון', 'Alex Holeh Ahava', 'Boaz Davidson', 'easy'],
+    ['אסקימו לימון', 'בועז דוידזון', 'Eskimo Limon (Lemon Popsicle)', 'Boaz Davidson', 'easy'],
+    ['מציצים', 'אורי זוהר', 'Metzitzim (Peeping Toms)', 'Uri Zohar', 'medium'],
+    ['מבצע סבתא', 'דרור שאול', 'Operation Grandma (Mivtza Savta)', 'Dror Shaul', 'easy'],
+    ['בופור', 'יוסף סידר', 'Beaufort', 'Joseph Cedar', 'medium'],
+    ['הערת שוליים', 'יוסף סידר', 'Footnote (Hearat Shulayim)', 'Joseph Cedar', 'medium'],
+    ['ואלס עם באשיר', 'ארי פולמן', 'Waltz with Bashir', 'Ari Folman', 'medium'],
+    ['ביקור התזמורת', 'ערן קולירין', 'The Band’s Visit', 'Eran Kolirin', 'medium'],
+    ['אפס ביחסי אנוש', 'טליה לביא', 'Zero Motivation', 'Talia Lavie', 'easy'],
+    ['למלא את החלל', 'רמה בורשטיין', 'Fill the Void', 'Rama Burshtein', 'medium'],
+    ['עג׳מי', 'סכנדר קובטי וירון שני', 'Ajami', 'Scandar Copti and Yaron Shani', 'hard'],
+    ['לבנון', 'שמואל מעוז', 'Lebanon', 'Samuel Maoz', 'hard'],
+    ['פוקסטרוט', 'שמואל מעוז', 'Foxtrot', 'Samuel Maoz', 'hard'],
+    ['גט — המשפט של ויויאן אמסלם', 'רונית ושלומי אלקבץ', 'Gett: The Trial of Viviane Amsalem', 'Ronit and Shlomi Elkabetz', 'medium'],
+    ['סוף העולם שמאלה', 'אבי נשר', 'Turn Left at the End of the World', 'Avi Nesher', 'easy'],
+    ['הלהקה', 'אבי נשר', 'The Troupe (HaLahaka)', 'Avi Nesher', 'easy'],
+    ['דיזנגוף 99', 'אבי נשר', 'Dizengoff 99', 'Avi Nesher', 'medium'],
+    ['כנפיים שבורות', 'ניר ברגמן', 'Broken Wings', 'Nir Bergman', 'medium'],
+    ['חתונה מאוחרת', 'דובר קוסאשווילי', 'Late Marriage', 'Dover Kosashvili', 'medium']
+  ];
+  const allIsrDirectorsHe = Array.from(new Set(ISRAELI_FILMS_DIRECTORS.map((f) => f[1])));
+  const allIsrFilmsHe = ISRAELI_FILMS_DIRECTORS.map((f) => f[0]);
+  const isrDirHeToEn = Object.fromEntries(ISRAELI_FILMS_DIRECTORS.map((f) => [f[1], f[3]]));
+  const isrFilmHeToEn = Object.fromEntries(ISRAELI_FILMS_DIRECTORS.map((f) => [f[0], f[2]]));
+
+  for (const [filmHe, dirHe, filmEn, dirEn, diff] of ISRAELI_FILMS_DIRECTORS) {
+    const distDirHe = pickDistractors(allIsrDirectorsHe, dirHe, 3, rng);
+    const distDirEn = distDirHe.map((h) => isrDirHeToEn[h] || h);
+    const b1 = buildFourOptions(dirHe, distDirHe, dirEn, distDirEn, rng);
+    addItem(
+      'קולנוע ישראלי',
+      diff,
+      `מי ביים את הסרט הישראלי "${filmHe}"?`,
+      b1.answers,
+      b1.correctIndex,
+      `Who directed the Israeli film "${filmEn}"?`,
+      b1.answersEn
+    );
+  }
+
+  const ISRAELI_CINEMA_QUESTIONS = [
+    [
+      'easy',
+      'איזו שלישיית בדרנים מובילה את הסרט הישראלי הקלאסי "גבעת חלפון אינה עונה"?',
+      ['הגשש החיוור', 'שלישיית מה קשור', 'שלישיית גשר הירקון', 'החמישייה הקאמרית'],
+      0,
+      'Which comedy trio stars in the classic Israeli film "Givat Halfon Eina Ona"?',
+      ['HaGashash HaHiver', 'Ma Kashur Trio', 'Yarkon Bridge Trio', 'The Chamber Quintet']
+    ],
+    [
+      'easy',
+      'מי גילם את הדמות הראשית בסרט הישראלי "סלאח שבתי" (1964)?',
+      ['חיים טופול', 'שייקה אופיר', 'זאב רווח', 'יהודה ברקן'],
+      0,
+      'Who played the title character in the Israeli film "Sallah Shabati" (1964)?',
+      ['Chaim Topol', 'Shaike Ophir', 'Ze’ev Revach', 'Yehuda Barkan']
+    ],
+    [
+      'easy',
+      'מי גילם את דמותו של השוטר אברהם אזולאי בסרט "השוטר אזולאי"?',
+      ['שייקה אופיר', 'אורי זוהר', 'אריק איינשטיין', 'יוסי בנאי'],
+      0,
+      'Who portrayed Constable Abraham Azoulay in "The Policeman"?',
+      ['Shaike Ophir', 'Uri Zohar', 'Arik Einstein', 'Yossi Banai']
+    ],
+    [
+      'easy',
+      'באיזה סרט ישראלי מופיעות הדמויות של גבריאל וחנוכה (זאב רווח ויהודה ברקן)?',
+      ['חגיגה בסנוקר', 'צ׳ארלי וחצי', 'קזבלן', 'מבצע סבתא'],
+      0,
+      'In which Israeli film do the characters Gavriel and Hanukkah appear?',
+      ['Hagiga B’Snooker', 'Charlie VeHetsi', 'Kazablan', 'Operation Grandma']
+    ],
+    [
+      'easy',
+      'באיזה סרט ישראלי נאמר המשפט המפורסם "מי מתעסק? זה מיקו!"?',
+      ['צ׳ארלי וחצי', 'חגיגה בסנוקר', 'גבעת חלפון אינה עונה', 'אלכס חולה אהבה'],
+      0,
+      'In which Israeli film is the famous quote "Mi mit’asek? Zeh Miko!" said?',
+      ['Charlie VeHetsi', 'Hagiga B’Snooker', 'Givat Halfon Eina Ona', 'Alex Holeh Ahava']
+    ],
+    [
+      'easy',
+      'כיצד נקרא הפרס היוקרתי ביותר של האקדמיה הישראלית לקולנוע וטלוויזיה?',
+      ['פרס אופיר', 'פרס דקל הזהב', 'פרס אריה הזהב', 'פרס כינור דוד'],
+      0,
+      'What is the name of the Israeli Academy Award for excellence in cinema?',
+      ['Ophir Award', 'Palme d’Or', 'Golden Lion', 'Kinor David']
+    ],
+    [
+      'medium',
+      'על שם איזה שחקן ופנטומימאי דגול נקרא "פרס אופיר" של הקולנוע הישראלי?',
+      ['שייקה אופיר', 'אפרים קישון', 'מנחם גולן', 'אסי דיין'],
+      0,
+      'After which legendary Israeli actor is the Ophir Award named?',
+      ['Shaike Ophir', 'Ephraim Kishon', 'Menahem Golan', 'Assi Dayan']
+    ],
+    [
+      'easy',
+      'מי גילם את התפקיד הראשי במחזמר ובסרט הישראלי "קזבלן" (1973)?',
+      ['יהורם גאון', 'חיים טופול', 'אריק איינשטיין', 'גידי גוב'],
+      0,
+      'Who starred in the title role of the Israeli musical film "Kazablan" (1973)?',
+      ['Yehoram Gaon', 'Chaim Topol', 'Arik Einstein', 'Gidi Gov']
+    ],
+    [
+      'easy',
+      'כמה אחים מנסים לקבור את סבתם בקיבוץ בסרט הקאלט הישראלי "מבצע סבתא"?',
+      ['שלושה אחים (אלון, בני ועידן)', 'שני אחים', 'ארבעה אחים', 'חמישה אחים'],
+      0,
+      'How many brothers try to bury their grandmother in the cult Israeli film "Operation Grandma"?',
+      ['Three brothers (Alon, Benny, Idan)', 'Two brothers', 'Four brothers', 'Five brothers']
+    ],
+    [
+      'medium',
+      'איזה סרט אנימציה תיעודי ישראלי של ארי פולמן היה מועמד לפרס האוסקר וזכה בגלובוס הזהב?',
+      ['ואלס עם באשיר', 'בופור', 'עג׳מי', 'הערת שוליים'],
+      0,
+      'Which Israeli animated documentary by Ari Folman won a Golden Globe and was nominated for an Oscar?',
+      ['Waltz with Bashir', 'Beaufort', 'Ajami', 'Footnote']
+    ],
+    [
+      'easy',
+      'היכן מתרחשת עלילת הסרט הישראלי המצליח "אפס ביחסי אנוש"?',
+      ['במשרד שלישות בבסיס צבאי בנגב (שיזפון)', 'בבסיס חיל הים בחיפה', 'בלשכת גיוס תל השומר', 'במוצב ברמת הגולן'],
+      0,
+      'Where does the plot of the Israeli film "Zero Motivation" take place?',
+      ['An administration office at an IDF base in the Negev', 'Haifa naval base', 'Tel HaShomer recruitment center', 'Golan Heights outpost']
+    ],
+    [
+      'medium',
+      'מי גילם את דמותו של סרג׳יו קונסטנצה בסרט "גבעת חלפון אינה עונה"?',
+      ['ישראל (פולי) פוליאקוב', 'גברי בנאי', 'שייקה לוי', 'טוביה צפיר'],
+      0,
+      'Who played Sergio Constanza in "Givat Halfon Eina Ona"?',
+      ['Yisrael (Poli) Poliakov', 'Gavri Banai', 'Shaike Levi', 'Tuvia Tzafir']
+    ],
+    [
+      'medium',
+      'מי גילם את דמותו של ויקטור חסון בסרט "גבעת חלפון אינה עונה"?',
+      ['שייקה לוי', 'גברי בנאי', 'ישראל פוליאקוב', 'זאב רווח'],
+      0,
+      'Who played Victor Hasson in "Givat Halfon Eina Ona"?',
+      ['Shaike Levi', 'Gavri Banai', 'Yisrael Poliakov', 'Ze’ev Revach']
+    ],
+    [
+      'medium',
+      'באיזה סרט ישראלי של אורי זוהר ואריק איינשטיין נאמר המשפט "יבוא לך דינה, יבוא לך"?',
+      ['מציצים', 'שבלול', 'עיניים גדולות', 'הלהקה'],
+      0,
+      'In which Israeli film by Uri Zohar and Arik Einstein does the quote "Yavo lach Dina" appear?',
+      ['Metzitzim', 'Shablool', 'Big Eyes', 'The Troupe']
+    ],
+    [
+      'easy',
+      'באיזה סרט ישראלי מככבים השחקנים בנצי, מומו ויהודהל׳ה?',
+      ['אסקימו לימון', 'אלכס חולה אהבה', 'הלהקה', 'דיזנגוף 99'],
+      0,
+      'Which Israeli film features the characters Bentzi, Momo, and Yudale?',
+      ['Eskimo Limon (Lemon Popsicle)', 'Alex Holeh Ahava', 'The Troupe', 'Dizengoff 99']
+    ],
+    [
+      'medium',
+      'במה עוסק הסרט הישראלי עטור הפרסים "הערת שוליים" של יוסף סידר?',
+      ['יריבות בין אב ובנו שהם חוקרי תלמוד באוניברסיטה העברית', 'תזמורת משטרה מצרית שנוחתת בעיירה בנגב', 'מוצב צה"ל בלבנון לפני הנסיגה', 'להקה צבאית בתקופת מלחמת ההתשה'],
+      0,
+      'What is Joseph Cedar’s award-winning Israeli film "Footnote" about?',
+      ['Rivalry between a father and son who are Talmud scholars', 'An Egyptian police band in the Negev', 'An IDF outpost in Lebanon', 'A military entertainment troupe']
+    ],
+    [
+      'medium',
+      'במה עוסק הסרט הישראלי "ביקור התזמורת" בכיכובם של ששון גבאי ורונית אלקבץ?',
+      ['תזמורת משטרה מצרית שמגיעה בטעות לעיירה בנגב', 'להקה צבאית בשנות ה-70', 'תזמורת הפילהרמונית בסיבוב הופעות', 'פסטיבל זמר בערד'],
+      0,
+      'What is the Israeli film "The Band’s Visit" starring Sasson Gabai and Ronit Elkabetz about?',
+      ['An Egyptian police orchestra that accidentally arrives in a Negev town', 'A 1970s IDF military band', 'The Philharmonic on tour', 'Arad music festival']
+    ],
+    [
+      'medium',
+      'איזה סרט ישראלי זכה בפרס "אריה הזהב" בפסטיבל ונציה בשנת 2009?',
+      ['לבנון (של שמואל מעוז)', 'בופור (של יוסף סידר)', 'ואלס עם באשיר', 'ביקור התזמורת'],
+      0,
+      'Which Israeli film won the Golden Lion at the Venice Film Festival in 2009?',
+      ['Lebanon (by Samuel Maoz)', 'Beaufort', 'Waltz with Bashir', 'The Band’s Visit']
+    ],
+    [
+      'easy',
+      'איזה סרט ישראלי עוסק בחיילים ואזרחים במהלך מבצע יהונתן לשחרור החטופים באנטבה?',
+      ['מבצע יונתן (בבימוי מנחם גולן ובכיכוב יהורם גאון)', 'בופור', 'גבעת חלפון אינה עונה', 'לבנון'],
+      0,
+      'Which Israeli film depicts the Entebbe hostage rescue mission and was nominated for an Oscar?',
+      ['Operation Thunderbolt (Mivtza Yonatan)', 'Beaufort', 'Givat Halfon Eina Ona', 'Lebanon']
+    ],
+    [
+      'medium',
+      'איזו שחקנית ישראלית זכתה שלוש פעמים בפרס אופיר לשחקנית הראשית הטובה ביותר (בסרטים "שחור", "חתונה מאוחרת" ו"ביקור התזמורת")?',
+      ['רונית אלקבץ', 'גילה אלמגור', 'דאנה איבגי', 'ריימונד אמסלם'],
+      0,
+      'Which acclaimed Israeli actress won three Ophir Awards for Best Actress ("Sh’Chur", "Late Marriage", "The Band’s Visit")?',
+      ['Ronit Elkabetz', 'Gila Almagor', 'Dana Ivgy', 'Reymond Amsalem']
+    ],
+    [
+      'medium',
+      'מי כתבה ושיחקה בסרט האוטוביוגרפי הישראלי "הקיץ של אביה"?',
+      ['גילה אלמגור', 'חנה מרון', 'אורנה פורת', 'רבקה מיכאלי'],
+      0,
+      'Who wrote and starred in the autobiographical Israeli film "The Summer of Aviya"?',
+      ['Gila Almagor', 'Hanna Maron', 'Orna Porat', 'Rivka Michaeli']
+    ],
+    [
+      'easy',
+      'מהו שמה של הדמות שמגלם טוביה צפיר בסרט "גבעת חלפון אינה עונה"?',
+      ['המ"פ שמגר', 'סרג׳יו קונסטנצה', 'ויקטור חסון', 'ג׳ינג׳י'],
+      0,
+      'What is the name of the character played by Tuvia Tzafir in "Givat Halfon Eina Ona"?',
+      ['Company Commander Shamgar', 'Sergio Constanza', 'Victor Hasson', 'Gingi']
+    ],
+    [
+      'easy',
+      'באיזה סרט ישראלי מופיעה הדמות של פארוק ("תסגור את התריס")?',
+      ['אלכס חולה אהבה', 'חגיגה בסנוקר', 'צ׳ארלי וחצי', 'משפחת צנעני'],
+      0,
+      'In which Israeli film does the character Farouk ("Close the shutter!") appear?',
+      ['Alex Holeh Ahava', 'Hagiga B’Snooker', 'Charlie VeHetsi', 'Mishpachat Tzan’ani']
+    ],
+    [
+      'medium',
+      'על איזה ספר של רון לשם מבוסס הסרט הישראלי "בופור"?',
+      ['אם יש גן עדן', 'מישהו לרוץ איתו', 'סיפור על אהבה וחושך', 'שתי שלגיות'],
+      0,
+      'On which novel by Ron Leshem is the Israeli film "Beaufort" based?',
+      ['If There Is a Heaven (Im Yesh Gan Eden)', 'Someone to Run With', 'A Tale of Love and Darkness', 'Two Snow Whites']
+    ],
+    [
+      'medium',
+      'מי הצמד שיצר וכתב את סדרת הטלוויזיה הישראלית הבין-לאומית "פאודה"?',
+      ['ליאור רז ואבי יששכרוף', 'חגי לוי ואורי סיון', 'גידי רף וניר ברגמן', 'אסי כהן וגורי אלפי'],
+      0,
+      'Which duo co-created the hit Israeli television series "Fauda"?',
+      ['Lior Raz and Avi Issacharoff', 'Hagai Levi and Ori Sivan', 'Gideon Raff and Nir Bergman', 'Assi Cohen and Guri Alfi']
+    ]
+  ];
+
+  for (const [diff, qHe, ansHe, corrIdx, qEn, ansEn] of ISRAELI_CINEMA_QUESTIONS) {
+    const distractorsHe = ansHe.filter((_, i) => i !== corrIdx);
+    const distractorsEn = ansEn.filter((_, i) => i !== corrIdx);
+    const b = buildFourOptions(ansHe[corrIdx], distractorsHe, ansEn[corrIdx], distractorsEn, rng);
+    addItem('קולנוע ישראלי', diff, qHe, b.answers, b.correctIndex, qEn, b.answersEn);
+  }
+
   return bank;
 }
 

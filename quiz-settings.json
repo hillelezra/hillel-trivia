@@ -1,7 +1,7 @@
 {
-  "id": "game-1795459873454-79f67b",
-  "code": "1013",
-  "title": "ג'מניי",
+  "id": "game-1795541161667-44fe71",
+  "code": "1015",
+  "title": "ניסוי 2 24/11",
   "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
   "headerImage": "",
   "backgroundImage": "",
@@ -11,7 +11,7 @@
   "autoRevealOnTimeout": true,
   "teamsEnabled": false,
   "teams": [],
-  "activeGameId": "game-1795459873454-79f67b",
+  "activeGameId": "game-1795541161667-44fe71",
   "games": [
     {
       "id": "game-default",
@@ -4813,8 +4813,10 @@
           "timerSeconds": 20
         }
       ],
-      "code": "1012",
-      "savedPlayers": []
+      "savedPlayers": [],
+      "playHistory": [],
+      "lastFinishedAt": null,
+      "code": "1012"
     },
     {
       "id": "game-1795459873454-79f67b",
@@ -4936,7 +4938,1319 @@
           "timerSeconds": 20
         }
       ],
-      "code": "1013",
+      "savedPlayers": [],
+      "playHistory": [],
+      "lastFinishedAt": null,
+      "code": "1013"
+    },
+    {
+      "id": "game-1795540718335-f937f4",
+      "title": "ניסוי 24/11",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "backgroundMusic": "__builtin_synth__",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 20,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "מה היה שמו של המבצע לחילוץ החטופים באנטבה בשנת 1976?",
+          "answers": [
+            "מבצע שלמה",
+            "מבצע כדור הרעם (מבצע יונתן)",
+            "מבצע משה",
+            "מבצע אביב נעורים"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=1",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי היה ראש הממשלה הראשון של מדינת ישראל?",
+          "answers": [
+            "חיים ויצמן",
+            "משה שרת",
+            "לוי אשכול",
+            "דוד בן-גוריון"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=2",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהו הסמל הרשמי של מדינת ישראל?",
+          "answers": [
+            "לוחות הברית ויונה",
+            "מגן דוד ושני אריות",
+            "מנורת שבעת הקנים ושני ענפי זית",
+            "שופר וענף תמר"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=3",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים רובע האמנים ובתי הכנסת העתיקים?",
+          "answers": [
+            "צפת",
+            "דימונה",
+            "באר שבע",
+            "עכו"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=4",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים כיכר הבימה ונמל יפו העתיק?",
+          "answers": [
+            "הרצליה",
+            "עכו",
+            "תל אביב-יפו",
+            "מצדה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=5",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים פארק קצרין העתיקה ובית הבד בגולן?",
+          "answers": [
+            "ראשון לציון",
+            "קצרין",
+            "עין גדי",
+            "נתניה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=6",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים מערת המכפלה?",
+          "answers": [
+            "קצרין",
+            "אשקלון",
+            "ראש הנקרה",
+            "חברון"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=7",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "עם איזו מדינה חתמה ישראל על הסכם שלום בשנת 1979?",
+          "answers": [
+            "מצרים",
+            "לבנון",
+            "ירדן",
+            "מרוקו"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=8",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים מרינה הרצליה ותל אפולוניה (ארסוף)?",
+          "answers": [
+            "ירושלים",
+            "תל אביב-יפו",
+            "צפת",
+            "הרצליה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=9",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים אם המושבות וגשר המיתרים?",
+          "answers": [
+            "מטולה",
+            "אשדוד",
+            "פתח תקווה",
+            "הרצליה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=10",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים הגן הלאומי והשער הכנעני הקדום בעולם?",
+          "answers": [
+            "בית שאן",
+            "אילת",
+            "אשקלון",
+            "חיפה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=11",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי חיבר את מילות ההמנון הלאומי \"התקווה\"?",
+          "answers": [
+            "חיים נחמן ביאליק",
+            "נפתלי הרץ אימבר",
+            "שאול טשרניחובסקי",
+            "נתן אלתרמן"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=12",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים מוזיאון הילדים ומוזיאון העיצוב?",
+          "answers": [
+            "חולון",
+            "בית שאן",
+            "נהריה",
+            "נתניה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=13",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מבצע צבאי נודע גם בשם \"מבצע יונתן\" בשנת 1976?",
+          "answers": [
+            "מבצע אנטבה",
+            "מבצע קדש",
+            "מבצע משה",
+            "מבצע שלמה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=14",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזה תאריך עברי הוכרזה הקמת מדינת ישראל?",
+          "answers": [
+            "כ\"ח באייר תש\"ח",
+            "כ\"ט בנובמבר תש\"ח",
+            "י\"ד בניסן תש\"ח",
+            "ה׳ באייר תש\"ח"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=15",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים מצוקי החוף וטיילת הראשונים?",
+          "answers": [
+            "טבריה",
+            "חיפה",
+            "זכרון יעקב",
+            "נתניה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=16",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי היה הנשיא הראשון של מדינת ישראל?",
+          "answers": [
+            "יצחק בן-צבי",
+            "אפרים קציר",
+            "זלמן שזר",
+            "חיים ויצמן"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=17",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים הנמל המסחרי הגדול ומצודת אשדוד-ים?",
+          "answers": [
+            "עכו",
+            "חיפה",
+            "אשדוד",
+            "מטולה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=18",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים צריף בן-גוריון וקבר דוד ופולה בן-גוריון?",
+          "answers": [
+            "אשקלון",
+            "שדה בוקר",
+            "מצדה",
+            "צפת"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=19",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים הכותל המערבי ומשכן הכנסת?",
+          "answers": [
+            "תל אביב-יפו",
+            "מצפה רמון",
+            "זכרון יעקב",
+            "ירושלים"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=20",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים העיר הרומית-ביזנטית סקיתופוליס?",
+          "answers": [
+            "עין גדי",
+            "ראשון לציון",
+            "בית שאן",
+            "הרצליה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=21",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזו מושבה כונתה \"אם המושבות\"?",
+          "answers": [
+            "ראש פינה",
+            "נס ציונה",
+            "זכרון יעקב",
+            "פתח תקווה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=22",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים מכתש רמון וחוות האלפקות?",
+          "answers": [
+            "ירושלים",
+            "אילת",
+            "מצפה רמון",
+            "אשדוד"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=23",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים ממשית העתיקה והכור הגרעיני בנגב?",
+          "answers": [
+            "פתח תקווה",
+            "זכרון יעקב",
+            "נתניה",
+            "דימונה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=24",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו שנה התרחשה מלחמת ששת הימים?",
+          "answers": [
+            "1982",
+            "1967",
+            "1956",
+            "1973"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=25",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מבצע העלה את יהודי תימן לישראל בשנים 1949–1950?",
+          "answers": [
+            "מבצע מרבד הקסמים (על כנפי נשרים)",
+            "מבצע משה",
+            "מבצע יכין",
+            "מבצע עזרא ונחמיה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=26",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים מכון ויצמן למדע ובית הנשיא חיים ויצמן?",
+          "answers": [
+            "מצפה רמון",
+            "רחובות",
+            "עכו",
+            "מטולה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=27",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים התיאטרון הרומי והנמל של הורדוס?",
+          "answers": [
+            "קיסריה",
+            "שדה בוקר",
+            "דימונה",
+            "בית שאן"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=28",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזה מבצע הוטסו מעל 14,000 מיהודי אתיופיה לישראל תוך 36 שעות בשנת 1991?",
+          "answers": [
+            "מבצע שלמה",
+            "מבצע משה",
+            "מבצע מרבד הקסמים",
+            "מבצע עזרא ונחמיה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=29",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים באר אברהם ואוניברסיטת בן-גוריון?",
+          "answers": [
+            "באר שבע",
+            "אשדוד",
+            "מצדה",
+            "קיסריה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=30",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה סופר ישראלי זכה בפרס נובל לספרות בשנת 1966?",
+          "answers": [
+            "ש\"י עגנון",
+            "עמוס עוז",
+            "א.ב. יהושע",
+            "דוד גרוסמן"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=31",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי היה האסטרונאוט הישראלי הראשון בחלל?",
+          "answers": [
+            "עזר ויצמן",
+            "אילן רמון",
+            "איתן סטיבה",
+            "דני חלוץ"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=space&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=32",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה מבצע העלה את יהודי עיראק לישראל בשנים 1950–1951?",
+          "answers": [
+            "מבצע שלמה",
+            "מבצע מרבד הקסמים",
+            "מבצע עזרא ונחמיה",
+            "מבצע חירם"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=33",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי היה מחיה השפה העברית בעת החדשה ומחבר המילון העברי המודרני?",
+          "answers": [
+            "אליעזר בן-יהודה",
+            "מנדלי מוכר ספרים",
+            "אחד העם",
+            "חיים נחמן ביאליק"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=34",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה יישוב היה מושב העובדים הראשון בארץ ישראל (בשנת 1921)?",
+          "answers": [
+            "כפר יהושע",
+            "כפר ויתקין",
+            "באר טוביה",
+            "נהלל"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=35",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים היקב ההיסטורי ובאר המושבה הראשונה?",
+          "answers": [
+            "דימונה",
+            "בית שאן",
+            "ראשון לציון",
+            "טבריה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=36",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר הוכרזה הקמת מדינת ישראל בה׳ באייר תש\"ח?",
+          "answers": [
+            "ירושלים",
+            "תל אביב",
+            "חיפה",
+            "ראשון לציון"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=37",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים שדרות הגעתון ונחל הגעתון החוצה את העיר?",
+          "answers": [
+            "ערד",
+            "אילת",
+            "ראש הנקרה",
+            "נהריה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=38",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי כתב את מילות ההמנון הלאומי \"התקווה\"?",
+          "answers": [
+            "שאול טשרניחובסקי",
+            "נתן אלתרמן",
+            "נפתלי הרץ אימבר",
+            "חיים נחמן ביאליק"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=39",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים מפל התנור ומרכז קנדה בקצה הצפוני?",
+          "answers": [
+            "הרצליה",
+            "זכרון יעקב",
+            "אשקלון",
+            "מטולה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=40",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי היה נשיאה הראשון של מדינת ישראל?",
+          "answers": [
+            "דוד בן-גוריון",
+            "יצחק בן-צבי",
+            "חיים ויצמן",
+            "זלמן שזר"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=41",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר בשווייץ התקיים הקונגרס הציוני הראשון ב-1897?",
+          "answers": [
+            "ברן",
+            "ציריך",
+            "ז׳נבה",
+            "באזל"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=42",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים המצפה התת-ימי ושונית האלמוגים?",
+          "answers": [
+            "טבריה",
+            "חברון",
+            "אילת",
+            "חיפה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=43",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איפה נערך טקס הכרזת העצמאות של מדינת ישראל?",
+          "answers": [
+            "בבניין הסוכנות היהודית",
+            "בתיאטרון הבימה",
+            "בבית דיזנגוף בשדרות רוטשילד בתל אביב",
+            "בבניין הכנסת בירושלים"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=44",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי היה חוזה המדינה שחיבר את הספר \"מדינת היהודים\"?",
+          "answers": [
+            "בנימין זאב הרצל",
+            "מקס נורדאו",
+            "אחד העם",
+            "זאב ז׳בוטינסקי"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=45",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו שנה הוכרזה הקמת מדינת ישראל?",
+          "answers": [
+            "1948",
+            "1947",
+            "1949",
+            "1950"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=46",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה היה המטבע הרשמי של ישראל מיד לאחר החלפת הלירה בשנת 1980?",
+          "answers": [
+            "שקל (ישן)",
+            "מיל",
+            "שקל חדש",
+            "פרוטה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=culture&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=47",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו שנה נחתם הסכם השלום בין ישראל למצרים?",
+          "answers": [
+            "1982",
+            "1979",
+            "1994",
+            "1973"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=48",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים מבצר הורדוס במדבר יהודה מול ים המלח?",
+          "answers": [
+            "מצדה",
+            "חיפה",
+            "רחובות",
+            "תל אביב-יפו"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=49",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים הגנים הבהאיים והר הכרמל?",
+          "answers": [
+            "מצדה",
+            "ראשון לציון",
+            "קיסריה",
+            "חיפה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%90%D7%A0%D7%99%20%D7%A8%D7%95%D7%A6%D7%94%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%A2%D7%9C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C%D7%99&s=50",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי פיתח, גילה או המציא את הטבלה המחזורית?",
+          "answers": [
+            "דמיטרי מנדלייב",
+            "גוליילמו מרקוני",
+            "אלברט איינשטיין",
+            "צ׳ארלס דארווין"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=tech&badge=%D7%98%D7%9B%D7%A0%D7%95%D7%9C%D7%95%D7%92%D7%99%D7%94%20%D7%95%D7%94%D7%9E%D7%A6%D7%90%D7%95%D7%AA&s=1",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Who invented, developed, or discovered The Periodic Table of Elements?",
+          "answersEn": [
+            "Dmitri Mendeleev",
+            "Guglielmo Marconi",
+            "Albert Einstein",
+            "Charles Darwin"
+          ]
+        },
+        {
+          "question": "איזה מהספרים הבאים נכתב על ידי ויקטור הוגו?",
+          "answers": [
+            "אוליבר טוויסט",
+            "הנסיך הקטן",
+            "עשרים אלף מיל מתחת למים",
+            "עלובי החיים"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%AA%D7%A8%D7%91%D7%95%D7%AA%2C%20%D7%A7%D7%95%D7%9C%D7%A0%D7%95%D7%A2%20%D7%95%D7%9E%D7%95%D7%96%D7%99%D7%A7%D7%94&s=2",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Which of the following books was written by Victor Hugo?",
+          "answersEn": [
+            "Oliver Twist",
+            "The Little Prince",
+            "Twenty Thousand Leagues Under the Seas",
+            "Les Miserables"
+          ]
+        },
+        {
+          "question": "מהו החומש השלישי בתורה?",
+          "answers": [
+            "שמות",
+            "במדבר",
+            "ויקרא",
+            "דברים"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=holidays&badge=%D7%AA%D7%A0%22%D7%9A%20%D7%95%D7%9E%D7%95%D7%A8%D7%A9%D7%AA&s=3",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "What is the third book of the Torah?",
+          "answersEn": [
+            "Exodus",
+            "Numbers",
+            "Leviticus (Vayikra)",
+            "Deuteronomy"
+          ]
+        },
+        {
+          "question": "באיזו עיר בשווייץ התקיים הקונגרס הציוני הראשון ב-1897?",
+          "answers": [
+            "ז׳נבה",
+            "באזל",
+            "ציריך",
+            "ברן"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=4",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "In which Swiss city was the First Zionist Congress held in 1897?",
+          "answersEn": [
+            "Geneva",
+            "Basel",
+            "Zurich",
+            "Bern"
+          ]
+        },
+        {
+          "question": "קהיר היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "קזחסטן",
+            "אזרבייג׳ן",
+            "מצרים",
+            "איטליה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=5",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Cairo is the capital of which country?",
+          "answersEn": [
+            "Kazakhstan",
+            "Azerbaijan",
+            "Egypt",
+            "Italy"
+          ]
+        },
+        {
+          "question": "מה משמעות השם מג'ד אל שמס",
+          "answers": [
+            "אורז ועדשים",
+            "הילולת השמש",
+            "מטריית שמש",
+            "חוף העגבניות"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה מהבאים אינו מותג של במבה",
+          "answers": [
+            "באגסי",
+            "לולו",
+            "בוני",
+            "אשבל"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו שנה התרחשה מלחמת ששת הימים?",
+          "answers": [
+            "1956",
+            "1973",
+            "1967",
+            "1982"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=1",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "In which year did the Six-Day War take place?",
+          "answersEn": [
+            "1956",
+            "1973",
+            "1967",
+            "1982"
+          ]
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים התיאטרון הרומי והנמל של הורדוס?",
+          "answers": [
+            "קיסריה",
+            "שדה בוקר",
+            "דימונה",
+            "בית שאן"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=2",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "In which Israeli city or site can you find The Roman Theater and Herod’s Harbor?",
+          "answersEn": [
+            "Caesarea",
+            "Sde Boker",
+            "Dimona",
+            "Beit Shean"
+          ]
+        },
+        {
+          "question": "מהו הסמל הכימי של היסוד ראדון?",
+          "answers": [
+            "Ca",
+            "W",
+            "Sn",
+            "Rn"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=science&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=3",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "What is the chemical symbol for the element Radon?",
+          "answersEn": [
+            "Ca",
+            "W",
+            "Sn",
+            "Rn"
+          ]
+        },
+        {
+          "question": "מי היה האסטרונאוט הישראלי הראשון בחלל?",
+          "answers": [
+            "איתן סטיבה",
+            "אילן רמון",
+            "עזר ויצמן",
+            "דני חלוץ"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=space&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=4",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Who was the first Israeli astronaut in space?",
+          "answersEn": [
+            "Eytan Stibbe",
+            "Ilan Ramon",
+            "Ezer Weizman",
+            "Dan Halutz"
+          ]
+        },
+        {
+          "question": "היכן נמצא או עובר נהר הדנובה?",
+          "answers": [
+            "לונדון, בריטניה",
+            "וינה ובודפשט (מרכז אירופה)",
+            "גבול ארצות הברית וקנדה",
+            "יפן"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=5",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Where is The Danube River located?",
+          "answersEn": [
+            "London, United Kingdom",
+            "Vienna and Budapest (Central Europe)",
+            "USA-Canada border",
+            "Japan"
+          ]
+        },
+        {
+          "question": "איזה יסוד כימי מסומן בטבלה המחזורית באותיות \"Rn\" (מספר אטומי 86)?",
+          "answers": [
+            "ראדון",
+            "ניאון",
+            "ברזל",
+            "זרחן"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=science&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=6",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Which chemical element has the symbol \"Rn\" (atomic number 86)?",
+          "answersEn": [
+            "Radon",
+            "Neon",
+            "Iron",
+            "Phosphorus"
+          ]
+        },
+        {
+          "question": "באיזו יחידת מידה פיזיקלית מודדים הספק חשמלי או מכני?",
+          "answers": [
+            "וואט",
+            "הרץ",
+            "שנייה",
+            "שנת אור"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%9E%D7%93%D7%A2%20%D7%95%D7%98%D7%91%D7%A2&s=7",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Which unit of measurement is used to measure Power?",
+          "answersEn": [
+            "Watt",
+            "Hertz",
+            "Second",
+            "Light-year"
+          ]
+        },
+        {
+          "question": "ניקוסיה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "יפן",
+            "קפריסין",
+            "אירלנד",
+            "בריטניה"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=8",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Nicosia is the capital of which country?",
+          "answersEn": [
+            "Japan",
+            "Cyprus",
+            "Ireland",
+            "United Kingdom"
+          ]
+        },
+        {
+          "question": "היכן בעולם נמצא האתר המפורסם \"החומה הסינית הגדולה\"?",
+          "answers": [
+            "אתונה, יוון",
+            "קמבודיה",
+            "ברלין, גרמניה",
+            "סין"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=9",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Where in the world is the famous landmark \"The Great Wall of China\" located?",
+          "answersEn": [
+            "Athens, Greece",
+            "Cambodia",
+            "Berlin, Germany",
+            "China"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של פרגוואי?",
+          "answers": [
+            "אסונסיון",
+            "קייב",
+            "ברלין",
+            "בריסל"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=10",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "What is the capital city of Paraguay?",
+          "answersEn": [
+            "Asuncion",
+            "Kyiv",
+            "Berlin",
+            "Brussels"
+          ]
+        }
+      ],
+      "code": "1014",
+      "savedPlayers": []
+    },
+    {
+      "id": "game-1795541161667-44fe71",
+      "title": "ניסוי 2 24/11",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "backgroundMusic": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 20,
+      "autoRevealOnTimeout": true,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "מי נמכר על ידי אחיו למצרים והפך למשנה למלך פרעה?",
+          "answers": [
+            "ראובן",
+            "יהודה",
+            "יוסף",
+            "בנימין"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%AA%D7%A0%22%D7%9A%20%D7%95%D7%9E%D7%95%D7%A8%D7%A9%D7%AA&s=1",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Who was sold by his brothers to Egypt and became viceroy to Pharaoh?",
+          "answersEn": [
+            "Reuben",
+            "Judah",
+            "Joseph",
+            "Benjamin"
+          ]
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים הגן הלאומי והשער הכנעני הקדום בעולם?",
+          "answers": [
+            "חיפה",
+            "אילת",
+            "אשקלון",
+            "בית שאן"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=2",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "In which Israeli city or site can you find National Park with the oldest arched Canaanite gate?",
+          "answersEn": [
+            "Haifa",
+            "Eilat",
+            "Ashkelon",
+            "Beit Shean"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של איראן?",
+          "answers": [
+            "אבוג׳ה",
+            "טהראן",
+            "לובליאנה",
+            "טאלין"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=3",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "What is the capital city of Iran?",
+          "answersEn": [
+            "Abuja",
+            "Tehran",
+            "Ljubljana",
+            "Tallinn"
+          ]
+        },
+        {
+          "question": "באיזו יבשת שוכנת המדינה רוסיה?",
+          "answers": [
+            "אמריקה הצפונית",
+            "אמריקה הדרומית",
+            "אירופה",
+            "אוקיאניה"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=4",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "On which continent is Russia located?",
+          "answersEn": [
+            "North America",
+            "South America",
+            "Europe",
+            "Oceania"
+          ]
+        },
+        {
+          "question": "ברטיסלבה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "פרו",
+            "בריטניה",
+            "סנגל",
+            "סלובקיה"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=5",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Bratislava is the capital of which country?",
+          "answersEn": [
+            "Peru",
+            "United Kingdom",
+            "Senegal",
+            "Slovakia"
+          ]
+        },
+        {
+          "question": "איזה יישוב היה מושב העובדים הראשון בארץ ישראל (בשנת 1921)?",
+          "answers": [
+            "נהלל",
+            "כפר יהושע",
+            "באר טוביה",
+            "כפר ויתקין"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=6",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Which was the first Moshav Ovdim established in Israel (in 1921)?",
+          "answersEn": [
+            "Nahalal",
+            "Kfar Yehoshua",
+            "Beer Tuvia",
+            "Kfar Vitkin"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של גרמניה?",
+          "answers": [
+            "ברלין",
+            "אולן בטור",
+            "אסטנה",
+            "ג׳קרטה"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=7",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "What is the capital city of Germany?",
+          "answersEn": [
+            "Berlin",
+            "Ulaanbaatar",
+            "Astana",
+            "Jakarta"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של עיראק?",
+          "answers": [
+            "בודפשט",
+            "בגדאד",
+            "ביירות",
+            "ירוואן"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=8",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "What is the capital city of Iraq?",
+          "answersEn": [
+            "Budapest",
+            "Baghdad",
+            "Beirut",
+            "Yerevan"
+          ]
+        },
+        {
+          "question": "אדיס אבבה היא עיר הבירה של איזו מדינה?",
+          "answers": [
+            "אזרבייג׳ן",
+            "ניגריה",
+            "אתיופיה",
+            "ספרד"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=9",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Addis Ababa is the capital of which country?",
+          "answersEn": [
+            "Azerbaijan",
+            "Nigeria",
+            "Ethiopia",
+            "Spain"
+          ]
+        },
+        {
+          "question": "היכן נמצא או עובר נחל קישון?",
+          "answers": [
+            "רומא, איטליה",
+            "עמק יזרעאל ומפרץ חיפה",
+            "הרי האלפים (גבול צרפת-איטליה)",
+            "הגליל העליון, ישראל"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=10",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Where is The Kishon River located?",
+          "answersEn": [
+            "Rome, Italy",
+            "Jezreel Valley and Haifa Bay",
+            "The Alps (France-Italy border)",
+            "Upper Galilee, Israel"
+          ]
+        },
+        {
+          "question": "איזה ספר בתנ\"ך מוגדר בתור ספר המתאר את מלכות שלמה, פילוג המלוכה ומלכי יהודה וישראל?",
+          "answers": [
+            "ויקרא",
+            "קהלת",
+            "מלכים",
+            "בראשית"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=israel&badge=%D7%AA%D7%A0%22%D7%9A%20%D7%95%D7%9E%D7%95%D7%A8%D7%A9%D7%AA&s=11",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Which biblical book is described as: King Solomon and the Kings of Judah and Israel?",
+          "answersEn": [
+            "Leviticus (Vayikra)",
+            "Ecclesiastes (Kohelet)",
+            "Book of Kings",
+            "Genesis (Bereishit)"
+          ]
+        },
+        {
+          "question": "באיזו עיר או אתר בישראל נמצאים העיר הרומית-ביזנטית סקיתופוליס?",
+          "answers": [
+            "הרצליה",
+            "עין גדי",
+            "בית שאן",
+            "ראשון לציון"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=12",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "In which Israeli city or site can you find Scythopolis Roman-Byzantine ruins?",
+          "answersEn": [
+            "Herzliya",
+            "Ein Gedi",
+            "Beit Shean",
+            "Rishon LeZion"
+          ]
+        },
+        {
+          "question": "מהי עיר הבירה של פולין?",
+          "answers": [
+            "עמאן",
+            "אוסלו",
+            "ורשה",
+            "פנמה סיטי"
+          ],
+          "correctIndex": 2,
+          "image": "/api/question-illustration?theme=globe&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=13",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "What is the capital city of Poland?",
+          "answersEn": [
+            "Amman",
+            "Oslo",
+            "Warsaw",
+            "Panama City"
+          ]
+        },
+        {
+          "question": "באיזו עיר בשווייץ התקיים הקונגרס הציוני הראשון ב-1897?",
+          "answers": [
+            "ברן",
+            "ז׳נבה",
+            "ציריך",
+            "באזל"
+          ],
+          "correctIndex": 3,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%94%D7%99%D7%A1%D7%98%D7%95%D7%A8%D7%99%D7%94%20%D7%A9%D7%9C%20%D7%99%D7%A9%D7%A8%D7%90%D7%9C&s=14",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "In which Swiss city was the First Zionist Congress held in 1897?",
+          "answersEn": [
+            "Bern",
+            "Geneva",
+            "Zurich",
+            "Basel"
+          ]
+        },
+        {
+          "question": "איזה מהאתרים הבאים מזוהה עם ראשון לציון (מישור החוף הדרומי)?",
+          "answers": [
+            "המצפה התת-ימי ושונית האלמוגים",
+            "היקב ההיסטורי ובאר המושבה הראשונה",
+            "ממשית העתיקה והכור הגרעיני בנגב",
+            "שמורת נחל דוד, נחל ערוגות ובית הכנסת העתיק"
+          ],
+          "correctIndex": 1,
+          "image": "/api/question-illustration?theme=ocean&badge=%D7%92%D7%99%D7%90%D7%95%D7%92%D7%A8%D7%A4%D7%99%D7%94%20%D7%95%D7%A2%D7%95%D7%9C%D7%9D&s=15",
+          "points": 100,
+          "timerSeconds": 20,
+          "questionEn": "Which of the following landmarks is associated with Rishon LeZion (Coastal Plain)?",
+          "answersEn": [
+            "The Underwater Observatory and Coral Reef",
+            "Carmel Historic Winery and the First Well",
+            "Near ancient Mamshit Nabataean city",
+            "Nahal David oasis and ancient synagogue"
+          ]
+        }
+      ],
+      "code": "1015",
       "savedPlayers": []
     }
   ]
