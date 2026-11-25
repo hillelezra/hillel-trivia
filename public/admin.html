@@ -2616,35 +2616,124 @@
         'json-file': document.getElementById('new-opt-panel-json-file')
       };
 
+      function normalizeIncomingJsonQuestion(q) {
+        if (!q || typeof q !== 'object') return null;
+        const question = String(
+          q.question ?? q.q ?? q.text ?? q.title ?? q.prompt ?? ''
+        ).trim();
+        if (!question) return null;
+
+        let rawAnswers = null;
+        if (Array.isArray(q.answers)) rawAnswers = q.answers;
+        else if (Array.isArray(q.options)) rawAnswers = q.options;
+        else if (Array.isArray(q.choices)) rawAnswers = q.choices;
+        else if (Array.isArray(q.variants)) rawAnswers = q.variants;
+        else if (Array.isArray(q.items)) rawAnswers = q.items;
+        else if (q.a !== undefined || q.b !== undefined) rawAnswers = [q.a, q.b, q.c, q.d];
+        else if (q.option1 !== undefined || q.option2 !== undefined) {
+          rawAnswers = [q.option1, q.option2, q.option3, q.option4];
+        }
+
+        const answers = Array.isArray(rawAnswers)
+          ? rawAnswers.slice(0, 4).map((a) => String(a ?? '').trim())
+          : [];
+        if (answers.length < 4 || answers.some((a) => !a)) return null;
+
+        const rawCorrect =
+          q.correctIndex ??
+          q.correctAnswer ??
+          q.correct ??
+          q.correctOption ??
+          q.answerIndex ??
+          q.rightAnswer ??
+          q.answer;
+
+        let correctIndex = 0;
+        if (typeof rawCorrect === 'number' && Number.isInteger(rawCorrect)) {
+          if (rawCorrect >= 0 && rawCorrect <= 3) correctIndex = rawCorrect;
+          else if (rawCorrect === 4) correctIndex = 3;
+        } else if (typeof rawCorrect === 'string') {
+          const trimmed = rawCorrect.trim();
+          if (/^[0-3]$/.test(trimmed)) {
+            correctIndex = Number(trimmed);
+          } else if (trimmed === '4') {
+            correctIndex = 3;
+          } else {
+            const letterMap = { א: 0, ב: 1, ג: 2, ד: 3, a: 0, b: 1, c: 2, d: 3 };
+            const cleanLetter = trimmed.replace(/[.):\-–]/g, '').trim().toLowerCase();
+            if (cleanLetter in letterMap) {
+              correctIndex = letterMap[cleanLetter];
+            } else {
+              const matchIdx = answers.findIndex(
+                (ans) => ans.toLowerCase() === trimmed.toLowerCase()
+              );
+              if (matchIdx !== -1) correctIndex = matchIdx;
+            }
+          }
+        }
+
+        const rawDiff = String(q.difficulty || 'medium').trim().toLowerCase();
+        let difficulty = 'medium';
+        if (rawDiff === 'easy' || rawDiff === 'קל' || rawDiff === 'קלה') difficulty = 'easy';
+        else if (rawDiff === 'hard' || rawDiff === 'קשה') difficulty = 'hard';
+
+        return {
+          question,
+          answers,
+          correctIndex,
+          difficulty,
+          topic: typeof q.topic === 'string' && q.topic.trim() ? q.topic.trim() : '',
+          image: typeof q.image === 'string' ? q.image.trim() : '',
+          points: Number(q.points) >= 1 ? Number(q.points) : 100,
+          timerSeconds: Number(q.timerSeconds) >= 5 ? Number(q.timerSeconds) : 20,
+          isUserWritten: true
+        };
+      }
+
       async function parseQuestionsFromJsonFile(file) {
-        const text = (await file.text()).replace(/^\uFEFF/, '').trim();
-        const parsed = JSON.parse(text);
+        let text = (await file.text())
+          .replace(/^\uFEFF/, '')
+          .replace(/^```(?:json)?\s*/i, '')
+          .replace(/\s*```$/, '')
+          .trim();
+
+        let parsed = null;
+        try {
+          parsed = JSON.parse(text);
+        } catch {
+          // Support files containing multiple concatenated JSON arrays like [...][...]
+          if (/\]\s*\[/.test(text)) {
+            try {
+              const outer = JSON.parse(`[${text.replace(/\]\s*\[/g, '],[')}]`);
+              if (Array.isArray(outer)) parsed = outer.flat();
+            } catch {
+              try {
+                parsed = JSON.parse(text.replace(/\]\s*\[/g, ','));
+              } catch {
+                parsed = null;
+              }
+            }
+          }
+        }
+
+        if (!parsed) {
+          throw new Error('מבנה קובץ ה-JSON אינו תקין.');
+        }
+
         const arr = Array.isArray(parsed)
           ? parsed
           : Array.isArray(parsed?.questions)
             ? parsed.questions
-            : [];
-        const cleaned = arr
-          .map((q) => ({
-            question: String(q?.question || '').trim(),
-            answers: Array.isArray(q?.answers)
-              ? q.answers.slice(0, 4).map((a) => String(a ?? '').trim())
-              : ['', '', '', ''],
-            correctIndex:
-              Number.isInteger(Number(q?.correctIndex)) &&
-              Number(q?.correctIndex) >= 0 &&
-              Number(q?.correctIndex) <= 3
-                ? Number(q.correctIndex)
-                : 0,
-            image: typeof q?.image === 'string' ? q.image.trim() : '',
-            points: Number(q?.points) >= 1 ? Number(q.points) : 100,
-            timerSeconds: Number(q?.timerSeconds) >= 5 ? Number(q.timerSeconds) : 20,
-            isUserWritten: true
-          }))
-          .filter((q) => q.question.length > 0 && q.answers.length === 4 && q.answers.every(Boolean));
+            : Array.isArray(parsed?.items)
+              ? parsed.items
+              : Array.isArray(parsed?.data)
+                ? parsed.data
+                : [];
+
+        const cleaned = arr.map(normalizeIncomingJsonQuestion).filter(Boolean);
 
         if (cleaned.length === 0) {
-          throw new Error('הקובץ אינו מכיל שאלות תקינות (נדרש מערך שאלות עם question ו-4 answers).');
+          throw new Error('הקובץ אינו מכיל שאלות תקינות (נדרש מערך שאלות עם question ו-4 תשובות ב-options או answers).');
         }
         return cleaned;
       }
@@ -5256,22 +5345,11 @@
         const file = inputImportJson.files?.[0];
         if (!file) return;
         try {
-          const text = await file.text();
-          const parsed = JSON.parse(text);
-          const arr = Array.isArray(parsed) ? parsed : parsed?.questions;
-          if (!Array.isArray(arr) || arr.length === 0) {
-            throw new Error('הקובץ אינו מכיל מערך שאלות תקין.');
-          }
-          editableQuestions = arr.map((q) => ({
-            question: String(q.question || ''),
-            answers: Array.isArray(q.answers) ? q.answers.slice(0, 4).map(String) : ['', '', '', ''],
-            correctIndex: Number(q.correctIndex) || 0,
-            image: typeof q.image === 'string' ? q.image : '',
-            points: Number(q.points) >= 1 ? Number(q.points) : 100,
-            timerSeconds: Number(q.timerSeconds) >= 5 ? Number(q.timerSeconds) : 15
-          }));
-          renderQuestionsEditor();
-          showToast(`נטענו ${editableQuestions.length} שאלות! לחצו שמור לעדכון המשחק.`);
+          const parsedQuestions = await parseQuestionsFromJsonFile(file);
+          await appendQuestionsToCurrentQuizEditor(
+            parsedQuestions,
+            `📂 נטענו ונשמרו ${parsedQuestions.length} שאלות מתוך "${file.name}" (ונשמרו גם במאגר השאלות הפרטיות)!`
+          );
         } catch (err) {
           showToast(err.message || 'קובץ JSON לא תקין.');
         }

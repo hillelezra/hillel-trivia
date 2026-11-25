@@ -1,17 +1,18 @@
 {
-  "id": "game-1795596201455-6f22be",
-  "code": "1017",
-  "title": "שאלון ידני (10 שאלות)",
+  "id": "game-1795595795819-4d2582",
+  "code": "1016",
+  "title": "ניסוי 25/11",
   "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
   "headerImage": "",
   "backgroundImage": "",
-  "backgroundMusic": "",
+  "backgroundMusic": "__builtin_synth__",
   "bgOverlayOpacity": 0.68,
   "timerSeconds": 20,
   "autoRevealOnTimeout": true,
+  "hideLeaderboardUntilEnd": false,
   "teamsEnabled": false,
   "teams": [],
-  "activeGameId": "game-1795596201455-6f22be",
+  "activeGameId": "game-1795595795819-4d2582",
   "games": [
     {
       "id": "game-default",
@@ -23,6 +24,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": true,
       "teams": [],
       "questions": [
@@ -185,6 +187,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": true,
       "teams": [
         {
@@ -290,6 +293,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": true,
       "teams": [],
       "questions": [
@@ -322,6 +326,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -589,6 +594,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 25,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -881,6 +887,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -978,6 +985,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 20,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -1257,6 +1265,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -1406,6 +1415,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -1555,6 +1565,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 15,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -1639,6 +1650,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 30,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": true,
       "teams": [
         {
@@ -2040,6 +2052,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 20,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -3936,6 +3949,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 20,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -4828,6 +4842,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 20,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -4953,6 +4968,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 20,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -5948,6 +5964,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 20,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -6267,6 +6284,7 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 20,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [
@@ -6471,8 +6489,10 @@
           ]
         }
       ],
-      "code": "1016",
-      "savedPlayers": []
+      "savedPlayers": [],
+      "playHistory": [],
+      "lastFinishedAt": null,
+      "code": "1016"
     },
     {
       "id": "game-1795596201455-6f22be",
@@ -6484,10 +6504,44 @@
       "bgOverlayOpacity": 0.68,
       "timerSeconds": 20,
       "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
       "teamsEnabled": false,
       "teams": [],
       "questions": [],
-      "code": "1017",
+      "savedPlayers": [],
+      "playHistory": [],
+      "lastFinishedAt": null,
+      "code": "1017"
+    },
+    {
+      "id": "game-1795632512941-5aa30a",
+      "title": "טריוויה רנדומלית (1 שאלות)",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "backgroundMusic": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 20,
+      "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "מהו המרכיב העיקרי בממרח ה\"גוואקמולי\" המקסיקני?",
+          "answers": [
+            "אבוקדו",
+            "שעועית שחורה",
+            "עגבניות",
+            "פלפל חריף"
+          ],
+          "correctIndex": 0,
+          "image": "/api/question-illustration?theme=food&badge=%D7%90%D7%95%D7%9B%D7%9C%20%D7%95%D7%A7%D7%95%D7%9C%D7%99%D7%A0%D7%A8%D7%99%D7%94&s=1",
+          "points": 100,
+          "timerSeconds": 20
+        }
+      ],
+      "code": "1018",
       "savedPlayers": []
     }
   ]

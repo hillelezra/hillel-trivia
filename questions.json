@@ -1,1 +1,202 @@
-[]
+[
+  {
+    "question": "איזה מהאתרים הבאים מזוהה עם חברון (הר חברון)?",
+    "answers": [
+      "שמורת נחל דוד, נחל ערוגות ובית הכנסת העתיק",
+      "אולמות האבירים והחומה העתיקה",
+      "מערת המכפלה",
+      "גני רמת הנדיב ומוזיאון ניל\"י (בית אהרנסון)"
+    ],
+    "correctIndex": 2,
+    "image": "/api/question-illustration?theme=ocean&badge=%D7%A6%D7%95%D7%A8%20%D7%9C%D7%99%20%D7%97%D7%99%D7%93%D7%95%D7%9F%20%D7%A2%D7%9D%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%20%D7%91%D7%99%D7%AA%20%D7%94%D7%A0%D7%99%D7%99%D7%A8&s=1",
+    "points": 100,
+    "timerSeconds": 20,
+    "questionEn": "Which of the following landmarks is associated with Hebron (Judean Hills)?",
+    "answersEn": [
+      "Nahal David oasis and ancient synagogue",
+      "The Knights Halls and ancient sea walls",
+      "Cave of the Patriarchs (Machpela)",
+      "Ramat HaNadiv Gardens and NILI Museum"
+    ]
+  },
+  {
+    "question": "מה פירוש הביטוי \"ברחל בתך הקטנה\"?",
+    "answers": [
+      "בשפה פיוטית",
+      "בשקט ובסודיות",
+      "בפירוש גמור וללא כפל משמעות",
+      "בקיצור נמרץ"
+    ],
+    "correctIndex": 2,
+    "image": "/api/question-illustration?theme=general&badge=%D7%A6%D7%95%D7%A8%20%D7%9C%D7%99%20%D7%97%D7%99%D7%93%D7%95%D7%9F%20%D7%A2%D7%9D%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%20%D7%91%D7%99%D7%AA%20%D7%94%D7%A0%D7%99%D7%99%D7%A8&s=2",
+    "points": 100,
+    "timerSeconds": 20,
+    "questionEn": "What does the Hebrew expression \"BeRachel Bitcha HaKtana\" mean?",
+    "answersEn": [
+      "In poetic language",
+      "Quietly and secretly",
+      "Explicitly and unmistakably clear",
+      "Very briefly"
+    ]
+  },
+  {
+    "question": "באיזו המצאה או תגלית מפורסם במיוחד ווטסון וקריק (יחד עם רוזלינד פרנקלין)?",
+    "answers": [
+      "מבנה הסליל הכפול של ה-DNA",
+      "הנייר הקדום",
+      "מכונת החישוב האניגמה (פיצוחה)",
+      "חיסון הכלבת ותהליך הפסטור"
+    ],
+    "correctIndex": 0,
+    "image": "/api/question-illustration?theme=general&badge=%D7%A6%D7%95%D7%A8%20%D7%9C%D7%99%20%D7%97%D7%99%D7%93%D7%95%D7%9F%20%D7%A2%D7%9D%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%20%D7%91%D7%99%D7%AA%20%D7%94%D7%A0%D7%99%D7%99%D7%A8&s=3",
+    "points": 100,
+    "timerSeconds": 20,
+    "questionEn": "For which invention or discovery is Watson, Crick, and Franklin famously known?",
+    "answersEn": [
+      "The double-helix structure of DNA",
+      "Ancient papermaking",
+      "Breaking the Enigma machine cipher",
+      "The rabies vaccine and pasteurization"
+    ]
+  },
+  {
+    "question": "מהו הסמל הכימי של היסוד צורן (סיליקון)?",
+    "answers": [
+      "Al",
+      "N",
+      "Si",
+      "Ti"
+    ],
+    "correctIndex": 2,
+    "image": "/api/question-illustration?theme=science&badge=%D7%A6%D7%95%D7%A8%20%D7%9C%D7%99%20%D7%97%D7%99%D7%93%D7%95%D7%9F%20%D7%A2%D7%9D%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%20%D7%91%D7%99%D7%AA%20%D7%94%D7%A0%D7%99%D7%99%D7%A8&s=4",
+    "points": 100,
+    "timerSeconds": 20,
+    "questionEn": "What is the chemical symbol for the element Silicon?",
+    "answersEn": [
+      "Al",
+      "N",
+      "Si",
+      "Ti"
+    ]
+  },
+  {
+    "question": "איזה מהאתרים הבאים מזוהה עם טבריה (חוף הכנרת)?",
+    "answers": [
+      "קבר הרמב\"ם וטיילת הכנרת",
+      "היקב ההיסטורי ובאר המושבה הראשונה",
+      "גני רמת הנדיב ומוזיאון ניל\"י (בית אהרנסון)",
+      "מערת המכפלה"
+    ],
+    "correctIndex": 0,
+    "image": "/api/question-illustration?theme=ocean&badge=%D7%A6%D7%95%D7%A8%20%D7%9C%D7%99%20%D7%97%D7%99%D7%93%D7%95%D7%9F%20%D7%A2%D7%9D%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%20%D7%91%D7%99%D7%AA%20%D7%94%D7%A0%D7%99%D7%99%D7%A8&s=5",
+    "points": 100,
+    "timerSeconds": 20,
+    "questionEn": "Which of the following landmarks is associated with Tiberias (Sea of Galilee)?",
+    "answersEn": [
+      "Tomb of Maimonides and Sea of Galilee boardwalk",
+      "Carmel Historic Winery and the First Well",
+      "Ramat HaNadiv Gardens and NILI Museum",
+      "Cave of the Patriarchs (Machpela)"
+    ]
+  },
+  {
+    "question": "איזה מהאתרים הבאים מזוהה עם רחובות (השפלה)?",
+    "answers": [
+      "מצוקי החוף וטיילת הראשונים",
+      "קבר הרמב\"ם וטיילת הכנרת",
+      "גני רמת הנדיב ומוזיאון ניל\"י (בית אהרנסון)",
+      "מכון ויצמן למדע ובית הנשיא חיים ויצמן"
+    ],
+    "correctIndex": 3,
+    "image": "/api/question-illustration?theme=ocean&badge=%D7%A6%D7%95%D7%A8%20%D7%9C%D7%99%20%D7%97%D7%99%D7%93%D7%95%D7%9F%20%D7%A2%D7%9D%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%20%D7%91%D7%99%D7%AA%20%D7%94%D7%A0%D7%99%D7%99%D7%A8&s=6",
+    "points": 100,
+    "timerSeconds": 20,
+    "questionEn": "Which of the following landmarks is associated with Rehovot (Shfela)?",
+    "answersEn": [
+      "Coastal cliffs and seaside promenades",
+      "Tomb of Maimonides and Sea of Galilee boardwalk",
+      "Ramat HaNadiv Gardens and NILI Museum",
+      "Weizmann Institute of Science"
+    ]
+  },
+  {
+    "question": "כמה סיביות (Bits) יש בבית אחד (Byte)?",
+    "answers": [
+      "8 סיביות",
+      "10 סיביות",
+      "4 סיביות",
+      "16 סיביות"
+    ],
+    "correctIndex": 0,
+    "image": "/api/question-illustration?theme=general&badge=%D7%A6%D7%95%D7%A8%20%D7%9C%D7%99%20%D7%97%D7%99%D7%93%D7%95%D7%9F%20%D7%A2%D7%9D%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%20%D7%91%D7%99%D7%AA%20%D7%94%D7%A0%D7%99%D7%99%D7%A8&s=7",
+    "points": 100,
+    "timerSeconds": 20,
+    "questionEn": "How many bits are in a single byte?",
+    "answersEn": [
+      "8 bits",
+      "10 bits",
+      "4 bits",
+      "16 bits"
+    ]
+  },
+  {
+    "question": "מהי עיר הבירה של שוודיה?",
+    "answers": [
+      "ג׳קרטה",
+      "ניירובי",
+      "וושינגטון די.סי.",
+      "סטוקהולם"
+    ],
+    "correctIndex": 3,
+    "image": "/api/question-illustration?theme=general&badge=%D7%A6%D7%95%D7%A8%20%D7%9C%D7%99%20%D7%97%D7%99%D7%93%D7%95%D7%9F%20%D7%A2%D7%9D%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%20%D7%91%D7%99%D7%AA%20%D7%94%D7%A0%D7%99%D7%99%D7%A8&s=8",
+    "points": 100,
+    "timerSeconds": 20,
+    "questionEn": "What is the capital city of Sweden?",
+    "answersEn": [
+      "Jakarta",
+      "Nairobi",
+      "Washington, D.C.",
+      "Stockholm"
+    ]
+  },
+  {
+    "question": "באיזו עיר או אתר בישראל נמצאים גני רמת הנדיב ומוזיאון ניל\"י (בית אהרנסון)?",
+    "answers": [
+      "קיסריה",
+      "ראש הנקרה",
+      "הרצליה",
+      "זכרון יעקב"
+    ],
+    "correctIndex": 3,
+    "image": "/api/question-illustration?theme=ocean&badge=%D7%A6%D7%95%D7%A8%20%D7%9C%D7%99%20%D7%97%D7%99%D7%93%D7%95%D7%9F%20%D7%A2%D7%9D%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%20%D7%91%D7%99%D7%AA%20%D7%94%D7%A0%D7%99%D7%99%D7%A8&s=9",
+    "points": 100,
+    "timerSeconds": 20,
+    "questionEn": "In which Israeli city or site can you find Ramat HaNadiv Gardens and NILI Museum?",
+    "answersEn": [
+      "Caesarea",
+      "Rosh HaNikra",
+      "Herzliya",
+      "Zikhron Yaakov"
+    ]
+  },
+  {
+    "question": "מהי עיר הבירה של קנדה?",
+    "answers": [
+      "ברטיסלבה",
+      "ולטה",
+      "ניירובי",
+      "אוטווה"
+    ],
+    "correctIndex": 3,
+    "image": "/api/question-illustration?theme=general&badge=%D7%A6%D7%95%D7%A8%20%D7%9C%D7%99%20%D7%97%D7%99%D7%93%D7%95%D7%9F%20%D7%A2%D7%9D%20%D7%A9%D7%90%D7%9C%D7%95%D7%AA%20%D7%91%D7%A0%D7%95%D7%A9%D7%90%20%D7%91%D7%99%D7%AA%20%D7%94%D7%A0%D7%99%D7%99%D7%A8&s=10",
+    "points": 100,
+    "timerSeconds": 20,
+    "questionEn": "What is the capital city of Canada?",
+    "answersEn": [
+      "Bratislava",
+      "Valletta",
+      "Nairobi",
+      "Ottawa"
+    ]
+  }
+]

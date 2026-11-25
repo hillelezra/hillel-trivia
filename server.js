@@ -46,16 +46,122 @@ const DEFAULT_GAME_SETTINGS = {
   teams: []
 };
 
-function normalizeQuestion(raw, fallbackTimer = DEFAULT_TIMER_SECONDS) {
-  const question = String(raw?.question ?? '').trim();
-  let answers = Array.isArray(raw?.answers) ? raw.answers.map((a) => String(a ?? '').trim()) : [];
+function extractRawQuestionFields(raw) {
+  if (!raw || typeof raw !== 'object') {
+    return { question: '', answers: ['', '', '', ''], correctIndex: 0, difficulty: 'medium' };
+  }
+  const question = String(
+    raw.question ?? raw.q ?? raw.text ?? raw.title ?? raw.prompt ?? ''
+  ).trim();
+
+  let rawAnswers = null;
+  if (Array.isArray(raw.answers)) rawAnswers = raw.answers;
+  else if (Array.isArray(raw.options)) rawAnswers = raw.options;
+  else if (Array.isArray(raw.choices)) rawAnswers = raw.choices;
+  else if (Array.isArray(raw.variants)) rawAnswers = raw.variants;
+  else if (Array.isArray(raw.items)) rawAnswers = raw.items;
+  else if (raw.a !== undefined || raw.b !== undefined) {
+    rawAnswers = [raw.a, raw.b, raw.c, raw.d];
+  } else if (raw.option1 !== undefined || raw.option2 !== undefined) {
+    rawAnswers = [raw.option1, raw.option2, raw.option3, raw.option4];
+  }
+
+  let answers = Array.isArray(rawAnswers)
+    ? rawAnswers.map((a) => String(a ?? '').trim())
+    : [];
   if (answers.length < 4) {
     while (answers.length < 4) answers.push('');
   } else if (answers.length > 4) {
     answers = answers.slice(0, 4);
   }
-  const idx = Number(raw?.correctIndex);
-  const correctIndex = Number.isInteger(idx) && idx >= 0 && idx <= 3 ? idx : 0;
+
+  const rawCorrect =
+    raw.correctIndex ??
+    raw.correctAnswer ??
+    raw.correct ??
+    raw.correctOption ??
+    raw.answerIndex ??
+    raw.rightAnswer ??
+    raw.answer;
+
+  let correctIndex = 0;
+  if (typeof rawCorrect === 'number' && Number.isInteger(rawCorrect)) {
+    if (rawCorrect >= 0 && rawCorrect <= 3) {
+      correctIndex = rawCorrect;
+    } else if (rawCorrect === 4) {
+      correctIndex = 3;
+    }
+  } else if (typeof rawCorrect === 'string') {
+    const trimmed = rawCorrect.trim();
+    if (/^[0-3]$/.test(trimmed)) {
+      correctIndex = Number(trimmed);
+    } else if (trimmed === '4') {
+      correctIndex = 3;
+    } else {
+      const letterMap = { א: 0, ב: 1, ג: 2, ד: 3, a: 0, b: 1, c: 2, d: 3 };
+      const cleanLetter = trimmed.replace(/[.):\-–]/g, '').trim().toLowerCase();
+      if (cleanLetter in letterMap) {
+        correctIndex = letterMap[cleanLetter];
+      } else {
+        const matchIdx = answers.findIndex(
+          (ans) => ans && ans.toLowerCase() === trimmed.toLowerCase()
+        );
+        if (matchIdx !== -1) {
+          correctIndex = matchIdx;
+        }
+      }
+    }
+  }
+
+  const rawDiff = String(raw.difficulty || 'medium').trim().toLowerCase();
+  let difficulty = 'medium';
+  if (rawDiff === 'easy' || rawDiff === 'קל' || rawDiff === 'קלה') difficulty = 'easy';
+  else if (rawDiff === 'hard' || rawDiff === 'קשה') difficulty = 'hard';
+  else if (rawDiff === 'medium' || rawDiff === 'בינוני' || rawDiff === 'בינונית') difficulty = 'medium';
+
+  return { question, answers, correctIndex, difficulty };
+}
+
+function parseFlexibleJsonQuestionsArray(rawText) {
+  let cleaned = String(rawText || '')
+    .replace(/^\uFEFF/, '')
+    .replace(/^```(?:json)?\s*/i, '')
+    .replace(/\s*```$/, '')
+    .trim();
+  if (!cleaned) return null;
+
+  // Support files with multiple concatenated JSON arrays like [...][...]
+  let parsed = null;
+  try {
+    parsed = JSON.parse(cleaned);
+  } catch {
+    if (/\]\s*\[/.test(cleaned)) {
+      try {
+        const mergedArraysText = `[${cleaned.replace(/\]\s*\[/g, '],[')}]`;
+        const outer = JSON.parse(mergedArraysText);
+        if (Array.isArray(outer)) {
+          parsed = outer.flat();
+        }
+      } catch {
+        try {
+          parsed = JSON.parse(cleaned.replace(/\]\s*\[/g, ','));
+        } catch {
+          parsed = null;
+        }
+      }
+    }
+  }
+
+  if (!parsed) return null;
+  if (Array.isArray(parsed)) return parsed;
+  if (Array.isArray(parsed.questions)) return parsed.questions;
+  if (Array.isArray(parsed.items)) return parsed.items;
+  if (Array.isArray(parsed.data)) return parsed.data;
+  return null;
+}
+
+function normalizeQuestion(raw, fallbackTimer = DEFAULT_TIMER_SECONDS) {
+  const { question, answers, correctIndex } = extractRawQuestionFields(raw);
   const image = typeof raw?.image === 'string' ? raw.image.trim() : '';
 
   const rawPoints = Number(raw?.points);
@@ -2125,21 +2231,10 @@ const BUILTIN_TRIVIA_BANK = [
 ];
 
 function normalizeBankQuestionEntry(rawItem, indexFallback = 1) {
-  const question = String(rawItem?.question || '').trim();
+  const { question, answers: rawAnswers, correctIndex, difficulty } = extractRawQuestionFields(rawItem);
   if (!question) return null;
-  let answers = Array.isArray(rawItem?.answers)
-    ? rawItem.answers.map((a) => String(a ?? '').trim())
-    : [];
-  if (answers.length < 4) {
-    while (answers.length < 4) answers.push(`תשובה ${answers.length + 1}`);
-  } else if (answers.length > 4) {
-    answers = answers.slice(0, 4);
-  }
-  const idx = Number(rawItem?.correctIndex);
-  const correctIndex = Number.isInteger(idx) && idx >= 0 && idx <= 3 ? idx : 0;
+  const answers = rawAnswers.map((a, idx) => a || `תשובה ${idx + 1}`);
   const topic = String(rawItem?.topic || 'ידע כללי').trim() || 'ידע כללי';
-  const rawDiff = String(rawItem?.difficulty || 'medium').toLowerCase();
-  const difficulty = ['easy', 'medium', 'hard'].includes(rawDiff) ? rawDiff : 'medium';
   const id =
     typeof rawItem?.id === 'string' && rawItem.id.trim()
       ? rawItem.id.trim()
@@ -2298,10 +2393,9 @@ function addQuestionsToPersistentBank(rawItems, { markCustom = true, defaultTopi
 }
 
 function isPlaceholderQuestionEntry(q) {
-  const qText = String(q?.question || '').trim();
+  const { question: qText, answers } = extractRawQuestionFields(q);
   if (!qText || qText.length < 4) return true;
   if (qText.includes('שאלה חדשה – הקלידו כאן')) return true;
-  const answers = Array.isArray(q?.answers) ? q.answers.map((a) => String(a ?? '').trim()) : [];
   if (answers.length < 4 || answers.some((a) => !a)) return true;
   // Check if all 4 answers are still default placeholders ("תשובה 1", "תשובה 2", ...)
   const allPlaceholderAnswers = answers.every((a, idx) => a === `תשובה ${idx + 1}` || a === `אפשרות ${idx + 1}`);
@@ -2320,7 +2414,7 @@ function autoSyncUserWrittenQuestionsToPrivateBank(questionsList, fallbackTopic 
 
   for (const raw of list) {
     if (!raw || isPlaceholderQuestionEntry(raw)) continue;
-    const qText = String(raw.question || '').trim();
+    const { question: qText, answers, correctIndex, difficulty } = extractRawQuestionFields(raw);
     const key = normalizeQuestionKeyText(qText);
     const explicitlyUserWritten = Boolean(raw.isUserWritten || raw.isCustom || raw.isPrivate);
 
@@ -2329,17 +2423,7 @@ function autoSyncUserWrittenQuestionsToPrivateBank(questionsList, fallbackTopic 
       continue;
     }
 
-    const answers = Array.isArray(raw.answers)
-      ? raw.answers.slice(0, 4).map((a) => String(a ?? '').trim())
-      : [];
     if (answers.length < 4 || answers.some((a) => !a)) continue;
-
-    const correctIndex =
-      Number.isInteger(Number(raw.correctIndex)) &&
-      Number(raw.correctIndex) >= 0 &&
-      Number(raw.correctIndex) <= 3
-        ? Number(raw.correctIndex)
-        : 0;
 
     const existingIdx = persistentQuestionBank.findIndex(
       (item) => normalizeQuestionKeyText(item.question) === key
@@ -2367,7 +2451,7 @@ function autoSyncUserWrittenQuestionsToPrivateBank(questionsList, fallbackTopic 
         {
           id: `qbank-private-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
           topic: String(raw.topic || raw._topic || fallbackTopic || 'שאלות פרטיות').trim() || 'שאלות פרטיות',
-          difficulty: String(raw.difficulty || 'medium').toLowerCase(),
+          difficulty,
           question: qText,
           answers,
           correctIndex,
@@ -2399,18 +2483,11 @@ function shuffleArray(arr) {
 }
 
 function shuffleQuestionAnswers(qObj, defaultTimer, defaultPoints) {
-  const answers = Array.isArray(qObj.answers) ? qObj.answers.slice(0, 4).map(String) : [];
-  while (answers.length < 4) answers.push(`תשובה ${answers.length + 1}`);
+  const { question, answers: rawAnswers, correctIndex: origCorrectIdx } = extractRawQuestionFields(qObj);
+  const answers = rawAnswers.map((a, idx) => a || `תשובה ${idx + 1}`);
   const hasAnswersEn =
     Array.isArray(qObj.answersEn) && qObj.answersEn.length === 4 && qObj.answersEn.every(Boolean);
   const answersEn = hasAnswersEn ? qObj.answersEn.slice(0, 4).map(String) : null;
-
-  const origCorrectIdx =
-    Number.isInteger(Number(qObj.correctIndex)) &&
-    Number(qObj.correctIndex) >= 0 &&
-    Number(qObj.correctIndex) <= 3
-      ? Number(qObj.correctIndex)
-      : 0;
 
   const indexed = answers.map((text, idx) => ({
     text,
@@ -2425,7 +2502,7 @@ function shuffleQuestionAnswers(qObj, defaultTimer, defaultPoints) {
 
   return normalizeQuestion(
     {
-      question: qObj.question,
+      question,
       answers: shuffled.map((item) => item.text),
       correctIndex: newCorrectIdx,
       ...(qObj.questionEn ? { questionEn: qObj.questionEn } : {}),
@@ -3182,20 +3259,13 @@ function parseFreeformQuestionsText(rawText, defaultTimer = DEFAULT_TIMER_SECOND
   const text = String(rawText || '').trim();
   if (!text) return [];
 
-  // 1. Check if text is already JSON
-  try {
-    const cleanedJson = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '').trim();
-    if (cleanedJson.startsWith('[') || cleanedJson.startsWith('{')) {
-      const parsed = JSON.parse(cleanedJson);
-      const arr = Array.isArray(parsed) ? parsed : parsed?.questions;
-      if (Array.isArray(arr) && arr.length > 0) {
-        return arr
-          .map((q) => shuffleQuestionAnswers(q, defaultTimer, defaultPoints))
-          .filter((q) => q.question.length > 0);
-      }
-    }
-  } catch {
-    // Not JSON, proceed with free-form parsing
+  // 1. Check if text is already JSON (supports options/answers, correctAnswer/correctIndex, and concatenated arrays [...][...])
+  const parsedJsonArr = parseFlexibleJsonQuestionsArray(text);
+  if (Array.isArray(parsedJsonArr) && parsedJsonArr.length > 0) {
+    const mapped = parsedJsonArr
+      .map((q) => shuffleQuestionAnswers(q, defaultTimer, defaultPoints))
+      .filter((q) => q.question.length > 0);
+    if (mapped.length > 0) return mapped;
   }
 
   const lines = text
@@ -4292,11 +4362,8 @@ app.post('/api/admin/question-bank', (req, res) => {
 
     for (let i = 0; i < incomingList.length; i++) {
       const item = incomingList[i];
-      const qText = String(item?.question || '').trim();
-      const ans = Array.isArray(item?.answers)
-        ? item.answers.map((a) => String(a ?? '').trim()).filter(Boolean)
-        : [];
-      if (!qText || ans.length < 4) {
+      const { question: qText, answers: ans } = extractRawQuestionFields(item);
+      if (!qText || ans.filter(Boolean).length < 4) {
         return res.status(400).json({
           ok: false,
           error: `בשאלה ${i + 1} חסר נוסח שאלה או אחת מ-4 התשובות.`
