@@ -837,12 +837,12 @@
           </div>
 
           <!-- Existing Mode Panel ה: Add Questions from JSON File -->
-          <div id="existing-panel-json-file" hidden style="display:none; flex-direction:column; gap:0.55rem; padding:0.75rem 0.9rem; border-radius:12px; background:rgba(245, 158, 11, 0.1); border:1px solid rgba(251, 191, 36, 0.45);">
+          <div id="existing-panel-json-file" hidden style="display:none; flex-direction:column; gap:0.6rem; padding:0.8rem 0.95rem; border-radius:12px; background:rgba(245, 158, 11, 0.1); border:1px solid rgba(251, 191, 36, 0.45);">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
               <div style="display:flex; flex-direction:column; gap:0.2rem;">
                 <strong style="font-size:0.92rem; color:#fde68a;">📂 הוספת שאלות מקובץ JSON אל השאלון הקיים</strong>
                 <span style="font-size:0.8rem; color:var(--text-secondary);">
-                  בחרו קובץ JSON מהמחשב — השאלות מהקובץ יתווספו על השאלות שכבר קיימות בשאלון (ויישמרו גם במאגר השאלות הפרטיות שלכם):
+                  השאלות יתווספו לשאלון הקיים, יצורפו אוטומטית למאגר המיקס הכללי, ובנוסף תיפתח עבורן תיקייה ייעודית במאגר השאלות:
                 </span>
               </div>
               <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
@@ -852,6 +852,19 @@
                 </button>
                 <span id="existing-json-file-status" class="pill" style="font-size:0.78rem;">טרם נבחר קובץ</span>
               </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+              <label for="existing-json-folder-name" style="font-size:0.82rem; font-weight:800; color:#fde68a;">
+                📁 שם התיקייה שתיפתח במאגר השאלות:
+              </label>
+              <input
+                id="existing-json-folder-name"
+                type="text"
+                class="input"
+                list="trivia-topics-datalist"
+                placeholder="לדוגמה: בית הקלפים (מזוהה אוטומטית מהקובץ או שם השאלון)"
+                style="flex:1; min-width:210px; font-size:0.84rem;"
+              />
             </div>
           </div>
 
@@ -1119,7 +1132,7 @@
           <div style="display:flex; flex-direction:column; gap:0.25rem;">
             <strong style="color:#fde68a; font-size:0.98rem;">📂 יצירת שאלון חדש מקובץ JSON</strong>
             <p style="font-size:0.84rem; color:var(--text-secondary);">
-              בחרו קובץ JSON מהמחשב המכיל שאלות טריוויה. השאלות ייטענו לשאלון החדש (ויישמרו גם במאגר השאלות הפרטיות שלכם), ומיד לאחר מכן ייפתח תפריט ההגדרות (זמנים, קבוצות, מוזיקה ורקע):
+              השאלות ייטענו לשאלון החדש, יצורפו אוטומטית למאגר המיקס הכללי, ובנוסף תיפתח עבורן תיקייה ייעודית במאגר השאלות:
             </p>
           </div>
           <div style="display:flex; align-items:center; gap:0.55rem; flex-wrap:wrap;">
@@ -1129,6 +1142,19 @@
             </button>
             <span id="new-quiz-json-file-status" class="pill" style="font-size:0.8rem;">טרם נבחר קובץ</span>
           </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.55rem; flex-wrap:wrap; padding-top:0.2rem;">
+          <label for="new-quiz-json-folder-name" style="font-size:0.86rem; font-weight:800; color:#fde68a;">
+            📁 שם התיקייה שתיפתח במאגר השאלות עבור שאלות אלו:
+          </label>
+          <input
+            id="new-quiz-json-folder-name"
+            type="text"
+            class="input"
+            list="trivia-topics-datalist"
+            placeholder="לדוגמה: בית הקלפים (מתמלא אוטומטית מהקובץ או משם השאלון)"
+            style="flex:1; min-width:220px;"
+          />
         </div>
       </section>
 
@@ -1209,56 +1235,101 @@
     </div>
   </dialog>
 
-  <!-- MODAL 7: Central Question Bank Manager (זמין בתפריט הראשי להוספה ולשינוי שאלות או קטגוריות) -->
+  <!-- MODAL 7: Central Question Bank & Category Folders Manager -->
   <dialog id="question-bank-dialog" class="dialog--wide" closedby="any" aria-labelledby="question-bank-dialog-title">
     <div class="dialog-header">
       <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;">
-        <h2 id="question-bank-dialog-title" style="font-size:1.3rem;">📚 ניהול מאגר השאלות והקטגוריות</h2>
-        <span id="bank-total-pill" class="pill pill--gold">1,000+ שאלות במאגר</span>
-        <span id="bank-custom-pill" class="pill pill--emerald" hidden>0 שאלות שהוספת</span>
+        <h2 id="question-bank-dialog-title" style="font-size:1.3rem;">📚 מאגר השאלות ותיקיות הקטגוריות</h2>
+        <span id="bank-total-pill" class="pill pill--gold">🔀 מאגר מיקס כללי: 1,000+ שאלות</span>
+        <span id="bank-custom-pill" class="pill pill--emerald" hidden>🔒 0 שאלות פרטיות</span>
       </div>
       <form method="dialog">
         <button type="submit" class="btn btn--sm" autofocus>✕ סגור</button>
       </form>
     </div>
 
-    <div class="dialog-body" style="gap:1.1rem;">
-      <!-- Section 1: Add New Question to the Bank (or Import from Word/PDF) -->
+    <div class="dialog-body" style="gap:1rem;">
+      <!-- Section 1: Folders Explorer (General Mix Bank + Separate Folder per Category + Create New Folder) -->
+      <section style="padding:0.95rem 1.1rem; border-radius:14px; background:rgba(15, 23, 42, 0.88); border:1px solid rgba(251, 191, 36, 0.45); display:flex; flex-direction:column; gap:0.75rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.65rem; flex-wrap:wrap;">
+          <div>
+            <strong style="font-size:1.05rem; color:#fde68a;">📁 תיקיות המאגר לפי קטגוריה + מאגר מיקס כללי</strong>
+            <p style="font-size:0.8rem; color:var(--text-secondary);">
+              כל השאלות נמצאות ב-<strong>מאגר המיקס הכללי</strong> ובמקביל בתיקייה נפרדת לכל קטגוריה. לחצו על תיקייה כדי לצפות בה, לערוך או להוסיף לה שאלות:
+            </p>
+          </div>
+          <div style="display:flex; align-items:center; gap:0.45rem; flex-wrap:wrap;">
+            <input
+              id="bank-new-folder-name"
+              type="text"
+              class="input"
+              placeholder="שם תיקייה חדשה (למשל: בית הקלפים)..."
+              style="min-width:215px; font-size:0.84rem;"
+            />
+            <button type="button" id="btn-bank-create-folder" class="btn btn--gold btn--sm">
+              📁 + צור תיקייה חדשה
+            </button>
+          </div>
+        </div>
+
+        <div id="bank-folders-grid" style="display:flex; flex-wrap:wrap; gap:0.45rem; max-height:165px; overflow-y:auto; padding:0.25rem;"></div>
+      </section>
+
+      <!-- Section 2: Add Questions to Selected Folder Using Existing Options (Manual, Gemini Free-Text, JSON File, Word/PDF) -->
       <section style="padding:0.95rem 1.1rem; border-radius:14px; background:rgba(15, 23, 42, 0.82); border:1px solid rgba(52, 211, 153, 0.45); display:flex; flex-direction:column; gap:0.75rem;">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
-          <strong style="font-size:1.05rem; color:#6ee7b7;">➕ הוספת שאלה חדשה למאגר השאלות</strong>
-          <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+            <strong style="font-size:1.02rem; color:#6ee7b7;">➕ הוספת שאלות לתיקייה במאגר (נוספות גם למאגר המיקס הכללי)</strong>
+          </div>
+          <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+            <button type="button" class="btn btn--primary btn--sm" data-bank-add-tab="manual">
+              ✍️ הוספת שאלה ידנית
+            </button>
+            <button type="button" class="btn btn--sm" data-bank-add-tab="gemini">
+              ✨ יצירת שאלות מג׳מניי לתיקייה
+            </button>
+            <input
+              type="file"
+              id="input-bank-import-json"
+              accept=".json,application/json"
+              hidden
+            />
+            <button type="button" id="btn-bank-import-json" class="btn btn--gold btn--sm">
+              📂 העלה קובץ JSON לתיקייה
+            </button>
             <input
               type="file"
               id="input-bank-import-doc"
               accept=".docx,.doc,.pdf,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,text/plain"
               hidden
             />
-            <button type="button" id="btn-bank-import-doc" class="btn btn--gold btn--sm">
-              📄 ייבא שאלות מקובץ Word / PDF ישירות למאגר
+            <button type="button" id="btn-bank-import-doc" class="btn btn--sm">
+              📄 ייבוא Word / PDF לתיקייה
             </button>
           </div>
         </div>
 
-        <form id="bank-add-question-form" style="display:flex; flex-direction:column; gap:0.65rem;">
-          <div style="display:grid; grid-template-columns:1fr 160px; gap:0.55rem;">
-            <div class="field" style="gap:0.2rem;">
-              <label for="bank-new-topic" style="font-size:0.78rem;">קטגוריה / נושא השאלה (בחרו קיימת או הקלידו קטגוריה חדשה):</label>
-              <input id="bank-new-topic" type="text" class="input" list="trivia-topics-datalist" value="ידע כללי" placeholder="לדוגמה: ידע כללי / משפחה / היסטוריה" required />
-            </div>
-            <div class="field" style="gap:0.2rem;">
-              <label for="bank-new-diff" style="font-size:0.78rem;">רמת קושי:</label>
-              <select id="bank-new-diff" class="select">
-                <option value="easy">🟢 קל</option>
-                <option value="medium" selected>🟡 בינוני</option>
-                <option value="hard">🔴 קשה</option>
-              </select>
-            </div>
+        <div style="display:grid; grid-template-columns:1fr 160px; gap:0.55rem;">
+          <div class="field" style="gap:0.2rem;">
+            <label for="bank-new-topic" style="font-size:0.8rem; font-weight:800; color:#fde68a;">📁 תיקיית היעד במאגר (בחרו תיקייה למעלה או הקלידו שם תיקייה):</label>
+            <input id="bank-new-topic" type="text" class="input" list="trivia-topics-datalist" value="ידע כללי" placeholder="לדוגמה: בית הקלפים / קופה ראשית / ידע כללי" required />
           </div>
+          <div class="field" style="gap:0.2rem;">
+            <label for="bank-new-diff" style="font-size:0.8rem; font-weight:800; color:#bae6fd;">רמת קושי:</label>
+            <select id="bank-new-diff" class="select">
+              <option value="easy">🟢 קל</option>
+              <option value="medium" selected>🟡 בינוני</option>
+              <option value="hard">🔴 קשה</option>
+              <option value="mixed">🌈 מעורב</option>
+            </select>
+          </div>
+        </div>
 
+        <!-- Option A inside Bank: Manual Question Form -->
+        <form id="bank-add-question-form" style="display:flex; flex-direction:column; gap:0.65rem;">
           <div class="field" style="gap:0.2rem;">
             <label for="bank-new-q-text" style="font-size:0.78rem;">נוסח השאלה החדשה:</label>
-            <input id="bank-new-q-text" type="text" class="input" placeholder="הקלידו את נוסח השאלה שתרצו להוסיף למאגר..." required />
+            <input id="bank-new-q-text" type="text" class="input" placeholder="הקלידו את נוסח השאלה שתרצו להוסיף לתיקייה ולמאגר המיקס..." required />
           </div>
 
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:0.5rem;">
@@ -1282,48 +1353,78 @@
 
           <div style="display:flex; justify-content:flex-end;">
             <button type="submit" id="btn-submit-bank-question" class="btn btn--success btn--sm">
-              💾 הוסף ושמור שאלה זו במאגר הקבוע
+              💾 הוסף שאלה זו לתיקייה ולמאגר המיקס
             </button>
           </div>
         </form>
+
+        <!-- Option B inside Bank: Generate Questions via Gemini Free-Text directly into this Folder -->
+        <div id="bank-add-gemini-box" hidden style="display:none; flex-direction:column; gap:0.6rem; padding:0.75rem 0.9rem; border-radius:12px; background:rgba(14, 165, 233, 0.1); border:1px solid rgba(56, 189, 248, 0.4);">
+          <div style="display:grid; grid-template-columns:1fr 130px; gap:0.55rem; align-items:end;">
+            <div class="field" style="gap:0.2rem;">
+              <label for="bank-gemini-prompt" style="font-size:0.8rem; font-weight:700; color:#bae6fd;">
+                ✨ כתבו בטקסט חופשי מה תרצו שג׳מניי ייצר עבור תיקייה זו:
+              </label>
+              <input
+                id="bank-gemini-prompt"
+                type="text"
+                class="input"
+                placeholder="לדוגמה: שאלות על הדמויות והעלילה של הסדרה בית הקלפים..."
+              />
+            </div>
+            <div class="field" style="gap:0.2rem;">
+              <label for="bank-gemini-count" style="font-size:0.8rem; font-weight:700; color:#bae6fd;">מספר שאלות:</label>
+              <input id="bank-gemini-count" type="number" class="input" min="1" max="100" value="10" style="text-align:center; font-weight:800;" />
+            </div>
+          </div>
+          <div style="display:flex; justify-content:flex-end;">
+            <button type="button" id="btn-bank-run-gemini" class="btn btn--primary btn--sm">
+              ✨ ייצר והוסף שאלות לתיקייה זו ולמאגר המיקס
+            </button>
+          </div>
+        </div>
       </section>
 
-      <!-- Section 2: Manage & Rename Categories / Topics in the Bank -->
-      <section style="padding:0.85rem 1.1rem; border-radius:14px; background:rgba(15, 23, 42, 0.75); border:1px solid rgba(251, 191, 36, 0.4); display:flex; flex-direction:column; gap:0.6rem;">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
-          <strong style="font-size:1rem; color:#fde68a;">🏷️ ניהול ושינוי קטגוריות (נושאים) במאגר</strong>
-          <span style="font-size:0.8rem; color:var(--text-secondary);">שינוי שם של קטגוריה קיימת או איחוד קטגוריות בכל המאגר</span>
-        </div>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:0.55rem; align-items:end;">
+      <!-- Section 3: Rename / Merge Folders -->
+      <details style="padding:0.7rem 1rem; border-radius:14px; background:rgba(15, 23, 42, 0.75); border:1px solid rgba(251, 191, 36, 0.35);">
+        <summary style="cursor:pointer; font-weight:800; font-size:0.92rem; color:#fde68a;">
+          🏷️ שינוי שם תיקייה קיימת / איחוד תיקיות או מחיקת תיקייה
+        </summary>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:0.55rem; align-items:end; padding-top:0.65rem;">
           <div class="field" style="gap:0.2rem;">
-            <label for="bank-cat-rename-old" style="font-size:0.78rem;">בחרו קטגוריה קיימת לשינוי:</label>
+            <label for="bank-cat-rename-old" style="font-size:0.78rem;">בחרו תיקייה קיימת:</label>
             <select id="bank-cat-rename-old" class="select"></select>
           </div>
           <div class="field" style="gap:0.2rem;">
-            <label for="bank-cat-rename-new" style="font-size:0.78rem;">השם החדש של הקטגוריה:</label>
-            <input id="bank-cat-rename-new" type="text" class="input" placeholder="הקלידו שם חדש לקטגוריה..." />
+            <label for="bank-cat-rename-new" style="font-size:0.78rem;">השם החדש של התיקייה:</label>
+            <input id="bank-cat-rename-new" type="text" class="input" placeholder="הקלידו שם חדש לתיקייה..." />
           </div>
-          <button type="button" id="btn-bank-rename-category" class="btn btn--gold btn--sm" style="height:40px;">
-            ✏️ עדכן שם קטגוריה במאגר
-          </button>
+          <div style="display:flex; gap:0.45rem; flex-wrap:wrap;">
+            <button type="button" id="btn-bank-rename-category" class="btn btn--gold btn--sm" style="height:40px;">
+              ✏️ שנה שם תיקייה
+            </button>
+            <button type="button" id="btn-bank-delete-folder" class="btn btn--danger btn--sm" style="height:40px;">
+              🗑️ מחק תיקייה נבחרת
+            </button>
+          </div>
         </div>
-      </section>
+      </details>
 
-      <!-- Section 3: Search, Filter & Edit Existing Questions in the Bank -->
+      <!-- Section 4: View, Search, Filter & Edit Questions in the Selected Folder or Mix Bank -->
       <section style="padding:1rem 1.15rem; border-radius:14px; background:rgba(15, 23, 42, 0.85); border:1px solid rgba(56, 189, 248, 0.45); display:flex; flex-direction:column; gap:0.75rem;">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap;">
           <div>
-            <strong style="font-size:1.05rem; color:#7dd3fc;">✏️ חיפוש, סינון ועריכת שאלות וקטגוריות במאגר</strong>
+            <strong id="bank-current-view-heading" style="font-size:1.05rem; color:#7dd3fc;">🔀 צפייה ועריכה: מאגר מיקס כללי (כל השאלות)</strong>
             <p style="font-size:0.8rem; color:var(--text-secondary);">
-              לחצו על "✏️ ערוך שאלה / קטגוריה" ליד כל שאלה כדי לשנות את הנוסח, התשובות, הקטגוריה או רמת הקושי שלה
+              לחצו על "✏️ ערוך שאלה / תיקייה" ליד כל שאלה כדי לשנות את הנוסח, התשובות, התיקייה או רמת הקושי שלה
             </p>
           </div>
         </div>
 
         <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
-          <input id="bank-search-input" type="text" class="input" placeholder="🔍 חפש שאלה או תשובה במאגר..." style="flex:1; min-width:170px;" />
-          <select id="bank-filter-topic" class="select" style="max-width:220px;">
-            <option value="all">כל הקטגוריות</option>
+          <input id="bank-search-input" type="text" class="input" placeholder="🔍 חפש שאלה או תשובה בתיקייה..." style="flex:1; min-width:170px;" />
+          <select id="bank-filter-topic" class="select" style="max-width:230px;">
+            <option value="all">🔀 מאגר מיקס כללי (כל התיקיות)</option>
           </select>
           <select id="bank-filter-diff" class="select" style="max-width:150px;">
             <option value="all">כל רמות הקושי</option>
@@ -1333,7 +1434,7 @@
           </select>
           <label style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.84rem; font-weight:800; color:#6ee7b7; cursor:pointer; padding:0.35rem 0.7rem; border-radius:10px; background:rgba(16, 185, 129, 0.14); border:1px solid rgba(52, 211, 153, 0.45);">
             <input id="bank-filter-custom-only" type="checkbox" />
-            🔒 מאגר שאלות פרטיות שכתבתי
+            🔒 רק שאלות פרטיות / שהעליתי
           </label>
         </div>
 
@@ -2690,6 +2791,65 @@
         };
       }
 
+      function inferFolderNameFromClientQuestions(questionsList, fallbackFileName = '') {
+        const cleanFileHint = String(fallbackFileName || '')
+          .replace(/\.json$/i, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+        const genericNames = new Set([
+          '',
+          'questions',
+          'quiz',
+          'trivia',
+          'data',
+          'שאלות',
+          'שאלון',
+          'טריוויה'
+        ]);
+
+        const list = Array.isArray(questionsList) ? questionsList : [];
+        for (const q of list) {
+          const t = String(q?.topic || q?.category || q?.folder || '').trim();
+          if (t && !genericNames.has(t.toLowerCase())) return t;
+        }
+
+        const phraseScores = new Map();
+        for (const q of list) {
+          const qText = String(q?.question ?? q?.q ?? '').trim();
+          if (!qText) continue;
+          const explicit = qText.match(
+            /(?:בסדרה|הסדרה|בסרט|הסרט|בתוכנית|בנושא)\s+['"״׳]([^'"״׳]{2,35})['"״׳]/
+          );
+          if (explicit && explicit[1]) {
+            const c = explicit[1].trim();
+            if (!genericNames.has(c.toLowerCase())) {
+              phraseScores.set(c, (phraseScores.get(c) || 0) + 3);
+            }
+          }
+          const allQuoted = qText.matchAll(/['"״׳]([^'"״׳]{2,32})['"״׳]/g);
+          for (const m of allQuoted) {
+            const c = m[1].trim();
+            if (!genericNames.has(c.toLowerCase())) {
+              phraseScores.set(c, (phraseScores.get(c) || 0) + 1);
+            }
+          }
+        }
+
+        let bestCand = '';
+        let bestScore = 0;
+        for (const [cand, score] of phraseScores.entries()) {
+          if (score > bestScore && score >= 2) {
+            bestScore = score;
+            bestCand = cand;
+          }
+        }
+        if (bestCand) return bestCand;
+        if (cleanFileHint && !genericNames.has(cleanFileHint.toLowerCase())) {
+          return cleanFileHint;
+        }
+        return '';
+      }
+
       async function parseQuestionsFromJsonFile(file) {
         let text = (await file.text())
           .replace(/^\uFEFF/, '')
@@ -2697,6 +2857,7 @@
           .replace(/\s*```$/, '')
           .trim();
 
+        let subArrays = null;
         let parsed = null;
         try {
           parsed = JSON.parse(text);
@@ -2705,7 +2866,10 @@
           if (/\]\s*\[/.test(text)) {
             try {
               const outer = JSON.parse(`[${text.replace(/\]\s*\[/g, '],[')}]`);
-              if (Array.isArray(outer)) parsed = outer.flat();
+              if (Array.isArray(outer) && outer.every(Array.isArray)) {
+                subArrays = outer;
+                parsed = outer.flat();
+              }
             } catch {
               try {
                 parsed = JSON.parse(text.replace(/\]\s*\[/g, ','));
@@ -2720,17 +2884,35 @@
           throw new Error('מבנה קובץ ה-JSON אינו תקין.');
         }
 
-        const arr = Array.isArray(parsed)
-          ? parsed
-          : Array.isArray(parsed?.questions)
-            ? parsed.questions
-            : Array.isArray(parsed?.items)
-              ? parsed.items
-              : Array.isArray(parsed?.data)
-                ? parsed.data
-                : [];
-
-        const cleaned = arr.map(normalizeIncomingJsonQuestion).filter(Boolean);
+        let cleaned = [];
+        if (Array.isArray(subArrays) && subArrays.length > 1) {
+          // Detect folder/topic per sub-array when multiple JSON arrays are concatenated
+          for (const sub of subArrays) {
+            const normSub = sub.map(normalizeIncomingJsonQuestion).filter(Boolean);
+            const subFolder = inferFolderNameFromClientQuestions(normSub, file.name);
+            normSub.forEach((item) => {
+              if (!item.topic && subFolder) item.topic = subFolder;
+            });
+            cleaned.push(...normSub);
+          }
+        } else {
+          const arr = Array.isArray(parsed)
+            ? parsed
+            : Array.isArray(parsed?.questions)
+              ? parsed.questions
+              : Array.isArray(parsed?.items)
+                ? parsed.items
+                : Array.isArray(parsed?.data)
+                  ? parsed.data
+                  : [];
+          cleaned = arr.map(normalizeIncomingJsonQuestion).filter(Boolean);
+          const inferred = inferFolderNameFromClientQuestions(cleaned, file.name);
+          if (inferred) {
+            cleaned.forEach((item) => {
+              if (!item.topic) item.topic = inferred;
+            });
+          }
+        }
 
         if (cleaned.length === 0) {
           throw new Error('הקובץ אינו מכיל שאלות תקינות (נדרש מערך שאלות עם question ו-4 תשובות ב-options או answers).');
@@ -2865,6 +3047,7 @@
       const btnNewQuizPickJson = document.getElementById('btn-new-quiz-pick-json');
       const inputNewQuizJsonFile = document.getElementById('input-new-quiz-json-file');
       const newQuizJsonFileStatus = document.getElementById('new-quiz-json-file-status');
+      const newQuizJsonFolderInput = document.getElementById('new-quiz-json-folder-name');
       if (btnNewQuizPickJson && inputNewQuizJsonFile) {
         btnNewQuizPickJson.addEventListener('click', () => {
           inputNewQuizJsonFile.value = '';
@@ -2877,12 +3060,26 @@
             const parsedList = await parseQuestionsFromJsonFile(file);
             pendingNewQuizJsonQuestions = parsedList;
             pendingNewQuizJsonFileName = file.name.replace(/\.json$/i, '');
+            const detectedFolders = Array.from(
+              new Set(parsedList.map((q) => q.topic).filter(Boolean))
+            );
+            const autoFolder =
+              (newGameTitleInput?.value || '').trim() ||
+              detectedFolders[0] ||
+              pendingNewQuizJsonFileName;
+            if (newQuizJsonFolderInput && !newQuizJsonFolderInput.value.trim()) {
+              newQuizJsonFolderInput.value = autoFolder;
+            }
             if (newQuizCountInput) {
               newQuizCountInput.value = String(parsedList.length);
             }
             if (newQuizJsonFileStatus) {
               newQuizJsonFileStatus.className = 'pill pill--emerald';
-              newQuizJsonFileStatus.textContent = `✅ נטענו ${parsedList.length} שאלות מתוך "${file.name}"`;
+              const folderLabel =
+                detectedFolders.length > 1
+                  ? `תיקיות: ${detectedFolders.join(', ')}`
+                  : `תיקייה: ${autoFolder}`;
+              newQuizJsonFileStatus.textContent = `✅ ${parsedList.length} שאלות (${folderLabel})`;
             }
             showToast(`📂 נטענו ${parsedList.length} שאלות מקובץ ה-JSON!`);
           } catch (err) {
@@ -2978,6 +3175,7 @@
         if (pastedEl) pastedEl.value = '';
         pendingNewQuizJsonQuestions = [];
         pendingNewQuizJsonFileName = '';
+        if (newQuizJsonFolderInput) newQuizJsonFolderInput.value = '';
         if (newQuizJsonFileStatus) {
           newQuizJsonFileStatus.className = 'pill';
           newQuizJsonFileStatus.textContent = 'טרם נבחר קובץ';
@@ -3285,21 +3483,37 @@
             if (btnNewQuizPickJson) btnNewQuizPickJson.click();
             return;
           }
-          const selectedQuestions = pendingNewQuizJsonQuestions.slice(0, qCount);
+          const folderName =
+            (newQuizJsonFolderInput?.value || '').trim() ||
+            rawTitle ||
+            pendingNewQuizJsonQuestions[0]?.topic ||
+            pendingNewQuizJsonFileName ||
+            'שאלות פרטיות';
+          const distinctTopicsInFile = new Set(
+            pendingNewQuizJsonQuestions.map((q) => q.topic).filter(Boolean)
+          );
+          const selectedQuestions = pendingNewQuizJsonQuestions.slice(0, qCount).map((q) => ({
+            ...q,
+            topic: distinctTopicsInFile.size > 1 && q.topic ? q.topic : folderName,
+            isUserWritten: true
+          }));
           const title =
             rawTitle ||
-            (pendingNewQuizJsonFileName
-              ? `טריוויה: ${pendingNewQuizJsonFileName} (${selectedQuestions.length} שאלות)`
-              : `טריוויה מקובץ JSON (${selectedQuestions.length} שאלות)`);
+            (folderName && folderName !== 'שאלות פרטיות'
+              ? `טריוויה: ${folderName} (${selectedQuestions.length} שאלות)`
+              : pendingNewQuizJsonFileName
+                ? `טריוויה: ${pendingNewQuizJsonFileName} (${selectedQuestions.length} שאלות)`
+                : `טריוויה מקובץ JSON (${selectedQuestions.length} שאלות)`);
           btnSubmitNewGame.disabled = true;
           const prevText = btnSubmitNewGame.textContent;
-          btnSubmitNewGame.textContent = '⏳ יוצר שאלון מקובץ ה-JSON...';
+          btnSubmitNewGame.textContent = '⏳ יוצר שאלון ופותח תיקייה במאגר...';
           try {
             const res = await fetch('/api/admin/games', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 title,
+                folderName,
                 timerSeconds: 20,
                 questions: selectedQuestions
               })
@@ -3307,12 +3521,14 @@
             const data = await res.json();
             if (!data.ok) throw new Error(data.error || 'שגיאה ביצירת השאלון מקובץ ה-JSON.');
             newGameDialog.close();
+            const openedFolders = data?.privateSync?.openedFolders || [folderName];
+            const foldersText = openedFolders.join(', ');
             showToast(
-              `📂 נטענו ${selectedQuestions.length} שאלות מקובץ ה-JSON לשאלון "${data.game.title}"! כעת הגדירו זמנים, קבוצות, מוזיקה ורקע.`
+              `📂 נטענו ${selectedQuestions.length} שאלות לשאלון! בנוסף הן צורפו למאגר המיקס הכללי ונפתחה תיקיית "📁 ${foldersText}" במאגר!`
             );
             await openSettingsModal('branding', {
               afterCreate: true,
-              bannerText: `✅ נטענו ${selectedQuestions.length} שאלות מקובץ ה-JSON לשאלון "${data.game.title}" (קוד ${data.game.code})!`
+              bannerText: `✅ נטענו ${selectedQuestions.length} שאלות לשאלון "${data.game.title}" ונפתחה תיקיית "📁 ${foldersText}" במאגר השאלות!`
             });
           } catch (err) {
             showToast(err.message || 'שגיאה ביצירת השאלון מקובץ ה-JSON.');
@@ -4244,11 +4460,15 @@
         });
       }
 
-      // -------------------- Central Question Bank Manager (Main Menu: Add & Edit Questions or Categories) --------------------
+      // -------------------- Central Question Bank & Category Folders Manager --------------------
 
       const questionBankDialog = document.getElementById('question-bank-dialog');
       const bankTotalPill = document.getElementById('bank-total-pill');
       const bankCustomPill = document.getElementById('bank-custom-pill');
+      const bankFoldersGrid = document.getElementById('bank-folders-grid');
+      const bankNewFolderNameInput = document.getElementById('bank-new-folder-name');
+      const btnBankCreateFolder = document.getElementById('btn-bank-create-folder');
+      const bankCurrentViewHeading = document.getElementById('bank-current-view-heading');
       const bankSearchInput = document.getElementById('bank-search-input');
       const bankFilterTopic = document.getElementById('bank-filter-topic');
       const bankFilterDiff = document.getElementById('bank-filter-diff');
@@ -4257,9 +4477,34 @@
       const bankCatRenameOld = document.getElementById('bank-cat-rename-old');
       const bankCatRenameNew = document.getElementById('bank-cat-rename-new');
       const btnBankRenameCategory = document.getElementById('btn-bank-rename-category');
+      const btnBankDeleteFolder = document.getElementById('btn-bank-delete-folder');
+      const bankAddGeminiBox = document.getElementById('bank-add-gemini-box');
+      const bankGeminiPrompt = document.getElementById('bank-gemini-prompt');
+      const bankGeminiCount = document.getElementById('bank-gemini-count');
+      const btnBankRunGemini = document.getElementById('btn-bank-run-gemini');
+      const btnBankImportJson = document.getElementById('btn-bank-import-json');
+      const inputBankImportJson = document.getElementById('input-bank-import-json');
 
       let currentlyVisibleBankQuestions = [];
       let editingBankQuestionId = null;
+
+      function selectBankFolderView(folderTopic, { customOnly = false } = {}) {
+        if (bankFilterCustomOnly) {
+          bankFilterCustomOnly.checked = Boolean(customOnly);
+        }
+        if (bankFilterTopic) {
+          bankFilterTopic.value = customOnly ? 'all' : folderTopic || 'all';
+        }
+        const targetTopicInput = document.getElementById('bank-new-topic');
+        if (folderTopic && folderTopic !== 'all' && folderTopic !== '__PRIVATE__') {
+          if (targetTopicInput) targetTopicInput.value = folderTopic;
+          if (bankCatRenameOld) bankCatRenameOld.value = folderTopic;
+          if (bankGeminiPrompt && !bankGeminiPrompt.value.trim()) {
+            bankGeminiPrompt.placeholder = `שאלות על ${folderTopic}...`;
+          }
+        }
+        loadAndRenderQuestionBank();
+      }
 
       async function loadAndRenderQuestionBank() {
         if (!questionBankDialog) return;
@@ -4280,11 +4525,21 @@
           }
 
           if (bankTotalPill) {
-            bankTotalPill.textContent = `📚 ${data.totalCount} שאלות במאגר`;
+            bankTotalPill.textContent = `🔀 מאגר מיקס כללי: ${data.totalCount} שאלות`;
           }
           if (bankCustomPill) {
             bankCustomPill.hidden = !data.customCount;
-            bankCustomPill.textContent = `✨ ${data.customCount} שאלות שהוספת`;
+            bankCustomPill.textContent = `🔒 ${data.customCount} שאלות פרטיות`;
+          }
+
+          if (bankCurrentViewHeading) {
+            if (customOnly) {
+              bankCurrentViewHeading.textContent = `🔒 צפייה ועריכה: מאגר שאלות פרטיות (${data.filteredCount} שאלות)`;
+            } else if (topic && topic !== 'all') {
+              bankCurrentViewHeading.textContent = `📁 תיקיית מאגר: "${topic}" (${data.filteredCount} שאלות)`;
+            } else {
+              bankCurrentViewHeading.textContent = `🔀 צפייה ועריכה: מאגר מיקס כללי (${data.totalCount} שאלות מכל התיקיות)`;
+            }
           }
 
           if (Array.isArray(data.topicsSummary)) {
@@ -4293,24 +4548,79 @@
             const topicOpts = data.topicsSummary
               .map(
                 (t) =>
-                  `<option value="${escapeHtml(t.topic)}">${escapeHtml(t.topic)} (${t.count})</option>`
+                  `<option value="${escapeHtml(t.topic)}">📁 ${escapeHtml(t.topic)} (${t.count})</option>`
               )
               .join('');
 
             if (bankFilterTopic) {
-              bankFilterTopic.innerHTML = `<option value="all">כל הקטגוריות (${data.totalCount})</option>${topicOpts}`;
-              bankFilterTopic.value = currentFilterVal;
+              bankFilterTopic.innerHTML = `<option value="all">🔀 מאגר מיקס כללי (${data.totalCount})</option>${topicOpts}`;
+              if (
+                currentFilterVal === 'all' ||
+                data.topicsSummary.some((t) => t.topic === currentFilterVal)
+              ) {
+                bankFilterTopic.value = currentFilterVal;
+              }
             }
             if (bankCatRenameOld) {
               bankCatRenameOld.innerHTML = topicOpts;
-              if (currentRenameOldVal) bankCatRenameOld.value = currentRenameOldVal;
+              if (
+                currentRenameOldVal &&
+                data.topicsSummary.some((t) => t.topic === currentRenameOldVal)
+              ) {
+                bankCatRenameOld.value = currentRenameOldVal;
+              } else if (currentFilterVal !== 'all') {
+                bankCatRenameOld.value = currentFilterVal;
+              }
+            }
+
+            if (bankFoldersGrid) {
+              const isMixActive = !customOnly && (!currentFilterVal || currentFilterVal === 'all');
+              const isPrivateActive = customOnly;
+              const mixBtnHtml = `
+                <button
+                  type="button"
+                  data-bank-folder="all"
+                  class="btn btn--sm ${isMixActive ? 'btn--primary' : ''}"
+                  style="border-radius:10px; font-weight:800; padding:0.38rem 0.8rem;"
+                >
+                  🔀 מאגר מיקס כללי <span style="opacity:0.8; font-size:0.75rem;">(${data.totalCount})</span>
+                </button>
+              `;
+              const privateBtnHtml = `
+                <button
+                  type="button"
+                  data-bank-folder="__PRIVATE__"
+                  class="btn btn--sm ${isPrivateActive ? 'btn--success' : 'btn--gold'}"
+                  style="border-radius:10px; font-weight:800; padding:0.38rem 0.8rem;"
+                >
+                  🔒 שאלות פרטיות <span style="opacity:0.85; font-size:0.75rem;">(${data.customCount || 0})</span>
+                </button>
+              `;
+              const foldersHtml = data.topicsSummary
+                .map((t) => {
+                  const isFolderActive = !customOnly && currentFilterVal === t.topic;
+                  return `
+                    <button
+                      type="button"
+                      data-bank-folder="${escapeHtml(t.topic)}"
+                      class="btn btn--sm ${isFolderActive ? 'btn--primary' : ''}"
+                      style="border-radius:10px; padding:0.38rem 0.8rem; border-color:${isFolderActive ? '#38bdf8' : 'rgba(255,255,255,0.18)'};"
+                    >
+                      📁 ${escapeHtml(t.topic)} <span style="opacity:0.78; font-size:0.75rem;">(${t.count})</span>
+                    </button>
+                  `;
+                })
+                .join('');
+              bankFoldersGrid.innerHTML = mixBtnHtml + privateBtnHtml + foldersHtml;
             }
           }
 
           const diffBadge = { easy: '🟢 קל', medium: '🟡 בינוני', hard: '🔴 קשה' };
           if (currentlyVisibleBankQuestions.length === 0) {
             bankQuestionsList.innerHTML =
-              '<p style="color:var(--text-muted); text-align:center; padding:1rem;">לא נמצאו שאלות התואמות לחיפוש.</p>';
+              topic && topic !== 'all'
+                ? `<p style="color:var(--text-muted); text-align:center; padding:1rem;">תיקיית "📁 ${escapeHtml(topic)}" עדיין ריקה — השתמשו באפשרויות למעלה (ידני, ג׳מניי, JSON או Word/PDF) כדי להוסיף לה שאלות!</p>`
+                : '<p style="color:var(--text-muted); text-align:center; padding:1rem;">לא נמצאו שאלות התואמות לחיפוש.</p>';
           } else {
             bankQuestionsList.innerHTML = currentlyVisibleBankQuestions
               .map((item) => {
@@ -4323,7 +4633,7 @@
                     >
                       <div style="display:grid; grid-template-columns:1fr 140px; gap:0.5rem;">
                         <div class="field" style="gap:0.2rem;">
-                          <label style="font-size:0.75rem; color:#bae6fd;">קטגוריה / נושא:</label>
+                          <label style="font-size:0.75rem; color:#bae6fd;">📁 תיקייה / קטגוריה:</label>
                           <input type="text" class="input" list="trivia-topics-datalist" data-edit-bank-field="topic" value="${escapeHtml(item.topic || 'ידע כללי')}" />
                         </div>
                         <div class="field" style="gap:0.2rem;">
@@ -4366,13 +4676,13 @@
                 >
                   <div style="display:flex; align-items:center; justify-content:space-between; gap:0.4rem; flex-wrap:wrap;">
                     <div style="display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap;">
-                      <span class="pill pill--sky" style="font-size:0.72rem; padding:0.08rem 0.45rem;">${escapeHtml(item.topic || 'ידע כללי')}</span>
+                      <span class="pill pill--sky" style="font-size:0.72rem; padding:0.08rem 0.45rem;">📁 ${escapeHtml(item.topic || 'ידע כללי')}</span>
                       <span class="pill" style="font-size:0.72rem; padding:0.08rem 0.45rem;">${diffBadge[item.difficulty] || '🟡 בינוני'}</span>
                       ${item.isCustom ? '<span class="pill pill--emerald" style="font-size:0.72rem; padding:0.08rem 0.45rem;">✨ שאלה שלך</span>' : ''}
                     </div>
                     <div style="display:flex; gap:0.35rem; align-items:center;">
                       <button type="button" class="btn btn--sm" data-start-edit-bank-q="${escapeHtml(item.id)}" style="padding:0.12rem 0.55rem; font-size:0.75rem;">
-                        ✏️ ערוך שאלה / קטגוריה
+                        ✏️ ערוך שאלה / תיקייה
                       </button>
                       <button type="button" class="btn btn--danger btn--sm" data-delete-bank-q="${escapeHtml(item.id)}" style="padding:0.12rem 0.45rem; font-size:0.75rem;">
                         🗑️ מחק
@@ -4398,6 +4708,166 @@
         }
       }
 
+      if (bankFoldersGrid) {
+        bankFoldersGrid.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-bank-folder]');
+          if (!btn) return;
+          const folder = btn.getAttribute('data-bank-folder');
+          if (folder === '__PRIVATE__') {
+            selectBankFolderView('all', { customOnly: true });
+          } else {
+            selectBankFolderView(folder, { customOnly: false });
+          }
+        });
+      }
+
+      if (btnBankCreateFolder) {
+        btnBankCreateFolder.addEventListener('click', async () => {
+          const rawName = bankNewFolderNameInput ? bankNewFolderNameInput.value.trim() : '';
+          if (!rawName || rawName.length < 2) {
+            showToast('אנא הקלידו שם לתיקייה החדשה (למשל: בית הקלפים).');
+            if (bankNewFolderNameInput) bankNewFolderNameInput.focus();
+            return;
+          }
+          btnBankCreateFolder.disabled = true;
+          try {
+            const res = await fetch('/api/admin/question-bank/folders', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ folderName: rawName })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            if (bankNewFolderNameInput) bankNewFolderNameInput.value = '';
+            const createdName = data.folderName;
+            await loadAndRenderQuestionBank();
+            selectBankFolderView(createdName, { customOnly: false });
+            showToast(
+              `📁 תיקיית "${createdName}" נוצרה במאגר! כעת תוכלו להוסיף לה שאלות ידנית, מג׳מניי או מקובץ JSON.`
+            );
+          } catch (err) {
+            showToast(err.message || 'שגיאה ביצירת התיקייה.');
+          } finally {
+            btnBankCreateFolder.disabled = false;
+          }
+        });
+      }
+
+      document.querySelectorAll('[data-bank-add-tab]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const tab = btn.getAttribute('data-bank-add-tab');
+          document.querySelectorAll('[data-bank-add-tab]').forEach((b) => {
+            b.classList.toggle('btn--primary', b.getAttribute('data-bank-add-tab') === tab);
+          });
+          const manualForm = document.getElementById('bank-add-question-form');
+          if (manualForm) {
+            manualForm.hidden = tab !== 'manual';
+            manualForm.style.display = tab === 'manual' ? 'flex' : 'none';
+          }
+          if (bankAddGeminiBox) {
+            bankAddGeminiBox.hidden = tab !== 'gemini';
+            bankAddGeminiBox.style.display = tab === 'gemini' ? 'flex' : 'none';
+          }
+        });
+      });
+
+      if (btnBankRunGemini) {
+        btnBankRunGemini.addEventListener('click', async () => {
+          const folderTopic = document.getElementById('bank-new-topic')?.value.trim() || 'ידע כללי';
+          const difficulty = document.getElementById('bank-new-diff')?.value || 'mixed';
+          const count = Math.max(1, Math.min(100, Number(bankGeminiCount?.value) || 10));
+          const freePrompt = (bankGeminiPrompt?.value || '').trim() || folderTopic;
+          const apiKey = localStorage.getItem('trivia_gemini_api_key') || '';
+
+          btnBankRunGemini.disabled = true;
+          const prevText = btnBankRunGemini.textContent;
+          btnBankRunGemini.textContent = '⏳ מייצר שאלות לתיקייה...';
+          try {
+            const genRes = await fetch('/api/admin/questions/generate-topic', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                topic: freePrompt,
+                count,
+                difficulty,
+                customInstructions: freePrompt,
+                apiKey
+              })
+            });
+            const genData = await genRes.json();
+            if (!genData.ok || !Array.isArray(genData.questions) || genData.questions.length === 0) {
+              throw new Error(genData.error || 'לא הצלחנו לייצר שאלות.');
+            }
+            const toSave = genData.questions.map((q) => ({
+              ...q,
+              topic: folderTopic,
+              difficulty: difficulty === 'mixed' ? 'medium' : difficulty
+            }));
+            const saveRes = await fetch('/api/admin/question-bank', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ questions: toSave })
+            });
+            const saveData = await saveRes.json();
+            if (!saveData.ok) throw new Error(saveData.error);
+            if (bankGeminiPrompt) bankGeminiPrompt.value = '';
+            await loadAndRenderQuestionBank();
+            selectBankFolderView(folderTopic, { customOnly: false });
+            showToast(
+              `✨ נוספו ${saveData.addedCount} שאלות לתיקיית "📁 ${folderTopic}" ולמאגר המיקס הכללי!`
+            );
+          } catch (err) {
+            showToast(err.message || 'שגיאה בייצור שאלות לתיקייה.');
+          } finally {
+            btnBankRunGemini.disabled = false;
+            btnBankRunGemini.textContent = prevText;
+          }
+        });
+      }
+
+      if (btnBankImportJson && inputBankImportJson) {
+        btnBankImportJson.addEventListener('click', () => {
+          inputBankImportJson.value = '';
+          inputBankImportJson.click();
+        });
+        inputBankImportJson.addEventListener('change', async () => {
+          const file = inputBankImportJson.files?.[0];
+          if (!file) return;
+          btnBankImportJson.disabled = true;
+          try {
+            const parsedQuestions = await parseQuestionsFromJsonFile(file);
+            const currentTopicInput = document.getElementById('bank-new-topic')?.value.trim() || '';
+            const distinctInFile = Array.from(
+              new Set(parsedQuestions.map((q) => q.topic).filter(Boolean))
+            );
+            const targetFolder =
+              currentTopicInput && currentTopicInput !== 'ידע כללי'
+                ? currentTopicInput
+                : distinctInFile[0] || file.name.replace(/\.json$/i, '') || 'שאלות פרטיות';
+            const toAdd = parsedQuestions.map((q) => ({
+              ...q,
+              topic: distinctInFile.length > 1 && q.topic ? q.topic : targetFolder
+            }));
+            const res = await fetch('/api/admin/question-bank', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ questions: toAdd })
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            await loadAndRenderQuestionBank();
+            selectBankFolderView(targetFolder, { customOnly: false });
+            showToast(
+              `📂 נוספו ${data.addedCount} שאלות מקובץ ה-JSON לתיקיית "📁 ${targetFolder}" ולמאגר המיקס הכללי!`
+            );
+          } catch (err) {
+            showToast(err.message || 'שגיאה בייבוא קובץ ה-JSON למאגר.');
+          } finally {
+            btnBankImportJson.disabled = false;
+          }
+        });
+      }
+
       async function openQuestionBankModal() {
         dismissDrawerImmediately();
         editingBankQuestionId = null;
@@ -4416,7 +4886,16 @@
       }
 
       if (bankSearchInput) bankSearchInput.addEventListener('input', loadAndRenderQuestionBank);
-      if (bankFilterTopic) bankFilterTopic.addEventListener('change', loadAndRenderQuestionBank);
+      if (bankFilterTopic) {
+        bankFilterTopic.addEventListener('change', () => {
+          const val = bankFilterTopic.value;
+          const targetTopicInput = document.getElementById('bank-new-topic');
+          if (val && val !== 'all' && targetTopicInput) {
+            targetTopicInput.value = val;
+          }
+          loadAndRenderQuestionBank();
+        });
+      }
       if (bankFilterDiff) bankFilterDiff.addEventListener('change', loadAndRenderQuestionBank);
       if (bankFilterCustomOnly) bankFilterCustomOnly.addEventListener('change', loadAndRenderQuestionBank);
 
@@ -4425,7 +4904,7 @@
           const oldTopic = bankCatRenameOld ? bankCatRenameOld.value.trim() : '';
           const newTopic = bankCatRenameNew ? bankCatRenameNew.value.trim() : '';
           if (!oldTopic || !newTopic) {
-            showToast('אנא בחרו קטגוריה קיימת והקלידו את השם החדש שלה.');
+            showToast('אנא בחרו תיקייה קיימת והקלידו את השם החדש שלה.');
             if (bankCatRenameNew) bankCatRenameNew.focus();
             return;
           }
@@ -4439,12 +4918,39 @@
             const data = await res.json();
             if (!data.ok) throw new Error(data.error);
             if (bankCatRenameNew) bankCatRenameNew.value = '';
-            showToast(`🏷️ הקטגוריה "${oldTopic}" שונתה ל-"${newTopic}" ב-${data.updatedCount} שאלות במאגר!`);
+            showToast(`🏷️ התיקייה "${oldTopic}" שונתה ל-"${newTopic}" ב-${data.updatedCount} שאלות במאגר!`);
             await loadAndRenderQuestionBank();
+            selectBankFolderView(newTopic, { customOnly: false });
           } catch (err) {
-            showToast(err.message || 'שגיאה בשינוי שם הקטגוריה.');
+            showToast(err.message || 'שגיאה בשינוי שם התיקייה.');
           } finally {
             btnBankRenameCategory.disabled = false;
+          }
+        });
+      }
+
+      if (btnBankDeleteFolder) {
+        btnBankDeleteFolder.addEventListener('click', async () => {
+          const folderToDelete = bankCatRenameOld ? bankCatRenameOld.value.trim() : '';
+          if (!folderToDelete) return;
+          const ok = window.confirm(
+            `למחוק את תיקיית המאגר "📁 ${folderToDelete}" ואת כל השאלות שבתוכה?`
+          );
+          if (!ok) return;
+          btnBankDeleteFolder.disabled = true;
+          try {
+            const res = await fetch(
+              `/api/admin/question-bank/folders/${encodeURIComponent(folderToDelete)}?deleteQuestions=1`,
+              { method: 'DELETE' }
+            );
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            selectBankFolderView('all', { customOnly: false });
+            showToast(`🗑️ התיקייה "${folderToDelete}" הוסרה מהמאגר.`);
+          } catch (err) {
+            showToast(err.message || 'שגיאה במחיקת התיקייה.');
+          } finally {
+            btnBankDeleteFolder.disabled = false;
           }
         });
       }
@@ -4623,6 +5129,7 @@
       const btnExistingPickJson = document.getElementById('btn-existing-pick-json');
       const inputExistingJsonFile = document.getElementById('input-existing-json-file');
       const existingJsonFileStatus = document.getElementById('existing-json-file-status');
+      const existingJsonFolderInput = document.getElementById('existing-json-folder-name');
       if (btnExistingPickJson && inputExistingJsonFile) {
         btnExistingPickJson.addEventListener('click', () => {
           inputExistingJsonFile.value = '';
@@ -4634,13 +5141,28 @@
           try {
             const parsedList = await parseQuestionsFromJsonFile(file);
             pendingExistingJsonQuestions = parsedList;
-            pendingExistingJsonFileName = file.name;
+            pendingExistingJsonFileName = file.name.replace(/\.json$/i, '');
+            const detectedFolders = Array.from(
+              new Set(parsedList.map((q) => q.topic).filter(Boolean))
+            );
+            const autoFolder =
+              detectedFolders[0] ||
+              pendingExistingJsonFileName ||
+              draftSettings.title ||
+              'שאלות פרטיות';
+            if (existingJsonFolderInput) {
+              existingJsonFolderInput.value = autoFolder;
+            }
             if (existingAddCount) {
               existingAddCount.value = String(parsedList.length);
             }
             if (existingJsonFileStatus) {
               existingJsonFileStatus.className = 'pill pill--emerald';
-              existingJsonFileStatus.textContent = `✅ נטענו ${parsedList.length} שאלות מתוך "${file.name}"`;
+              const folderLabel =
+                detectedFolders.length > 1
+                  ? `תיקיות: ${detectedFolders.join(', ')}`
+                  : `תיקייה: ${autoFolder}`;
+              existingJsonFileStatus.textContent = `✅ ${parsedList.length} שאלות (${folderLabel})`;
             }
             showToast(`📂 נטענו ${parsedList.length} שאלות! לחצו על "➕ הוסף שאלות אלו על הקיים בשאלון".`);
           } catch (err) {
@@ -4753,7 +5275,7 @@
         });
       }
 
-      async function appendQuestionsToCurrentQuizEditor(newQuestions, toastMsg) {
+      async function appendQuestionsToCurrentQuizEditor(newQuestions, toastMsg, folderName = '') {
         if (!Array.isArray(newQuestions) || newQuestions.length === 0) return;
         syncEditorDomToArray();
         if (
@@ -4774,7 +5296,10 @@
           await fetch('/api/admin/questions', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ questions: validToPersist })
+            body: JSON.stringify({
+              questions: validToPersist,
+              ...(folderName ? { folderName } : {})
+            })
           });
         }
         showToast(toastMsg || `✅ נוספו ${newQuestions.length} שאלות לשאלון הקיים!`);
@@ -4888,10 +5413,24 @@
               if (btnExistingPickJson) btnExistingPickJson.click();
               return;
             }
-            const toAppend = pendingExistingJsonQuestions.slice(0, count);
+            const folderName =
+              (existingJsonFolderInput?.value || '').trim() ||
+              pendingExistingJsonQuestions[0]?.topic ||
+              pendingExistingJsonFileName ||
+              draftSettings.title ||
+              'שאלות פרטיות';
+            const distinctTopicsInFile = new Set(
+              pendingExistingJsonQuestions.map((q) => q.topic).filter(Boolean)
+            );
+            const toAppend = pendingExistingJsonQuestions.slice(0, count).map((q) => ({
+              ...q,
+              topic: distinctTopicsInFile.size > 1 && q.topic ? q.topic : folderName,
+              isUserWritten: true
+            }));
             await appendQuestionsToCurrentQuizEditor(
               toAppend,
-              `📂 נוספו ונשמרו ${toAppend.length} שאלות מקובץ ה-JSON על הקיים בשאלון (ונשמרו גם במאגר השאלות הפרטיות)!`
+              `📂 נוספו ${toAppend.length} שאלות לשאלון! בנוסף הן צורפו למאגר המיקס הכללי ונפתחה תיקיית "📁 ${folderName}" במאגר השאלות!`,
+              folderName
             );
             return;
           }

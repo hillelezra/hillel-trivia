@@ -434,6 +434,9 @@ function persistStore(targetStore) {
     ...rootSettingsMirror,
     activeGameId: targetStore.activeGameId,
     ...(targetStore.geminiApiKey ? { geminiApiKey: targetStore.geminiApiKey } : {}),
+    customBankFolders: Array.isArray(targetStore.customBankFolders)
+      ? targetStore.customBankFolders
+      : [],
     games: targetStore.games
   };
   fs.writeFileSync(SETTINGS_FILE, JSON.stringify(toSave, null, 2), 'utf8');
@@ -451,6 +454,7 @@ function loadStore() {
       const initialStore = {
         activeGameId: initialGame.id,
         geminiApiKey: '',
+        customBankFolders: [],
         games: [initialGame]
       };
       persistStore(initialStore);
@@ -459,6 +463,15 @@ function loadStore() {
 
     const rawText = fs.readFileSync(SETTINGS_FILE, 'utf8').replace(/^\uFEFF/, '');
     const parsed = JSON.parse(rawText);
+    const customBankFolders = Array.isArray(parsed?.customBankFolders)
+      ? Array.from(
+          new Set(
+            parsed.customBankFolders
+              .map((f) => String(f || '').trim())
+              .filter(Boolean)
+          )
+        )
+      : [];
 
     if (!Array.isArray(parsed?.games) || parsed.games.length === 0) {
       const migratedTimer =
@@ -475,6 +488,7 @@ function loadStore() {
       const migratedStore = {
         activeGameId: migratedGame.id,
         geminiApiKey: typeof parsed?.geminiApiKey === 'string' ? parsed.geminiApiKey.trim() : '',
+        customBankFolders,
         games: [migratedGame]
       };
       persistStore(migratedStore);
@@ -491,6 +505,7 @@ function loadStore() {
     const loadedStore = {
       activeGameId,
       geminiApiKey: typeof parsed?.geminiApiKey === 'string' ? parsed.geminiApiKey.trim() : '',
+      customBankFolders,
       games
     };
     persistStore(loadedStore);
@@ -506,6 +521,7 @@ function loadStore() {
     return {
       activeGameId: fallbackGame.id,
       geminiApiKey: '',
+      customBankFolders: [],
       games: [fallbackGame]
     };
   }
@@ -1897,9 +1913,10 @@ app.post('/api/admin/games', (req, res) => {
     store.activeGameId = newGame.id;
     persistStore(store);
 
+    const requestedFolderName = String(req.body?.folderName || rawTitle || 'שאלות פרטיות').trim();
     const privateSync = autoSyncUserWrittenQuestionsToPrivateBank(
       Array.isArray(req.body?.questions) ? req.body.questions : [],
-      'שאלות פרטיות'
+      requestedFolderName
     );
 
     resetQuiz({ keepPlayers: true, clearTeamAssignments: true });
@@ -2350,29 +2367,153 @@ function getPrivateQuestionBankCount() {
   return persistentQuestionBank.filter((q) => q.isCustom || q.topic === 'שאלות פרטיות').length;
 }
 
+function cleanFolderTopicName(rawName) {
+  return String(rawName || '')
+    .replace(/\.json$/i, '')
+    .replace(/^(?:טריוויה|שאלון|חידון|משחק)\s*[:\-–]\s*/i, '')
+    .replace(/\s*\(\s*\d+\s*שאלות\s*\)\s*$/i, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 60);
+}
+
+const GENERIC_FOLDER_NAMES = new Set([
+  '',
+  'שאלות פרטיות',
+  'ידע כללי',
+  'טריוויה מקובץ json',
+  'טריוויה מקובץ',
+  'טריוויה רנדומלית',
+  'שאלון ידני',
+  'questions',
+  'quiz',
+  'trivia',
+  'data'
+]);
+
+function isMeaningfulFolderName(name) {
+  const cleaned = cleanFolderTopicName(name);
+  if (!cleaned || cleaned.length < 2) return false;
+  return !GENERIC_FOLDER_NAMES.has(cleaned.toLowerCase());
+}
+
+function inferFolderNameFromQuestionsBatch(questionsList, rawHint = '') {
+  const hintClean = cleanFolderTopicName(rawHint);
+  if (isMeaningfulFolderName(hintClean)) {
+    return hintClean;
+  }
+
+  const list = Array.isArray(questionsList) ? questionsList : [];
+  for (const item of list) {
+    const itemTopic = cleanFolderTopicName(item?.topic || item?._topic || item?.folder || item?.category || '');
+    if (isMeaningfulFolderName(itemTopic)) {
+      return itemTopic;
+    }
+  }
+
+  // Detect explicit series / movie / book pattern in questions, e.g. "בסדרה 'בית הקלפים'" or "בסדרה 'קופה ראשית'"
+  const phraseCounts = new Map();
+  for (const item of list) {
+    const qText = String(item?.question ?? item?.q ?? '').trim();
+    if (!qText) continue;
+
+    const explicitMatch = qText.match(
+      /(?:בסדרה|הסדרה|בסרט|הסרט|בתוכנית|בנושא)\s+['"״׳]([^'"״׳]{2,35})['"״׳]/
+    );
+    if (explicitMatch && explicitMatch[1]) {
+      const candidate = cleanFolderTopicName(explicitMatch[1]);
+      if (isMeaningfulFolderName(candidate)) {
+        phraseCounts.set(candidate, (phraseCounts.get(candidate) || 0) + 3);
+      }
+    }
+
+    const quotedMatches = qText.matchAll(/['"״׳]([^'"״׳]{2,32})['"״׳]/g);
+    for (const m of quotedMatches) {
+      const candidate = cleanFolderTopicName(m[1]);
+      if (isMeaningfulFolderName(candidate)) {
+        phraseCounts.set(candidate, (phraseCounts.get(candidate) || 0) + 1);
+      }
+    }
+  }
+
+  let bestCandidate = '';
+  let bestScore = 0;
+  for (const [cand, score] of phraseCounts.entries()) {
+    if (score > bestScore && score >= 2) {
+      bestScore = score;
+      bestCandidate = cand;
+    }
+  }
+
+  return bestCandidate || hintClean || 'שאלות פרטיות';
+}
+
+function ensureBankFolderExists(folderName) {
+  const clean = cleanFolderTopicName(folderName);
+  if (!clean) return '';
+  if (!Array.isArray(store.customBankFolders)) {
+    store.customBankFolders = [];
+  }
+  const exists = store.customBankFolders.some((f) => f.toLowerCase() === clean.toLowerCase());
+  if (!exists) {
+    store.customBankFolders.unshift(clean);
+    persistStore(store);
+  }
+  return clean;
+}
+
 function getQuestionBankTopicsSummary() {
   const counts = new Map();
+  if (Array.isArray(store?.customBankFolders)) {
+    for (const folder of store.customBankFolders) {
+      const clean = cleanFolderTopicName(folder);
+      if (clean && !counts.has(clean)) {
+        counts.set(clean, 0);
+      }
+    }
+  }
   for (const q of persistentQuestionBank) {
     const t = q.topic || 'ידע כללי';
     counts.set(t, (counts.get(t) || 0) + 1);
   }
   return Array.from(counts.entries())
-    .map(([topic, count]) => ({ topic, count }))
-    .sort((a, b) => b.count - a.count);
+    .map(([topic, count]) => ({
+      topic,
+      count,
+      isCustomFolder: Boolean(
+        Array.isArray(store?.customBankFolders) &&
+          store.customBankFolders.some((f) => f.toLowerCase() === topic.toLowerCase())
+      )
+    }))
+    .sort((a, b) => {
+      if (b.count !== a.count) return b.count - a.count;
+      return a.topic.localeCompare(b.topic, 'he');
+    });
 }
 
 function addQuestionsToPersistentBank(rawItems, { markCustom = true, defaultTopic = 'שאלות פרטיות' } = {}) {
   const list = Array.isArray(rawItems) ? rawItems : [rawItems];
+  const resolvedDefaultTopic = inferFolderNameFromQuestionsBatch(list, defaultTopic);
+  if (isMeaningfulFolderName(resolvedDefaultTopic)) {
+    ensureBankFolderExists(resolvedDefaultTopic);
+  }
+
   const seenQuestions = new Set(
     persistentQuestionBank.map((q) => normalizeQuestionKeyText(q.question))
   );
   const added = [];
 
   for (const raw of list) {
+    const itemTopic =
+      cleanFolderTopicName(raw?.topic || raw?._topic || raw?.folder || resolvedDefaultTopic) ||
+      'שאלות פרטיות';
+    if (isMeaningfulFolderName(itemTopic)) {
+      ensureBankFolderExists(itemTopic);
+    }
     const clean = normalizeBankQuestionEntry(
       {
         ...raw,
-        topic: String(raw?.topic || defaultTopic || 'שאלות פרטיות').trim() || 'שאלות פרטיות',
+        topic: itemTopic,
         id: `qbank-custom-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
         isCustom: Boolean(markCustom)
       },
@@ -2404,11 +2545,18 @@ function isPlaceholderQuestionEntry(q) {
 }
 
 /**
- * Automatically saves any user-written (or user-modified) questions to the Private Question Bank (`מאגר שאלות פרטיות`).
- * Questions that belong unaltered to the 1,100+ built-in bank are skipped so only genuine user-written questions are added.
+ * Automatically saves any user-written (or user-uploaded JSON) questions to the General Mix Bank
+ * AND opens/assigns their dedicated category folder (`תיקייה במאגר`)!
  */
 function autoSyncUserWrittenQuestionsToPrivateBank(questionsList, fallbackTopic = 'שאלות פרטיות') {
   const list = Array.isArray(questionsList) ? questionsList : [questionsList];
+  const batchFolder = inferFolderNameFromQuestionsBatch(list, fallbackTopic);
+  const openedFolders = new Set();
+  if (isMeaningfulFolderName(batchFolder)) {
+    ensureBankFolderExists(batchFolder);
+    openedFolders.add(batchFolder);
+  }
+
   let addedCount = 0;
   let updatedCount = 0;
 
@@ -2418,12 +2566,20 @@ function autoSyncUserWrittenQuestionsToPrivateBank(questionsList, fallbackTopic 
     const key = normalizeQuestionKeyText(qText);
     const explicitlyUserWritten = Boolean(raw.isUserWritten || raw.isCustom || raw.isPrivate);
 
-    // If this question is an unmodified built-in question and wasn't explicitly written by the user, skip it
+    // If this question is an unmodified built-in question and wasn't explicitly written/uploaded by the user, skip it
     if (BUILTIN_QUESTION_TEXTS_SET.has(key) && !explicitlyUserWritten) {
       continue;
     }
 
     if (answers.length < 4 || answers.some((a) => !a)) continue;
+
+    const itemFolder =
+      cleanFolderTopicName(raw.topic || raw._topic || raw.folder || batchFolder || 'שאלות פרטיות') ||
+      'שאלות פרטיות';
+    if (isMeaningfulFolderName(itemFolder)) {
+      ensureBankFolderExists(itemFolder);
+      openedFolders.add(itemFolder);
+    }
 
     const existingIdx = persistentQuestionBank.findIndex(
       (item) => normalizeQuestionKeyText(item.question) === key
@@ -2432,16 +2588,19 @@ function autoSyncUserWrittenQuestionsToPrivateBank(questionsList, fallbackTopic 
     if (existingIdx !== -1) {
       const existing = persistentQuestionBank[existingIdx];
       if (existing.isCustom || explicitlyUserWritten) {
+        const shouldUpgradeTopic =
+          isMeaningfulFolderName(itemFolder) &&
+          (!isMeaningfulFolderName(existing.topic) || existing.topic !== itemFolder);
         const answersChanged =
           existing.correctIndex !== correctIndex ||
           existing.answers.some((a, i) => a !== answers[i]);
-        if (answersChanged || !existing.isCustom) {
+        if (answersChanged || !existing.isCustom || shouldUpgradeTopic) {
           persistentQuestionBank[existingIdx] = {
             ...existing,
             answers,
             correctIndex,
             isCustom: true,
-            topic: existing.topic || fallbackTopic || 'שאלות פרטיות'
+            topic: shouldUpgradeTopic ? itemFolder : existing.topic || itemFolder
           };
           updatedCount++;
         }
@@ -2450,7 +2609,7 @@ function autoSyncUserWrittenQuestionsToPrivateBank(questionsList, fallbackTopic 
       const cleanEntry = normalizeBankQuestionEntry(
         {
           id: `qbank-private-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
-          topic: String(raw.topic || raw._topic || fallbackTopic || 'שאלות פרטיות').trim() || 'שאלות פרטיות',
+          topic: itemFolder,
           difficulty,
           question: qText,
           answers,
@@ -2470,7 +2629,13 @@ function autoSyncUserWrittenQuestionsToPrivateBank(questionsList, fallbackTopic 
     savePersistentQuestionBank();
   }
 
-  return { addedCount, updatedCount, totalPrivateCount: getPrivateQuestionBankCount() };
+  return {
+    addedCount,
+    updatedCount,
+    folderName: batchFolder,
+    openedFolders: Array.from(openedFolders),
+    totalPrivateCount: getPrivateQuestionBankCount()
+  };
 }
 
 function shuffleArray(arr) {
@@ -2521,10 +2686,23 @@ function matchBuiltInTopic(rawTopic) {
   if (t === '__private_bank__' || t.includes('שאלות פרטיות') || t.includes('מאגר פרטי')) {
     return '__PRIVATE_BANK__';
   }
-  // 1. Exact match against any topic in persistentQuestionBank first
+  // 1. Exact or substring match against any existing folder / topic in persistentQuestionBank or customBankFolders first
+  const allKnownTopics = new Set();
+  for (const folder of store.customBankFolders || []) {
+    if (folder) allKnownTopics.add(String(folder).trim());
+  }
   for (const q of persistentQuestionBank) {
-    if (String(q.topic || '').toLowerCase() === t) {
-      return q.topic;
+    if (q && q.topic) allKnownTopics.add(String(q.topic).trim());
+  }
+  for (const topicName of allKnownTopics) {
+    if (topicName.toLowerCase() === t) {
+      return topicName;
+    }
+  }
+  for (const topicName of allKnownTopics) {
+    const lowerTopic = topicName.toLowerCase();
+    if (lowerTopic.length >= 3 && lowerTopic !== 'ידע כללי' && t.includes(lowerTopic)) {
+      return topicName;
     }
   }
   // 2. Check Israeli Cinema & Television BEFORE generic 'ישראל' so "קולנוע ישראלי" or "סרטים ישראלים" matches 'קולנוע ישראלי'!
@@ -4436,12 +4614,80 @@ app.put('/api/admin/question-bank/:id', (req, res) => {
   }
 });
 
+app.post('/api/admin/question-bank/folders', (req, res) => {
+  try {
+    const rawName = String(req.body?.folderName || req.body?.topic || '').trim();
+    const folderName = cleanFolderTopicName(rawName);
+    if (!folderName || folderName.length < 2) {
+      return res.status(400).json({ ok: false, error: 'יש להזין שם תיקייה בעל 2 תווים לפחות.' });
+    }
+    ensureBankFolderExists(folderName);
+    broadcastAllStates();
+    return res.json({
+      ok: true,
+      folderName,
+      totalCount: persistentQuestionBank.length,
+      customCount: persistentQuestionBank.filter((q) => q.isCustom).length,
+      topicsSummary: getQuestionBankTopicsSummary()
+    });
+  } catch (err) {
+    return res.status(500).json({ ok: false, error: 'שגיאה ביצירת תיקייה חדשה במאגר.' });
+  }
+});
+
+app.delete('/api/admin/question-bank/folders/:folderName', (req, res) => {
+  try {
+    const targetFolder = String(req.params.folderName || '').trim();
+    if (!targetFolder) {
+      return res.status(400).json({ ok: false, error: 'חסר שם תיקייה למחיקה.' });
+    }
+    const deleteQuestions = req.query.deleteQuestions === '1' || req.body?.deleteQuestions !== false;
+
+    if (Array.isArray(store.customBankFolders)) {
+      store.customBankFolders = store.customBankFolders.filter(
+        (f) => f.toLowerCase() !== targetFolder.toLowerCase()
+      );
+      persistStore(store);
+    }
+
+    let removedQuestionsCount = 0;
+    if (deleteQuestions) {
+      const beforeLen = persistentQuestionBank.length;
+      persistentQuestionBank = persistentQuestionBank.filter((q) => q.topic !== targetFolder);
+      removedQuestionsCount = beforeLen - persistentQuestionBank.length;
+    } else {
+      for (const q of persistentQuestionBank) {
+        if (q.topic === targetFolder) {
+          q.topic = 'ידע כללי';
+          removedQuestionsCount++;
+        }
+      }
+    }
+
+    if (removedQuestionsCount > 0) {
+      savePersistentQuestionBank();
+    }
+    broadcastAllStates();
+
+    return res.json({
+      ok: true,
+      folderName: targetFolder,
+      removedQuestionsCount,
+      totalCount: persistentQuestionBank.length,
+      customCount: persistentQuestionBank.filter((q) => q.isCustom).length,
+      topicsSummary: getQuestionBankTopicsSummary()
+    });
+  } catch (err) {
+    return res.status(500).json({ ok: false, error: 'שגיאה במחיקת התיקייה מהמאגר.' });
+  }
+});
+
 app.post('/api/admin/question-bank/categories/rename', (req, res) => {
   try {
     const oldTopic = String(req.body?.oldTopic || '').trim();
-    const newTopic = String(req.body?.newTopic || '').trim();
+    const newTopic = cleanFolderTopicName(req.body?.newTopic || '');
     if (!oldTopic || !newTopic) {
-      return res.status(400).json({ ok: false, error: 'יש להזין את שם הקטגוריה הנוכחי ואת השם החדש.' });
+      return res.status(400).json({ ok: false, error: 'יש להזין את שם התיקייה הנוכחי ואת השם החדש.' });
     }
 
     let updatedCount = 0;
@@ -4452,10 +4698,21 @@ app.post('/api/admin/question-bank/categories/rename', (req, res) => {
       }
     }
 
+    if (Array.isArray(store.customBankFolders)) {
+      const idx = store.customBankFolders.findIndex((f) => f === oldTopic);
+      if (idx !== -1) {
+        store.customBankFolders[idx] = newTopic;
+      } else {
+        store.customBankFolders.unshift(newTopic);
+      }
+      store.customBankFolders = Array.from(new Set(store.customBankFolders));
+      persistStore(store);
+    }
+
     if (updatedCount > 0) {
       savePersistentQuestionBank();
-      broadcastAllStates();
     }
+    broadcastAllStates();
 
     return res.json({
       ok: true,
@@ -4466,7 +4723,7 @@ app.post('/api/admin/question-bank/categories/rename', (req, res) => {
       topicsSummary: getQuestionBankTopicsSummary()
     });
   } catch (err) {
-    return res.status(500).json({ ok: false, error: 'שגיאה בשינוי שם הקטגוריה במאגר.' });
+    return res.status(500).json({ ok: false, error: 'שגיאה בשינוי שם התיקייה במאגר.' });
   }
 });
 
@@ -4743,8 +5000,11 @@ app.put('/api/admin/questions', (req, res) => {
     activeGame.questions = cleaned;
     persistStore(store);
 
-    // Automatically save any user-written or user-edited questions into the Private Question Bank
-    const privateSync = autoSyncUserWrittenQuestionsToPrivateBank(incoming, 'שאלות פרטיות');
+    // Automatically save any user-written or user-edited questions into the General Mix Bank + their dedicated folder
+    const fallbackFolderName = String(
+      req.body?.folderName || activeGame.title || 'שאלות פרטיות'
+    ).trim();
+    const privateSync = autoSyncUserWrittenQuestionsToPrivateBank(incoming, fallbackFolderName);
 
     if (game.currentQuestionIndex >= activeGame.questions.length) {
       game.currentQuestionIndex = activeGame.questions.length - 1;
