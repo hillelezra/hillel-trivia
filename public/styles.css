@@ -1732,6 +1732,44 @@ body.is-playing .question-stage {
   line-height: 1.22;
 }
 
+/* Question-First Reading Phase (before options are revealed): Big Question at Top + Image Below */
+.question-stage.is-awaiting-options .host-stage-top .question-heading {
+  font-size: clamp(1.6rem, 1.3rem + 1.8vw, 2.85rem);
+  line-height: 1.24;
+}
+
+.question-stage.is-awaiting-options .player-stage-top .question-heading--player {
+  font-size: clamp(1.3rem, 1.1rem + 1.1vw, 2.1rem);
+  line-height: 1.24;
+}
+
+.awaiting-options-media-stage {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.4rem, 1.2dvh, 1rem);
+  cursor: pointer;
+}
+
+.awaiting-options-media-stage[hidden] {
+  display: none !important;
+}
+
+.awaiting-options-stage-img {
+  max-width: min(94%, 760px);
+  max-height: clamp(190px, 44dvh, 430px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-xl);
+  border: 2px solid rgba(251, 191, 36, 0.45);
+  box-shadow: 0 20px 45px rgba(2, 6, 23, 0.65), 0 0 32px rgba(56, 189, 248, 0.22);
+  background: rgba(15, 23, 42, 0.55);
+  animation: popIn 0.25s ease-out;
+}
+
 /* Timer Widget next to Question */
 .stage-timer-box {
   background: rgba(15, 23, 42, 0.82);

@@ -182,16 +182,13 @@
         </div>
       </div>
 
-      <!-- Shown when Question-First Reading Mode is active and host hasn't revealed answer choices yet -->
-      <div
-        id="p-awaiting-options-box"
-        hidden
-        style="display:none; flex:1; flex-direction:column; align-items:center; justify-content:center; gap:0.75rem; padding:1.25rem; border-radius:20px; background:linear-gradient(135deg, rgba(14, 165, 233, 0.16), rgba(15, 23, 42, 0.88)); border:2px dashed rgba(56, 189, 248, 0.55); text-align:center;"
-      >
-        <span class="pill pill--sky" style="font-size:0.95rem;">📖 קראו את השאלה בנחת</span>
-        <p id="p-awaiting-options-text" style="font-size:1.05rem; font-weight:700; color:#e2e8f0; max-width:44ch;">
-          אפשרויות התשובה והטיימר יופיעו מיד כשהמנחה ילחץ על "חשיפת התשובות"!
-        </p>
+      <!-- Shown when Question-First Reading Mode is active and host hasn't revealed answer choices yet: ONLY the question image or fixed question mark image -->
+      <div id="p-awaiting-options-box" class="awaiting-options-media-stage" hidden>
+        <img
+          id="p-awaiting-options-img"
+          class="awaiting-options-stage-img"
+          alt="תמונת השאלה"
+        />
       </div>
 
       <!-- Shown on Answer Reveal: Big Flashing Correct Answer Banner -->
@@ -261,6 +258,8 @@
     (function () {
       const {
         LETTERS,
+        isUserUploadedQuestionImage,
+        resolveQuestionReadingImage,
         formatScore,
         escapeHtml,
         applyQuizBranding,
@@ -328,7 +327,7 @@
       const btnStageTranslate = document.getElementById('btn-stage-translate');
       const pChoicesGrid = document.getElementById('p-choices-grid');
       const pAwaitingOptionsBox = document.getElementById('p-awaiting-options-box');
-      const pAwaitingOptionsText = document.getElementById('p-awaiting-options-text');
+      const pAwaitingOptionsImg = document.getElementById('p-awaiting-options-img');
       const pFlashingCorrectBanner = document.getElementById('p-flashing-correct-banner');
       const pFlashingCorrectBadge = document.getElementById('p-flashing-correct-badge');
       const pFlashingCorrectText = document.getElementById('p-flashing-correct-text');
@@ -996,12 +995,17 @@
           const areOptionsRevealed = Boolean(
             isRevealed || (q.optionsRevealed !== false && state.optionsRevealed !== false)
           );
+          const hasCustomUploadedImage = isUserUploadedQuestionImage(q.image);
+
+          if (screenQuestion) {
+            screenQuestion.classList.toggle('is-awaiting-options', !areOptionsRevealed);
+          }
 
           applyQuestionAndAnswersText(q);
           renderPlayerTimer(state.timer);
           renderPlayerScoreWidget(state);
 
-          if (q.image) {
+          if (areOptionsRevealed && hasCustomUploadedImage) {
             if (renderedQuestionIndex !== q.index || renderedImageSrc !== q.image) {
               renderedQuestionIndex = q.index;
               renderedImageSrc = q.image;
@@ -1023,10 +1027,8 @@
           if (pAwaitingOptionsBox) {
             pAwaitingOptionsBox.hidden = areOptionsRevealed;
             pAwaitingOptionsBox.style.display = areOptionsRevealed ? 'none' : 'flex';
-            if (!areOptionsRevealed && pAwaitingOptionsText) {
-              pAwaitingOptionsText.textContent = englishModeEnabled
-                ? 'Read the question carefully... Answer options & timer will appear as soon as the host reveals them!'
-                : 'אפשרויות התשובה והטיימר יופיעו מיד כשהמנחה ילחץ על "חשיפת התשובות"!';
+            if (!areOptionsRevealed && pAwaitingOptionsImg) {
+              pAwaitingOptionsImg.src = resolveQuestionReadingImage(q.image);
             }
           }
 

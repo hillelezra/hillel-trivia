@@ -142,6 +142,49 @@
     }, 3200);
   }
 
+  const FIXED_QUESTION_MARK_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" width="640" height="420">
+    <defs>
+      <radialGradient id="qmBg" cx="50%" cy="48%" r="58%">
+        <stop offset="0%" stop-color="#1e293b"/>
+        <stop offset="65%" stop-color="#0f172a"/>
+        <stop offset="100%" stop-color="#070b14"/>
+      </radialGradient>
+      <linearGradient id="qmGold" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fef08a"/>
+        <stop offset="45%" stop-color="#fbbf24"/>
+        <stop offset="100%" stop-color="#d97706"/>
+      </linearGradient>
+      <linearGradient id="qmRing" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#38bdf8"/>
+        <stop offset="100%" stop-color="#8b5cf6"/>
+      </linearGradient>
+      <filter id="qmGlow" x="-25%" y="-25%" width="150%" height="150%">
+        <feGaussianBlur stdDeviation="10" result="blur"/>
+        <feMerge>
+          <feMergeNode in="blur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+    <rect width="640" height="420" rx="32" fill="url(#qmBg)"/>
+    <circle cx="320" cy="210" r="165" fill="none" stroke="url(#qmRing)" stroke-width="5" opacity="0.35" stroke-dasharray="14 10"/>
+    <circle cx="320" cy="210" r="136" fill="rgba(15, 23, 42, 0.78)" stroke="url(#qmGold)" stroke-width="6" filter="url(#qmGlow)"/>
+    <text x="320" y="274" text-anchor="middle" font-family="'Heebo', 'Segoe UI', Arial, sans-serif" font-size="210" font-weight="900" fill="url(#qmGold)" filter="url(#qmGlow)">?</text>
+  </svg>`;
+
+  const FIXED_QUESTION_MARK_IMAGE = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(FIXED_QUESTION_MARK_SVG)}`;
+
+  function isUserUploadedQuestionImage(rawSrc) {
+    const src = String(rawSrc || '').trim();
+    if (!src) return false;
+    if (src.startsWith('/api/question-art')) return false;
+    return true;
+  }
+
+  function resolveQuestionReadingImage(rawSrc) {
+    return isUserUploadedQuestionImage(rawSrc) ? String(rawSrc).trim() : FIXED_QUESTION_MARK_IMAGE;
+  }
+
   function openImageZoom(src, altText) {
     const dlg = document.getElementById('zoom-dialog');
     const img = document.getElementById('zoom-dialog-img');
@@ -153,6 +196,9 @@
 
   window.TriviaUI = {
     LETTERS,
+    FIXED_QUESTION_MARK_IMAGE,
+    isUserUploadedQuestionImage,
+    resolveQuestionReadingImage,
     formatScore,
     escapeHtml,
     applyQuizBranding,

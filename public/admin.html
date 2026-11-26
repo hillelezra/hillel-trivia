@@ -386,24 +386,18 @@
       </div>
 
       <div id="admin-stage-middle" class="host-stage-middle">
-        <!-- Shown when Question-First Reading Mode is active and options are not revealed yet -->
+        <!-- Shown when Question-First Reading Mode is active and options are not revealed yet: ONLY the question image or fixed question mark image (Enter reveals options & starts timer) -->
         <div
           id="admin-awaiting-options-box"
+          class="awaiting-options-media-stage"
           hidden
-          style="display:none; flex:1; flex-direction:column; align-items:center; justify-content:center; gap:0.9rem; padding:1.35rem; border-radius:20px; background:linear-gradient(135deg, rgba(14, 165, 233, 0.16), rgba(15, 23, 42, 0.88)); border:2px dashed rgba(56, 189, 248, 0.65); text-align:center;"
+          title="לחצו Enter (או לחצו כאן) לחשיפת התשובות והפעלת הטיימר"
         >
-          <span class="pill pill--sky" style="font-size:0.95rem;">📖 מצב קריאת שאלה בנחת — הטיימר ממתין</span>
-          <p style="font-size:1.05rem; color:#e2e8f0; max-width:52ch;">
-            קראו את השאלה בנחת יחד עם המשתתפים. בלחיצה על הכפתור למטה ייחשפו אפשרויות התשובה במסך המרכזי ובמכשירי השחקנים והטיימר יתחיל לרוץ!
-          </p>
-          <button
-            type="button"
-            id="btn-stage-reveal-options"
-            class="btn btn--gold btn--lg"
-            style="font-size:clamp(1.15rem, 1rem + 0.6vw, 1.5rem); padding:0.95rem 2.2rem; box-shadow:0 0 28px rgba(251, 191, 36, 0.45);"
-          >
-            👁️ חשיפת התשובות והפעלת הטיימר
-          </button>
+          <img
+            id="admin-awaiting-options-img"
+            class="awaiting-options-stage-img"
+            alt="תמונת השאלה"
+          />
         </div>
 
         <!-- Shown when answer is revealed: Big Flashing Correct Answer Banner -->
@@ -1488,6 +1482,8 @@
     (function () {
       const {
         LETTERS,
+        isUserUploadedQuestionImage,
+        resolveQuestionReadingImage,
         formatScore,
         escapeHtml,
         applyQuizBranding,
@@ -2614,8 +2610,18 @@
             hudQuestionNum.textContent = `שאלה ${q.index + 1} מתוך ${q.total}`;
           }
 
+          const isRevealed = state.phase === 'revealed';
+          const areOptionsRevealed = Boolean(
+            isRevealed || (q.optionsRevealed !== false && state.optionsRevealed !== false)
+          );
+          const hasCustomUploadedImage = isUserUploadedQuestionImage(q.image);
+
+          if (viewQuestion) {
+            viewQuestion.classList.toggle('is-awaiting-options', !areOptionsRevealed);
+          }
+
           adminQuestionText.textContent = q.question;
-          if (q.image) {
+          if (areOptionsRevealed && hasCustomUploadedImage) {
             adminQMedia.hidden = false;
             adminQMedia.innerHTML = `<img src="${escapeHtml(q.image)}" alt="תמונה לשאלה ${q.index + 1}" class="question-img" id="active-q-img" />`;
             const imgNode = document.getElementById('active-q-img');
@@ -2626,19 +2632,15 @@
           } else {
             adminQMedia.hidden = true;
             adminQMedia.innerHTML = '';
-            btnRemoveQuickQImage.hidden = true;
+            btnRemoveQuickQImage.hidden = !hasCustomUploadedImage;
           }
           syncHasImageFallback(adminQuestionHero);
 
-          const isRevealed = state.phase === 'revealed';
-          const areOptionsRevealed = Boolean(
-            isRevealed || (q.optionsRevealed !== false && state.optionsRevealed !== false)
-          );
           const rev = state.lastReveal;
           if (adminRevealBanner) adminRevealBanner.hidden = true;
 
           const awaitingOptionsBox = document.getElementById('admin-awaiting-options-box');
-          const btnStageRevealOptions = document.getElementById('btn-stage-reveal-options');
+          const awaitingOptionsImg = document.getElementById('admin-awaiting-options-img');
           const btnDockRevealOptions = document.getElementById('btn-dock-reveal-options');
           const flashingCorrectBanner = document.getElementById('admin-flashing-correct-banner');
           const flashingCorrectText = document.getElementById('admin-flashing-correct-text');
@@ -2648,8 +2650,8 @@
               awaitingOptionsBox.hidden = false;
               awaitingOptionsBox.style.display = 'flex';
             }
-            if (btnStageRevealOptions) {
-              btnStageRevealOptions.textContent = `👁️ חשיפת התשובות והפעלת הטיימר (${q.timerSeconds || 20} שניות)`;
+            if (awaitingOptionsImg) {
+              awaitingOptionsImg.src = resolveQuestionReadingImage(q.image);
             }
             adminAnswersGrid.hidden = true;
             adminAnswersGrid.style.display = 'none';
@@ -3884,15 +3886,31 @@
         });
       }
 
-      const btnStageRevealOptionsEl = document.getElementById('btn-stage-reveal-options');
-      if (btnStageRevealOptionsEl) {
-        btnStageRevealOptionsEl.addEventListener('click', triggerRevealOptionsNow);
+      const awaitingOptionsBoxEl = document.getElementById('admin-awaiting-options-box');
+      if (awaitingOptionsBoxEl) {
+        awaitingOptionsBoxEl.addEventListener('click', triggerRevealOptionsNow);
       }
 
       const btnDockRevealOptionsEl = document.getElementById('btn-dock-reveal-options');
       if (btnDockRevealOptionsEl) {
         btnDockRevealOptionsEl.addEventListener('click', triggerRevealOptionsNow);
       }
+
+      // Pressing Enter during the question-reading phase reveals the answers and starts the timer!
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') return;
+        if (!adminState || !adminState.isSessionOpen || adminState.phase !== 'question') return;
+        const areOptsRevealed = Boolean(
+          adminState.optionsRevealed !== false &&
+            adminState.currentQuestion?.optionsRevealed !== false
+        );
+        if (areOptsRevealed) return;
+        if (document.querySelector('dialog[open]')) return;
+        const tag = String(e.target?.tagName || '').toUpperCase();
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+        e.preventDefault();
+        triggerRevealOptionsNow();
+      });
 
       btnRevealAnswer.addEventListener('click', () => {
         socket.emit('admin:revealAnswer');
