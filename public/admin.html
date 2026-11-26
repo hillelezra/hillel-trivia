@@ -5801,6 +5801,15 @@
                 }
               </div>
               <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <button
+                  type="button"
+                  class="btn btn--primary btn--sm"
+                  data-action="insert-q-below"
+                  data-idx="${i}"
+                  title="הוסף שאלה חדשה מיד מתחת לשאלה ${i + 1}"
+                >
+                  ➕ הוסף שאלה מתחת
+                </button>
                 <button type="button" class="btn btn--sm" data-action="upload-q-img" data-idx="${i}">
                   📷 ${q.image ? 'החלף תמונה' : 'הוסף תמונה מהמחשב'}
                 </button>
@@ -5945,6 +5954,15 @@
                       </button>`
                     : ''
                 }
+                <button
+                  type="button"
+                  class="btn btn--primary btn--sm"
+                  data-action="insert-q-below"
+                  data-idx="${i}"
+                  style="font-size:0.8rem;"
+                >
+                  ➕ הוסף שאלה מתחת לשאלה זו
+                </button>
               </div>
               <span style="font-size:0.76rem; color:var(--text-secondary);">
                 סמנו בעיגול את התשובה הנכונה מתוך ${answersArr.length} האופציות
@@ -5980,7 +5998,18 @@
         const idx = Number(btn.getAttribute('data-idx'));
         if (!Number.isInteger(idx) || !editableQuestions[idx]) return;
 
-        if (action === 'upload-q-img') {
+        if (action === 'insert-q-below') {
+          const newQ = createDefaultQuestionObject();
+          editableQuestions.splice(idx + 1, 0, newQ);
+          renderQuestionsEditor();
+          const newCard = questionsEditorList.querySelector(`.q-editor-card[data-q-idx="${idx + 1}"]`);
+          if (newCard) {
+            newCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const qInput = newCard.querySelector('[data-field="question"]');
+            if (qInput) qInput.focus();
+          }
+          showToast(`➕ נוספה שאלה חדשה מתחת לשאלה ${idx + 1} (כעת שאלה ${idx + 2})!`);
+        } else if (action === 'upload-q-img') {
           pendingEditorImageQIndex = idx;
           editorQFileInput.value = '';
           editorQFileInput.click();
