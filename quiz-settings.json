@@ -10923,8 +10923,10 @@
           "timerSeconds": 20
         }
       ],
-      "code": "1023",
-      "savedPlayers": []
+      "savedPlayers": [],
+      "playHistory": [],
+      "lastFinishedAt": null,
+      "code": "1023"
     }
   ]
 }

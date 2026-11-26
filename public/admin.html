@@ -5751,7 +5751,7 @@
             editableQuestions[i].showQuestionFirst = Boolean(showQFirstCb.checked);
           }
 
-          const ansInputs = Array.from(card.querySelectorAll('[data-ans-idx]'));
+          const ansInputs = Array.from(card.querySelectorAll('input[data-ans-idx]'));
           if (ansInputs.length >= 2) {
             editableQuestions[i].answers = ansInputs.map((inp) => inp.value);
           }
@@ -5765,7 +5765,27 @@
         });
       }
 
+      function repairAccidentalDoubledAnswers(q) {
+        if (!q || !Array.isArray(q.answers)) return;
+        const arr = q.answers;
+        if (arr.length >= 6 && arr.length % 2 === 0) {
+          const allOddEmpty = arr.every((val, idx) => idx % 2 === 0 || !String(val || '').trim());
+          const someEvenFilled = arr.some((val, idx) => idx % 2 === 0 && String(val || '').trim());
+          const allEightEmpty = arr.length === 8 && arr.every((val) => !String(val || '').trim());
+          if ((allOddEmpty && someEvenFilled) || allEightEmpty) {
+            q.answers = arr.filter((_, idx) => idx % 2 === 0);
+            if (typeof q.correctIndex === 'number') {
+              q.correctIndex = Math.min(
+                q.answers.length - 1,
+                Math.max(0, Math.floor(q.correctIndex / 2))
+              );
+            }
+          }
+        }
+      }
+
       function renderQuestionsEditor() {
+        editableQuestions.forEach((q) => repairAccidentalDoubledAnswers(q));
         tabQCount.textContent = String(editableQuestions.length);
         questionsEditorList.innerHTML = editableQuestions
           .map((q, i) => {
@@ -5916,7 +5936,7 @@
                     class="btn btn--danger btn--sm"
                     data-action="remove-ans-opt"
                     data-idx="${i}"
-                    data-ans-idx="${aIdx}"
+                    data-remove-ans-idx="${aIdx}"
                     title="הסר אופציה זו (מינימום 2 אופציות לשאלה)"
                     style="padding:0.3rem 0.55rem; font-size:0.78rem;"
                     ${canRemoveOpt ? '' : 'disabled'}
@@ -6046,7 +6066,7 @@
           const ansIdxToRemove =
             action === 'remove-last-ans-opt'
               ? curAnswers.length - 1
-              : Number(btn.getAttribute('data-ans-idx'));
+              : Number(btn.getAttribute('data-remove-ans-idx'));
           if (!Number.isInteger(ansIdxToRemove) || ansIdxToRemove < 0 || ansIdxToRemove >= curAnswers.length) {
             return;
           }
