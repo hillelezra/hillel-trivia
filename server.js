@@ -42,13 +42,22 @@ const DEFAULT_GAME_SETTINGS = {
   timerSeconds: DEFAULT_TIMER_SECONDS,
   autoRevealOnTimeout: true,
   hideLeaderboardUntilEnd: false,
+  showQuestionFirst: false,
   teamsEnabled: false,
   teams: []
 };
 
 function extractRawQuestionFields(raw) {
   if (!raw || typeof raw !== 'object') {
-    return { question: '', answers: ['', '', '', ''], correctIndex: 0, difficulty: 'medium' };
+    return {
+      question: '',
+      answers: ['', '', '', ''],
+      correctIndex: 0,
+      difficulty: 'medium',
+      lockAnswersOrder: false,
+      pinToNext: false,
+      showQuestionFirst: false
+    };
   }
   const question = String(
     raw.question ?? raw.q ?? raw.text ?? raw.title ?? raw.prompt ?? ''
@@ -61,19 +70,25 @@ function extractRawQuestionFields(raw) {
   else if (Array.isArray(raw.variants)) rawAnswers = raw.variants;
   else if (Array.isArray(raw.items)) rawAnswers = raw.items;
   else if (raw.a !== undefined || raw.b !== undefined) {
-    rawAnswers = [raw.a, raw.b, raw.c, raw.d];
+    rawAnswers = [raw.a, raw.b, raw.c, raw.d, raw.e, raw.f].filter((v) => v !== undefined);
   } else if (raw.option1 !== undefined || raw.option2 !== undefined) {
-    rawAnswers = [raw.option1, raw.option2, raw.option3, raw.option4];
+    rawAnswers = [raw.option1, raw.option2, raw.option3, raw.option4, raw.option5, raw.option6].filter(
+      (v) => v !== undefined
+    );
   }
 
   let answers = Array.isArray(rawAnswers)
     ? rawAnswers.map((a) => String(a ?? '').trim())
     : [];
-  if (answers.length < 4) {
-    while (answers.length < 4) answers.push('');
-  } else if (answers.length > 4) {
-    answers = answers.slice(0, 4);
+  if (answers.length === 0) {
+    answers = ['', '', '', ''];
+  } else if (answers.length < 2) {
+    while (answers.length < 2) answers.push('');
+  } else if (answers.length > 8) {
+    answers = answers.slice(0, 8);
   }
+
+  const maxIdx = Math.max(0, answers.length - 1);
 
   const rawCorrect =
     raw.correctIndex ??
@@ -86,22 +101,40 @@ function extractRawQuestionFields(raw) {
 
   let correctIndex = 0;
   if (typeof rawCorrect === 'number' && Number.isInteger(rawCorrect)) {
-    if (rawCorrect >= 0 && rawCorrect <= 3) {
+    if (rawCorrect >= 0 && rawCorrect <= maxIdx) {
       correctIndex = rawCorrect;
-    } else if (rawCorrect === 4) {
-      correctIndex = 3;
+    } else if (rawCorrect === maxIdx + 1) {
+      correctIndex = maxIdx;
     }
   } else if (typeof rawCorrect === 'string') {
     const trimmed = rawCorrect.trim();
-    if (/^[0-3]$/.test(trimmed)) {
-      correctIndex = Number(trimmed);
-    } else if (trimmed === '4') {
-      correctIndex = 3;
+    if (/^[0-7]$/.test(trimmed)) {
+      const n = Number(trimmed);
+      correctIndex = n <= maxIdx ? n : maxIdx;
+    } else if (trimmed === String(maxIdx + 1)) {
+      correctIndex = maxIdx;
     } else {
-      const letterMap = { א: 0, ב: 1, ג: 2, ד: 3, a: 0, b: 1, c: 2, d: 3 };
+      const letterMap = {
+        א: 0,
+        ב: 1,
+        ג: 2,
+        ד: 3,
+        ה: 4,
+        ו: 5,
+        ז: 6,
+        ח: 7,
+        a: 0,
+        b: 1,
+        c: 2,
+        d: 3,
+        e: 4,
+        f: 5,
+        g: 6,
+        h: 7
+      };
       const cleanLetter = trimmed.replace(/[.):\-–]/g, '').trim().toLowerCase();
       if (cleanLetter in letterMap) {
-        correctIndex = letterMap[cleanLetter];
+        correctIndex = Math.min(maxIdx, letterMap[cleanLetter]);
       } else {
         const matchIdx = answers.findIndex(
           (ans) => ans && ans.toLowerCase() === trimmed.toLowerCase()
@@ -119,7 +152,19 @@ function extractRawQuestionFields(raw) {
   else if (rawDiff === 'hard' || rawDiff === 'קשה') difficulty = 'hard';
   else if (rawDiff === 'medium' || rawDiff === 'בינוני' || rawDiff === 'בינונית') difficulty = 'medium';
 
-  return { question, answers, correctIndex, difficulty };
+  const lockAnswersOrder = Boolean(raw.lockAnswersOrder);
+  const pinToNext = Boolean(raw.pinToNext);
+  const showQuestionFirst = Boolean(raw.showQuestionFirst);
+
+  return {
+    question,
+    answers,
+    correctIndex: Math.max(0, Math.min(maxIdx, correctIndex)),
+    difficulty,
+    lockAnswersOrder,
+    pinToNext,
+    showQuestionFirst
+  };
 }
 
 function parseFlexibleJsonQuestionsArray(rawText) {
@@ -161,7 +206,14 @@ function parseFlexibleJsonQuestionsArray(rawText) {
 }
 
 function normalizeQuestion(raw, fallbackTimer = DEFAULT_TIMER_SECONDS) {
-  const { question, answers, correctIndex } = extractRawQuestionFields(raw);
+  const {
+    question,
+    answers,
+    correctIndex,
+    lockAnswersOrder,
+    pinToNext,
+    showQuestionFirst
+  } = extractRawQuestionFields(raw);
   const image = typeof raw?.image === 'string' ? raw.image.trim() : '';
 
   const rawPoints = Number(raw?.points);
@@ -176,7 +228,7 @@ function normalizeQuestion(raw, fallbackTimer = DEFAULT_TIMER_SECONDS) {
 
   const questionEn = typeof raw?.questionEn === 'string' ? raw.questionEn.trim() : '';
   const answersEn =
-    Array.isArray(raw?.answersEn) && raw.answersEn.length === 4
+    Array.isArray(raw?.answersEn) && raw.answersEn.length === answers.length
       ? raw.answersEn.map((a) => String(a ?? '').trim())
       : [];
 
@@ -187,8 +239,11 @@ function normalizeQuestion(raw, fallbackTimer = DEFAULT_TIMER_SECONDS) {
     image,
     points,
     timerSeconds,
+    ...(lockAnswersOrder ? { lockAnswersOrder: true } : {}),
+    ...(pinToNext ? { pinToNext: true } : {}),
+    ...(showQuestionFirst ? { showQuestionFirst: true } : {}),
     ...(questionEn ? { questionEn } : {}),
-    ...(answersEn.length === 4 && answersEn.every(Boolean) ? { answersEn } : {})
+    ...(answersEn.length === answers.length && answersEn.every(Boolean) ? { answersEn } : {})
   };
 }
 
@@ -238,6 +293,7 @@ function sanitizeSettings(input) {
     input?.autoRevealOnTimeout === undefined ? true : Boolean(input.autoRevealOnTimeout);
 
   const hideLeaderboardUntilEnd = Boolean(input?.hideLeaderboardUntilEnd);
+  const showQuestionFirst = Boolean(input?.showQuestionFirst);
   const teamsEnabled = Boolean(input?.teamsEnabled);
   const teams = normalizeTeamsList(input?.teams);
 
@@ -251,6 +307,7 @@ function sanitizeSettings(input) {
     timerSeconds,
     autoRevealOnTimeout,
     hideLeaderboardUntilEnd,
+    showQuestionFirst,
     teamsEnabled,
     teams
   };
@@ -414,6 +471,7 @@ function extractSettingsFromGame(gameRecord) {
     timerSeconds: gameRecord.timerSeconds,
     autoRevealOnTimeout: gameRecord.autoRevealOnTimeout,
     hideLeaderboardUntilEnd: Boolean(gameRecord.hideLeaderboardUntilEnd),
+    showQuestionFirst: Boolean(gameRecord.showQuestionFirst),
     teamsEnabled: Boolean(gameRecord.teamsEnabled),
     teams: Array.isArray(gameRecord.teams)
       ? gameRecord.teams.map((t) => ({ id: t.id, name: t.name }))
@@ -640,6 +698,7 @@ function getGamesSummaryList() {
       backgroundMusic: g.backgroundMusic || '',
       timerSeconds: g.timerSeconds,
       hideLeaderboardUntilEnd: Boolean(g.hideLeaderboardUntilEnd),
+      showQuestionFirst: Boolean(g.showQuestionFirst),
       teamsEnabled: Boolean(g.teamsEnabled),
       teamsCount: Array.isArray(g.teams) ? g.teams.length : 0,
       questionsCount: g.questions.length,
@@ -662,6 +721,7 @@ const game = {
   resumableQuestionIndex: -1,
   resumableWasRevealed: false,
   questionScored: false,
+  optionsRevealed: true,
   currentRunArchived: false,
   timerDuration: getActiveSettings().timerSeconds,
   questionEndsAt: 0,
@@ -674,6 +734,7 @@ const game = {
 
 function getRemainingMs() {
   if (game.phase !== 'question') return 0;
+  if (!game.optionsRevealed) return Math.max(0, game.timerDuration * 1000);
   if (game.timerPaused) return Math.max(0, game.pausedRemainingMs);
   return Math.max(0, game.questionEndsAt - Date.now());
 }
@@ -775,14 +836,21 @@ function buildCurrentQuestionPublic(includeCorrect = false) {
     Number(q.timerSeconds) >= 5
       ? Number(q.timerSeconds)
       : activeSettings.timerSeconds || DEFAULT_TIMER_SECONDS;
+  const areOptionsRevealed = Boolean(game.optionsRevealed || includeCorrect);
 
   const payload = {
     index: game.currentQuestionIndex,
     total: questions.length,
     question: q.question,
-    answers: q.answers,
+    optionsRevealed: areOptionsRevealed,
+    answersCount: Array.isArray(q.answers) ? q.answers.length : 4,
+    answers: areOptionsRevealed ? q.answers : [],
     ...(q.questionEn ? { questionEn: q.questionEn } : {}),
-    ...(Array.isArray(q.answersEn) && q.answersEn.length === 4 ? { answersEn: q.answersEn } : {}),
+    ...(areOptionsRevealed &&
+    Array.isArray(q.answersEn) &&
+    q.answersEn.length === q.answers.length
+      ? { answersEn: q.answersEn }
+      : {}),
     image: q.image || '',
     points,
     budget: points,
@@ -798,13 +866,14 @@ function buildLiveAnswerStats() {
   const activeGame = getActiveGameRecord();
   const questions = activeGame.questions;
   const q = questions[game.currentQuestionIndex] || null;
+  const numOptions = q && Array.isArray(q.answers) && q.answers.length >= 2 ? q.answers.length : 4;
   const activeGamePlayers = getPlayersForGame(activeGame.id);
   const activeGamePlayerMap = new Map(activeGamePlayers.map((p) => [p.id, p]));
   const connectedPlayers = activeGamePlayers.filter((p) => p.connected).length;
   const isRevealed = game.phase === 'revealed' || game.phase === 'finished';
 
   const answeredIdsInGame = [];
-  const optionCounts = [0, 0, 0, 0];
+  const optionCounts = new Array(numOptions).fill(0);
   let correctCount = 0;
   let wrongCount = 0;
 
@@ -813,7 +882,7 @@ function buildLiveAnswerStats() {
     if (!p) continue;
     const w = normalizePlayerWeight(p.weight);
     answeredIdsInGame.push(pid);
-    if (submission.answerIndex >= 0 && submission.answerIndex <= 3) {
+    if (submission.answerIndex >= 0 && submission.answerIndex < numOptions) {
       optionCounts[submission.answerIndex] += w;
     }
     if (q && submission.answerIndex === q.correctIndex) {
@@ -841,7 +910,7 @@ function buildLiveAnswerStats() {
     wrongCount: isRevealed ? wrongCount : 0,
     correctPct: isRevealed ? correctPct : 0,
     wrongPct: isRevealed ? wrongPct : 0,
-    optionCounts: isRevealed ? optionCounts : [0, 0, 0, 0],
+    optionCounts: isRevealed ? optionCounts : new Array(numOptions).fill(0),
     totalPlayers: activeGamePlayers.length,
     connectedPlayers,
     waitingPlayers: Math.max(0, connectedPlayers - answeredCount),
@@ -874,6 +943,8 @@ function buildAdminState() {
     games: getGamesSummaryList(),
     settings,
     hideLeaderboardUntilEnd: Boolean(settings.hideLeaderboardUntilEnd),
+    showQuestionFirst: Boolean(settings.showQuestionFirst),
+    optionsRevealed: Boolean(game.optionsRevealed || includeCorrect),
     playHistory: Array.isArray(activeGame.playHistory) ? activeGame.playHistory : [],
     teamsEnabled: Boolean(settings.teamsEnabled),
     availableTeams,
@@ -889,6 +960,7 @@ function buildAdminState() {
       remainingMs,
       remainingSeconds: Math.ceil(remainingMs / 1000),
       paused: game.timerPaused,
+      optionsRevealed: Boolean(game.optionsRevealed || includeCorrect),
       timeExpiredAwaitingReveal: game.timeExpiredAwaitingReveal
     },
     answers: liveAnswers,
@@ -928,6 +1000,7 @@ function buildPlayerState(playerId, overridePhase = null) {
     myAnswer &&
       answerChangeCount < 1 &&
       effectivePhase === 'question' &&
+      game.optionsRevealed &&
       !game.timeExpiredAwaitingReveal &&
       getRemainingMs() > 0
   );
@@ -983,6 +1056,8 @@ function buildPlayerState(playerId, overridePhase = null) {
     gameCode: settings.code,
     settings,
     hideLeaderboardUntilEnd: Boolean(settings.hideLeaderboardUntilEnd),
+    showQuestionFirst: Boolean(settings.showQuestionFirst),
+    optionsRevealed: Boolean(game.optionsRevealed || includeCorrect),
     isLeaderboardHiddenNow,
     teamsEnabled: Boolean(settings.teamsEnabled),
     availableTeams: availableTeams.map((t) => ({
@@ -1028,6 +1103,7 @@ function buildPlayerState(playerId, overridePhase = null) {
       remainingMs,
       remainingSeconds: Math.ceil(remainingMs / 1000),
       paused: game.timerPaused,
+      optionsRevealed: Boolean(game.optionsRevealed || includeCorrect),
       timeExpiredAwaitingReveal: game.timeExpiredAwaitingReveal
     },
     lastQuestionOutcome,
@@ -1116,6 +1192,8 @@ function startQuestion(index) {
       ? qTimer
       : settings.timerSeconds || DEFAULT_TIMER_SECONDS;
 
+  const waitForManualOptionsReveal = Boolean(settings.showQuestionFirst || q.showQuestionFirst);
+
   currentAnswers.clear();
   game.isSessionOpen = true;
   game.phase = 'question';
@@ -1123,12 +1201,42 @@ function startQuestion(index) {
   game.resumableQuestionIndex = index;
   game.resumableWasRevealed = false;
   game.questionScored = false;
+  game.optionsRevealed = !waitForManualOptionsReveal;
   game.timerDuration = duration;
-  game.timerPaused = false;
-  game.pausedRemainingMs = 0;
   game.timeExpiredAwaitingReveal = false;
   game.leaderboardModalOpen = false;
   game.lastReveal = null;
+
+  if (waitForManualOptionsReveal) {
+    game.timerPaused = true;
+    game.pausedRemainingMs = game.timerDuration * 1000;
+    game.questionEndsAt = 0;
+  } else {
+    game.timerPaused = false;
+    game.pausedRemainingMs = 0;
+    game.questionEndsAt = Date.now() + game.timerDuration * 1000;
+  }
+
+  broadcastAllStates();
+  return true;
+}
+
+function revealCurrentQuestionOptions() {
+  const questions = getActiveQuestions();
+  if (
+    game.phase !== 'question' ||
+    game.currentQuestionIndex < 0 ||
+    game.currentQuestionIndex >= questions.length
+  ) {
+    return false;
+  }
+  if (game.optionsRevealed) {
+    return true;
+  }
+  game.optionsRevealed = true;
+  game.timerPaused = false;
+  game.pausedRemainingMs = 0;
+  game.timeExpiredAwaitingReveal = false;
   game.questionEndsAt = Date.now() + game.timerDuration * 1000;
   broadcastAllStates();
   return true;
@@ -1140,6 +1248,7 @@ function revealCurrentQuestion() {
   if (game.currentQuestionIndex < 0 || game.currentQuestionIndex >= questions.length) {
     return false;
   }
+  game.optionsRevealed = true;
   if (game.questionScored) {
     game.phase = 'revealed';
     broadcastAllStates();
@@ -1147,8 +1256,9 @@ function revealCurrentQuestion() {
   }
 
   const q = questions[game.currentQuestionIndex];
+  const numOptions = Array.isArray(q.answers) && q.answers.length >= 2 ? q.answers.length : 4;
   const questionBudget = Number(q.points) >= 1 ? Math.round(Number(q.points)) : DEFAULT_POINTS;
-  const optionCounts = [0, 0, 0, 0];
+  const optionCounts = new Array(numOptions).fill(0);
   const correctSubmissions = [];
   let weightedCorrectCount = 0;
   let wrongCount = 0;
@@ -1157,7 +1267,7 @@ function revealCurrentQuestion() {
     const p = players.get(pid);
     if (!p || p.gameId !== store.activeGameId) continue;
     const pWeight = normalizePlayerWeight(p.weight);
-    if (submission.answerIndex >= 0 && submission.answerIndex <= 3) {
+    if (submission.answerIndex >= 0 && submission.answerIndex < numOptions) {
       optionCounts[submission.answerIndex] += pWeight;
     }
     if (submission.answerIndex === q.correctIndex) {
@@ -2571,7 +2681,7 @@ function autoSyncUserWrittenQuestionsToPrivateBank(questionsList, fallbackTopic 
       continue;
     }
 
-    if (answers.length < 4 || answers.some((a) => !a)) continue;
+    if (answers.length < 2 || answers.some((a) => !a)) continue;
 
     const itemFolder =
       cleanFolderTopicName(raw.topic || raw._topic || raw.folder || batchFolder || 'שאלות פרטיות') ||
@@ -2593,6 +2703,7 @@ function autoSyncUserWrittenQuestionsToPrivateBank(questionsList, fallbackTopic 
           (!isMeaningfulFolderName(existing.topic) || existing.topic !== itemFolder);
         const answersChanged =
           existing.correctIndex !== correctIndex ||
+          existing.answers.length !== answers.length ||
           existing.answers.some((a, i) => a !== answers[i]);
         if (answersChanged || !existing.isCustom || shouldUpgradeTopic) {
           persistentQuestionBank[existingIdx] = {
@@ -2647,12 +2758,96 @@ function shuffleArray(arr) {
   return copy;
 }
 
+/**
+ * Shuffles a list of questions while keeping any consecutive pinned questions (pinToNext = true)
+ * together in their exact relative order as an indivisible chain!
+ */
+function shuffleQuestionsPreservingPins(questionsList) {
+  const list = Array.isArray(questionsList) ? questionsList : [];
+  if (list.length <= 1) return [...list];
+
+  // Build contiguous chains of pinned questions
+  const chains = [];
+  let currentChain = [];
+
+  for (let i = 0; i < list.length; i++) {
+    const q = { ...list[i] };
+    currentChain.push(q);
+    const isPinnedToNext = Boolean(q.pinToNext) && i + 1 < list.length;
+    if (!isPinnedToNext) {
+      chains.push(currentChain);
+      currentChain = [];
+    }
+  }
+  if (currentChain.length > 0) {
+    chains.push(currentChain);
+  }
+
+  if (chains.length <= 1) {
+    // All questions are pinned into a single chain; keep their pinned order
+    return chains.flat();
+  }
+
+  let shuffledChains = shuffleArray(chains);
+  // Guarantee the order of chains changes when there are at least 2 chains
+  if (
+    shuffledChains.length >= 2 &&
+    shuffledChains.every((chain, idx) => chain[0]?.question === chains[idx]?.[0]?.question)
+  ) {
+    shuffledChains = [...shuffledChains.slice(1), shuffledChains[0]];
+  }
+
+  // Flatten and ensure pinToNext is true inside each multi-question chain and false at the chain boundary
+  const result = [];
+  for (const chain of shuffledChains) {
+    for (let k = 0; k < chain.length; k++) {
+      const item = { ...chain[k] };
+      if (k < chain.length - 1) {
+        item.pinToNext = true;
+      } else {
+        delete item.pinToNext;
+      }
+      result.push(item);
+    }
+  }
+  return result;
+}
+
 function shuffleQuestionAnswers(qObj, defaultTimer, defaultPoints) {
-  const { question, answers: rawAnswers, correctIndex: origCorrectIdx } = extractRawQuestionFields(qObj);
+  const {
+    question,
+    answers: rawAnswers,
+    correctIndex: origCorrectIdx,
+    lockAnswersOrder,
+    pinToNext,
+    showQuestionFirst
+  } = extractRawQuestionFields(qObj);
   const answers = rawAnswers.map((a, idx) => a || `תשובה ${idx + 1}`);
   const hasAnswersEn =
-    Array.isArray(qObj.answersEn) && qObj.answersEn.length === 4 && qObj.answersEn.every(Boolean);
-  const answersEn = hasAnswersEn ? qObj.answersEn.slice(0, 4).map(String) : null;
+    Array.isArray(qObj.answersEn) &&
+    qObj.answersEn.length === answers.length &&
+    qObj.answersEn.every(Boolean);
+  const answersEn = hasAnswersEn ? qObj.answersEn.slice(0, answers.length).map(String) : null;
+
+  // If the question has lockAnswersOrder enabled, keep the exact original order of answers!
+  if (lockAnswersOrder) {
+    return normalizeQuestion(
+      {
+        question,
+        answers,
+        correctIndex: origCorrectIdx,
+        lockAnswersOrder: true,
+        ...(pinToNext ? { pinToNext: true } : {}),
+        ...(showQuestionFirst ? { showQuestionFirst: true } : {}),
+        ...(qObj.questionEn ? { questionEn: qObj.questionEn } : {}),
+        ...(answersEn ? { answersEn } : {}),
+        image: qObj.image || '',
+        points: Number(qObj.points) >= 1 ? Number(qObj.points) : defaultPoints,
+        timerSeconds: Number(qObj.timerSeconds) >= 5 ? Number(qObj.timerSeconds) : defaultTimer
+      },
+      defaultTimer
+    );
+  }
 
   const indexed = answers.map((text, idx) => ({
     text,
@@ -2670,6 +2865,9 @@ function shuffleQuestionAnswers(qObj, defaultTimer, defaultPoints) {
       question,
       answers: shuffled.map((item) => item.text),
       correctIndex: newCorrectIdx,
+      ...(lockAnswersOrder ? { lockAnswersOrder: true } : {}),
+      ...(pinToNext ? { pinToNext: true } : {}),
+      ...(showQuestionFirst ? { showQuestionFirst: true } : {}),
       ...(qObj.questionEn ? { questionEn: qObj.questionEn } : {}),
       ...(answersEn ? { answersEn: shuffled.map((item) => item.textEn) } : {}),
       image: qObj.image || '',
@@ -4209,14 +4407,7 @@ app.post('/api/admin/games/:gameId/shuffle', (req, res) => {
     const shuffleAnswersToo =
       req.body?.shuffleAnswers === undefined ? true : Boolean(req.body.shuffleAnswers);
 
-    let reshuffled = shuffleArray(currentList);
-    // Guarantee the order actually changes when length >= 2
-    if (
-      reshuffled.length >= 2 &&
-      reshuffled.every((q, idx) => q.question === currentList[idx]?.question)
-    ) {
-      reshuffled = [...reshuffled.slice(1), reshuffled[0]];
-    }
+    let reshuffled = shuffleQuestionsPreservingPins(currentList);
 
     if (shuffleAnswersToo) {
       reshuffled = reshuffled.map((q) =>
@@ -4541,10 +4732,10 @@ app.post('/api/admin/question-bank', (req, res) => {
     for (let i = 0; i < incomingList.length; i++) {
       const item = incomingList[i];
       const { question: qText, answers: ans } = extractRawQuestionFields(item);
-      if (!qText || ans.filter(Boolean).length < 4) {
+      if (!qText || ans.filter(Boolean).length < 2) {
         return res.status(400).json({
           ok: false,
-          error: `בשאלה ${i + 1} חסר נוסח שאלה או אחת מ-4 התשובות.`
+          error: `בשאלה ${i + 1} חסר נוסח שאלה או לפחות 2 תשובות.`
         });
       }
     }
@@ -4577,16 +4768,20 @@ app.put('/api/admin/question-bank/:id', (req, res) => {
     const qText = String(req.body?.question ?? existing.question ?? '').trim();
     const rawAnswers = Array.isArray(req.body?.answers) ? req.body.answers : existing.answers;
     const answers = Array.isArray(rawAnswers)
-      ? rawAnswers.slice(0, 4).map((a) => String(a ?? '').trim())
+      ? rawAnswers.slice(0, 8).map((a) => String(a ?? '').trim())
       : [];
-    if (!qText || answers.length < 4 || answers.some((a) => !a)) {
+    if (!qText || answers.length < 2 || answers.some((a) => !a)) {
       return res.status(400).json({
         ok: false,
-        error: 'נוסח השאלה וכל 4 התשובות חייבים להיות מלאים.'
+        error: 'נוסח השאלה וכל אפשרויות התשובה (לפחות 2) חייבים להיות מלאים.'
       });
     }
 
-    const correctIndex = Math.max(0, Math.min(3, Math.round(Number(req.body?.correctIndex ?? existing.correctIndex) || 0)));
+    const maxIdx = Math.max(0, answers.length - 1);
+    const correctIndex = Math.max(
+      0,
+      Math.min(maxIdx, Math.round(Number(req.body?.correctIndex ?? existing.correctIndex) || 0))
+    );
     const topic = String(req.body?.topic ?? existing.topic ?? 'ידע כללי').trim() || 'ידע כללי';
     const rawDiff = String(req.body?.difficulty ?? existing.difficulty ?? 'medium').trim().toLowerCase();
     const difficulty = ['easy', 'medium', 'hard'].includes(rawDiff) ? rawDiff : 'medium';
@@ -4828,7 +5023,7 @@ app.post('/api/translate-question', async (req, res) => {
   try {
     const questionHe = String(req.body?.question || '').trim();
     const answersHe = Array.isArray(req.body?.answers)
-      ? req.body.answers.slice(0, 4).map((a) => String(a ?? '').trim())
+      ? req.body.answers.slice(0, 8).map((a) => String(a ?? '').trim())
       : [];
     if (!questionHe) {
       return res.status(400).json({ ok: false, error: 'Missing question text' });
@@ -4847,7 +5042,11 @@ app.post('/api/translate-question', async (req, res) => {
         item.question.replace(/\s+/g, ' ').toLowerCase() === normalizedHe
     );
 
-    if (bankMatch && Array.isArray(bankMatch.answersEn) && bankMatch.answersEn.length === 4) {
+    if (
+      bankMatch &&
+      Array.isArray(bankMatch.answersEn) &&
+      bankMatch.answersEn.length === bankMatch.answers.length
+    ) {
       // Map each shuffled Hebrew answer to its corresponding English answer from bankMatch
       const heToEnMap = new Map();
       bankMatch.answers.forEach((ansHe, idx) => {
@@ -4863,14 +5062,14 @@ app.post('/api/translate-question', async (req, res) => {
           break;
         }
       }
-      if (allMatched && mappedAnswersEn.length === 4) {
+      if (allMatched && mappedAnswersEn.length === answersHe.length) {
         const payload = { questionEn: bankMatch.questionEn, answersEn: mappedAnswersEn };
         translationCache.set(cacheKey, payload);
         return res.json({ ok: true, ...payload });
       }
     }
 
-    // 2. Translate question and 4 answers in parallel via Google Translate HTTPS endpoint
+    // 2. Translate question and answers in parallel via Google Translate HTTPS endpoint
     const [questionEn, ...answersEn] = await Promise.all([
       translateSingleTextViaGoogle(questionHe),
       ...answersHe.map((a) => translateSingleTextViaGoogle(a))
@@ -4878,7 +5077,7 @@ app.post('/api/translate-question', async (req, res) => {
 
     const payload = {
       questionEn: questionEn || questionHe,
-      answersEn: answersEn.length === 4 ? answersEn : answersHe
+      answersEn: answersEn.length === answersHe.length ? answersEn : answersHe
     };
     translationCache.set(cacheKey, payload);
 
@@ -4989,12 +5188,17 @@ app.put('/api/admin/questions', (req, res) => {
       if (!q.question) {
         return res.status(400).json({ ok: false, error: `חסר נוסח לשאלה מספר ${i + 1}.` });
       }
-      if (q.answers.some((a) => !a)) {
+      if (!Array.isArray(q.answers) || q.answers.length < 2 || q.answers.some((a) => !a)) {
         return res
           .status(400)
-          .json({ ok: false, error: `יש למלא את כל 4 התשובות בשאלה מספר ${i + 1}.` });
+          .json({ ok: false, error: `יש למלא את כל התשובות (לפחות 2 אופציות) בשאלה מספר ${i + 1}.` });
       }
       cleaned.push(q);
+    }
+
+    // Ensure the very last question does not have pinToNext left hanging
+    if (cleaned.length > 0 && cleaned[cleaned.length - 1].pinToNext) {
+      delete cleaned[cleaned.length - 1].pinToNext;
     }
 
     activeGame.questions = cleaned;
@@ -5038,10 +5242,10 @@ app.patch('/api/admin/questions/:index', (req, res) => {
     activeGame.timerSeconds
   );
 
-  if (!updated.question || updated.answers.some((a) => !a)) {
+  if (!updated.question || !Array.isArray(updated.answers) || updated.answers.length < 2 || updated.answers.some((a) => !a)) {
     return res
       .status(400)
-      .json({ ok: false, error: 'נוסח השאלה וכל 4 התשובות חייבים להיות מלאים.' });
+      .json({ ok: false, error: 'נוסח השאלה וכל אפשרויות התשובה חייבים להיות מלאים.' });
   }
 
   questions[idx] = updated;
@@ -5130,6 +5334,17 @@ io.on('connection', (socket) => {
     broadcastAllStates();
     if (typeof ack === 'function') {
       ack({ ok: true, hideLeaderboardUntilEnd: activeGame.hideLeaderboardUntilEnd });
+    }
+  });
+
+  socket.on('admin:setShowQuestionFirst', (payload, ack) => {
+    const activeGame = getActiveGameRecord();
+    activeGame.showQuestionFirst = Boolean(payload?.enabled);
+    persistStore(store);
+    io.emit('settings:updated', getActiveSettings());
+    broadcastAllStates();
+    if (typeof ack === 'function') {
+      ack({ ok: true, showQuestionFirst: activeGame.showQuestionFirst });
     }
   });
 
@@ -5231,6 +5446,7 @@ io.on('connection', (socket) => {
       game.currentQuestionIndex = idx;
       game.phase = 'revealed';
       game.questionScored = true;
+      game.optionsRevealed = true;
       broadcastAllStates();
     } else {
       startQuestion(idx);
@@ -5276,6 +5492,11 @@ io.on('connection', (socket) => {
     }
   });
 
+  socket.on('admin:revealOptions', (ack) => {
+    const ok = revealCurrentQuestionOptions();
+    if (typeof ack === 'function') ack({ ok, state: buildAdminState() });
+  });
+
   socket.on('admin:revealAnswer', (ack) => {
     const ok = revealCurrentQuestion();
     if (typeof ack === 'function') ack({ ok, state: buildAdminState() });
@@ -5295,6 +5516,7 @@ io.on('connection', (socket) => {
         ? qTimer
         : settings.timerSeconds || DEFAULT_TIMER_SECONDS;
 
+    game.optionsRevealed = true;
     game.timerDuration = duration;
     game.timerPaused = false;
     game.pausedRemainingMs = 0;
@@ -5310,6 +5532,11 @@ io.on('connection', (socket) => {
   socket.on('admin:togglePause', (ack) => {
     if (game.phase !== 'question') {
       if (typeof ack === 'function') ack({ ok: false });
+      return;
+    }
+    if (!game.optionsRevealed) {
+      revealCurrentQuestionOptions();
+      if (typeof ack === 'function') ack({ ok: true, paused: false });
       return;
     }
     if (!game.timerPaused) {
@@ -5669,13 +5896,26 @@ io.on('connection', (socket) => {
       return;
     }
 
+    if (!game.optionsRevealed) {
+      if (typeof ack === 'function') {
+        ack({ ok: false, error: 'אפשרויות התשובה טרם נחשפו על ידי המנחה.' });
+      }
+      return;
+    }
+
     if (getRemainingMs() <= 0 || game.timeExpiredAwaitingReveal) {
       if (typeof ack === 'function') ack({ ok: false, error: 'הזמן לשאלה זו הסתיים!' });
       return;
     }
 
+    const activeQ = getActiveQuestions()[game.currentQuestionIndex];
+    const maxOptionIdx =
+      activeQ && Array.isArray(activeQ.answers) && activeQ.answers.length >= 2
+        ? activeQ.answers.length - 1
+        : 7;
+
     const answerIndex = Number(payload?.answerIndex);
-    if (!Number.isInteger(answerIndex) || answerIndex < 0 || answerIndex > 3) {
+    if (!Number.isInteger(answerIndex) || answerIndex < 0 || answerIndex > maxOptionIdx) {
       if (typeof ack === 'function') ack({ ok: false, error: 'בחירה לא חוקית.' });
       return;
     }

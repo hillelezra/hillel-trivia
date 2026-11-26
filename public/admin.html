@@ -307,12 +307,18 @@
           </div>
         </div>
 
-        <!-- Pre-Game Quick Controls: Hide Leaderboard Until End & Reshuffle Questions -->
+        <!-- Pre-Game Quick Controls: Hide Leaderboard Until End, Read Question First Mode & Reshuffle Questions -->
         <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; flex-wrap:wrap; padding:0.75rem 1rem; border-radius:14px; background:rgba(15, 23, 42, 0.72); border:1px solid rgba(56, 189, 248, 0.35);">
-          <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:800; font-size:0.94rem; color:#fde68a; cursor:pointer;">
-            <input id="entry-hide-leaderboard-toggle" type="checkbox" />
-            🙈 הסתר את דירוג השחקנים במהלך המשחק והצג אותו רק בסוף
-          </label>
+          <div style="display:flex; flex-direction:column; gap:0.35rem;">
+            <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:800; font-size:0.92rem; color:#fde68a; cursor:pointer;">
+              <input id="entry-hide-leaderboard-toggle" type="checkbox" />
+              🙈 הסתר את דירוג השחקנים במהלך המשחק והצג אותו רק בסוף
+            </label>
+            <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:800; font-size:0.92rem; color:#7dd3fc; cursor:pointer;">
+              <input id="entry-show-question-first-toggle" type="checkbox" />
+              📖 מצב קריאה בנחת: הצג קודם את השאלה וכפתור "חשיפת התשובות" ורק בלחיצה יופיעו התשובות ויופעל הטיימר
+            </label>
+          </div>
           <button type="button" id="btn-entry-shuffle-questions" class="btn btn--gold btn--sm">
             🔀 ערבב שאלות מחדש
           </button>
@@ -327,7 +333,7 @@
       </section>
     </main>
 
-    <!-- VIEW 2: QUESTION & REVEAL (Single-Screen: Top = Question # + Question + Timer + Sticks, Middle = 4 Options / Correct + Top 5, Bottom = Controls) -->
+    <!-- VIEW 2: QUESTION & REVEAL (Single-Screen: Top = Question # + Question + Timer + Sticks, Middle = Options / Correct + Top 5, Bottom = Controls) -->
     <main id="view-question" class="question-stage" hidden>
       <div class="host-stage-top">
         <div id="admin-question-hero" class="question-hero">
@@ -357,36 +363,9 @@
             <span class="live-bar-label live-bar-label--answered">🗳️ ענו</span>
           </div>
 
-          <!-- Shown ONLY after answer reveal: Distribution across options (א-ד) + Right/Wrong -->
+          <!-- Shown ONLY after answer reveal: Distribution across options + Right/Wrong -->
           <div id="admin-bar-distribution-cols" hidden style="display:none; align-items:flex-end; gap:clamp(0.4rem, 0.9vw, 0.75rem);">
-            <div class="live-bar-col">
-              <span id="admin-bar-opt-0-val" class="live-bar-value">0</span>
-              <div class="live-bar-track" style="width: clamp(22px, 2.6vw, 32px);" aria-hidden="true">
-                <div id="admin-bar-opt-0-fill" class="live-bar-fill live-bar-fill--answered" style="height: 0%;"></div>
-              </div>
-              <span id="admin-bar-opt-0-lbl" class="live-bar-label">א</span>
-            </div>
-            <div class="live-bar-col">
-              <span id="admin-bar-opt-1-val" class="live-bar-value">0</span>
-              <div class="live-bar-track" style="width: clamp(22px, 2.6vw, 32px);" aria-hidden="true">
-                <div id="admin-bar-opt-1-fill" class="live-bar-fill live-bar-fill--answered" style="height: 0%;"></div>
-              </div>
-              <span id="admin-bar-opt-1-lbl" class="live-bar-label">ב</span>
-            </div>
-            <div class="live-bar-col">
-              <span id="admin-bar-opt-2-val" class="live-bar-value">0</span>
-              <div class="live-bar-track" style="width: clamp(22px, 2.6vw, 32px);" aria-hidden="true">
-                <div id="admin-bar-opt-2-fill" class="live-bar-fill live-bar-fill--answered" style="height: 0%;"></div>
-              </div>
-              <span id="admin-bar-opt-2-lbl" class="live-bar-label">ג</span>
-            </div>
-            <div class="live-bar-col">
-              <span id="admin-bar-opt-3-val" class="live-bar-value">0</span>
-              <div class="live-bar-track" style="width: clamp(22px, 2.6vw, 32px);" aria-hidden="true">
-                <div id="admin-bar-opt-3-fill" class="live-bar-fill live-bar-fill--answered" style="height: 0%;"></div>
-              </div>
-              <span id="admin-bar-opt-3-lbl" class="live-bar-label">ד</span>
-            </div>
+            <div id="admin-bar-options-wrap" style="display:flex; align-items:flex-end; gap:clamp(0.35rem, 0.8vw, 0.65rem);"></div>
             <div style="width:1px; height:clamp(54px, 10dvh, 80px); background:rgba(255,255,255,0.16); margin-inline:0.15rem;"></div>
             <div class="live-bar-col">
               <span id="admin-bar-correct-val" class="live-bar-value live-bar-value--correct">0</span>
@@ -407,9 +386,35 @@
       </div>
 
       <div id="admin-stage-middle" class="host-stage-middle">
+        <!-- Shown when Question-First Reading Mode is active and options are not revealed yet -->
+        <div
+          id="admin-awaiting-options-box"
+          hidden
+          style="display:none; flex:1; flex-direction:column; align-items:center; justify-content:center; gap:0.9rem; padding:1.35rem; border-radius:20px; background:linear-gradient(135deg, rgba(14, 165, 233, 0.16), rgba(15, 23, 42, 0.88)); border:2px dashed rgba(56, 189, 248, 0.65); text-align:center;"
+        >
+          <span class="pill pill--sky" style="font-size:0.95rem;">📖 מצב קריאת שאלה בנחת — הטיימר ממתין</span>
+          <p style="font-size:1.05rem; color:#e2e8f0; max-width:52ch;">
+            קראו את השאלה בנחת יחד עם המשתתפים. בלחיצה על הכפתור למטה ייחשפו אפשרויות התשובה במסך המרכזי ובמכשירי השחקנים והטיימר יתחיל לרוץ!
+          </p>
+          <button
+            type="button"
+            id="btn-stage-reveal-options"
+            class="btn btn--gold btn--lg"
+            style="font-size:clamp(1.15rem, 1rem + 0.6vw, 1.5rem); padding:0.95rem 2.2rem; box-shadow:0 0 28px rgba(251, 191, 36, 0.45);"
+          >
+            👁️ חשיפת התשובות והפעלת הטיימר
+          </button>
+        </div>
+
+        <!-- Shown when answer is revealed: Big Flashing Correct Answer Banner -->
+        <div id="admin-flashing-correct-banner" class="correct-flash-banner" hidden>
+          <span class="correct-flash-banner__badge">🎉 התשובה הנכונה:</span>
+          <strong id="admin-flashing-correct-text" class="correct-flash-banner__text"></strong>
+        </div>
+
         <div id="admin-answers-grid" class="answers-grid"></div>
 
-        <!-- Shown 1 second after answer reveal: Top 5 Leaders in the Competition -->
+        <!-- Shown after answer reveal flash: Top 5 Leaders in the Competition -->
         <section id="admin-top5-panel" class="host-top5-panel" hidden aria-label="חמשת המובילים בתחרות">
           <div class="host-top5-title">🏆 חמשת המובילים בתחרות</div>
           <div id="admin-top5-list" class="host-top5-list"></div>
@@ -419,6 +424,7 @@
       <footer id="admin-next-bar" class="host-bottom-bar">
         <button type="button" id="btn-dock-home" class="btn btn--sm">🏠 חזרה לתפריט הראשי</button>
         <button type="button" id="btn-reset-timer" class="btn btn--sm">🔄 איפוס הטיימר</button>
+        <button type="button" id="btn-dock-reveal-options" class="btn btn--gold btn--sm" hidden>👁️ חשיפת התשובות והפעלת טיימר</button>
         <button type="button" id="btn-reveal-answer" class="btn btn--success btn--sm">✨ חשיפת תשובה</button>
         <button type="button" id="btn-next-q" class="btn btn--primary btn--sm" hidden>המשך לשאלה הבאה ⬅</button>
       </footer>
@@ -580,6 +586,10 @@
               <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:800; color:#fde68a; cursor:pointer; padding-block:0.25rem;">
                 <input id="input-hide-leaderboard-until-end" type="checkbox" />
                 🙈 הסתר את דירוג השחקנים במהלך המשחק והצג אותו רק בסוף
+              </label>
+              <label style="display:inline-flex; align-items:center; gap:0.55rem; font-weight:800; color:#7dd3fc; cursor:pointer; padding-block:0.25rem;">
+                <input id="input-show-question-first" type="checkbox" />
+                📖 מצב קריאה בנחת: הצג קודם את השאלה וכפתור "חשיפת התשובות", ורק בלחיצה יופיעו התשובות ויופעל הטיימר
               </label>
             </div>
           </div>
@@ -874,6 +884,17 @@
             </button>
           </div>
         </section>
+
+        <!-- Quiz-Wide Question Reading Mode Bar right inside the Questions Editor -->
+        <div
+          style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; flex-wrap:wrap; padding:0.75rem 1.05rem; border-radius:14px; background:linear-gradient(135deg, rgba(14, 165, 233, 0.14), rgba(15, 23, 42, 0.88)); border:1px solid rgba(56, 189, 248, 0.45);"
+        >
+          <label style="display:inline-flex; align-items:center; gap:0.6rem; font-weight:800; font-size:0.93rem; color:#bae6fd; cursor:pointer;">
+            <input id="editor-show-question-first-toggle" type="checkbox" />
+            <span>📖 מצב קריאת שאלה בנחת בכל השאלון: הצג קודם את השאלה ותחתיה כפתור "חשיפת התשובות", ורק כשהוא נלחץ יופיעו התשובות ויופעל הטיימר</span>
+          </label>
+          <span class="pill pill--sky" style="font-size:0.76rem;">ניתן גם לסמן/לבטל פרטנית בכל שאלה</span>
+        </div>
 
         <div id="questions-editor-list" style="display:flex; flex-direction:column; gap:0.9rem;"></div>
 
@@ -1833,6 +1854,15 @@
           return;
         }
 
+        if (timer.optionsRevealed === false || adminState?.currentQuestion?.optionsRevealed === false) {
+          const fullSecs = Math.max(0, timer.durationSeconds || timer.remainingSeconds || 20);
+          hudTimer.textContent = `⏸️ ${fullSecs}`;
+          adminTimerBar.value = 100;
+          adminTimerBar.classList.remove('is-danger', 'is-warning');
+          if (adminTimerBox) adminTimerBox.classList.remove('is-danger', 'is-warning');
+          return;
+        }
+
         const secs = Math.max(0, timer.remainingSeconds || 0);
         const isDanger = secs <= 5;
         const isWarning = secs > 5 && secs <= 8;
@@ -1855,6 +1885,7 @@
         const isRevealed = state?.phase === 'revealed' || Boolean(ans.isDistributionVisible);
         const answeredCol = document.getElementById('admin-bar-answered-col');
         const distCols = document.getElementById('admin-bar-distribution-cols');
+        const optionsWrap = document.getElementById('admin-bar-options-wrap');
         const answeredVal = document.getElementById('admin-bar-answered-val');
         const answeredFill = document.getElementById('admin-bar-answered-fill');
 
@@ -1885,7 +1916,7 @@
           return;
         }
 
-        // After answer reveal: show full distribution across options (א-ד) and Right/Wrong (✓/✗)
+        // After answer reveal: show full distribution across all options (2..8) and Right/Wrong (✓/✗)
         if (answeredCol) {
           answeredCol.hidden = true;
           answeredCol.style.display = 'none';
@@ -1902,11 +1933,17 @@
             : typeof rev.correctIndex === 'number'
               ? rev.correctIndex
               : -1;
+        const numOpts =
+          Array.isArray(state?.currentQuestion?.answers) && state.currentQuestion.answers.length >= 2
+            ? state.currentQuestion.answers.length
+            : Array.isArray(rev.optionCounts) && rev.optionCounts.length >= 2
+              ? rev.optionCounts.length
+              : 4;
         const optCounts = Array.isArray(rev.optionCounts)
           ? rev.optionCounts
           : Array.isArray(ans.optionCounts)
             ? ans.optionCounts
-            : [0, 0, 0, 0];
+            : new Array(numOpts).fill(0);
         const correctCount = Number(rev.correctCount ?? ans.correctCount) || 0;
         const wrongCount = Number(rev.wrongCount ?? ans.wrongCount) || 0;
         const totalVotes = Math.max(
@@ -1916,24 +1953,24 @@
         const correctPct = totalVotes > 0 ? Math.round((correctCount / totalVotes) * 100) : 0;
         const wrongPct = totalVotes > 0 ? Math.round((wrongCount / totalVotes) * 100) : 0;
 
-        for (let i = 0; i < 4; i++) {
-          const valEl = document.getElementById(`admin-bar-opt-${i}-val`);
-          const fillEl = document.getElementById(`admin-bar-opt-${i}-fill`);
-          const lblEl = document.getElementById(`admin-bar-opt-${i}-lbl`);
-          const c = Number(optCounts[i]) || 0;
-          const p = totalVotes > 0 ? Math.round((c / totalVotes) * 100) : 0;
-          const isRightOpt = i === correctIdx;
-          if (valEl) {
-            valEl.textContent = `${c}`;
-            valEl.className = `live-bar-value ${isRightOpt ? 'live-bar-value--correct' : ''}`;
+        if (optionsWrap) {
+          const colsHtml = [];
+          for (let i = 0; i < numOpts; i++) {
+            const c = Number(optCounts[i]) || 0;
+            const p = totalVotes > 0 ? Math.round((c / totalVotes) * 100) : 0;
+            const isRightOpt = i === correctIdx;
+            const letter = LETTERS[i] || String(i + 1);
+            colsHtml.push(`
+              <div class="live-bar-col">
+                <span class="live-bar-value ${isRightOpt ? 'live-bar-value--correct' : ''}">${c}</span>
+                <div class="live-bar-track" style="width: clamp(20px, 2.4vw, 30px);" aria-hidden="true">
+                  <div class="live-bar-fill ${isRightOpt ? 'live-bar-fill--correct' : 'live-bar-fill--answered'}" style="height: ${c > 0 ? Math.max(12, p) : 0}%;"></div>
+                </div>
+                <span class="live-bar-label ${isRightOpt ? 'live-bar-label--correct' : ''}">${escapeHtml(letter)}</span>
+              </div>
+            `);
           }
-          if (fillEl) {
-            fillEl.style.height = `${c > 0 ? Math.max(12, p) : 0}%`;
-            fillEl.className = `live-bar-fill ${isRightOpt ? 'live-bar-fill--correct' : 'live-bar-fill--answered'}`;
-          }
-          if (lblEl) {
-            lblEl.className = `live-bar-label ${isRightOpt ? 'live-bar-label--correct' : ''}`;
-          }
+          optionsWrap.innerHTML = colsHtml.join('');
         }
 
         if (adminBarCorrectVal) {
@@ -1992,6 +2029,7 @@
               <span class="pill" style="font-size:0.78rem;">❓ ${g.questionsCount} שאלות</span>
               <span class="pill" style="font-size:0.78rem;">${g.teamsEnabled ? `👨‍👩‍👧‍👦 קבוצות (${g.teamsCount})` : '👤 משחק אישי'}</span>
               ${g.hideLeaderboardUntilEnd ? `<span class="pill pill--gold" style="font-size:0.78rem;">🙈 דירוג מוסתר עד הסוף</span>` : ''}
+              ${g.showQuestionFirst ? `<span class="pill pill--sky" style="font-size:0.78rem;">📖 חשיפת תשובות בלחיצה</span>` : ''}
               ${g.backgroundMusic ? `<span class="pill pill--emerald" style="font-size:0.78rem;">🎵 מוזיקה</span>` : ''}
             </div>
             <div style="display:flex; gap:0.45rem; flex-wrap:wrap; margin-top:auto; padding-top:0.35rem; border-top:1px solid rgba(255,255,255,0.08);">
@@ -2090,6 +2128,12 @@
         if (entryHideLbToggle) {
           entryHideLbToggle.checked = Boolean(
             state.hideLeaderboardUntilEnd ?? state.settings?.hideLeaderboardUntilEnd
+          );
+        }
+        const entryShowQFirstToggle = document.getElementById('entry-show-question-first-toggle');
+        if (entryShowQFirstToggle) {
+          entryShowQFirstToggle.checked = Boolean(
+            state.showQuestionFirst ?? state.settings?.showQuestionFirst
           );
         }
 
@@ -2587,36 +2631,84 @@
           syncHasImageFallback(adminQuestionHero);
 
           const isRevealed = state.phase === 'revealed';
+          const areOptionsRevealed = Boolean(
+            isRevealed || (q.optionsRevealed !== false && state.optionsRevealed !== false)
+          );
           const rev = state.lastReveal;
           if (adminRevealBanner) adminRevealBanner.hidden = true;
 
-          adminAnswersGrid.innerHTML = q.answers
-            .map((ans, idx) => {
-              let stateCls = '';
-              let metaHtml = '';
-              if (isRevealed && rev) {
-                const isCorrect = idx === q.correctIndex;
-                stateCls = isCorrect ? 'is-correct' : 'is-wrong';
-                const optCounts = Array.isArray(rev.optionCounts) ? rev.optionCounts : [0, 0, 0, 0];
-                const optCount = Number(optCounts[idx]) || 0;
-                const totalAns = Number(rev.totalAnswers) || 0;
-                const optPct = totalAns > 0 ? Math.round((optCount / totalAns) * 100) : 0;
-                metaHtml = `
-                  <div class="opt-meta" style="display:flex; flex-direction:row; align-items:center; gap:0.4rem; flex-wrap:wrap;">
-                    <span class="pill ${isCorrect ? 'pill--emerald' : ''}" style="font-size:0.78rem;">👥 ${optCount} (${optPct}%)</span>
-                    ${isCorrect ? '<span class="pill pill--emerald">✓ תשובה נכונה</span>' : ''}
+          const awaitingOptionsBox = document.getElementById('admin-awaiting-options-box');
+          const btnStageRevealOptions = document.getElementById('btn-stage-reveal-options');
+          const btnDockRevealOptions = document.getElementById('btn-dock-reveal-options');
+          const flashingCorrectBanner = document.getElementById('admin-flashing-correct-banner');
+          const flashingCorrectText = document.getElementById('admin-flashing-correct-text');
+
+          if (!areOptionsRevealed) {
+            if (awaitingOptionsBox) {
+              awaitingOptionsBox.hidden = false;
+              awaitingOptionsBox.style.display = 'flex';
+            }
+            if (btnStageRevealOptions) {
+              btnStageRevealOptions.textContent = `👁️ חשיפת התשובות והפעלת הטיימר (${q.timerSeconds || 20} שניות)`;
+            }
+            adminAnswersGrid.hidden = true;
+            adminAnswersGrid.style.display = 'none';
+            adminAnswersGrid.innerHTML = '';
+          } else {
+            if (awaitingOptionsBox) {
+              awaitingOptionsBox.hidden = true;
+              awaitingOptionsBox.style.display = 'none';
+            }
+            adminAnswersGrid.hidden = false;
+            adminAnswersGrid.style.display = 'grid';
+
+            const numOpts = Array.isArray(q.answers) ? q.answers.length : 4;
+            adminAnswersGrid.setAttribute('data-options-count', String(numOpts));
+
+            adminAnswersGrid.innerHTML = (q.answers || [])
+              .map((ans, idx) => {
+                let stateCls = '';
+                let metaHtml = '';
+                const letter = LETTERS[idx] || String(idx + 1);
+                if (isRevealed && rev) {
+                  const isCorrect = idx === q.correctIndex;
+                  stateCls = isCorrect ? 'is-correct is-flashing-reveal' : 'is-wrong';
+                  const optCounts = Array.isArray(rev.optionCounts)
+                    ? rev.optionCounts
+                    : new Array(numOpts).fill(0);
+                  const optCount = Number(optCounts[idx]) || 0;
+                  const totalAns = Number(rev.totalAnswers) || 0;
+                  const optPct = totalAns > 0 ? Math.round((optCount / totalAns) * 100) : 0;
+                  metaHtml = `
+                    <div class="opt-meta" style="display:flex; flex-direction:row; align-items:center; gap:0.4rem; flex-wrap:wrap;">
+                      <span class="pill ${isCorrect ? 'pill--emerald' : ''}" style="font-size:0.78rem;">👥 ${optCount} (${optPct}%)</span>
+                      ${isCorrect ? '<span class="pill pill--emerald">✓ תשובה נכונה</span>' : ''}
+                    </div>
+                  `;
+                }
+                return `
+                  <div class="answer-card ${stateCls}" data-opt="${idx}">
+                    <span class="opt-letter">${escapeHtml(letter)}</span>
+                    <span class="opt-text">${escapeHtml(ans)}</span>
+                    ${metaHtml}
                   </div>
                 `;
-              }
-              return `
-                <div class="answer-card ${stateCls}" data-opt="${idx}">
-                  <span class="opt-letter">${LETTERS[idx]}</span>
-                  <span class="opt-text">${escapeHtml(ans)}</span>
-                  ${metaHtml}
-                </div>
-              `;
-            })
-            .join('');
+              })
+              .join('');
+          }
+
+          if (flashingCorrectBanner && flashingCorrectText) {
+            if (isRevealed && typeof q.correctIndex === 'number' && Array.isArray(q.answers)) {
+              const cLetter = LETTERS[q.correctIndex] || String(q.correctIndex + 1);
+              const cText = q.answers[q.correctIndex] || '';
+              flashingCorrectText.textContent = `${cLetter}. ${cText}`;
+              flashingCorrectBanner.hidden = false;
+              flashingCorrectBanner.style.display = 'flex';
+            } else {
+              flashingCorrectBanner.hidden = true;
+              flashingCorrectBanner.style.display = 'none';
+            }
+          }
 
           renderTop5Leaders(state);
 
@@ -2637,12 +2729,13 @@
               adminAnswersGrid.classList.remove('is-collapsed-to-correct');
               if (adminTop5Panel) adminTop5Panel.hidden = true;
               if (!revealCollapseTimer) {
+                // Keep all options visible with the correct answer flashing BIG for ~3.5 seconds before showing Top 5!
                 revealCollapseTimer = setTimeout(() => {
                   revealCollapseTimer = null;
                   revealCollapsedForKey = currentQuestionKey;
                   adminAnswersGrid.classList.add('is-collapsed-to-correct');
                   if (adminTop5Panel) adminTop5Panel.hidden = false;
-                }, 1000);
+                }, 3500);
               }
             }
           }
@@ -2651,8 +2744,11 @@
             adminNextBar.hidden = false;
             adminNextBar.style.display = 'flex';
           }
+          if (btnDockRevealOptions) {
+            btnDockRevealOptions.hidden = areOptionsRevealed || isRevealed;
+          }
           if (btnRevealAnswer) {
-            btnRevealAnswer.hidden = isRevealed;
+            btnRevealAnswer.hidden = !areOptionsRevealed || isRevealed;
           }
           if (btnNextQ) {
             btnNextQ.hidden = !isRevealed;
@@ -2730,15 +2826,20 @@
         else if (Array.isArray(q.choices)) rawAnswers = q.choices;
         else if (Array.isArray(q.variants)) rawAnswers = q.variants;
         else if (Array.isArray(q.items)) rawAnswers = q.items;
-        else if (q.a !== undefined || q.b !== undefined) rawAnswers = [q.a, q.b, q.c, q.d];
-        else if (q.option1 !== undefined || q.option2 !== undefined) {
-          rawAnswers = [q.option1, q.option2, q.option3, q.option4];
+        else if (q.a !== undefined || q.b !== undefined) {
+          rawAnswers = [q.a, q.b, q.c, q.d, q.e, q.f].filter((v) => v !== undefined);
+        } else if (q.option1 !== undefined || q.option2 !== undefined) {
+          rawAnswers = [q.option1, q.option2, q.option3, q.option4, q.option5, q.option6].filter(
+            (v) => v !== undefined
+          );
         }
 
         const answers = Array.isArray(rawAnswers)
-          ? rawAnswers.slice(0, 4).map((a) => String(a ?? '').trim())
+          ? rawAnswers.slice(0, 8).map((a) => String(a ?? '').trim())
           : [];
-        if (answers.length < 4 || answers.some((a) => !a)) return null;
+        if (answers.length < 2 || answers.some((a) => !a)) return null;
+
+        const maxIdx = Math.max(0, answers.length - 1);
 
         const rawCorrect =
           q.correctIndex ??
@@ -2751,19 +2852,37 @@
 
         let correctIndex = 0;
         if (typeof rawCorrect === 'number' && Number.isInteger(rawCorrect)) {
-          if (rawCorrect >= 0 && rawCorrect <= 3) correctIndex = rawCorrect;
-          else if (rawCorrect === 4) correctIndex = 3;
+          if (rawCorrect >= 0 && rawCorrect <= maxIdx) correctIndex = rawCorrect;
+          else if (rawCorrect === maxIdx + 1) correctIndex = maxIdx;
         } else if (typeof rawCorrect === 'string') {
           const trimmed = rawCorrect.trim();
-          if (/^[0-3]$/.test(trimmed)) {
-            correctIndex = Number(trimmed);
-          } else if (trimmed === '4') {
-            correctIndex = 3;
+          if (/^[0-7]$/.test(trimmed)) {
+            const n = Number(trimmed);
+            correctIndex = n <= maxIdx ? n : maxIdx;
+          } else if (trimmed === String(maxIdx + 1)) {
+            correctIndex = maxIdx;
           } else {
-            const letterMap = { א: 0, ב: 1, ג: 2, ד: 3, a: 0, b: 1, c: 2, d: 3 };
+            const letterMap = {
+              א: 0,
+              ב: 1,
+              ג: 2,
+              ד: 3,
+              ה: 4,
+              ו: 5,
+              ז: 6,
+              ח: 7,
+              a: 0,
+              b: 1,
+              c: 2,
+              d: 3,
+              e: 4,
+              f: 5,
+              g: 6,
+              h: 7
+            };
             const cleanLetter = trimmed.replace(/[.):\-–]/g, '').trim().toLowerCase();
             if (cleanLetter in letterMap) {
-              correctIndex = letterMap[cleanLetter];
+              correctIndex = Math.min(maxIdx, letterMap[cleanLetter]);
             } else {
               const matchIdx = answers.findIndex(
                 (ans) => ans.toLowerCase() === trimmed.toLowerCase()
@@ -2781,12 +2900,15 @@
         return {
           question,
           answers,
-          correctIndex,
+          correctIndex: Math.max(0, Math.min(maxIdx, correctIndex)),
           difficulty,
           topic: typeof q.topic === 'string' && q.topic.trim() ? q.topic.trim() : '',
           image: typeof q.image === 'string' ? q.image.trim() : '',
           points: Number(q.points) >= 1 ? Number(q.points) : 100,
           timerSeconds: Number(q.timerSeconds) >= 5 ? Number(q.timerSeconds) : 20,
+          lockAnswersOrder: Boolean(q.lockAnswersOrder),
+          pinToNext: Boolean(q.pinToNext),
+          showQuestionFirst: Boolean(q.showQuestionFirst),
           isUserWritten: true
         };
       }
@@ -3661,6 +3783,21 @@
         });
       }
 
+      const entryShowQFirstToggleEl = document.getElementById('entry-show-question-first-toggle');
+      if (entryShowQFirstToggleEl) {
+        entryShowQFirstToggleEl.addEventListener('change', () => {
+          const enabled = Boolean(entryShowQFirstToggleEl.checked);
+          draftSettings.showQuestionFirst = enabled;
+          socket.emit('admin:setShowQuestionFirst', { enabled }, () => {
+            showToast(
+              enabled
+                ? '📖 מצב קריאת שאלה בנחת הופעל! בכל שאלה יופיע כפתור "חשיפת התשובות" ורק בלחיצה יופיעו התשובות ויופעל הטיימר.'
+                : '⏱️ התשובות והטיימר יופיעו מיד עם הצגת השאלה.'
+            );
+          });
+        });
+      }
+
       const btnEntryShuffleQuestions = document.getElementById('btn-entry-shuffle-questions');
       if (btnEntryShuffleQuestions) {
         btnEntryShuffleQuestions.addEventListener('click', async () => {
@@ -3737,6 +3874,24 @@
             }
           });
         });
+      }
+
+      function triggerRevealOptionsNow() {
+        socket.emit('admin:revealOptions', (res) => {
+          if (res && res.ok) {
+            showToast('👁️ אפשרויות התשובה נחשפו והטיימר הופעל!');
+          }
+        });
+      }
+
+      const btnStageRevealOptionsEl = document.getElementById('btn-stage-reveal-options');
+      if (btnStageRevealOptionsEl) {
+        btnStageRevealOptionsEl.addEventListener('click', triggerRevealOptionsNow);
+      }
+
+      const btnDockRevealOptionsEl = document.getElementById('btn-dock-reveal-options');
+      if (btnDockRevealOptionsEl) {
+        btnDockRevealOptionsEl.addEventListener('click', triggerRevealOptionsNow);
       }
 
       btnRevealAnswer.addEventListener('click', () => {
@@ -3897,14 +4052,17 @@
           if (data.ok) {
             editableQuestions = data.questions.map((q) => ({
               question: q.question,
-              answers: [...q.answers],
+              answers: Array.isArray(q.answers) && q.answers.length >= 2 ? [...q.answers] : ['', '', '', ''],
               correctIndex: q.correctIndex,
               image: q.image || '',
               points: Number(q.points) >= 1 ? Number(q.points) : 100,
               timerSeconds:
                 Number(q.timerSeconds) >= 5
                   ? Number(q.timerSeconds)
-                  : Number(draftSettings.timerSeconds) || 20
+                  : Number(draftSettings.timerSeconds) || 20,
+              lockAnswersOrder: Boolean(q.lockAnswersOrder),
+              pinToNext: Boolean(q.pinToNext),
+              showQuestionFirst: Boolean(q.showQuestionFirst)
             }));
             const initialBlankCount = Math.max(1, Math.min(50, Number(options?.initialBlankCount) || 1));
             if (editableQuestions.length === 0) {
@@ -3951,11 +4109,37 @@
       const inputTimerSeconds = document.getElementById('input-timer-seconds');
       const inputAutoReveal = document.getElementById('input-auto-reveal');
       const inputHideLeaderboardUntilEnd = document.getElementById('input-hide-leaderboard-until-end');
+      const inputShowQuestionFirst = document.getElementById('input-show-question-first');
+      const editorShowQuestionFirstToggle = document.getElementById('editor-show-question-first-toggle');
       const inputSettingsTeamsEnabled = document.getElementById('input-settings-teams-enabled');
       const settingsTeamsEditorBox = document.getElementById('settings-teams-editor-box');
       const settingsNewTeamName = document.getElementById('settings-new-team-name');
       const btnSettingsAddTeam = document.getElementById('btn-settings-add-team');
       const settingsTeamsChips = document.getElementById('settings-teams-chips');
+
+      if (editorShowQuestionFirstToggle) {
+        editorShowQuestionFirstToggle.addEventListener('change', () => {
+          const enabled = Boolean(editorShowQuestionFirstToggle.checked);
+          draftSettings.showQuestionFirst = enabled;
+          if (inputShowQuestionFirst) inputShowQuestionFirst.checked = enabled;
+          socket.emit('admin:setShowQuestionFirst', { enabled }, () => {
+            showToast(
+              enabled
+                ? '📖 מצב קריאת שאלה בנחת הופעל לשאלון זה! קודם תוצג השאלה וכפתור "חשיפת התשובות", ורק בלחיצה יופיעו התשובות ויופעל הטיימר.'
+                : '⏱️ התשובות והטיימר יופיעו מיד עם הצגת השאלה.'
+            );
+          });
+        });
+      }
+
+      if (inputShowQuestionFirst) {
+        inputShowQuestionFirst.addEventListener('change', () => {
+          const enabled = Boolean(inputShowQuestionFirst.checked);
+          draftSettings.showQuestionFirst = enabled;
+          if (editorShowQuestionFirstToggle) editorShowQuestionFirstToggle.checked = enabled;
+          socket.emit('admin:setShowQuestionFirst', { enabled });
+        });
+      }
 
       function renderSettingsTeamsChips() {
         if (!settingsTeamsChips) return;
@@ -4032,6 +4216,15 @@
           inputHideLeaderboardUntilEnd.checked = Boolean(
             adminState?.hideLeaderboardUntilEnd ?? draftSettings.hideLeaderboardUntilEnd
           );
+        }
+        const showQFirst = Boolean(
+          adminState?.showQuestionFirst ?? draftSettings.showQuestionFirst
+        );
+        if (inputShowQuestionFirst) {
+          inputShowQuestionFirst.checked = showQFirst;
+        }
+        if (editorShowQuestionFirstToggle) {
+          editorShowQuestionFirstToggle.checked = showQFirst;
         }
 
         const teamsOn = Boolean(adminState?.teamsEnabled ?? draftSettings.teamsEnabled);
@@ -4205,6 +4398,9 @@
           hideLeaderboardUntilEnd: inputHideLeaderboardUntilEnd
             ? inputHideLeaderboardUntilEnd.checked
             : Boolean(draftSettings.hideLeaderboardUntilEnd),
+          showQuestionFirst: inputShowQuestionFirst
+            ? inputShowQuestionFirst.checked
+            : Boolean(draftSettings.showQuestionFirst),
           teamsEnabled: inputSettingsTeamsEnabled ? inputSettingsTeamsEnabled.checked : Boolean(draftSettings.teamsEnabled)
         };
 
@@ -5519,13 +5715,34 @@
               Number.isFinite(secs) && secs >= 5 && secs <= 300 ? secs : 20;
           }
 
-          card.querySelectorAll('[data-ans-idx]').forEach((inp) => {
-            const aIdx = Number(inp.getAttribute('data-ans-idx'));
-            editableQuestions[i].answers[aIdx] = inp.value;
-          });
+          const lockOrderCb = card.querySelector('[data-field="lockAnswersOrder"]');
+          if (lockOrderCb) {
+            editableQuestions[i].lockAnswersOrder = Boolean(lockOrderCb.checked);
+          }
+
+          const pinNextCb = card.querySelector('[data-field="pinToNext"]');
+          if (pinNextCb) {
+            editableQuestions[i].pinToNext =
+              i < editableQuestions.length - 1 ? Boolean(pinNextCb.checked) : false;
+          } else if (i >= editableQuestions.length - 1) {
+            editableQuestions[i].pinToNext = false;
+          }
+
+          const showQFirstCb = card.querySelector('[data-field="showQuestionFirst"]');
+          if (showQFirstCb) {
+            editableQuestions[i].showQuestionFirst = Boolean(showQFirstCb.checked);
+          }
+
+          const ansInputs = Array.from(card.querySelectorAll('[data-ans-idx]'));
+          if (ansInputs.length >= 2) {
+            editableQuestions[i].answers = ansInputs.map((inp) => inp.value);
+          }
           const checkedRadio = card.querySelector(`input[name="correct-${i}"]:checked`);
           if (checkedRadio) {
-            editableQuestions[i].correctIndex = Number(checkedRadio.value);
+            editableQuestions[i].correctIndex = Math.min(
+              editableQuestions[i].answers.length - 1,
+              Math.max(0, Number(checkedRadio.value) || 0)
+            );
           }
         });
       }
@@ -5533,11 +5750,38 @@
       function renderQuestionsEditor() {
         tabQCount.textContent = String(editableQuestions.length);
         questionsEditorList.innerHTML = editableQuestions
-          .map(
-            (q, i) => `
-          <article class="q-editor-card" data-q-idx="${i}">
+          .map((q, i) => {
+            const answersArr =
+              Array.isArray(q.answers) && q.answers.length >= 2
+                ? q.answers
+                : ['', '', '', ''];
+            const canRemoveOpt = answersArr.length > 2;
+            const canAddOpt = answersArr.length < 8;
+            const isPinnedFromPrev = i > 0 && Boolean(editableQuestions[i - 1]?.pinToNext);
+            const isPinnedToNext = i < editableQuestions.length - 1 && Boolean(q.pinToNext);
+
+            return `
+          <article class="q-editor-card ${isPinnedFromPrev || isPinnedToNext ? 'is-pinned-chain' : ''}" data-q-idx="${i}" style="${isPinnedFromPrev || isPinnedToNext ? 'border-color:rgba(251, 191, 36, 0.65); background:rgba(30, 41, 59, 0.72);' : ''}">
             <div style="display:flex; justify-content:space-between; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-              <strong style="color:#7dd3fc; font-size:1.05rem;">שאלה ${i + 1}</strong>
+              <div style="display:flex; align-items:center; gap:0.45rem; flex-wrap:wrap;">
+                <strong style="color:#7dd3fc; font-size:1.05rem;">שאלה ${i + 1}</strong>
+                <span class="pill" style="font-size:0.74rem; padding:0.1rem 0.5rem;">${answersArr.length} אופציות</span>
+                ${
+                  isPinnedFromPrev
+                    ? `<span class="pill pill--gold" style="font-size:0.74rem; padding:0.1rem 0.55rem;">🔗 מוצמדת לשאלה ${i}</span>`
+                    : ''
+                }
+                ${
+                  isPinnedToNext
+                    ? `<span class="pill pill--gold" style="font-size:0.74rem; padding:0.1rem 0.55rem;">🔗 מוצמדת לשאלה ${i + 2}</span>`
+                    : ''
+                }
+                ${
+                  q.lockAnswersOrder
+                    ? `<span class="pill pill--emerald" style="font-size:0.74rem; padding:0.1rem 0.55rem;">🔒 סדר תשובות נעול</span>`
+                    : ''
+                }
+              </div>
               <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
                 <button type="button" class="btn btn--sm" data-action="upload-q-img" data-idx="${i}">
                   📷 ${q.image ? 'החלף תמונה' : 'הוסף תמונה מהמחשב'}
@@ -5548,12 +5792,12 @@
                     : ''
                 }
                 <button type="button" class="btn btn--danger btn--sm" data-action="delete-q" data-idx="${i}" ${editableQuestions.length <= 1 ? 'disabled' : ''}>
-                  🗑️ מחק
+                  🗑️ מחק שאלה
                 </button>
               </div>
             </div>
 
-            <div class="q-meta-row">
+            <div class="q-meta-row" style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
               <label class="q-meta-field">
                 <span>💰 קופת ניקוד לשאלה:</span>
                 <input
@@ -5581,6 +5825,28 @@
               </label>
             </div>
 
+            <!-- Per-Question Advanced Options: Lock Answers Order, Pin to Next Question, Manual Reveal Options -->
+            <div style="display:flex; align-items:center; gap:0.85rem; flex-wrap:wrap; padding:0.55rem 0.8rem; border-radius:10px; background:rgba(2, 6, 23, 0.45); border:1px solid rgba(255, 255, 255, 0.1);">
+              <label style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.82rem; font-weight:700; color:#6ee7b7; cursor:pointer;">
+                <input type="checkbox" data-field="lockAnswersOrder" ${q.lockAnswersOrder ? 'checked' : ''} />
+                🔒 ללא ערבוב תשובות (שמור על סדר התשובות המקורי)
+              </label>
+
+              ${
+                i < editableQuestions.length - 1
+                  ? `<label style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.82rem; font-weight:800; color:#fde68a; cursor:pointer;">
+                      <input type="checkbox" data-field="pinToNext" ${q.pinToNext ? 'checked' : ''} />
+                      🔗 הצמד לשאלה הבאה (שאלה ${i + 2}) — יישארו צמודות גם בערבוב
+                    </label>`
+                  : ''
+              }
+
+              <label style="display:inline-flex; align-items:center; gap:0.4rem; font-size:0.82rem; font-weight:700; color:#7dd3fc; cursor:pointer;">
+                <input type="checkbox" data-field="showQuestionFirst" ${q.showQuestionFirst ? 'checked' : ''} />
+                📖 הצג קודם שאלה וכפתור "חשיפת התשובות" בשאלה זו
+              </label>
+            </div>
+
             ${
               q.image
                 ? `<img src="${escapeHtml(q.image)}" alt="תמונה לשאלה ${i + 1}" class="upload-preview" />`
@@ -5596,34 +5862,88 @@
             />
 
             <div class="q-editor-answers">
-              ${[0, 1, 2, 3]
-                .map(
-                  (aIdx) => `
-                <div class="q-ans-row">
+              ${answersArr
+                .map((ansText, aIdx) => {
+                  const letter = LETTERS[aIdx] || String(aIdx + 1);
+                  return `
+                <div class="q-ans-row" style="display:flex; align-items:center; gap:0.45rem;">
                   <input
                     type="radio"
                     name="correct-${i}"
                     value="${aIdx}"
                     title="סמן כתשובה נכונה"
-                    aria-label="סמן תשובה ${LETTERS[aIdx]} כנכונה"
+                    aria-label="סמן תשובה ${letter} כנכונה"
                     ${q.correctIndex === aIdx ? 'checked' : ''}
                   />
-                  <span style="font-weight:800; min-width:1.2rem;">${LETTERS[aIdx]}.</span>
+                  <span style="font-weight:800; min-width:1.3rem;">${letter}.</span>
                   <input
                     type="text"
                     class="input"
                     data-ans-idx="${aIdx}"
-                    value="${escapeHtml(q.answers[aIdx] || '')}"
-                    placeholder="תשובה ${LETTERS[aIdx]}"
+                    value="${escapeHtml(ansText || '')}"
+                    placeholder="תשובה ${letter}"
+                    style="flex:1;"
                   />
+                  <button
+                    type="button"
+                    class="btn btn--danger btn--sm"
+                    data-action="remove-ans-opt"
+                    data-idx="${i}"
+                    data-ans-idx="${aIdx}"
+                    title="הסר אופציה זו (מינימום 2 אופציות לשאלה)"
+                    style="padding:0.3rem 0.55rem; font-size:0.78rem;"
+                    ${canRemoveOpt ? '' : 'disabled'}
+                  >
+                    ✕
+                  </button>
                 </div>
-              `
-                )
+              `;
+                })
                 .join('')}
             </div>
+
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; padding-top:0.25rem;">
+              <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+                <button
+                  type="button"
+                  class="btn btn--sm"
+                  data-action="add-ans-opt"
+                  data-idx="${i}"
+                  ${canAddOpt ? '' : 'disabled'}
+                  style="font-size:0.8rem;"
+                >
+                  ➕ הוסף אופציית תשובה (${answersArr.length}/8)
+                </button>
+                ${
+                  canRemoveOpt
+                    ? `<button
+                        type="button"
+                        class="btn btn--danger btn--sm"
+                        data-action="remove-last-ans-opt"
+                        data-idx="${i}"
+                        style="font-size:0.8rem;"
+                      >
+                        ➖ הורד אופציה אחרונה
+                      </button>`
+                    : ''
+                }
+              </div>
+              <span style="font-size:0.76rem; color:var(--text-secondary);">
+                סמנו בעיגול את התשובה הנכונה מתוך ${answersArr.length} האופציות
+              </span>
+            </div>
           </article>
-        `
-          )
+          ${
+            isPinnedToNext
+              ? `<div style="display:flex; align-items:center; justify-content:center; gap:0.5rem; margin-block:-0.45rem; z-index:2;">
+                  <span class="pill pill--gold" style="font-size:0.8rem; padding:0.22rem 0.85rem; box-shadow:0 4px 14px rgba(0,0,0,0.4);">
+                    🔗 שאלה ${i + 1} ושאלה ${i + 2} מוצמדות זו לזו (יישארו יחד גם בעת ערבוב)
+                  </span>
+                </div>`
+              : ''
+          }
+        `;
+          })
           .join('');
       }
 
@@ -5640,6 +5960,7 @@
         syncEditorDomToArray();
         const action = btn.getAttribute('data-action');
         const idx = Number(btn.getAttribute('data-idx'));
+        if (!Number.isInteger(idx) || !editableQuestions[idx]) return;
 
         if (action === 'upload-q-img') {
           pendingEditorImageQIndex = idx;
@@ -5651,6 +5972,55 @@
         } else if (action === 'delete-q') {
           if (editableQuestions.length <= 1) return;
           editableQuestions.splice(idx, 1);
+          if (editableQuestions.length > 0) {
+            editableQuestions[editableQuestions.length - 1].pinToNext = false;
+          }
+          renderQuestionsEditor();
+        } else if (action === 'add-ans-opt') {
+          const curAnswers = Array.isArray(editableQuestions[idx].answers)
+            ? editableQuestions[idx].answers
+            : ['', '', '', ''];
+          if (curAnswers.length >= 8) {
+            showToast('ניתן להוסיף עד 8 אופציות תשובה לשאלה.');
+            return;
+          }
+          curAnswers.push('');
+          editableQuestions[idx].answers = curAnswers;
+          editableQuestions[idx].isUserWritten = true;
+          renderQuestionsEditor();
+        } else if (action === 'remove-ans-opt' || action === 'remove-last-ans-opt') {
+          const curAnswers = Array.isArray(editableQuestions[idx].answers)
+            ? editableQuestions[idx].answers
+            : ['', '', '', ''];
+          if (curAnswers.length <= 2) {
+            showToast('חייבות להישאר לפחות 2 אופציות תשובה בשאלה.');
+            return;
+          }
+          const ansIdxToRemove =
+            action === 'remove-last-ans-opt'
+              ? curAnswers.length - 1
+              : Number(btn.getAttribute('data-ans-idx'));
+          if (!Number.isInteger(ansIdxToRemove) || ansIdxToRemove < 0 || ansIdxToRemove >= curAnswers.length) {
+            return;
+          }
+          curAnswers.splice(ansIdxToRemove, 1);
+          editableQuestions[idx].answers = curAnswers;
+          if (editableQuestions[idx].correctIndex === ansIdxToRemove) {
+            editableQuestions[idx].correctIndex = 0;
+          } else if (editableQuestions[idx].correctIndex > ansIdxToRemove) {
+            editableQuestions[idx].correctIndex -= 1;
+          }
+          editableQuestions[idx].isUserWritten = true;
+          renderQuestionsEditor();
+        }
+      });
+
+      questionsEditorList.addEventListener('change', (e) => {
+        if (
+          e.target.matches('[data-field="pinToNext"]') ||
+          e.target.matches('[data-field="lockAnswersOrder"]')
+        ) {
+          syncEditorDomToArray();
           renderQuestionsEditor();
         }
       });
@@ -5691,6 +6061,44 @@
         if (lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
       });
 
+      function shuffleEditorQuestionsPreservingPins(list) {
+        const chains = [];
+        let currentChain = [];
+        for (let i = 0; i < list.length; i++) {
+          const item = { ...list[i] };
+          currentChain.push(item);
+          const pinned = Boolean(item.pinToNext) && i + 1 < list.length;
+          if (!pinned) {
+            chains.push(currentChain);
+            currentChain = [];
+          }
+        }
+        if (currentChain.length > 0) chains.push(currentChain);
+
+        if (chains.length > 1) {
+          const origChains = [...chains];
+          for (let i = chains.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [chains[i], chains[j]] = [chains[j], chains[i]];
+          }
+          if (
+            chains.length >= 2 &&
+            chains.every((c, idx) => c[0]?.question === origChains[idx]?.[0]?.question)
+          ) {
+            chains.push(chains.shift());
+          }
+        }
+
+        const flattened = [];
+        for (const chain of chains) {
+          for (let k = 0; k < chain.length; k++) {
+            const qItem = { ...chain[k], pinToNext: k < chain.length - 1 };
+            flattened.push(qItem);
+          }
+        }
+        return flattened;
+      }
+
       const btnShuffleEditorQuestions = document.getElementById('btn-shuffle-editor-questions');
       if (btnShuffleEditorQuestions) {
         btnShuffleEditorQuestions.addEventListener('click', async () => {
@@ -5699,17 +6107,14 @@
             showToast('יש צורך בלפחות 2 שאלות בשאלון כדי לערבב את הסדר.');
             return;
           }
-          // Shuffle questions order
-          const copy = [...editableQuestions];
-          for (let i = copy.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [copy[i], copy[j]] = [copy[j], copy[i]];
-          }
-          if (copy.length >= 2 && copy.every((q, idx) => q.question === editableQuestions[idx]?.question)) {
-            copy.push(copy.shift());
-          }
-          // Also shuffle the 4 answers inside each question while preserving the correct answer
+          // Shuffle questions order while preserving pinned question chains!
+          const copy = shuffleEditorQuestionsPreservingPins(editableQuestions);
+
+          // Shuffle the answers inside each question UNLESS lockAnswersOrder is checked!
           editableQuestions = copy.map((q) => {
+            if (q.lockAnswersOrder) {
+              return { ...q };
+            }
             const indexed = (q.answers || ['', '', '', '']).map((ans, idx) => ({
               ans,
               isCorrect: idx === q.correctIndex
@@ -5729,18 +6134,23 @@
           });
           renderQuestionsEditor();
           const allFilled = editableQuestions.every(
-            (q) => q.question && q.question.trim() && Array.isArray(q.answers) && q.answers.every((a) => a && a.trim())
+            (q) =>
+              q.question &&
+              q.question.trim() &&
+              Array.isArray(q.answers) &&
+              q.answers.length >= 2 &&
+              q.answers.every((a) => a && a.trim())
           );
           if (allFilled) {
             try {
               await saveAllEditableQuestions();
-              showToast(`🔀 סדר ${editableQuestions.length} השאלות והתשובות בשאלון עורבב ונשמר מחדש!`);
+              showToast(`🔀 סדר השאלות והתשובות עורבב ונשמר מחדש (תוך שמירה על שאלות מוצמדות ותשובות נעולות)!`);
               return;
             } catch {
               // ignore if partial
             }
           }
-          showToast(`🔀 סדר ${editableQuestions.length} השאלות והתשובות עורבב מחדש!`);
+          showToast(`🔀 סדר השאלות והתשובות עורבב מחדש (תוך שמירה על שאלות מוצמדות ותשובות נעולות)!`);
         });
       }
 

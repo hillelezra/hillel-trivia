@@ -1,5 +1,5 @@
 (function () {
-  const LETTERS = ['א', 'ב', 'ג', 'ד'];
+  const LETTERS = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח'];
 
   function formatScore(num) {
     const n = Number(num) || 0;

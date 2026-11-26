@@ -182,28 +182,25 @@
         </div>
       </div>
 
-      <div id="p-choices-grid" class="answers-grid">
-        <button type="button" class="choice-btn" data-opt="0">
-          <span class="opt-letter">א</span>
-          <span class="opt-text"></span>
-          <span class="opt-meta"></span>
-        </button>
-        <button type="button" class="choice-btn" data-opt="1">
-          <span class="opt-letter">ב</span>
-          <span class="opt-text"></span>
-          <span class="opt-meta"></span>
-        </button>
-        <button type="button" class="choice-btn" data-opt="2">
-          <span class="opt-letter">ג</span>
-          <span class="opt-text"></span>
-          <span class="opt-meta"></span>
-        </button>
-        <button type="button" class="choice-btn" data-opt="3">
-          <span class="opt-letter">ד</span>
-          <span class="opt-text"></span>
-          <span class="opt-meta"></span>
-        </button>
+      <!-- Shown when Question-First Reading Mode is active and host hasn't revealed answer choices yet -->
+      <div
+        id="p-awaiting-options-box"
+        hidden
+        style="display:none; flex:1; flex-direction:column; align-items:center; justify-content:center; gap:0.75rem; padding:1.25rem; border-radius:20px; background:linear-gradient(135deg, rgba(14, 165, 233, 0.16), rgba(15, 23, 42, 0.88)); border:2px dashed rgba(56, 189, 248, 0.55); text-align:center;"
+      >
+        <span class="pill pill--sky" style="font-size:0.95rem;">📖 קראו את השאלה בנחת</span>
+        <p id="p-awaiting-options-text" style="font-size:1.05rem; font-weight:700; color:#e2e8f0; max-width:44ch;">
+          אפשרויות התשובה והטיימר יופיעו מיד כשהמנחה ילחץ על "חשיפת התשובות"!
+        </p>
       </div>
+
+      <!-- Shown on Answer Reveal: Big Flashing Correct Answer Banner -->
+      <div id="p-flashing-correct-banner" class="correct-flash-banner" hidden>
+        <span id="p-flashing-correct-badge" class="correct-flash-banner__badge">🎉 התשובה הנכונה:</span>
+        <strong id="p-flashing-correct-text" class="correct-flash-banner__text"></strong>
+      </div>
+
+      <div id="p-choices-grid" class="answers-grid"></div>
     </main>
 
     <!-- SCREEN 4: Finished Summary -->
@@ -263,6 +260,7 @@
   <script>
     (function () {
       const {
+        LETTERS,
         formatScore,
         escapeHtml,
         applyQuizBranding,
@@ -328,6 +326,12 @@
       const pChangeAnswerHint = document.getElementById('p-change-answer-hint');
       const btnPlayerTranslate = document.getElementById('btn-player-translate');
       const btnStageTranslate = document.getElementById('btn-stage-translate');
+      const pChoicesGrid = document.getElementById('p-choices-grid');
+      const pAwaitingOptionsBox = document.getElementById('p-awaiting-options-box');
+      const pAwaitingOptionsText = document.getElementById('p-awaiting-options-text');
+      const pFlashingCorrectBanner = document.getElementById('p-flashing-correct-banner');
+      const pFlashingCorrectBadge = document.getElementById('p-flashing-correct-badge');
+      const pFlashingCorrectText = document.getElementById('p-flashing-correct-text');
 
       let englishModeEnabled = localStorage.getItem('trivia_player_lang_en') === '1';
       const clientTranslationCache = new Map();
@@ -348,10 +352,11 @@
 
       async function fetchEnglishTranslationForQuestion(q) {
         if (!q || !q.question) return null;
-        if (q.questionEn && Array.isArray(q.answersEn) && q.answersEn.length === 4) {
+        const ansList = Array.isArray(q.answers) ? q.answers : [];
+        if (q.questionEn && Array.isArray(q.answersEn) && q.answersEn.length === ansList.length) {
           return { questionEn: q.questionEn, answersEn: q.answersEn };
         }
-        const cacheKey = `${q.question}||${(q.answers || []).join('||')}`;
+        const cacheKey = `${q.question}||${ansList.join('||')}`;
         if (clientTranslationCache.has(cacheKey)) {
           return clientTranslationCache.get(cacheKey);
         }
@@ -359,7 +364,7 @@
           const res = await fetch('/api/translate-question', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question: q.question, answers: q.answers })
+            body: JSON.stringify({ question: q.question, answers: ansList })
           });
           const data = await res.json();
           if (data?.ok && data.questionEn && Array.isArray(data.answersEn)) {
@@ -380,7 +385,7 @@
           };
           const [qEn, ...aEn] = await Promise.all([
             translateOne(q.question),
-            ...(q.answers || []).map((a) => translateOne(a))
+            ...ansList.map((a) => translateOne(a))
           ]);
           const payload = { questionEn: qEn || q.question, answersEn: aEn };
           clientTranslationCache.set(cacheKey, payload);
@@ -406,8 +411,6 @@
 
       if (btnPlayerTranslate) btnPlayerTranslate.addEventListener('click', toggleEnglishMode);
       if (btnStageTranslate) btnStageTranslate.addEventListener('click', toggleEnglishMode);
-
-      const choiceButtons = Array.from(document.querySelectorAll('#p-choices-grid .choice-btn'));
 
       const urlParams = new URLSearchParams(window.location.search);
       const urlCode = (urlParams.get('code') || '').trim();
@@ -698,11 +701,19 @@
         .getElementById('btn-confirm-player-exit')
         .addEventListener('click', doLeaveToMainScreen);
 
-      // Choice Selection (Allows 1 change before timer ends)
-      choiceButtons.forEach((btn) => {
-        btn.addEventListener('click', () => {
+      // Choice Selection via event delegation (supports 2..8 answer options and 1 change before timer ends)
+      if (pChoicesGrid) {
+        pChoicesGrid.addEventListener('click', (e) => {
+          const btn = e.target.closest('.choice-btn[data-opt]');
+          if (!btn || btn.disabled) return;
           if (!playerState || playerState.phase !== 'question') return;
           if (submittingAnswer) return;
+          if (
+            playerState.optionsRevealed === false ||
+            playerState.currentQuestion?.optionsRevealed === false
+          ) {
+            return;
+          }
           if (playerState.timer?.timeExpiredAwaitingReveal) return;
 
           const answerIndex = Number(btn.getAttribute('data-opt'));
@@ -736,7 +747,7 @@
             renderPlayerState(playerState);
           });
         });
-      });
+      }
 
       function renderPlayerTimer(timer) {
         if (!timer) return;
@@ -745,6 +756,20 @@
           pTimerPill.classList.remove('is-warning', 'is-danger');
           if (pTimerStatBox) pTimerStatBox.classList.remove('is-warning', 'is-danger');
           pTimerBar.value = 0;
+          pTimerBar.classList.remove('is-warning', 'is-danger');
+          return;
+        }
+
+        if (
+          timer.optionsRevealed === false ||
+          playerState?.optionsRevealed === false ||
+          playerState?.currentQuestion?.optionsRevealed === false
+        ) {
+          const fullSecs = Math.max(0, timer.durationSeconds || timer.remainingSeconds || 20);
+          pTimerPill.textContent = `⏸️ ${fullSecs}`;
+          pTimerPill.classList.remove('is-warning', 'is-danger');
+          if (pTimerStatBox) pTimerStatBox.classList.remove('is-warning', 'is-danger');
+          pTimerBar.value = 100;
           pTimerBar.classList.remove('is-warning', 'is-danger');
           return;
         }
@@ -826,18 +851,43 @@
         }
       }
 
+      function ensurePlayerChoiceButtonsCount(count) {
+        if (!pChoicesGrid) return [];
+        const targetCount = Math.max(0, Math.min(8, Number(count) || 0));
+        const currentBtns = Array.from(pChoicesGrid.querySelectorAll('.choice-btn'));
+        if (currentBtns.length !== targetCount) {
+          const html = [];
+          for (let idx = 0; idx < targetCount; idx++) {
+            const letter = LETTERS[idx] || String(idx + 1);
+            html.push(`
+              <button type="button" class="choice-btn" data-opt="${idx}">
+                <span class="opt-letter">${escapeHtml(letter)}</span>
+                <span class="opt-text"></span>
+                <span class="opt-meta"></span>
+              </button>
+            `);
+          }
+          pChoicesGrid.innerHTML = html.join('');
+          pChoicesGrid.setAttribute('data-options-count', String(targetCount));
+          return Array.from(pChoicesGrid.querySelectorAll('.choice-btn'));
+        }
+        return currentBtns;
+      }
+
       function applyQuestionAndAnswersText(q) {
         if (!q) return;
-        const cacheKey = `${q.question}||${(q.answers || []).join('||')}`;
+        const ansList = Array.isArray(q.answers) ? q.answers : [];
+        const btns = ensurePlayerChoiceButtonsCount(ansList.length);
+        const cacheKey = `${q.question}||${ansList.join('||')}`;
         activeTranslationKey = cacheKey;
 
         if (!englishModeEnabled) {
           pQuestionText.textContent = q.question;
           pQuestionText.dir = 'rtl';
-          choiceButtons.forEach((btn, idx) => {
+          btns.forEach((btn, idx) => {
             const textSpan = btn.querySelector('.opt-text');
             if (textSpan) {
-              textSpan.textContent = q.answers[idx] || '';
+              textSpan.textContent = ansList[idx] || '';
               textSpan.dir = 'rtl';
             }
           });
@@ -846,17 +896,17 @@
 
         // If built-in or cached English translation is ready right now, render immediately
         const cached =
-          q.questionEn && Array.isArray(q.answersEn) && q.answersEn.length === 4
+          q.questionEn && Array.isArray(q.answersEn) && q.answersEn.length === ansList.length
             ? { questionEn: q.questionEn, answersEn: q.answersEn }
             : clientTranslationCache.get(cacheKey);
 
         if (cached) {
           pQuestionText.textContent = cached.questionEn;
           pQuestionText.dir = 'ltr';
-          choiceButtons.forEach((btn, idx) => {
+          btns.forEach((btn, idx) => {
             const textSpan = btn.querySelector('.opt-text');
             if (textSpan) {
-              textSpan.textContent = cached.answersEn[idx] || q.answers[idx] || '';
+              textSpan.textContent = cached.answersEn[idx] || ansList[idx] || '';
               textSpan.dir = 'ltr';
             }
           });
@@ -865,19 +915,20 @@
 
         // Show Hebrew momentarily while fetching English translation
         pQuestionText.textContent = q.question;
-        choiceButtons.forEach((btn, idx) => {
+        btns.forEach((btn, idx) => {
           const textSpan = btn.querySelector('.opt-text');
-          if (textSpan) textSpan.textContent = q.answers[idx] || '';
+          if (textSpan) textSpan.textContent = ansList[idx] || '';
         });
 
         fetchEnglishTranslationForQuestion(q).then((translated) => {
           if (!translated || !englishModeEnabled || activeTranslationKey !== cacheKey) return;
           pQuestionText.textContent = translated.questionEn;
           pQuestionText.dir = 'ltr';
-          choiceButtons.forEach((btn, idx) => {
+          const currentBtns = Array.from(pChoicesGrid.querySelectorAll('.choice-btn'));
+          currentBtns.forEach((btn, idx) => {
             const textSpan = btn.querySelector('.opt-text');
             if (textSpan) {
-              textSpan.textContent = translated.answersEn[idx] || q.answers[idx] || '';
+              textSpan.textContent = translated.answersEn[idx] || ansList[idx] || '';
               textSpan.dir = 'ltr';
             }
           });
@@ -941,6 +992,11 @@
           const q = state.currentQuestion;
           if (!q) return;
 
+          const isRevealed = state.phase === 'revealed';
+          const areOptionsRevealed = Boolean(
+            isRevealed || (q.optionsRevealed !== false && state.optionsRevealed !== false)
+          );
+
           applyQuestionAndAnswersText(q);
           renderPlayerTimer(state.timer);
           renderPlayerScoreWidget(state);
@@ -964,19 +1020,52 @@
           }
           syncHasImageFallback(pQuestionHero);
 
+          if (pAwaitingOptionsBox) {
+            pAwaitingOptionsBox.hidden = areOptionsRevealed;
+            pAwaitingOptionsBox.style.display = areOptionsRevealed ? 'none' : 'flex';
+            if (!areOptionsRevealed && pAwaitingOptionsText) {
+              pAwaitingOptionsText.textContent = englishModeEnabled
+                ? 'Read the question carefully... Answer options & timer will appear as soon as the host reveals them!'
+                : 'אפשרויות התשובה והטיימר יופיעו מיד כשהמנחה ילחץ על "חשיפת התשובות"!';
+            }
+          }
+
+          if (pChoicesGrid) {
+            pChoicesGrid.hidden = !areOptionsRevealed;
+            pChoicesGrid.style.display = areOptionsRevealed ? 'grid' : 'none';
+          }
+
+          if (pFlashingCorrectBanner && pFlashingCorrectText) {
+            if (isRevealed && typeof q.correctIndex === 'number' && Array.isArray(q.answers)) {
+              const cLetter = LETTERS[q.correctIndex] || String(q.correctIndex + 1);
+              const cText = q.answers[q.correctIndex] || '';
+              if (pFlashingCorrectBadge) {
+                pFlashingCorrectBadge.textContent = englishModeEnabled
+                  ? '🎉 Correct Answer:'
+                  : '🎉 התשובה הנכונה:';
+              }
+              pFlashingCorrectText.textContent = `${cLetter}. ${cText}`;
+              pFlashingCorrectBanner.hidden = false;
+              pFlashingCorrectBanner.style.display = 'flex';
+            } else {
+              pFlashingCorrectBanner.hidden = true;
+              pFlashingCorrectBanner.style.display = 'none';
+            }
+          }
+
           const lockedIdx = state.lockedAnswerIndex;
-          const isRevealed = state.phase === 'revealed';
           const isTimeUp = Boolean(state.timer?.timeExpiredAwaitingReveal);
           const changeCount = Number(state.answerChangeCount || 0);
           const canChange = Boolean(
-            !isRevealed &&
+            areOptionsRevealed &&
+              !isRevealed &&
               !isTimeUp &&
               lockedIdx !== null &&
               (state.canChangeAnswer || changeCount < 1)
           );
 
           if (pChangeAnswerHint) {
-            if (isRevealed || lockedIdx === null) {
+            if (!areOptionsRevealed || isRevealed || lockedIdx === null) {
               pChangeAnswerHint.hidden = true;
             } else if (canChange) {
               pChangeAnswerHint.hidden = false;
@@ -993,10 +1082,18 @@
             }
           }
 
-          choiceButtons.forEach((btn, idx) => {
+          const btns = Array.from(pChoicesGrid.querySelectorAll('.choice-btn'));
+          btns.forEach((btn, idx) => {
             const metaSpan = btn.querySelector('.opt-meta');
 
-            btn.classList.remove('is-selected', 'is-dimmed', 'is-correct', 'is-wrong', 'is-selected-wrong');
+            btn.classList.remove(
+              'is-selected',
+              'is-dimmed',
+              'is-correct',
+              'is-flashing-reveal',
+              'is-wrong',
+              'is-selected-wrong'
+            );
             metaSpan.innerHTML = '';
 
             if (isRevealed) {
@@ -1005,7 +1102,7 @@
               const isMyPick = idx === lockedIdx;
 
               if (isCorrect) {
-                btn.classList.add('is-correct');
+                btn.classList.add('is-correct', 'is-flashing-reveal');
                 metaSpan.innerHTML = `<span class="pill pill--emerald">✓</span>`;
               } else if (isMyPick) {
                 btn.classList.add('is-selected-wrong');
@@ -1018,13 +1115,13 @@
                 btn.classList.add('is-selected');
                 btn.disabled = true;
               } else if (canChange) {
-                // Player still has their 1 allowed answer change -> keep the other 3 options clickable!
+                // Player still has their 1 allowed answer change -> keep the other options clickable!
                 btn.disabled = false;
               } else {
                 btn.disabled = true;
                 btn.classList.add('is-dimmed');
               }
-            } else if (isTimeUp) {
+            } else if (isTimeUp || !areOptionsRevealed) {
               btn.disabled = true;
               btn.classList.add('is-dimmed');
             } else {

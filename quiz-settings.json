@@ -1,18 +1,22 @@
 {
-  "id": "game-default",
-  "code": "1000",
-  "title": "אלופי הטריוויה",
-  "subtitle": "ענו נכון והתחלקו שווה בשווה ב-100 נקודות לכל שאלה!",
-  "headerImage": "/uploads/header-1794079156027-c2f1e96a.jpg",
-  "backgroundImage": "/uploads/bg-1794079173397-958946cc.jpg",
+  "id": "game-1795636072536-f13c6c",
+  "code": "1021",
+  "title": "חידון חנוכה משפחת ענף",
+  "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+  "headerImage": "",
+  "backgroundImage": "",
   "backgroundMusic": "",
   "bgOverlayOpacity": 0.68,
-  "timerSeconds": 15,
+  "timerSeconds": 20,
   "autoRevealOnTimeout": true,
   "hideLeaderboardUntilEnd": false,
-  "teamsEnabled": true,
+  "teamsEnabled": false,
   "teams": [],
-  "activeGameId": "game-default",
+  "activeGameId": "game-1795636072536-f13c6c",
+  "customBankFolders": [
+    "חידון חנוכה משפחת ענף",
+    "היסטוריה של מתמטיקאים"
+  ],
   "games": [
     {
       "id": "game-default",
@@ -8641,8 +8645,10 @@
           "timerSeconds": 20
         }
       ],
-      "code": "1019",
-      "savedPlayers": []
+      "savedPlayers": [],
+      "playHistory": [],
+      "lastFinishedAt": null,
+      "code": "1019"
     },
     {
       "id": "game-1795633296625-e3e3c9",
@@ -9179,7 +9185,807 @@
           "timerSeconds": 20
         }
       ],
-      "code": "1020",
+      "savedPlayers": [],
+      "playHistory": [],
+      "lastFinishedAt": null,
+      "code": "1020"
+    },
+    {
+      "id": "game-1795636072536-f13c6c",
+      "title": "חידון חנוכה משפחת ענף",
+      "subtitle": "ענו נכון והתחלקו שווה בשווה בקופת הנקודות של כל שאלה!",
+      "headerImage": "",
+      "backgroundImage": "",
+      "backgroundMusic": "",
+      "bgOverlayOpacity": 0.68,
+      "timerSeconds": 20,
+      "autoRevealOnTimeout": true,
+      "hideLeaderboardUntilEnd": false,
+      "teamsEnabled": false,
+      "teams": [],
+      "questions": [
+        {
+          "question": "מהי בירת סוריה?",
+          "answers": [
+            "דמשק",
+            "אין לה בירה",
+            "שארם א שייח",
+            "רבת עמון"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "כמה חברי כנסת מכהנים יש בכנסת ישראל?",
+          "answers": [
+            "120",
+            "100",
+            "אף תשובה אינה נכונה",
+            "תלוי באיזו שנה"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי מנהיג כיום את סוריה?",
+          "answers": [
+            "אף תשובה אינה נכונה",
+            "נעים קאסם",
+            "אל ג'ולאני",
+            "מחמוד פזשכיאן"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "את מי הציל רבי יהושוע בן חנניה?",
+          "answers": [
+            "את רבי אלעזר",
+            "את רבי ישמעאל",
+            "את רבי עקיבא",
+            "את רבן גמליאל"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "דג כשר צריך להיות עם:",
+          "answers": [
+            "אף תשובה אינה נכונה",
+            "סנפיר וקשקשת",
+            "ללא סנפיר וקשקשת",
+            "רק סנפיר"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה מהבאים אינו יחידת זמן טבעית?",
+          "answers": [
+            "חודש",
+            "שבוע",
+            "שנה",
+            "יום"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מסעי הצלב נועדו ל:",
+          "answers": [
+            "רצח יהודים",
+            "גאולת קבר",
+            "רצח מוסלמים",
+            "כל התשובות נכונות"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "שלומציון המלכה היתה אישתו של:",
+          "answers": [
+            "ינאי",
+            "אלכסנדר",
+            "הורדוס",
+            "מונבז"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איפה נמצא מגדל אייפל?",
+          "answers": [
+            "בברלין",
+            "בתל אביב",
+            "באמסטרדם",
+            "בפריז"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "דוז פואה בצרפתית - ובעברית?",
+          "answers": [
+            "כל הכבוד",
+            "3",
+            "ניצחון",
+            "12"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי ניצל מאכילת אבר מן החי?",
+          "answers": [
+            "רב הונא",
+            "ינאי המלך",
+            "רב ששת",
+            "שלומציון המלכה"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מרתה בת בייתוס גרה ב:",
+          "answers": [
+            "שכם",
+            "ירושלים",
+            "אור יהודה",
+            "בית לחם"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "הלוח היהודי בנוי לפי:",
+          "answers": [
+            "השמש והירח",
+            "הירח",
+            "אף אחד מהם",
+            "השמש"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי היה התנא שלימד ילדים?",
+          "answers": [
+            "רבי חיה",
+            "רב דוסתאי",
+            "רב הונה",
+            "רבי חוצפית"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהו המטוס הגדול בעולם?",
+          "answers": [
+            "ג'מבו",
+            "איירבוס A380",
+            "דרימליינר",
+            "בואינג 777 מקס"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי קפץ ראשון למים?",
+          "answers": [
+            "שמשון הגיבור",
+            "מיכל בת שאול",
+            "נחשון בן עמינדב",
+            "אסתרינה טרטמן"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי היה נחמיה?",
+          "answers": [
+            "חבר בכנסת הגדולה",
+            "כל התשובות נכונות",
+            "הבן של חכליה",
+            "שר המשקים של ארתחשסתא"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי מבין השלושה הבאים היו סב, אב ובן לפי הסדר הבא?",
+          "answers": [
+            "רבן שמעון, רבן גמליאל ורבי יהודה",
+            "רבי יהודה, רבן שמעון ורבן גמליאל",
+            "רבן גמליאל, רבן שמעון, רבי יהודה",
+            "רבי יהודה, רבן גמליאל, רבן שמעון"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "אם נסעתי ברכבת וראיתי מהחלון פרה לבנה - מה ידוע בוודאות?",
+          "answers": [
+            "שכל הפרות באזור לבנות",
+            "שיש לה עגל בבטן",
+            "אף תשובה אינה נכונה",
+            "שהפרה לבנה"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איך קראו לאמא של סבא רחמו?",
+          "answers": [
+            "ויקטוריה",
+            "דושפרינה",
+            "נונה",
+            "כריסטינה"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי בנה את בית המקדש הראשון?",
+          "answers": [
+            "הורדוס",
+            "שלמה המלך",
+            "סבא רחמו",
+            "דוד המלך"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזה בית מדליקים 3 חנוכיות?",
+          "answers": [
+            "בית עם 3 גברים",
+            "בית שדייריו אוהבים נרות",
+            "בית עם 3 משפחות",
+            "כל התשובות נכונות"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי היה ארתחשסתא?",
+          "answers": [
+            "הבן של דריווש",
+            "נסיך פרסי",
+            "כל התשובות נכונות",
+            "מלך"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "הרב אלחנן וסרמן היה ראש ישיבה ב:",
+          "answers": [
+            "וילנה",
+            "ורשא",
+            "לובלין",
+            "ברנוביץ"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי הבת הרביעית במשפחת ענף?",
+          "answers": [
+            "מיטל",
+            "שלומית",
+            "טובה",
+            "מירית"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "על מה מברכים תחילה מבין ארבעת המאכלים הבאים:",
+          "answers": [
+            "תמר",
+            "תאנה",
+            "תפוז",
+            "תפוח"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו מסכת נידונה סוגיית ספק ספיקא המתהפך",
+          "answers": [
+            "כתובות",
+            "יבמות",
+            "הוריות",
+            "ברכות"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהו המרכיב העיקרי ממנו מופק השוקולד",
+          "answers": [
+            "חלב",
+            "פולי קקאו",
+            "אבקת קקאו",
+            "חמאת קקאו"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "על שמו של מי לא קרויה אף מדינה או יבשת",
+          "answers": [
+            "פרגוואי",
+            "אמריגו וספוצ'י",
+            "אלכסנדר מוקדון",
+            "כריסטופר קולומבוס"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה בודק מבחן אפגר?",
+          "answers": [
+            "תקינות יילוד",
+            "בולמיה תימנית",
+            "נשימה תקנית",
+            "פיגור שכלי"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי כתב את התלמוד",
+          "answers": [
+            "רבי חנינא בן דוסה",
+            "רב ושמואל",
+            "אביי ורבא",
+            "רבינא ורב אשי"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי מהבאות אינה חברת תעופה בינלאומית",
+          "answers": [
+            "אלעל",
+            "ישראייר",
+            "ארקיע",
+            "אייר חיפה"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה תנא חי בתקופת האמוראים",
+          "answers": [
+            "רב סעדיה גאון",
+            "רבינא",
+            "רב אשי",
+            "רב"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי בירת פורטוגל?",
+          "answers": [
+            "פורטו",
+            "מדריד",
+            "סביליה",
+            "ליסבון"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "בישראל מי ממנה את ראש הממשלה?",
+          "answers": [
+            "העם",
+            "הנשיא",
+            "הממשלה",
+            "הכנסת"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי ריבית קצוצה?",
+          "answers": [
+            "ריבית שסוכם עליה מראש",
+            "ריבית שאינה בכסף",
+            "ריבית מוזלת",
+            "ריבית לגוי"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איפה ממוקמת פומפדיתא?",
+          "answers": [
+            "פרס",
+            "איראן",
+            "עיראק",
+            "מדי"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "כמה מכיל מקווה תיקני?",
+          "answers": [
+            "40 סאה",
+            "40 מ\"ק",
+            "50 סאה",
+            "50 קוב"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי נחשב לממציא המחשב המודרני?",
+          "answers": [
+            "סבסטיאן גולדבאך",
+            "אופיר מלכה",
+            "מלכה לייפער",
+            "אלן טיורינג"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה מהמספרים הבאים אינו מתחלק ב-10?",
+          "answers": [
+            "20",
+            "25",
+            "10",
+            "30"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה היה שמו של רב",
+          "answers": [
+            "אבא סיקרה",
+            "יהודה איש קריות",
+            "יהודה בן בבא",
+            "אבא בר איבו"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה מברכים על דובדבן?",
+          "answers": [
+            "העץ",
+            "המוציא",
+            "שהכל",
+            "אדמה"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי לא היה חלק מעשרת הרוגי מלכות?",
+          "answers": [
+            "רבי חנינה בן תרדיון",
+            "רבי יהודה בן בבא",
+            "רבי חוצפית המתורגמן",
+            "רבי יהושוע בן חנניה"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "אם ביקרתי באיה סופיה סביר להניח שאבקר גם ב:",
+          "answers": [
+            "הבזאר הארמני",
+            "איה פלוטו",
+            "אנה קרנינה",
+            "המסגד הכחול"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "האצטקים גרו ב:",
+          "answers": [
+            "המזרח התיכון",
+            "מרכז אמריקה",
+            "דרום אמריקה",
+            "המזרח הרחוק"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מיהם החות'ים?",
+          "answers": [
+            "מוסלמים",
+            "דרום תימנים",
+            "כל התשובות נכונות",
+            "קבוצה שיעית"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזה פרי מקורו באמריקה?",
+          "answers": [
+            "קקאו",
+            "קפה",
+            "תפוז",
+            "בננה"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהו אינו מספר ראשוני?",
+          "answers": [
+            "9973",
+            "7",
+            "אף תשובה אינה נכונה",
+            "19"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "האם ייתכן שציגלה נולד לפני פיקסלה ועדיין פיקסלה יחגוג בר מצווה ראשון?",
+          "answers": [
+            "כן",
+            "רק אם אחד מהם נולד בשנה מעוברת",
+            "לא",
+            "רק אם פיקסלה ממוצא טורקי"
+          ],
+          "correctIndex": 0,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "באיזו מדינה לא פעלה האינקווזיציה?",
+          "answers": [
+            "ספרד",
+            "ברזיל",
+            "פורטוגל",
+            "הולנד"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איך קראו לזוגתו של היטלר?",
+          "answers": [
+            "שרה פולסון",
+            "גוונדולין כריסטי",
+            "מגדה גבלס",
+            "אווה בראון"
+          ],
+          "correctIndex": 3,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איפה נמצאת כיכר טקסים?",
+          "answers": [
+            "בטורקיה",
+            "כל התשובות נכונות",
+            "ברובע ביואולו",
+            "באיסטנבול"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מה עשה חבר הכנסת גולדקנופף לפני שנהיה ח\"כ?",
+          "answers": [
+            "היה ראש ישיבה",
+            "עשק גננות חרדיות",
+            "הבריח נשק לסוריה",
+            "דאג ליתומים ואלמנות"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי מבין הבאים היו קרובי משפחה",
+          "answers": [
+            "בר כוכבה ורבי יוחנן",
+            "רבי יוחנן ואבא סיקרה",
+            "אבא סיקרה ורבי עקיבא",
+            "רבי עקיבא ובר כוכבה"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהי פת הבאה בכיסנין?",
+          "answers": [
+            "מאפה קראנצי'",
+            "כל התשובות נכונות",
+            "כיסונים",
+            "מאפה מתוק"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מהם הספרים החיצוניים?",
+          "answers": [
+            "כל התשובות נכונות",
+            "ספרי מינות",
+            "ספרים שלא הוכנסו לתנ\"ך בזמן חתימתו",
+            "ספרי כפירה"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "מי היה רבי אמנון ממגנצא?",
+          "answers": [
+            "הבן של מגנצא",
+            "כל התשובות נכונות",
+            "תושב גרמניה",
+            "מחבר הפיוט בזכרי על משכבי"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "בכל כמה זמן חוזרים הירח והשמש לאותה נקודה בדיוק?",
+          "answers": [
+            "פעם ב17 שנה",
+            "פעם ב3 שנים",
+            "בערך פעם ב19 שנה",
+            "בכל שנה מעוברת"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "ראש ממשלת ישראל הוא:",
+          "answers": [
+            "נפתלי בנט",
+            "יאיר לפיד",
+            "בנימין נתניהו",
+            "בני גנץ"
+          ],
+          "correctIndex": 2,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        },
+        {
+          "question": "איזו כנסת אינה ישיבה של רשת ישיבות חברון?",
+          "answers": [
+            "כנסת ישראל",
+            "כנסת שמואל",
+            "כנסת הגדולה",
+            "כנסת יחזקאל"
+          ],
+          "correctIndex": 1,
+          "image": "",
+          "points": 100,
+          "timerSeconds": 20
+        }
+      ],
+      "code": "1021",
       "savedPlayers": []
     }
   ]
